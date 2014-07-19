@@ -38,6 +38,9 @@ public final class R {
         public static final int et_sign_up_password_check=0x7f08000b;
         public static final int et_sign_up_username=0x7f080008;
         public static final int ll_fragment=0x7f080004;
+        public static final int lv_best_view=0x7f08000d;
+        public static final int tv_content=0x7f08000f;
+        public static final int tv_title=0x7f08000e;
     }
     public static final class layout {
         public static final int activity_intro=0x7f030000;
@@ -48,6 +51,7 @@ public final class R {
         public static final int fragment_board=0x7f030005;
         public static final int fragment_interior=0x7f030006;
         public static final int fragment_mypage=0x7f030007;
+        public static final int item_row=0x7f030008;
     }
     public static final class menu {
         public static final int main=0x7f070000;
