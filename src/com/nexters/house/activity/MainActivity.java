@@ -19,26 +19,43 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	public final static int FRAGMENT_INTERIOR = 1;
 	public final static int FRAGMENT_BOARD = 2;
 	public final static int FRAGMENT_MYPAGE = 3;
-
+	
+	private Button btn_best;
+	private Button btn_interior;
+	private Button btn_board;
+	private Button btn_mypage;
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
-		Button btn_best = (Button) findViewById(R.id.btn_best);
-		btn_best.setOnClickListener(this);
-		Button btn_interior = (Button) findViewById(R.id.btn_interior);
-		btn_interior.setOnClickListener(this);
-		Button btn_board = (Button) findViewById(R.id.btn_board);
-		btn_board.setOnClickListener(this);
-		Button btn_mypage = (Button) findViewById(R.id.btn_mypage);
-		btn_mypage.setOnClickListener(this);
+		
+		initResources();
+		initEvent();
 		
 		mCurrentFragmentIndex = FRAGMENT_BEST;
-
 		fragmentReplace(mCurrentFragmentIndex);
 	}
 
+	private void initResources(){
+		btn_best = (Button) findViewById(R.id.btn_best);
+		btn_interior = (Button) findViewById(R.id.btn_interior);
+		btn_board = (Button) findViewById(R.id.btn_board);
+		btn_mypage = (Button) findViewById(R.id.btn_mypage);
+		
+	}
+	
+	private void initEvent(){
+		
+		btn_best.setOnClickListener(this);
+		btn_interior.setOnClickListener(this);
+		btn_board.setOnClickListener(this);
+		btn_mypage.setOnClickListener(this);
+		
+	}
+	
+	
 	public void fragmentReplace(int reqNewFragmentIndex) {
 
 		Fragment newFragment = null;
