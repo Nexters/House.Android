@@ -3,12 +3,14 @@ package com.nexters.house.adapter;
 import java.util.*;
 
 import android.content.*;
+import android.util.*;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
 
 import com.nexters.house.*;
 import com.nexters.house.entity.*;
+import com.nexters.house.utils.*;
 
 public class ListAdapter extends BaseAdapter {
 
@@ -27,6 +29,7 @@ public class ListAdapter extends BaseAdapter {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.resource = resource;
 	}
+	CommonUtils mUtil = new CommonUtils();
 
 	@Override
 	public int getCount() {
@@ -46,10 +49,13 @@ public class ListAdapter extends BaseAdapter {
 		return 0;
 	}
 
+	@SuppressWarnings("static-access")
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		
 		Holder holder = new Holder();
+		int minHeight = mUtil.pxToDp(mContext,1000);
+		
 		if (convertView == null) {
 			convertView = mLayoutInflater.inflate(resource, null);
 
@@ -60,8 +66,9 @@ public class ListAdapter extends BaseAdapter {
 			holder.tv_content = (TextView) convertView
 					.findViewById(R.id.tv_content);
 			convertView.setTag(holder);
+			
 			//리스트뷰안의 아이템 높이 설정하는 메소드
-			convertView.setMinimumHeight(350);
+			convertView.setMinimumHeight(minHeight);
 
 		} else {
 			holder = (Holder) convertView.getTag();
