@@ -6,19 +6,47 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        android:background="#FFFFFF"
+        android:layout_margin="10dp"
+        android:background="#fff0f0"
         android:orientation="vertical" >
+
+        <!-- 얘는 처음엔 사람프로필 카테고리 보여주고 그다음엔 텍스트보여주는부분 -->
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="3" >
+            android:layout_weight="3"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_launcher" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="ID_soyoon"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:text="Catetory" />
+            </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_horizontal"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:gravity="center"
                 android:text="this is for interior contents" />
         </LinearLayout>
         <!-- 여기에 스와이프 넣을거라 그냥 빈공간으로 하나 만들어놓은 -->
@@ -27,8 +55,7 @@
             android:id="@+id/ll_swipe"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="6"
-            android:background="#00ff00" />
+            android:layout_weight="6" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -47,20 +74,22 @@
             android:layout_height="0dp"
             android:layout_weight="3" >
         </View>
-        <!-- 스와이프 -->
+        <!-- 스와이프 넣을 부분  -->
 
-        <View
-            android:id="@+id/ll_swipe"
+        <android.support.v4.view.ViewPager
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/pager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="6"
             android:background="#F79557" />
 
-        <View
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" >
-        </View>
+            android:layout_weight="1"
+            android:orientation="horizontal" >
+        </LinearLayout>
     </LinearLayout>
 
 </FrameLayout>

@@ -39,9 +39,10 @@ public final class R {
         public static final int et_sign_up_username=0x7f080008;
         public static final int ll_fragment=0x7f080004;
         public static final int ll_swipe=0x7f08000d;
-        public static final int lv_best_view=0x7f08000e;
-        public static final int tv_content=0x7f080010;
-        public static final int tv_title=0x7f08000f;
+        public static final int lv_best_view=0x7f08000f;
+        public static final int pager=0x7f08000e;
+        public static final int tv_content=0x7f080011;
+        public static final int tv_title=0x7f080010;
     }
     public static final class layout {
         public static final int activity_intro=0x7f030000;
