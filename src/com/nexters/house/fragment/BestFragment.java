@@ -37,7 +37,7 @@ public class BestFragment extends Fragment {
 
 		mBestItemArrayList = new ArrayList<BestEntity>();
 		mListAdapter = new ListAdapter(getActivity().getApplicationContext(),
-				mBestItemArrayList, R.layout.item_row);
+				mBestItemArrayList, R.layout.custom_view_interior);
 
 		lv_main.setAdapter(mListAdapter);
 		

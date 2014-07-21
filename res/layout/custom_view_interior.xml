@@ -4,6 +4,7 @@
     android:layout_height="match_parent" >
 
     <LinearLayout
+        android:id="@+id/ll_interior_custom_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
@@ -30,6 +31,7 @@
                     android:src="@drawable/ic_launcher" />
 
                 <TextView
+                    android:id="@+id/tv_title"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="ID_soyoon"
@@ -43,6 +45,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/tv_content"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="2"
