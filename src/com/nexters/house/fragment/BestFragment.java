@@ -11,6 +11,7 @@ import android.widget.*;
 
 import com.nexters.house.*;
 import com.nexters.house.entity.*;
+import com.nexters.house.activity.SelectWriteActivity;
 import com.nexters.house.adapter.*;
 import com.nexters.house.adapter.ListAdapter;
 
@@ -27,6 +28,7 @@ public class BestFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+	  
 		Log.d(TAG, "onCreateView");
 		
 		View v = inflater.inflate(R.layout.fragment_best, container, false);
@@ -54,7 +56,20 @@ public class BestFragment extends Fragment {
 		}
 
 		mListAdapter.notifyDataSetChanged();
-		
+	  
+		Button b=(Button)v.findViewById(R.id.btn_write);
+	    b.setText("쓰기");
+	    b.bringToFront();
+		b.setOnClickListener(new Button.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent=new Intent(getActivity(),SelectWriteActivity.class);
+				
+			 	startActivity(intent);
+				
+			}
+		});
 		return v;
 	}
 

@@ -1,0 +1,17 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/imgv"
+        android:layout_width="200dip"
+        android:layout_height="160dip"
+        android:layout_marginTop="50dip"
+        android:layout_marginLeft="10dip"
+        android:contentDescription="@drawable/ic_launcher"
+        android:src="@drawable/ic_launcher" 
+        android:background="#ffffff"/>
+    
+</LinearLayout>

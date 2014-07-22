@@ -1,0 +1,60 @@
+
+<LinearLayout 
+     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin" >
+
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+      	android:gravity="top"
+      	android:scrollbars="vertical"
+      	android:hint="이야기를 적어주세요"
+        android:ems="10" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="3dp"
+        android:text="카테고리"
+         />
+
+  
+
+<RadioGroup 
+    android:id="@+id/radioG_category"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">     
+    <RadioButton
+        android:id="@+id/radio_QnA"
+        android:layout_weight="1"
+        android:text="QnA" />
+
+    <RadioButton
+        android:id="@+id/radio_chat"
+        android:layout_weight="1"
+        android:text="수다" />
+
+    <RadioButton
+        android:id="@+id/radio_review"
+        android:layout_weight="1"
+        android:text="리뷰" />
+    </RadioGroup>
+
+
+    <Button 
+        android:id="@+id/btn_addPhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="사진추가"
+        />
+    
+</LinearLayout>

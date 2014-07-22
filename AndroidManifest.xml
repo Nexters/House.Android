@@ -22,6 +22,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+         <activity
+            android:name=".activity.SelectWriteActivity"
+            android:label="@string/title_activity_select_write"
+            android:theme="@style/SelectTheme.TransparentTest" >
+        </activity>
+        <activity
+            android:name=".activity.TalkWriteActivity"
+            android:label="@string/title_activity_talk_write" >
+        </activity>
+        <activity
+            android:name=".activity.InteriorWriteActivity"
+            android:label="@string/title_activity_interior_write" >
+        </activity>
+        
     </application>
 
 </manifest>
