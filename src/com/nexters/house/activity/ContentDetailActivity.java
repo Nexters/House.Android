@@ -6,6 +6,7 @@ import android.view.*;
 
 import com.nexters.house.*;
 
+
 public class ContentDetailActivity extends Activity {
 
 	@Override
