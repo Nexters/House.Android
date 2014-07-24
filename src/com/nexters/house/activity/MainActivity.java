@@ -100,29 +100,22 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		return newFragment;
 	}
 
+//	 http://tools.android.com/tips/non-constant-fields 참조
 	@Override
 	public void onClick(View v) {
-
-		switch (v.getId()) {
-
-		case R.id.btn_best:
+		if(v.getId() == R.id.btn_best) {
 			mCurrentFragmentIndex = FRAGMENT_BEST;
 			fragmentReplace(mCurrentFragmentIndex);
-			break;
-		case R.id.btn_interior:
+		} else if(v.getId() == R.id.btn_interior) {
 			mCurrentFragmentIndex = FRAGMENT_INTERIOR;
 			fragmentReplace(mCurrentFragmentIndex);
-			break;
-		case R.id.btn_board:
+		} else if(v.getId() == R.id.btn_board) {
 			mCurrentFragmentIndex = FRAGMENT_BOARD;
 			fragmentReplace(mCurrentFragmentIndex);
-			break;
-		case R.id.btn_mypage:
+		} else if(v.getId() == R.id.btn_mypage) {
 			mCurrentFragmentIndex = FRAGMENT_MYPAGE;
 			fragmentReplace(mCurrentFragmentIndex);
-			break;
 		}
-
 	}
 
 }

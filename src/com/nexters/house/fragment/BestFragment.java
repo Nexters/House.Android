@@ -44,15 +44,19 @@ public class BestFragment extends Fragment {
 		lv_main.setAdapter(mListAdapter);
 		
 		Log.d(TAG, "setContent");
-
+	//	Toast.makeText(v.getContext(), "Hello World!", Toast.LENGTH_SHORT).show();
+		
 		for (int itemCount = 0; itemCount < 20; itemCount++) {
 			BestEntity mExamEntity = new BestEntity();
 
 			mExamEntity.title = "Title : " + itemCount;
 			mExamEntity.content = "Content : " + itemCount;
-
+			mExamEntity.image_urls = new ArrayList<String>(){{
+				add("http://tvfiles.alphacoders.com/100/hdclearart-10.png");
+				add("http://cdn3.nflximg.net/images/3093/2043093.jpg");
+				add("http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg");
+			}};
 			mBestItemArrayList.add(mExamEntity);
-
 		}
 
 		mListAdapter.notifyDataSetChanged();

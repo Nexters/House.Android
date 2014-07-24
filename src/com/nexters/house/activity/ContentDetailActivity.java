@@ -12,6 +12,9 @@ public class ContentDetailActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.content_detail_page);
+		
+		
+		
 	}
 
 	@Override
