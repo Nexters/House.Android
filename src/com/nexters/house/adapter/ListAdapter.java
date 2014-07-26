@@ -58,6 +58,7 @@ public class ListAdapter extends BaseAdapter {
 
 		Holder holder = new Holder();
 		int minHeight = mUtil.pxToDp(mContext, 1000);
+		Log.d(TAG, "pxToDp"+ minHeight);
 
 		if (convertView == null) {
 			convertView = mLayoutInflater.inflate(resource, null);
@@ -86,6 +87,7 @@ public class ListAdapter extends BaseAdapter {
 			
 			// 리스트뷰안의 아이템 높이 설정하는 메소드
 			convertView.setMinimumHeight(minHeight);
+			Log.d(TAG, "minHeight"+minHeight);
 
 		} else {
 			holder = (Holder) convertView.getTag();
