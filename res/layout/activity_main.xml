@@ -71,6 +71,4 @@
         android:layout_weight="12"
         android:orientation="vertical">
     </LinearLayout>
-
-
 </LinearLayout>
