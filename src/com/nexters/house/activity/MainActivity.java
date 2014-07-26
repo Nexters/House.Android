@@ -69,7 +69,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 				.beginTransaction();
 
 		transaction.replace(R.id.ll_fragment, newFragment);
-
+		
 		// Commit the transaction
 		transaction.commit();
 
