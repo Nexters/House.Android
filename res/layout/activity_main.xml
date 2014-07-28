@@ -11,58 +11,35 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal">
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-            <Button
-                android:id="@+id/btn_best"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Best"
-                android:textSize="15sp"
-                android:textColor="#FFFFFF"
-                android:background="#F79557"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
+
             <Button
                 android:id="@+id/btn_interior"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:text="Interior"
                 android:textSize="15sp"
                 android:textColor="#FFFFFF"
                 android:background="#F79557"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
+
             <Button
                 android:id="@+id/btn_board"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:text="Board"
                 android:textSize="15sp"
                 android:textColor="#FFFFFF"
                 android:background="#F79557"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
             <Button
                 android:id="@+id/btn_mypage"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:text="MyPage"
                 android:textSize="15sp"
                 android:textColor="#FFFFFF"
                 android:background="#F79557"/>
-        </LinearLayout>
     </LinearLayout>
 	<LinearLayout
 	    android:id="@+id/ll_fragment"
