@@ -1,8 +1,5 @@
 package com.nexters.house.activity;
 
-import com.nexters.vobble.core.AccountManager;
-import com.nexters.vobble.entity.User;
-import com.nexters.vobble.network.APIResponseHandler;
 import org.json.JSONObject;
 
 import android.app.*;
@@ -13,7 +10,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.loopj.android.http.RequestParams;
+//import com.loopj.android.http.RequestParams;
 import com.nexters.house.R;
 //import com.nexters.house.network.HttpUtil;
 //import com.nexters.house.network.URL;
