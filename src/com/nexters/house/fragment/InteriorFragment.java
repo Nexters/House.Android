@@ -7,6 +7,7 @@ import android.os.*;
 import android.support.v4.app.*;
 import android.util.*;
 import android.view.*;
+import android.view.View.OnClickListener;
 import android.widget.*;
 
 import com.nexters.house.*;
@@ -18,10 +19,10 @@ public class InteriorFragment extends Fragment {
 	
 	private final String TAG = "MainActivity";
 
-	// list
 	private ListView lv_main;
 	private ArrayList<InteriorEntity> mInteriorItemArrayList;
 	private ListAdapter mListAdapter;
+	private Button btn_write;
 		
 	@SuppressWarnings("serial")
 	@Override
@@ -60,10 +61,22 @@ public class InteriorFragment extends Fragment {
 
 		mListAdapter.notifyDataSetChanged();
 	  
-		Button b=(Button)v.findViewById(R.id.btn_write);
-	    b.setText("쓰기");
-	    b.bringToFront();
-		b.setOnClickListener(new Button.OnClickListener() {
+		
+		initResources(v);
+		
+		
+		
+
+
+		return v;
+	}
+	
+	private void initResources(View v){
+		btn_write=(Button)v.findViewById(R.id.btn_write);
+		
+	    btn_write.setText("쓰기");
+	    btn_write.bringToFront();		
+	    btn_write.setOnClickListener(new Button.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -73,7 +86,6 @@ public class InteriorFragment extends Fragment {
 				
 			}
 		});
-		return v;
 	}
 
 }
