@@ -1,33 +1,26 @@
 package com.nexters.house.activity;
 
 import java.util.ArrayList;
+import com.nexters.house.*;
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
+import android.view.Window;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.ViewSwitcher;
 
-import com.nexters.house.R;
-import com.nexters.house.pick.Action;
-import com.nexters.house.pick.CustomGallery;
-import com.nexters.house.pick.GalleryAdapter;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Handler;
-import android.provider.MediaStore;
-import android.app.Activity;
-import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.view.Menu;
-import android.view.View;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.ViewSwitcher;
 
 public class InteriorWriteActivity extends Activity {
 
@@ -51,6 +44,9 @@ public class InteriorWriteActivity extends Activity {
 
 		initImageLoader();
 		init();
+//		Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
+//		startActivityForResult(i, 200);
+
 	}
 
 	private void initImageLoader() {
@@ -71,6 +67,7 @@ public class InteriorWriteActivity extends Activity {
 		handler = new Handler();
 		gridGallery = (GridView) findViewById(R.id.gridGallery);
 		gridGallery.setFastScrollEnabled(true);
+		gridGallery.setOnItemClickListener(mItemDeleteListener);
 		adapter = new GalleryAdapter(getApplicationContext(), imageLoader);
 		adapter.setMultiplePick(false);
 		gridGallery.setAdapter(adapter);
@@ -104,6 +101,29 @@ public class InteriorWriteActivity extends Activity {
 
 	}
 
+	AdapterView.OnItemClickListener mItemDeleteListener=new AdapterView.OnItemClickListener() {
+
+		@Override
+		public void onItemClick(AdapterView<?> I, View v, int position,
+				long id) {
+/*			adapter.deleteItem(v, position); //클릭한 아이템 지우고
+			
+			ArrayList<CustomGallery> selected = adapter.getSelected();
+
+			String[] allPath = new String[selected.size()];
+			for (int i = 0; i < allPath.length; i++) {
+				allPath[i] = selected.get(i).sdcardPath;
+			}
+
+			Intent data = new Intent().putExtra("all_path", allPath);
+			onActivityResult(200,Activity.RESULT_OK,data);
+		//	setResult(RESULT_OK, data);
+		//	finish();
+		 * 
+		 */
+		}
+
+	}; 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -131,5 +151,4 @@ public class InteriorWriteActivity extends Activity {
 			adapter.addAll(dataT);
 		}
 	}
-
 }

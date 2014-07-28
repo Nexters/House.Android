@@ -1,4 +1,4 @@
-package com.nexters.house.pick;
+package com.nexters.house.activity;
 
 import java.util.ArrayList;
 
@@ -10,7 +10,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.nexters.house.R;
-import com.nexters.house.*;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 

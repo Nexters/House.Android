@@ -1,4 +1,4 @@
-package com.nexters.house.pick;
+package com.nexters.house.activity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -21,7 +21,6 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.nexters.house.R;
-import com.nexters.house.*;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
