@@ -12,10 +12,7 @@
         android:text="Button" />
         
     <ListView
-        android:id="@+id/lv_interior_view"
+        android:id="@+id/lv_best_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:dividerHeight="3dp"
-        android:divider="#F79557" 
-        />
+        android:layout_height="match_parent" />
 </RelativeLayout>

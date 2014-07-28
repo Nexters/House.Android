@@ -10,7 +10,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.loopj.android.http.RequestParams;
+//import com.loopj.android.http.RequestParams;
 import com.nexters.house.R;
 //import com.nexters.house.network.HttpUtil;
 //import com.nexters.house.network.URL;

@@ -1,9 +1,20 @@
 package com.nexters.house.activity;
 
+import java.util.ArrayList;
+
 import com.nexters.house.R;
+import com.nexters.house.pick.Action;
+import com.nexters.house.pick.CustomGallery;
+import com.nexters.house.pick.GalleryAdapter;
+import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.app.Activity;
 import android.content.Intent;
@@ -11,73 +22,114 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.Menu;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ViewSwitcher;
 
 public class InteriorWriteActivity extends Activity {
 
-	int REQUEST_IMAGE = 002;
-	ImageView imgv;
+	GridView gridGallery;
+	Handler handler;
+	GalleryAdapter adapter;
+
+	ImageView imgSinglePick;
+	Button btnGalleryPick;
+	Button btnGalleryPickMul;
+
+	String action;
+	ViewSwitcher viewSwitcher;
+	ImageLoader imageLoader;
+
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_interior_write);
-		imgv=(ImageView)findViewById(R.id.imgv);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setContentView(R.layout.main);
 
+		initImageLoader();
+		init();
+	}
 
-		Intent intent = new Intent(Intent.ACTION_PICK, 
+	private void initImageLoader() {
+		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+				.cacheOnDisc().imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
+				.bitmapConfig(Bitmap.Config.RGB_565).build();
+		ImageLoaderConfiguration.Builder builder = new ImageLoaderConfiguration.Builder(
+				this).defaultDisplayImageOptions(defaultOptions).memoryCache(
+				new WeakMemoryCache());
 
-				android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+		ImageLoaderConfiguration config = builder.build();
+		imageLoader = ImageLoader.getInstance();
+		imageLoader.init(config);
+	}
 
-				InteriorWriteActivity.this.startActivityForResult(intent, REQUEST_IMAGE);
+	private void init() {
+
+		handler = new Handler();
+		gridGallery = (GridView) findViewById(R.id.gridGallery);
+		gridGallery.setFastScrollEnabled(true);
+		adapter = new GalleryAdapter(getApplicationContext(), imageLoader);
+		adapter.setMultiplePick(false);
+		gridGallery.setAdapter(adapter);
+
+		viewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher);
+		viewSwitcher.setDisplayedChild(1);
+
+		imgSinglePick = (ImageView) findViewById(R.id.imgSinglePick);
+
+		btnGalleryPick = (Button) findViewById(R.id.btnGalleryPick);
+		btnGalleryPick.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				Intent i = new Intent(Action.ACTION_PICK);
+				startActivityForResult(i, 100);
+
+			}
+		});
+
+		btnGalleryPickMul = (Button) findViewById(R.id.btnGalleryPickMul);
+		btnGalleryPickMul.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
+				startActivityForResult(i, 200);
+			}
+		});
 
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.interior_write, menu);
-		return true;
-	}
-
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
 
-		 // TODO Auto-generated method stub
+		if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
+			adapter.clear();
 
-		 super.onActivityResult(requestCode, resultCode, data);
+			viewSwitcher.setDisplayedChild(1);
+			String single_path = data.getStringExtra("single_path");
+			imageLoader.displayImage("file://" + single_path, imgSinglePick);
 
-		 
+		} else if (requestCode == 200 && resultCode == Activity.RESULT_OK) {
+			String[] all_path = data.getStringArrayExtra("all_path");
 
-		 if(requestCode == REQUEST_IMAGE && resultCode == RESULT_OK && data != null)
+			ArrayList<CustomGallery> dataT = new ArrayList<CustomGallery>();
 
-		 {
+			for (String string : all_path) {
+				CustomGallery item = new CustomGallery();
+				item.sdcardPath = string;
 
-		  final Uri selectImageUri = data.getData();
+				dataT.add(item);
+			}
 
-		  final String[] filePathColumn = {MediaStore.Images.Media.DATA};
-
-		  final Cursor imageCursor = this.getContentResolver().query(selectImageUri, filePathColumn, null, null, null);
-
-		  imageCursor.moveToFirst();
-
-		    
-
-		  final int columnIndex = imageCursor.getColumnIndex(filePathColumn[0]);
-
-		  final String imagePath = imageCursor.getString(columnIndex);
-
-		  imageCursor.close();
-
-		  
-
-		  final Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-
-	//	  imgv.setImageBitmap(bitmap);
-
-		 }
-
-		 
-
+			viewSwitcher.setDisplayedChild(0);
+			adapter.addAll(dataT);
 		}
-
+	}
 
 }
