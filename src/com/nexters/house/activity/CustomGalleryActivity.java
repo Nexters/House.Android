@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.nexters.house.R;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
@@ -162,7 +163,10 @@ public class CustomGalleryActivity extends Activity {
 
 		@Override
 		public void onItemClick(AdapterView<?> l, View v, int position, long id) {
-			adapter.changeSelection(v, position);
+			if(adapter.selectCnt<10) //갯수 제한
+				adapter.changeSelection(v, position);
+				else
+					Toast.makeText(getApplicationContext(),"10개까지만", Toast.LENGTH_LONG).show();
 
 		}
 	};
