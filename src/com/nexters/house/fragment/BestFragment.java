@@ -2,6 +2,7 @@ package com.nexters.house.fragment;
 
 import java.util.*;
 
+import android.*;
 import android.content.*;
 import android.os.*;
 import android.support.v4.app.*;
@@ -9,11 +10,11 @@ import android.util.*;
 import android.view.*;
 import android.widget.*;
 
-import com.nexters.house.*;
-import com.nexters.house.entity.*;
-import com.nexters.house.activity.SelectWriteActivity;
-import com.nexters.house.adapter.*;
+import com.nexters.house.activity.*;
 import com.nexters.house.adapter.ListAdapter;
+import com.nexters.house.entity.*;
+import com.nexters.house.*;
+import com.nexters.house.R;
 
 public class BestFragment extends Fragment {
 	
@@ -23,8 +24,7 @@ public class BestFragment extends Fragment {
 	private ListView lv_main;
 	private ArrayList<BestEntity> mBestItemArrayList;
 	private ListAdapter mListAdapter;
-	
-	
+		
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {

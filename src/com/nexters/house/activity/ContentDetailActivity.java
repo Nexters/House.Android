@@ -1,10 +1,13 @@
 package com.nexters.house.activity;
 
+import android.*;
 import android.app.*;
 import android.os.*;
 import android.view.*;
-
 import com.nexters.house.*;
+
+import com.nexters.house.R;
+
 
 public class ContentDetailActivity extends Activity {
 
