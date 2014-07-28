@@ -1,4 +1,4 @@
-package com.nexters.house.pick;
+package com.nexters.house.activity;
 
 public class Action {
 

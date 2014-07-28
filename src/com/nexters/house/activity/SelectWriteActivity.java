@@ -1,5 +1,6 @@
 package com.nexters.house.activity;
 
+
 import com.nexters.house.R;
 
 import android.net.Uri;
