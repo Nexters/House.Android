@@ -20,9 +20,10 @@ public class InteriorFragment extends Fragment {
 
 	// list
 	private ListView lv_main;
-	private ArrayList<BestEntity> mBestItemArrayList;
+	private ArrayList<InteriorEntity> mInteriorItemArrayList;
 	private ListAdapter mListAdapter;
 		
+	@SuppressWarnings("serial")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -35,26 +36,26 @@ public class InteriorFragment extends Fragment {
 
 		lv_main = (ListView) v.findViewById(R.id.lv_interior_view);
 
-		mBestItemArrayList = new ArrayList<BestEntity>();
+		mInteriorItemArrayList = new ArrayList<InteriorEntity>();
 		mListAdapter = new ListAdapter(getActivity().getApplicationContext(),
-				mBestItemArrayList, R.layout.custom_view_interior);
+				mInteriorItemArrayList, R.layout.custom_view_interior);
 
 		lv_main.setAdapter(mListAdapter);
 		
 		Log.d(TAG, "setContent");
 	//	Toast.makeText(v.getContext(), "Hello World!", Toast.LENGTH_SHORT).show();
 		
-		for (int itemCount = 0; itemCount < 20; itemCount++) {
-			BestEntity mExamEntity = new BestEntity();
+		for (int itemCount = 0; itemCount < 10; itemCount++) {
+			InteriorEntity mInteriorEntity = new InteriorEntity();
 
-			mExamEntity.title = "Title : " + itemCount;
-			mExamEntity.content = "Content : " + itemCount;
-			mExamEntity.image_urls = new ArrayList<String>(){{
-				add("http://tvfiles.alphacoders.com/100/hdclearart-10.png");
-				add("http://cdn3.nflximg.net/images/3093/2043093.jpg");
-				add("http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg");
+			mInteriorEntity.id = "User Id : " + itemCount;
+			mInteriorEntity.content = "Content에 들어가는 내용들입니다.  : " + itemCount;
+			mInteriorEntity.image_urls = new ArrayList<String>(){{
+				add("http://www.interiordecodir.com/image/artistic/artistic-large-simple-minimlaist-house-interior.jpg");
+				add("http://www.ardvarkpainting.us/wp-content/uploads/2012/01/interior_house.jpg");
+				add("http://greatinteriordesign.com/wp-content/uploads/2009/09/brazil-multi-level-single-family-home-guest-bedroom-design.jpg");
 			}};
-			mBestItemArrayList.add(mExamEntity);
+			mInteriorItemArrayList.add(mInteriorEntity);
 		}
 
 		mListAdapter.notifyDataSetChanged();

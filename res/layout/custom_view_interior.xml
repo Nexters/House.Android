@@ -27,7 +27,7 @@
                 android:id="@+id/tv_image"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_launcher" />
+                android:src="@drawable/soyoon" />
 
             <TextView
                 android:id="@+id/tv_title"
@@ -51,9 +51,6 @@
             android:gravity="center"
             android:text="this is for interior contents" />
     </LinearLayout>
-    <!-- 여기에 스와이프 넣을거라 그냥 빈공간으로 하나 만들어놓은 -->
-    <!-- 스와이프 넣을 부분 -->
-
     <com.daimajia.slider.library.SliderLayout
         android:id="@+id/slider"
         android:layout_width="match_parent"
