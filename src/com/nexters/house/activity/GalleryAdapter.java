@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.nexters.house.activity.CustomGallery;
+import com.nexters.house.activity.GalleryAdapter.ViewHolder;
 import com.nexters.house.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
@@ -17,11 +19,11 @@ public class GalleryAdapter extends BaseAdapter {
 
 	private Context mContext;
 	private LayoutInflater infalter;
-	private ArrayList<CustomGallery> data = new ArrayList<CustomGallery>();
+	public ArrayList<CustomGallery> data = new ArrayList<CustomGallery>();
 	ImageLoader imageLoader;
-
+	public ArrayList<CustomGallery> dataChecked=new ArrayList<CustomGallery>();
 	private boolean isActionMultiplePick;
-
+	public int selectCnt=0;
 	public GalleryAdapter(Context c, ImageLoader imageLoader) {
 		infalter = (LayoutInflater) c
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -84,7 +86,7 @@ public class GalleryAdapter extends BaseAdapter {
 	}
 
 	public ArrayList<CustomGallery> getSelected() {
-		ArrayList<CustomGallery> dataT = new ArrayList<CustomGallery>();
+/*		ArrayList<CustomGallery> dataT = new ArrayList<CustomGallery>();
 
 		for (int i = 0; i < data.size(); i++) {
 			if (data.get(i).isSeleted) {
@@ -92,7 +94,8 @@ public class GalleryAdapter extends BaseAdapter {
 			}
 		}
 
-		return dataT;
+		return dataT;*/
+		return dataChecked;
 	}
 
 	public void addAll(ArrayList<CustomGallery> files) {
@@ -112,14 +115,28 @@ public class GalleryAdapter extends BaseAdapter {
 
 		if (data.get(position).isSeleted) {
 			data.get(position).isSeleted = false;
+			dataChecked.remove(data.get(position)); //들어가있는거 빼기
+			if(selectCnt!=0)selectCnt--;
 		} else {
-			data.get(position).isSeleted = true;
+		
+				data.get(position).isSeleted = true;
+				selectCnt++;
+				dataChecked.add(data.get(position)); //체크된거 넣기
 		}
 
 		((ViewHolder) v.getTag()).imgQueueMultiSelected.setSelected(data
 				.get(position).isSeleted);
 	}
 
+	public void deleteItem(View v,int position){
+		data.get(position).isSeleted=false;
+		selectCnt--;
+		dataChecked.remove(data.get(position));
+	
+		((ViewHolder) v.getTag()).imgQueueMultiSelected.setSelected(data
+				.get(position).isSeleted);
+	}
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
