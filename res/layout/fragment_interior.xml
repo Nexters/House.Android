@@ -15,5 +15,8 @@
     <ListView
         android:id="@+id/lv_interior_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:dividerHeight="3dp"
+        android:divider="#F79557" 
+        />
 </RelativeLayout>

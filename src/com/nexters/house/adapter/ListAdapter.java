@@ -19,12 +19,12 @@ public class ListAdapter extends BaseAdapter {
 	final String TAG = "MainListAdapter";
 
 	public Context mContext;
-	private ArrayList<BestEntity> mExamItemArrayList;
+	private ArrayList<InteriorEntity> mExamItemArrayList;
 	private LayoutInflater mLayoutInflater;
 	int resource;
 
 	public ListAdapter(Context context,
-			ArrayList<BestEntity> mExamItemArrayList, int resource) {
+			ArrayList<InteriorEntity> mExamItemArrayList, int resource) {
 		mContext = context;
 		this.mExamItemArrayList = mExamItemArrayList;
 		this.mLayoutInflater = (LayoutInflater) context
@@ -94,7 +94,7 @@ public class ListAdapter extends BaseAdapter {
 		}
 
 		// set title, content, etc...
-		String title = mExamItemArrayList.get(position).title;
+		String title = mExamItemArrayList.get(position).id;
 		String content = mExamItemArrayList.get(position).content;
 
 		holder.tv_title.setText(title);
@@ -105,7 +105,7 @@ public class ListAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View v) {
 				Toast.makeText(mContext,
-						mExamItemArrayList.get(position).title,
+						mExamItemArrayList.get(position).id,
 						Toast.LENGTH_SHORT).show();
 
 			}

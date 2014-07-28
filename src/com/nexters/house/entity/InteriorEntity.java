@@ -2,8 +2,9 @@ package com.nexters.house.entity;
 
 import java.util.List;
 
-public class BestEntity {
-	public String title;
+public class InteriorEntity {
+	public String id;
+	public String category;
 	public String content;
 	public List<String> image_urls;
 }
