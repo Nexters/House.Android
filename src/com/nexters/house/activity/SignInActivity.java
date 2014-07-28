@@ -1,8 +1,5 @@
 package com.nexters.house.activity;
 
-import com.nexters.vobble.core.AccountManager;
-import com.nexters.vobble.entity.User;
-import com.nexters.vobble.network.APIResponseHandler;
 import org.json.JSONObject;
 
 import android.app.*;
