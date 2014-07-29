@@ -56,6 +56,7 @@ public class InteriorFragment extends Fragment {
 				add("http://www.ardvarkpainting.us/wp-content/uploads/2012/01/interior_house.jpg");
 				add("http://greatinteriordesign.com/wp-content/uploads/2009/09/brazil-multi-level-single-family-home-guest-bedroom-design.jpg");
 			}};
+			mInteriorEntity.category = "Interior Category";
 			mInteriorItemArrayList.add(mInteriorEntity);
 		}
 
