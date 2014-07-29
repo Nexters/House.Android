@@ -65,10 +65,6 @@ public class InteriorFragment extends Fragment {
 		
 		initResources(v);
 		
-		
-		
-
-
 		return v;
 	}
 	
