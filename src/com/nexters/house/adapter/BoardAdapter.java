@@ -45,16 +45,21 @@ public class BoardAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if(convertView == null){
-            convertView = mInflater.inflate(R.layout.item_board, parent, false);
-        }
+    	Log.d("CheckCHeckCheck", ""+position);
+    	if(position%2 ==0){
+            if(convertView == null){
+                convertView = mInflater.inflate(R.layout.custom_view_board_left, parent, false);
+            }   		
+    	}else{
+            if(convertView == null){
+                convertView = mInflater.inflate(R.layout.custom_view_board_right, parent, false);
+            }   
+    	}
+
         
         
         TextView textView = (TextView) convertView.findViewById(R.id.board_content);
-        if(position%2 == 0){
-        	Log.d("CHECKCHECK", ""+position);
-        	textView.setText(mArrayList.get(position));
-        }
+        textView.setText(mArrayList.get(position));
         
 
 //        TextView heartTextView = (TextView) convertView.findViewById(R.id.heart_btn);

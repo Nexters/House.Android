@@ -30,14 +30,16 @@ public class BoardFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 
 		ArrayList<String> arrayList = new ArrayList<String>();
-		arrayList.add("111111111111111111111111111111");
-		arrayList.add("2222222222222222222222222222222");
-		arrayList.add("3333333333333333333333333333333333333333");
-		arrayList.add("444444444444444444444444444444444444444444444");
-		arrayList.add("555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555");
-		arrayList.add("66666666666666666666666666666666666666666666666666666666666666666");
-		arrayList.add("77777777777777777777777777777777777777777777777777777777777777777");
-		arrayList.add("8888888888888888888888888888888888888888888888888888888888888888888888888");
+		arrayList.add("content1");
+		arrayList.add("content2");
+		arrayList.add("content3");
+		arrayList.add("content4");
+		arrayList.add("content5");
+		arrayList.add("content6");
+		arrayList.add("content7");
+		arrayList.add("content8");
+		arrayList.add("content9");
+		arrayList.add("content10");
 
 		BoardAdapter boardAdapter = new BoardAdapter(getActivity(), arrayList);
 

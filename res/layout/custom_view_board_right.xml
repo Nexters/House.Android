@@ -15,19 +15,21 @@
         android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/tv_content"
+            android:id="@+id/board_content"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="3"
             android:gravity="center"
             android:text="게시판 컨텐츠가 보여질 부분입니다. "
+            android:background="#FFF1FF"
             android:textSize="15sp" />
 
         <GridView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:visibility="visible" >
+            android:visibility="visible" 
+            android:background="#FFFFF1">
         </GridView>
     </LinearLayout>
     <LinearLayout
