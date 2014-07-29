@@ -18,7 +18,6 @@ public class MyPageFragment extends Fragment {
 		View v = inflater.inflate(R.layout.fragment_mypage, container, false);
 		GridView gridview = (GridView) v.findViewById(R.id.gv_mypage);
 	    gridview.setAdapter(new MyPageAdapter(getActivity().getApplicationContext()));
-		
 	    
 
 	    gridview.setOnItemClickListener(new OnItemClickListener() {

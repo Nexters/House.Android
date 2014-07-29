@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.nexters.house.R;
 
 import android.content.Context;
+import android.util.*;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,9 +48,14 @@ public class BoardAdapter extends BaseAdapter {
         if(convertView == null){
             convertView = mInflater.inflate(R.layout.item_board, parent, false);
         }
-
+        
+        
         TextView textView = (TextView) convertView.findViewById(R.id.board_content);
-        textView.setText(mArrayList.get(position));
+        if(position%2 == 0){
+        	Log.d("CHECKCHECK", ""+position);
+        	textView.setText(mArrayList.get(position));
+        }
+        
 
 //        TextView heartTextView = (TextView) convertView.findViewById(R.id.heart_btn);
 //        heartTextView.setOnClickListener(new View.OnClickListener(){

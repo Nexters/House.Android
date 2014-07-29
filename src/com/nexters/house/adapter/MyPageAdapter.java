@@ -9,6 +9,7 @@ import com.nexters.house.*;
 public class MyPageAdapter extends BaseAdapter{
 	private Context mContext;
 
+
 	public MyPageAdapter(Context c) {
 		mContext = c;
 	}
@@ -36,7 +37,7 @@ public class MyPageAdapter extends BaseAdapter{
         ImageView imageView;
         if (convertView == null) {  // if it's not recycled, initialize some attributes
             imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(90, 90));
+            imageView.setLayoutParams(new GridView.LayoutParams(200, 200));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setPadding(8, 8, 8, 8);
         } else {
