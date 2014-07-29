@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 에디트 텍스트부분 색상을 나중에는 아예 하얀색으로 바꾸기  -->
     <item
         android:state_window_focused="false"
         android:state_enabled="true"

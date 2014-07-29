@@ -26,13 +26,14 @@
                     android:src="@drawable/ic_launcher" />
 
                 <TextView
-                    android:id="@+id/tv_title"
+                    android:id="@+id/tv_id"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="ID_soyoon"
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/tv_category"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="right"
@@ -157,6 +158,11 @@
             android:focusable="true"
             android:background="@drawable/edit_text"
             android:hint="메시지를 입력하세요."/>
+        <ImageButton 
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:src="@drawable/emoticon"/>
+        <!-- 카톡이모티콘 우선넣어두었지만 나중에는 뱃지로 바뀌어야됨.  -->
 
         <Button
             android:layout_width="0dp"

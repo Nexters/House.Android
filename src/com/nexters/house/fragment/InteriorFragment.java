@@ -38,6 +38,7 @@ public class InteriorFragment extends Fragment {
 		lv_main = (ListView) v.findViewById(R.id.lv_interior_view);
 
 		mInteriorItemArrayList = new ArrayList<InteriorEntity>();
+		
 		mListAdapter = new InteriorAdapter(getActivity().getApplicationContext(),
 				mInteriorItemArrayList, R.layout.custom_view_interior);
 
