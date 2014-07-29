@@ -30,13 +30,11 @@ public class BoardFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 
 		ArrayList<String> arrayList = new ArrayList<String>();
-		arrayList
-				.add("1lksdnfklsdnfks;fnskdfns;zldfndlkzn;dkfnl;skdfnsld;fnlks;fns;ldfknsdl;nfslk;fnsdkl;fnsldk;fnksd;fn;sknlfnsdl;fnsdkl;fnsdl;kfndlkf;nf23");
+		arrayList.add("1lksdnfklsdnfks;fnskdfns;zldfndlkzn;dkfnl;skdfnsld;fnlks;fns;ldfknsdl;nfslk;fnsdkl;fnsldk;fnksd;fn;sknlfnsdl;fnsdkl;fnsdl;kfndlkf;nf23");
 		arrayList.add("12fdgfdgfdgdfgdfgddsfsfsdfsdf3");
 		arrayList.add("12sdfsdfsdfsdfsdfsd3");
 		arrayList.add("12fsdfsdfsdfsfsdfsdf3");
-		arrayList
-				.add("1lksdnfklsdnfks;fnskdfns;zldfndlkzn;dkfnl;skdfnsld;fnlks;fns;ldfknsdl;nfslk;fnsdkl;fnsldk;fnksd;fn;sknlfnsdl;fnsdkl;fnsdl;kfndlkf;nf23");
+		arrayList.add("1lksdnfklsdnfks;fnskdfns;zldfndlkzn;dkfnl;skdfnsld;fnlks;fns;ldfknsdl;nfslk;fnsdkl;fnsldk;fnksd;fn;sknlfnsdl;fnsdkl;fnsdl;kfndlkf;nf23");
 		arrayList.add("12fdgfdgfdgdfgdfgddsfsfsdfsdf3");
 		arrayList.add("12sdfsdfsdfsdfsdfsd3");
 		arrayList.add("12fsdfsdfsdfsfsdfsdf3");

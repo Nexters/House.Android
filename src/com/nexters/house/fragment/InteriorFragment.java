@@ -12,7 +12,7 @@ import android.widget.*;
 
 import com.nexters.house.*;
 import com.nexters.house.activity.*;
-import com.nexters.house.adapter.ListAdapter;
+import com.nexters.house.adapter.InteriorAdapter;
 import com.nexters.house.entity.*;
 
 public class InteriorFragment extends Fragment {
@@ -21,7 +21,7 @@ public class InteriorFragment extends Fragment {
 
 	private ListView lv_main;
 	private ArrayList<InteriorEntity> mInteriorItemArrayList;
-	private ListAdapter mListAdapter;
+	private InteriorAdapter mListAdapter;
 	private Button btn_write;
 		
 	@SuppressWarnings("serial")
@@ -38,7 +38,7 @@ public class InteriorFragment extends Fragment {
 		lv_main = (ListView) v.findViewById(R.id.lv_interior_view);
 
 		mInteriorItemArrayList = new ArrayList<InteriorEntity>();
-		mListAdapter = new ListAdapter(getActivity().getApplicationContext(),
+		mListAdapter = new InteriorAdapter(getActivity().getApplicationContext(),
 				mInteriorItemArrayList, R.layout.custom_view_interior);
 
 		lv_main.setAdapter(mListAdapter);

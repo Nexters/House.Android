@@ -150,42 +150,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
-
-        <ImageButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_launcher" />
-
-        <ImageButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_launcher" />
-
-        <ImageButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_launcher" />
-
-        <ImageButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_launcher" />
-
-        <ImageButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_launcher" />
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/ll_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
         <EditText
             android:layout_width="0dp"
             android:layout_height="35dp"
             android:layout_weight="8"
-            android:focusable="false"
+            android:focusable="true"
             android:hint="메시지를 입력하세요."/>
 
         <Button

@@ -15,7 +15,7 @@ import com.nexters.house.activity.*;
 import com.nexters.house.entity.*;
 import com.nexters.house.utils.*;
 
-public class ListAdapter extends BaseAdapter implements OnClickListener {
+public class InteriorAdapter extends BaseAdapter implements OnClickListener {
 	
 	public static final int REQUEST_CONTENT_DETAIL_VIEW = 0;
 
@@ -26,7 +26,7 @@ public class ListAdapter extends BaseAdapter implements OnClickListener {
 	private LayoutInflater mLayoutInflater;
 	int resource;
 
-	public ListAdapter(Context context, ArrayList<InteriorEntity> mExamItemArrayList, int resource) {
+	public InteriorAdapter(Context context, ArrayList<InteriorEntity> mExamItemArrayList, int resource) {
 		mContext = context;
 		this.mInteriorItemArrayList = mExamItemArrayList;
 		this.mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -96,6 +96,7 @@ public class ListAdapter extends BaseAdapter implements OnClickListener {
 		
 		String content = mInteriorItemArrayList.get(position).content;
 		String category = mInteriorItemArrayList.get(position).category;
+		//List<String> image = mInteriorItemArrayList.get(position).image_urls;
 		
 
 		holder.tv_id.setText(id);
@@ -106,7 +107,7 @@ public class ListAdapter extends BaseAdapter implements OnClickListener {
 		
 		holder.tv_id.setOnClickListener(this);
 		holder.tv_content.setOnClickListener(this);
-		holder.iv_image.setOnClickListener(this);
+		//holder.iv_image.setOnClickListener(this);
 
 		return convertView;
 	}
@@ -119,7 +120,7 @@ public class ListAdapter extends BaseAdapter implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		if(v.getId()==R.id.tv_content|| v.getId()==R.id.tv_id || v.getId()==R.id.iv_image){
+		if(v.getId()==R.id.tv_content|| v.getId()==R.id.tv_id /*|| v.getId()==R.id.iv_image */){
 			Intent intent = new Intent(v.getContext(), ContentDetailActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			mContext.startActivity(intent);

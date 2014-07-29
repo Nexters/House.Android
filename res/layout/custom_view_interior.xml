@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="700dp"
     android:layout_margin="10dp"
-    android:background="#fff0f0"
+    android:background="#FFFFFF"
     android:orientation="vertical" >
 
     <!-- 얘는 처음엔 사람프로필 카테고리 보여주고 그다음엔 텍스트보여주는부분 -->
