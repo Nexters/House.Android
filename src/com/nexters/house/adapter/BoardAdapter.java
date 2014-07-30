@@ -3,6 +3,7 @@ package com.nexters.house.adapter;
 import java.util.ArrayList;
 
 import com.nexters.house.R;
+import com.nexters.house.utils.*;
 
 import android.content.Context;
 import android.util.*;
@@ -16,7 +17,8 @@ public class BoardAdapter extends BaseAdapter {
     Context mContext;
     LayoutInflater mInflater;
     ArrayList<String> mArrayList;
-
+    CommonUtils mUtil = new CommonUtils();
+    
     public BoardAdapter() {
         super();
     }
@@ -45,6 +47,8 @@ public class BoardAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+    	@SuppressWarnings("static-access")
+		int minHeight = mUtil.pxToDp(mContext, 700);
     	Log.d("CheckCHeckCheck", ""+position);
     	if(position%2 ==0){
             if(convertView == null){
@@ -69,6 +73,9 @@ public class BoardAdapter extends BaseAdapter {
 //                Toast.makeText(context, "Heart Btn", Toast.LENGTH_SHORT).show();
 //            }
 //        });
+        
+     // 리스트뷰안의 아이템 높이 설정하는 메소드
+        convertView.setMinimumHeight(minHeight);
 
         return convertView;
     }
