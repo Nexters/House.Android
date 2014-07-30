@@ -44,8 +44,8 @@ public class InteriorWriteActivity extends Activity {
 
 		initImageLoader();
 		init();
-//		Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
-//		startActivityForResult(i, 200);
+		Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
+		startActivityForResult(i, 200);
 
 	}
 
@@ -72,6 +72,8 @@ public class InteriorWriteActivity extends Activity {
 		adapter.setMultiplePick(false);
 		gridGallery.setAdapter(adapter);
 
+		GalleryAdapter.dataChecked.clear(); //버튼 누를때마다 리스트 초기화 시켜줭
+		GalleryAdapter.selectCnt=0; //숫자도 초기화
 		viewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher);
 		viewSwitcher.setDisplayedChild(1);
 

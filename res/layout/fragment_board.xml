@@ -1,6 +1,15 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
+  
+    <Button
+        android:id="@+id/btn_write_board"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="300dp"
+        android:layout_marginTop="400dp"
+        android:text="쓰기" />
+    
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
