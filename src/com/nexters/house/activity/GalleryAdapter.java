@@ -21,9 +21,9 @@ public class GalleryAdapter extends BaseAdapter {
 	private LayoutInflater infalter;
 	public ArrayList<CustomGallery> data = new ArrayList<CustomGallery>();
 	ImageLoader imageLoader;
-	public ArrayList<CustomGallery> dataChecked=new ArrayList<CustomGallery>();
+	public static ArrayList<CustomGallery> dataChecked=new ArrayList<CustomGallery>();
 	private boolean isActionMultiplePick;
-	public int selectCnt=0;
+	public static int selectCnt=0;
 	public GalleryAdapter(Context c, ImageLoader imageLoader) {
 		infalter = (LayoutInflater) c
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -202,6 +202,7 @@ public class GalleryAdapter extends BaseAdapter {
 
 	public void clear() {
 		data.clear();
+		dataChecked.clear();
 		notifyDataSetChanged();
 	}
 }

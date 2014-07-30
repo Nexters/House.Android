@@ -2,14 +2,17 @@ package com.nexters.house.fragment;
 
 import java.util.ArrayList;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.nexters.house.R;
+import com.nexters.house.activity.SelectWriteActivity;
 import com.nexters.house.adapter.BoardAdapter;
 
 public class BoardFragment extends Fragment {
@@ -22,6 +25,20 @@ public class BoardFragment extends Fragment {
 
 		listView = (ListView) v.findViewById(R.id.listview);
 
+		Button b=(Button)v.findViewById(R.id.btn_write_board);
+	    b.setText("쓰기");
+	    b.bringToFront();
+		b.setOnClickListener(new Button.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent=new Intent(getActivity(),SelectWriteActivity.class);
+				
+			 	startActivity(intent);
+				
+			}
+		});
+		
 		return v;
 	}
 

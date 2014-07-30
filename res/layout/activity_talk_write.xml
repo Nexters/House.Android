@@ -1,6 +1,8 @@
 
 <LinearLayout 
-     xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+   
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -55,6 +57,40 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="사진추가"
+        android:onClick="addImage_talk"
         />
+     <ViewSwitcher
+        android:id="@+id/viewSwitcher_talk"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_weight="1"
+         >
+
+        <GridView
+            android:id="@+id/gridGallery_talk"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginBottom="-10dp"
+            android:layout_marginLeft="-10dp"
+            android:layout_marginRight="-10dp"
+            android:layout_marginTop="-10dp"
+            android:horizontalSpacing="-15dp"
+            android:numColumns="3"
+            android:padding="0dp"
+            android:verticalSpacing="-15dp"
+            tools:listitem="@layout/gallery_item" >
+        </GridView>
+
+        <ImageView
+            android:id="@+id/imgSinglePick_talk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/no_media" />
+    </ViewSwitcher>
     
 </LinearLayout>
