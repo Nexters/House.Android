@@ -16,8 +16,6 @@ public class ContentDetailActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.content_detail_page);
 		
-		
-		
 	}
 
 	@Override

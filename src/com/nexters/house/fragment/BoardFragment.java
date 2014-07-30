@@ -47,16 +47,16 @@ public class BoardFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 
 		ArrayList<String> arrayList = new ArrayList<String>();
-		arrayList
-				.add("1lksdnfklsdnfks;fnskdfns;zldfndlkzn;dkfnl;skdfnsld;fnlks;fns;ldfknsdl;nfslk;fnsdkl;fnsldk;fnksd;fn;sknlfnsdl;fnsdkl;fnsdl;kfndlkf;nf23");
-		arrayList.add("12fdgfdgfdgdfgdfgddsfsfsdfsdf3");
-		arrayList.add("12sdfsdfsdfsdfsdfsd3");
-		arrayList.add("12fsdfsdfsdfsfsdfsdf3");
-		arrayList
-				.add("1lksdnfklsdnfks;fnskdfns;zldfndlkzn;dkfnl;skdfnsld;fnlks;fns;ldfknsdl;nfslk;fnsdkl;fnsldk;fnksd;fn;sknlfnsdl;fnsdkl;fnsdl;kfndlkf;nf23");
-		arrayList.add("12fdgfdgfdgdfgdfgddsfsfsdfsdf3");
-		arrayList.add("12sdfsdfsdfsdfsdfsd3");
-		arrayList.add("12fsdfsdfsdfsfsdfsdf3");
+		arrayList.add("content1");
+		arrayList.add("content2");
+		arrayList.add("content3");
+		arrayList.add("content4");
+		arrayList.add("content5");
+		arrayList.add("content6");
+		arrayList.add("content7");
+		arrayList.add("content8");
+		arrayList.add("content9");
+		arrayList.add("content10");
 
 		BoardAdapter boardAdapter = new BoardAdapter(getActivity(), arrayList);
 
