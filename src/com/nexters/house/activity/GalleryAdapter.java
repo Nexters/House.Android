@@ -19,11 +19,14 @@ public class GalleryAdapter extends BaseAdapter {
 
 	private Context mContext;
 	private LayoutInflater infalter;
-	public ArrayList<CustomGallery> data = new ArrayList<CustomGallery>();
+	public static ArrayList<CustomGallery> data = new ArrayList<CustomGallery>();
 	ImageLoader imageLoader;
-	public static ArrayList<CustomGallery> dataChecked=new ArrayList<CustomGallery>();
+	public static ArrayList<CustomGallery> dataChecked = new ArrayList<CustomGallery>();
 	private boolean isActionMultiplePick;
-	public static int selectCnt=0;
+	public static int selectCnt = 0;
+	public static boolean isShow = true;
+	public static ArrayList<CustomGallery> tmps = null;
+	
 	public GalleryAdapter(Context c, ImageLoader imageLoader) {
 		infalter = (LayoutInflater) c
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -34,7 +37,13 @@ public class GalleryAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return data.size();
+
+		if(isShow)
+			tmps = data;
+		else 
+			tmps = dataChecked;
+		
+		return tmps.size();
 	}
 
 	@Override
@@ -86,22 +95,21 @@ public class GalleryAdapter extends BaseAdapter {
 	}
 
 	public ArrayList<CustomGallery> getSelected() {
-/*		ArrayList<CustomGallery> dataT = new ArrayList<CustomGallery>();
-
-		for (int i = 0; i < data.size(); i++) {
-			if (data.get(i).isSeleted) {
-				dataT.add(data.get(i));
-			}
-		}
-
-		return dataT;*/
+		/*
+		 * ArrayList<CustomGallery> dataT = new ArrayList<CustomGallery>();
+		 * 
+		 * for (int i = 0; i < data.size(); i++) { if (data.get(i).isSeleted) {
+		 * dataT.add(data.get(i)); } }
+		 * 
+		 * return dataT;
+		 */
 		return dataChecked;
 	}
 
 	public void addAll(ArrayList<CustomGallery> files) {
 
 		try {
-			this.data.clear();
+			// this.data.clear();
 			this.data.addAll(files);
 
 		} catch (Exception e) {
@@ -115,34 +123,39 @@ public class GalleryAdapter extends BaseAdapter {
 
 		if (data.get(position).isSeleted) {
 			data.get(position).isSeleted = false;
-			dataChecked.remove(data.get(position)); //들어가있는거 빼기
-			if(selectCnt!=0)selectCnt--;
+			dataChecked.remove(data.get(position)); // 들어가있는거 빼기
+			if (selectCnt != 0)
+				selectCnt--;
 		} else {
-		
-				data.get(position).isSeleted = true;
-				selectCnt++;
-				dataChecked.add(data.get(position)); //체크된거 넣기
+			data.get(position).isSeleted = true;
+			selectCnt++;
+			dataChecked.add(data.get(position)); // 체크된거 넣기
 		}
 
 		((ViewHolder) v.getTag()).imgQueueMultiSelected.setSelected(data
 				.get(position).isSeleted);
 	}
 
-	public void deleteItem(View v,int position){
-		data.get(position).isSeleted=false;
+	public void deleteItem(View v, int position) {
+		data.get(position).isSeleted = false;
 		selectCnt--;
 		dataChecked.remove(data.get(position));
-	
+
 		((ViewHolder) v.getTag()).imgQueueMultiSelected.setSelected(data
 				.get(position).isSeleted);
 	}
-	
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-
 		final ViewHolder holder;
+		
+		
+		if(isShow)
+			tmps = data;
+		else 
+			tmps = dataChecked;
+		
 		if (convertView == null) {
-
 			convertView = infalter.inflate(R.layout.gallery_item, null);
 			holder = new ViewHolder();
 			holder.imgQueue = (ImageView) convertView
@@ -158,15 +171,13 @@ public class GalleryAdapter extends BaseAdapter {
 			}
 
 			convertView.setTag(holder);
-
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		holder.imgQueue.setTag(position);
 
 		try {
-
-			imageLoader.displayImage("file://" + data.get(position).sdcardPath,
+			imageLoader.displayImage("file://" + tmps.get(position).sdcardPath,
 					holder.imgQueue, new SimpleImageLoadingListener() {
 						@Override
 						public void onLoadingStarted(String imageUri, View view) {
@@ -177,10 +188,8 @@ public class GalleryAdapter extends BaseAdapter {
 					});
 
 			if (isActionMultiplePick) {
-
 				holder.imgQueueMultiSelected
-						.setSelected(data.get(position).isSeleted);
-
+						.setSelected(tmps.get(position).isSeleted);
 			}
 
 		} catch (Exception e) {
