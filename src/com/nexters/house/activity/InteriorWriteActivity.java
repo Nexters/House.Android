@@ -7,11 +7,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.Window;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.Gallery;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ViewSwitcher;
@@ -25,6 +27,7 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 public class InteriorWriteActivity extends Activity {
 
 	GridView gridGallery;
+	
 	Handler handler;
 	GalleryAdapter adapter;
 
@@ -68,11 +71,16 @@ public class InteriorWriteActivity extends Activity {
 		gridGallery = (GridView) findViewById(R.id.gridGallery);
 		gridGallery.setFastScrollEnabled(true);
 		gridGallery.setOnItemClickListener(mItemDeleteListener);
+	
+		
 		adapter = new GalleryAdapter(getApplicationContext(), imageLoader);
 		adapter.setMultiplePick(false);
 		gridGallery.setAdapter(adapter);
 
+	
 		GalleryAdapter.dataChecked.clear(); //버튼 누를때마다 리스트 초기화 시켜줭
+	
+		
 		GalleryAdapter.selectCnt=0; //숫자도 초기화
 		viewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher);
 		viewSwitcher.setDisplayedChild(1);
@@ -144,6 +152,7 @@ public class InteriorWriteActivity extends Activity {
 
 			for (String string : all_path) {
 				CustomGallery item = new CustomGallery();
+				
 				item.sdcardPath = string;
 
 				dataT.add(item);
@@ -151,6 +160,7 @@ public class InteriorWriteActivity extends Activity {
 
 			viewSwitcher.setDisplayedChild(0);
 			adapter.addAll(dataT);
+			
 		}
 	}
 }

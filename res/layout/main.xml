@@ -30,7 +30,7 @@
         android:layout_marginRight="5dp"
         android:layout_weight="1" >
 
-        <GridView
+             <GridView
             android:id="@+id/gridGallery"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -45,7 +45,8 @@
             android:verticalSpacing="-15dp"
             tools:listitem="@layout/gallery_item" >
         </GridView>
-
+        
+        
         <ImageView
             android:id="@+id/imgSinglePick"
             android:layout_width="wrap_content"
