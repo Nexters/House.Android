@@ -72,7 +72,6 @@ public class InteriorWriteActivity extends Activity {
 		adapter.setMultiplePick(false);
 		gridGallery.setAdapter(adapter);
 
-		GalleryAdapter.dataChecked.clear(); //버튼 누를때마다 리스트 초기화 시켜줭
 		GalleryAdapter.selectCnt=0; //숫자도 초기화
 		viewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher);
 		viewSwitcher.setDisplayedChild(1);
@@ -81,19 +80,15 @@ public class InteriorWriteActivity extends Activity {
 
 		btnGalleryPick = (Button) findViewById(R.id.btnGalleryPick);
 		btnGalleryPick.setOnClickListener(new View.OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-
 				Intent i = new Intent(Action.ACTION_PICK);
 				startActivityForResult(i, 100);
-
 			}
 		});
 
 		btnGalleryPickMul = (Button) findViewById(R.id.btnGalleryPickMul);
 		btnGalleryPickMul.setOnClickListener(new View.OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
@@ -104,7 +99,6 @@ public class InteriorWriteActivity extends Activity {
 	}
 
 	AdapterView.OnItemClickListener mItemDeleteListener=new AdapterView.OnItemClickListener() {
-
 		@Override
 		public void onItemClick(AdapterView<?> I, View v, int position,
 				long id) {
@@ -140,17 +134,19 @@ public class InteriorWriteActivity extends Activity {
 		} else if (requestCode == 200 && resultCode == Activity.RESULT_OK) {
 			String[] all_path = data.getStringArrayExtra("all_path");
 
-			ArrayList<CustomGallery> dataT = new ArrayList<CustomGallery>();
-
-			for (String string : all_path) {
-				CustomGallery item = new CustomGallery();
-				item.sdcardPath = string;
-
-				dataT.add(item);
-			}
+//			ArrayList<CustomGallery> dataT = new ArrayList<CustomGallery>();
+//
+//			for (String string : all_path) {
+//				CustomGallery item = new CustomGallery();
+//				item.sdcardPath = string;
+//
+//				dataT.add(item);
+//			}
 
 			viewSwitcher.setDisplayedChild(0);
-			adapter.addAll(dataT);
+			adapter.isShow = false;
+			adapter.notifyDataSetChanged();
+//			adapter.addAll(GalleryAdapter.dataChecked);
 		}
 	}
 }
