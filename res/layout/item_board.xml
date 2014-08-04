@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingTop="10dp">
+    android:paddingTop="10dp" >
 
     <LinearLayout
         android:id="@+id/ll_board"
@@ -14,11 +13,12 @@
         android:layout_weight="15"
         android:orientation="horizontal"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:paddingRight="10dp" >
 
         <LinearLayout
             android:layout_width="40dp"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent" >
+
             <ImageView
                 android:id="@+id/user_profile"
                 android:layout_width="40dp"
@@ -32,35 +32,37 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="-5dp"
-            android:orientation="vertical">
+            android:orientation="vertical" >
+
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content" >
+
                 <TextView
                     android:id="@+id/user_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:text="name" />
-                <!--<TextView-->
-                <!--android:id="@+id/board_category"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentRight="true"-->
-                <!--android:clickable="true"-->
-                <!--android:text="category" />-->
+                <!-- <TextView -->
+                <!-- android:id="@+id/board_category" -->
+                <!-- android:layout_width="wrap_content" -->
+                <!-- android:layout_height="wrap_content" -->
+                <!-- android:layout_alignParentRight="true" -->
+                <!-- android:clickable="true" -->
+                <!-- android:text="category" /> -->
             </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal" >
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginRight="70dp">
+                    android:layout_marginRight="70dp" >
 
                     <TextView
                         android:id="@+id/text_board_content"
@@ -75,7 +77,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="-70dp"
-                    android:paddingLeft="10dp">
+                    android:paddingLeft="10dp" >
 
                     <TextView
                         android:layout_width="70dp"
@@ -88,7 +90,8 @@
         </LinearLayout>
     </LinearLayout>
 
-<!--     <LinearLayout
+    <!--
+         <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -137,5 +140,7 @@
             android:paddingBottom="5dp"
             android:paddingTop="5dp"
             android:text="댓글" />
-    </LinearLayout> -->
+    </LinearLayout>
+    -->
+
 </LinearLayout>

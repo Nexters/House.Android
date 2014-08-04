@@ -8,6 +8,7 @@ import android.support.v4.app.*;
 import android.util.*;
 import android.view.*;
 import android.view.View.OnClickListener;
+import android.view.ViewTreeObserver.OnScrollChangedListener;
 import android.widget.*;
 
 import com.nexters.house.*;
@@ -15,7 +16,9 @@ import com.nexters.house.activity.*;
 import com.nexters.house.adapter.InteriorAdapter;
 import com.nexters.house.entity.*;
 
-public class InteriorFragment extends Fragment {
+public class InteriorFragment extends Fragment{
+	
+	public final static int SCROLL_STATE_IDLE = 0;
 	
 	private final String TAG = "MainActivity";
 
@@ -91,6 +94,8 @@ public class InteriorFragment extends Fragment {
 			}
 		});
 	}
+
+
 
 }
 

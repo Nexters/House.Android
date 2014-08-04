@@ -1,5 +1,7 @@
 package com.nexters.house.fragment;
 
+import android.animation.*;
+import android.graphics.*;
 import android.os.*;
 import android.support.v4.app.*;
 import android.view.*;
@@ -8,9 +10,22 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.nexters.house.*;
 import com.nexters.house.adapter.*;
+import com.nexters.vobble.record.*;
+import com.nexters.vobble.view.*;
 
 
 public class MyPageFragment extends Fragment {
+	
+    public static final int REQUEST_TAKE_PHOTO = 1;
+    public static final int REQUEST_PICK_FROM_GALLERY = 2;
+    public static final int REQUEST_CODE_CROP_IMAGE = 3;
+    
+    private int mIvPhotoWidth;
+    private ImageView mIvPhotoBtn;
+	private Button mBtnConfirm;
+
+    private RecordManager mRecordManager;
+    private Bitmap mImageBitmap;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
