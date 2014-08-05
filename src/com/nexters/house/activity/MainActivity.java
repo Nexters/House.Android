@@ -73,6 +73,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 
 	private Fragment getFragment(int idx) {
 		Fragment newFragment = null;
+		
 
 		switch (idx) {
 		case FRAGMENT_INTERIOR:
