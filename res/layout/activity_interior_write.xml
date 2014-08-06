@@ -8,10 +8,10 @@
         android:id="@+id/imgv"
         android:layout_width="200dip"
         android:layout_height="160dip"
-        android:layout_marginTop="50dip"
         android:layout_marginLeft="10dip"
+        android:layout_marginTop="50dip"
+        android:background="#ffffff"
         android:contentDescription="@drawable/ic_launcher"
-        android:src="@drawable/ic_launcher" 
-        android:background="#ffffff"/>
-    
+        android:src="@drawable/ic_launcher" />
+
 </LinearLayout>

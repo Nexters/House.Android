@@ -151,18 +151,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
+
         <EditText
             android:layout_width="0dp"
             android:layout_height="35dp"
             android:layout_weight="8"
-            android:focusable="true"
             android:background="@drawable/edit_text"
-            android:hint="메시지를 입력하세요."/>
-        <ImageButton 
+            android:focusable="true"
+            android:hint="메시지를 입력하세요." />
+
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="35dp"
-            android:src="@drawable/emoticon"/>
-        <!-- 카톡이모티콘 우선넣어두었지만 나중에는 뱃지로 바뀌어야됨.  -->
+            android:src="@drawable/emoticon" />
+        <!-- 카톡이모티콘 우선넣어두었지만 나중에는 뱃지로 바뀌어야됨. -->
 
         <Button
             android:layout_width="0dp"

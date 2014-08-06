@@ -11,15 +11,15 @@
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_weight="1"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:orientation="vertical" >
 
         <ImageView
             android:id="@+id/iv_image"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_margin="15dp"
             android:src="@drawable/soyoon" />
 
         <TextView
@@ -33,8 +33,8 @@
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_weight="3"
         android:layout_height="match_parent"
+        android:layout_weight="3"
         android:orientation="vertical" >
 
         <TextView
@@ -42,17 +42,17 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="3"
+            android:background="#FFF1FF"
             android:gravity="center"
             android:text="게시판 컨텐츠가 보여질 부분입니다. "
-            android:textSize="15sp" 
-            android:background="#FFF1FF"/>
+            android:textSize="15sp" />
 
         <GridView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:visibility="visible"
-            android:background="#FFFFF1" >
+            android:background="#FFFFF1"
+            android:visibility="visible" >
         </GridView>
     </LinearLayout>
 

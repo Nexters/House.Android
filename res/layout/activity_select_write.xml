@@ -8,8 +8,8 @@
         android:id="@+id/Talk_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="300dp"
         android:layout_marginLeft="100dp"
+        android:layout_marginTop="300dp"
         android:onClick="talkWrite"
         android:text="수다톡" />
 
@@ -17,8 +17,7 @@
         android:id="@+id/Interior_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-         android:layout_marginTop="320dp"
-       
+        android:layout_marginTop="320dp"
         android:onClick="interiorWrite"
         android:text="인테리어" />
 

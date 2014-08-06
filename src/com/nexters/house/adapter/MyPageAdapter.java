@@ -5,9 +5,11 @@ import android.view.*;
 import android.widget.*;
 
 import com.nexters.house.*;
+import com.nexters.house.utils.*;
 
 public class MyPageAdapter extends BaseAdapter{
 	private Context mContext;
+	
 
 
 	public MyPageAdapter(Context c) {
@@ -35,6 +37,8 @@ public class MyPageAdapter extends BaseAdapter{
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imageView;
+        
+        
         if (convertView == null) {  // if it's not recycled, initialize some attributes
             imageView = new ImageView(mContext);
             imageView.setLayoutParams(new GridView.LayoutParams(200, 200));
@@ -45,6 +49,7 @@ public class MyPageAdapter extends BaseAdapter{
         }
 
         imageView.setImageResource(mThumbIds[position]);
+     
         return imageView;
 	}
 	
