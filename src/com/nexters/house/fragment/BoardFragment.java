@@ -13,6 +13,7 @@ import android.widget.ListView;
 
 import com.nexters.house.R;
 import com.nexters.house.activity.SelectWriteActivity;
+import com.nexters.house.activity.TalkWriteActivity;
 import com.nexters.house.adapter.BoardAdapter;
 
 public class BoardFragment extends Fragment {
@@ -32,7 +33,7 @@ public class BoardFragment extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
-				Intent intent=new Intent(getActivity(),SelectWriteActivity.class);
+				Intent intent=new Intent(getActivity(),TalkWriteActivity.class);
 				
 			 	startActivity(intent);
 				

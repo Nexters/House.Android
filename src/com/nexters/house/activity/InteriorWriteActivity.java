@@ -1,17 +1,24 @@
 package com.nexters.house.activity;
 
 import java.util.ArrayList;
+
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.nexters.house.*;
+
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.Window;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.Gallery;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ViewSwitcher;
@@ -25,6 +32,7 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 public class InteriorWriteActivity extends Activity {
 
 	GridView gridGallery;
+	
 	Handler handler;
 	GalleryAdapter adapter;
 
@@ -65,13 +73,22 @@ public class InteriorWriteActivity extends Activity {
 	private void init() {
 
 		handler = new Handler();
-		gridGallery = (GridView) findViewById(R.id.gridGallery);
-		gridGallery.setFastScrollEnabled(true);
-		gridGallery.setOnItemClickListener(mItemDeleteListener);
+	//	gridGallery = (GridView) findViewById(R.id.gridGallery);
+	//	gridGallery.setFastScrollEnabled(true);
+	//	gridGallery.setOnItemClickListener(mItemDeleteListener);
+	
+		
 		adapter = new GalleryAdapter(getApplicationContext(), imageLoader);
 		adapter.setMultiplePick(false);
-		gridGallery.setAdapter(adapter);
+	//	gridGallery.setAdapter(adapter);
 
+	
+		
+
+	
+		GalleryAdapter.dataChecked.clear(); //버튼 누를때마다 리스트 초기화 시켜줭
+	
+		GalleryAdapter.data.clear();
 		GalleryAdapter.selectCnt=0; //숫자도 초기화
 		viewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher);
 		viewSwitcher.setDisplayedChild(1);
@@ -132,21 +149,49 @@ public class InteriorWriteActivity extends Activity {
 			imageLoader.displayImage("file://" + single_path, imgSinglePick);
 
 		} else if (requestCode == 200 && resultCode == Activity.RESULT_OK) {
-			String[] all_path = data.getStringArrayExtra("all_path");
+	//		String[] all_path = data.getStringArrayExtra("all_path");
 
-//			ArrayList<CustomGallery> dataT = new ArrayList<CustomGallery>();
-//
-//			for (String string : all_path) {
-//				CustomGallery item = new CustomGallery();
-//				item.sdcardPath = string;
-//
-//				dataT.add(item);
-//			}
 
+			SliderLayout previewSlider=(SliderLayout)findViewById(R.id.previewSlider);
+			String[] allPath = new String[adapter.getSelected().size()];
+			for (int i = 0; i < allPath.length; i++) {
+				allPath[i] = adapter.getSelected().get(i).sdcardPath;
+			
+			}
+			
+		for (String url : allPath) {
+				TextSliderView textSliderView = new TextSliderView(getApplicationContext());
+				// initialize a SliderLayout
+				textSliderView.image(url);
+				// .setScaleType(BaseSliderView.ScaleType.Fit);
+				previewSlider.addSlider(textSliderView);
+				
+			}
+/*<<<<<<< HEAD
+			ArrayList<CustomGallery> dataT = new ArrayList<CustomGallery>();
+
+			for (String string : all_path) {
+				CustomGallery item = new CustomGallery();
+				
+				item.sdcardPath = string;
+
+				dataT.add(item);
+			}
+
+			viewSwitcher.setDisplayedChild(0);
+			adapter.addAll(dataT);
+			
+
+*/
+
+
+			
+			
 			viewSwitcher.setDisplayedChild(0);
 			adapter.isShow = false;
 			adapter.notifyDataSetChanged();
 //			adapter.addAll(GalleryAdapter.dataChecked);
+
 		}
 	}
 }

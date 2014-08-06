@@ -42,7 +42,6 @@ public class InteriorFragment extends Fragment {
 	}
 
 
-
 	private void initResources(View v){
 
 		btn_write=(Button)v.findViewById(R.id.btn_write);
@@ -51,10 +50,10 @@ public class InteriorFragment extends Fragment {
 
 		lv_main = (ListView) v.findViewById(R.id.lv_interior_view);
 		mInteriorItemArrayList = new ArrayList<InteriorEntity>();
-		
+
 		View footerView = ((LayoutInflater)getActivity().
 				getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.listfooter, null, false);
-		
+
 		mListAdapter = new InteriorAdapter(getActivity().
 				getApplicationContext(), mInteriorItemArrayList, R.layout.custom_view_interior);
 
@@ -72,7 +71,6 @@ public class InteriorFragment extends Fragment {
 	private void initEvents(){
 		btn_write.setOnClickListener(clickListener);
 		lv_main.setOnScrollListener(scrollListener);
-
 	}
 
 	private Runnable loadListItems = new Runnable(){
@@ -82,7 +80,7 @@ public class InteriorFragment extends Fragment {
 
 			//Reset the array that holds the new items
 			//mInteriorItemArrayList = new ArrayList<InteriorEntity>();
-			
+
 			//Simulate a delay, delete this on a production environment!
 			try { Thread.sleep(500);
 			} catch (InterruptedException e) {}
@@ -91,7 +89,7 @@ public class InteriorFragment extends Fragment {
 
 		}
 	};
-	
+
 	private Runnable loadMoreListItems = new Runnable() {			
 		@Override
 		public void run() {
@@ -103,7 +101,7 @@ public class InteriorFragment extends Fragment {
 			//Simulate a delay, delete this on a production environment!
 			try { Thread.sleep(500);
 			} catch (InterruptedException e) {}
-			
+
 			mHandler.sendEmptyMessage(1);
 
 		}

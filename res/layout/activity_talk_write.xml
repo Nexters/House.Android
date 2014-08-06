@@ -61,22 +61,19 @@
         android:layout_marginRight="5dp"
         android:layout_weight="1" >
 
-        <GridView
-            android:id="@+id/gridGallery_talk"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:layout_marginBottom="-10dp"
-            android:layout_marginLeft="-10dp"
-            android:layout_marginRight="-10dp"
-            android:layout_marginTop="-10dp"
-            android:horizontalSpacing="-15dp"
-            android:numColumns="3"
-            android:padding="0dp"
-            android:verticalSpacing="-15dp"
-            tools:listitem="@layout/gallery_item" >
-        </GridView>
-
+      <com.jess.ui.TwoWayGridView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/horz_gridview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:verticalSpacing="0dp"
+	    app:horizontalSpacing="0dp"
+	    app:stretchMode="none"
+	    app:scrollDirectionPortrait="horizontal"
+	    app:scrollDirectionLandscape="horizontal"
+	    app:gravity="center"
+	    android:layout_gravity="center"/>
+        
         <ImageView
             android:id="@+id/imgSinglePick_talk"
             android:layout_width="wrap_content"
@@ -87,3 +84,4 @@
     </ViewSwitcher>
 
 </LinearLayout>
+

@@ -3,14 +3,17 @@ package com.nexters.house.activity;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
-import com.nexters.house.activity.CustomGallery;
-import com.nexters.house.activity.GalleryAdapter.ViewHolder;
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.nexters.house.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
@@ -58,8 +61,11 @@ public class GalleryAdapter extends BaseAdapter {
 
 	public void setMultiplePick(boolean isMultiplePick) {
 		this.isActionMultiplePick = isMultiplePick;
+	
+		
 	}
 
+	
 	public void selectAll(boolean selection) {
 		for (int i = 0; i < data.size(); i++) {
 			data.get(i).isSeleted = selection;
@@ -123,14 +129,21 @@ public class GalleryAdapter extends BaseAdapter {
 
 		if (data.get(position).isSeleted) {
 			data.get(position).isSeleted = false;
-			dataChecked.remove(data.get(position)); // 들어가있는거 빼기
-			if (selectCnt != 0)
-				selectCnt--;
-		} else {
-			data.get(position).isSeleted = true;
-			selectCnt++;
-			dataChecked.add(data.get(position)); // 체크된거 넣기
-		}
+
+			dataChecked.remove(data.get(position)); //들어가있는거 빼기
+			if(selectCnt!=0)selectCnt--; //0이면 빼지마
+		} else { //체크안되있을때
+		
+			if(selectCnt<10){ //그리고 10보다 작을때만 넣어
+				data.get(position).isSeleted = true;
+				selectCnt++;
+				dataChecked.add(data.get(position)); //체크된거 넣기
+			}
+			else{ //10모다 크면
+				Toast.makeText(mContext,"10개까지만", Toast.LENGTH_LONG).show();
+			
+			}
+}
 
 		((ViewHolder) v.getTag()).imgQueueMultiSelected.setSelected(data
 				.get(position).isSeleted);
@@ -164,6 +177,7 @@ public class GalleryAdapter extends BaseAdapter {
 			holder.imgQueueMultiSelected = (ImageView) convertView
 					.findViewById(R.id.imgQueueMultiSelected);
 
+			
 			if (isActionMultiplePick) {
 				holder.imgQueueMultiSelected.setVisibility(View.VISIBLE);
 			} else {
@@ -177,7 +191,11 @@ public class GalleryAdapter extends BaseAdapter {
 		holder.imgQueue.setTag(position);
 
 		try {
+
+	//		imageLoader.displayImage("file://" + data.get(position).sdcardPath,
+
 			imageLoader.displayImage("file://" + tmps.get(position).sdcardPath,
+
 					holder.imgQueue, new SimpleImageLoadingListener() {
 						@Override
 						public void onLoadingStarted(String imageUri, View view) {
@@ -186,16 +204,18 @@ public class GalleryAdapter extends BaseAdapter {
 							super.onLoadingStarted(imageUri, view);
 						}
 					});
-
+			
+		
 			if (isActionMultiplePick) {
 				holder.imgQueueMultiSelected
 						.setSelected(tmps.get(position).isSeleted);
+				
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		Log.e("testdadsfsfsdf", "fdgdfg123 : " + data.get(position).isSeleted + "");
 		return convertView;
 	}
 

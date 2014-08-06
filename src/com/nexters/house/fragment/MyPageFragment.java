@@ -10,8 +10,6 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.nexters.house.*;
 import com.nexters.house.adapter.*;
-import com.nexters.vobble.record.*;
-import com.nexters.vobble.view.*;
 
 
 public class MyPageFragment extends Fragment {
@@ -24,7 +22,7 @@ public class MyPageFragment extends Fragment {
     private ImageView mIvPhotoBtn;
 	private Button mBtnConfirm;
 
-    private RecordManager mRecordManager;
+    
     private Bitmap mImageBitmap;
 
 	@Override
