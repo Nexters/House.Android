@@ -2,12 +2,11 @@ package com.nexters.house.fragment;
 
 import java.util.*;
 
+import android.annotation.SuppressLint;
 import android.content.*;
 import android.os.*;
 import android.support.v4.app.*;
-import android.util.*;
 import android.view.*;
-import android.view.ViewTreeObserver.OnScrollChangedListener;
 import android.widget.*;
 import android.widget.AbsListView.OnScrollListener;
 
@@ -15,8 +14,6 @@ import com.nexters.house.*;
 import com.nexters.house.activity.*;
 import com.nexters.house.adapter.*;
 import com.nexters.house.entity.*;
-import com.nexters.vobble.activity.*;
-import com.nexters.vobble.entity.*;
 
 public class InteriorFragment extends Fragment {
 
@@ -42,6 +39,7 @@ public class InteriorFragment extends Fragment {
 	}
 
 
+	@SuppressLint("InflateParams")
 	private void initResources(View v){
 
 		btn_write=(Button)v.findViewById(R.id.btn_write);
@@ -53,6 +51,7 @@ public class InteriorFragment extends Fragment {
 
 		View footerView = ((LayoutInflater)getActivity().
 				getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.listfooter, null, false);
+
 
 		mListAdapter = new InteriorAdapter(getActivity().
 				getApplicationContext(), mInteriorItemArrayList, R.layout.custom_view_interior);
@@ -78,13 +77,6 @@ public class InteriorFragment extends Fragment {
 		public void run(){
 			loading = true;
 
-			//Reset the array that holds the new items
-			//mInteriorItemArrayList = new ArrayList<InteriorEntity>();
-
-			//Simulate a delay, delete this on a production environment!
-			try { Thread.sleep(500);
-			} catch (InterruptedException e) {}
-
 			mHandler.sendEmptyMessage(0);
 
 		}
@@ -94,13 +86,6 @@ public class InteriorFragment extends Fragment {
 		@Override
 		public void run() {
 			loading = true;
-
-			//Reset the array that holds the new items
-			mInteriorItemArrayList = new ArrayList<InteriorEntity>();
-
-			//Simulate a delay, delete this on a production environment!
-			try { Thread.sleep(500);
-			} catch (InterruptedException e) {}
 
 			mHandler.sendEmptyMessage(1);
 
