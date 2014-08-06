@@ -1,6 +1,12 @@
 package com.nexters.house.activity;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import com.jess.ui.TwoWayAbsListView;
+import com.jess.ui.TwoWayGridView;
+import com.nexters.house.activity.DataObject;
 
 import com.nexters.house.R;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
@@ -12,8 +18,10 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import android.os.Bundle;
 import android.os.Handler;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.view.Menu;
 import android.view.View;
 import android.view.Window;
@@ -22,13 +30,26 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ViewSwitcher;
-
+import com.nexters.house.adapter.*;
 public class TalkWriteActivity extends Activity {
 
+	private int NUMBER_SOURCE_ITEMS = 500;
+	private HorzGridViewAdapter horzGridViewAdapter;
+
+	private Context mContext;
+	public static TwoWayGridView horzGridView;
 	GridView gridGallery;
 	Handler handler;
 	GalleryAdapter adapter;
 
+	public final static int COLUMN_PORT = 0;
+	public final static int COLUMN_LAND = 1;
+	public static int column_selected;
+	public static int[] displayWidth;
+	public static int[] displayHeight;
+	
+	
+	
 	ImageView imgSinglePick;
 	Button btnGalleryPick;
 	Button btnGalleryPickMul;
@@ -43,6 +64,12 @@ public class TalkWriteActivity extends Activity {
 	//	requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_talk_write);
 
+		mContext=getApplicationContext();
+		horzGridView 
+		= (TwoWayGridView) findViewById(R.id.horz_gridview);
+
+
+	
 
 	}
 
@@ -69,15 +96,17 @@ public class TalkWriteActivity extends Activity {
 	private void init() {
 
 		handler = new Handler();
-		gridGallery = (GridView) findViewById(R.id.gridGallery_talk);
-		gridGallery.setFastScrollEnabled(true);
-		gridGallery.setOnItemClickListener(mItemDeleteListener);
+	//	gridGallery = (GridView) findViewById(R.id.gridGallery_talk);
+	//	gridGallery.setFastScrollEnabled(true);
+	//	gridGallery.setOnItemClickListener(mItemDeleteListener);
 		adapter = new GalleryAdapter(getApplicationContext(), imageLoader);
 		adapter.setMultiplePick(false);
-		gridGallery.setAdapter(adapter);
+	//	gridGallery.setAdapter(adapter);
 
 		GalleryAdapter.dataChecked.clear(); //버튼 누를때마다 리스트 초기화 시켜줭
+		GalleryAdapter.data.clear();
 		GalleryAdapter.selectCnt=0; //숫자도 초기화
+		horzGridView.clearDisappearingChildren();
 		viewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher_talk);
 		viewSwitcher.setDisplayedChild(1);
 
@@ -142,22 +171,40 @@ public class TalkWriteActivity extends Activity {
 			imageLoader.displayImage("file://" + single_path, imgSinglePick);
 
 		} else if (requestCode == 200 && resultCode == Activity.RESULT_OK) {
-			String[] all_path = data.getStringArrayExtra("all_path");
+//			String[] all_path = data.getStringArrayExtra("all_path");
 
-			ArrayList<CustomGallery> dataT = new ArrayList<CustomGallery>();
+	
+			List<DataObject> horzData = generateGridViewObjects();
 
-			for (String string : all_path) {
-				CustomGallery item = new CustomGallery();
-				item.sdcardPath = string;
 
-				dataT.add(item);
-			}
+			if(horzGridViewAdapter==null){
+			
+				horzGridViewAdapter = new HorzGridViewAdapter(mContext,horzData);
+				horzGridView.setAdapter(horzGridViewAdapter);
 
+			}else
+				horzGridViewAdapter.data=horzData;
+			horzGridViewAdapter.notifyDataSetChanged();
+				
 			viewSwitcher.setDisplayedChild(0);
-			adapter.addAll(dataT);
-		}
+//			adapter.isShow = false;
+//			adapter.notifyDataSetChanged();		
+			}
 	}
 
 
+	private List<DataObject> generateGridViewObjects(){
+		List<DataObject> allData=new ArrayList<DataObject>();
+
+		String path;
+		
+		for(int i=0;i<GalleryAdapter.dataChecked.size();i++){
+			path=GalleryAdapter.dataChecked.get(i).sdcardPath;
+			
+			DataObject singleObject= new DataObject(path);
+			allData.add(singleObject);
+		}
+		return allData;
+	}
 
 }

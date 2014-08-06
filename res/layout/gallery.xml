@@ -5,7 +5,6 @@
     android:layout_height="fill_parent"
     android:background="@color/bg_light_blue"
     android:orientation="vertical" >
-
     <include
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

@@ -84,7 +84,7 @@ public class InteriorFragment extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
-				Intent intent=new Intent(getActivity(),SelectWriteActivity.class);
+				Intent intent=new Intent(getActivity(),InteriorWriteActivity.class);
 				
 			 	startActivity(intent);
 				

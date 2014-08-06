@@ -1,8 +1,13 @@
 package com.nexters.house.activity;
 
 import java.util.ArrayList;
+
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.nexters.house.*;
+
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -68,19 +73,22 @@ public class InteriorWriteActivity extends Activity {
 	private void init() {
 
 		handler = new Handler();
-		gridGallery = (GridView) findViewById(R.id.gridGallery);
-		gridGallery.setFastScrollEnabled(true);
-		gridGallery.setOnItemClickListener(mItemDeleteListener);
+	//	gridGallery = (GridView) findViewById(R.id.gridGallery);
+	//	gridGallery.setFastScrollEnabled(true);
+	//	gridGallery.setOnItemClickListener(mItemDeleteListener);
 	
 		
 		adapter = new GalleryAdapter(getApplicationContext(), imageLoader);
 		adapter.setMultiplePick(false);
-		gridGallery.setAdapter(adapter);
+	//	gridGallery.setAdapter(adapter);
+
+	
+		
 
 	
 		GalleryAdapter.dataChecked.clear(); //버튼 누를때마다 리스트 초기화 시켜줭
 	
-		
+		GalleryAdapter.data.clear();
 		GalleryAdapter.selectCnt=0; //숫자도 초기화
 		viewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher);
 		viewSwitcher.setDisplayedChild(1);
@@ -89,19 +97,15 @@ public class InteriorWriteActivity extends Activity {
 
 		btnGalleryPick = (Button) findViewById(R.id.btnGalleryPick);
 		btnGalleryPick.setOnClickListener(new View.OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-
 				Intent i = new Intent(Action.ACTION_PICK);
 				startActivityForResult(i, 100);
-
 			}
 		});
 
 		btnGalleryPickMul = (Button) findViewById(R.id.btnGalleryPickMul);
 		btnGalleryPickMul.setOnClickListener(new View.OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
@@ -112,7 +116,6 @@ public class InteriorWriteActivity extends Activity {
 	}
 
 	AdapterView.OnItemClickListener mItemDeleteListener=new AdapterView.OnItemClickListener() {
-
 		@Override
 		public void onItemClick(AdapterView<?> I, View v, int position,
 				long id) {
@@ -146,8 +149,25 @@ public class InteriorWriteActivity extends Activity {
 			imageLoader.displayImage("file://" + single_path, imgSinglePick);
 
 		} else if (requestCode == 200 && resultCode == Activity.RESULT_OK) {
-			String[] all_path = data.getStringArrayExtra("all_path");
+	//		String[] all_path = data.getStringArrayExtra("all_path");
 
+
+			SliderLayout previewSlider=(SliderLayout)findViewById(R.id.previewSlider);
+			String[] allPath = new String[adapter.getSelected().size()];
+			for (int i = 0; i < allPath.length; i++) {
+				allPath[i] = adapter.getSelected().get(i).sdcardPath;
+			
+			}
+			
+		for (String url : allPath) {
+				TextSliderView textSliderView = new TextSliderView(getApplicationContext());
+				// initialize a SliderLayout
+				textSliderView.image(url);
+				// .setScaleType(BaseSliderView.ScaleType.Fit);
+				previewSlider.addSlider(textSliderView);
+				
+			}
+/*<<<<<<< HEAD
 			ArrayList<CustomGallery> dataT = new ArrayList<CustomGallery>();
 
 			for (String string : all_path) {
@@ -161,6 +181,17 @@ public class InteriorWriteActivity extends Activity {
 			viewSwitcher.setDisplayedChild(0);
 			adapter.addAll(dataT);
 			
+
+*/
+
+
+			
+			
+			viewSwitcher.setDisplayedChild(0);
+			adapter.isShow = false;
+			adapter.notifyDataSetChanged();
+//			adapter.addAll(GalleryAdapter.dataChecked);
+
 		}
 	}
 }
