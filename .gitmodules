@@ -1,0 +1,3 @@
+[submodule "House.Libraries"]
+	path = House.Libraries
+	url = git@github.com:Nexters/House.Libraries.git
