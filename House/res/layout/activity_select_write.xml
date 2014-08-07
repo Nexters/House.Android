@@ -1,0 +1,24 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context=".SelectWriteActivity" >
+
+    <Button
+        android:id="@+id/Talk_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="300dp"
+        android:onClick="talkWrite"
+        android:text="수다톡" />
+
+    <Button
+        android:id="@+id/Interior_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="320dp"
+        android:onClick="interiorWrite"
+        android:text="인테리어" />
+
+</LinearLayout>
