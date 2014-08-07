@@ -57,7 +57,7 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener {
 	public View getView(final int position, View convertView, ViewGroup parent) {
 
 		Holder holder = new Holder();
-		int minHeight = mUtil.pxToDp(mContext, 1000);
+		int minHeight = mUtil.pxToDp(mContext, 1500);
 		//Log.d(TAG, "pxToDp"+ minHeight);
 
 		if (convertView == null) {
@@ -138,7 +138,7 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener {
 		InteriorEntity e = new InteriorEntity();
 		e.badge = 1;
 		e.category = "new";
-		e.content = "새로만들어진 리스트";
+		e.content = "넥스터즈 인유어하우스팀에서 개발중인 하우스 어플리케이션입니다. 사진을 먼저올리고 하단에는 컨텐츠내용을 일부 보여주는걸로~ 몇자 제한인지 그리고 더보기누를수는있으나 누르면 걍 디테일컨텐츠뷰로 가면될듯";
 		e.id = "newId";
 		e.image_urls = new ArrayList<String>(){{
 			add("https://fbcdn-sphotos-a-a.akamaihd.net/hphotos-ak-xfp1/v/t1.0-9/10402950_570244953084785_2207844659246242948_n.jpg?oh=b19d78a504af3a54501e629f0383da87&oe=5448A4C6&__gda__=1413348687_974d19e8b5ddcf217cb99b77b0186685");

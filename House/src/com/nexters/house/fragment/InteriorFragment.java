@@ -225,7 +225,7 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 				InteriorEntity e = new InteriorEntity();
 				e.id = "refreshId";
 				e.category ="refresh";
-				e.content = "refresh content";
+				e.content = "새로고쳐서 만들어지는 컨텐츠 리스트 ㅠㅠ 라이브러리는 힘드네요  content";
 				e.image_urls = new ArrayList<String>(){{
 					add("https://fbcdn-sphotos-d-a.akamaihd.net/hphotos-ak-xpf1/t1.0-9/10487342_570244993084781_3890212537564580615_n.jpg");
 				}};
