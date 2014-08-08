@@ -1,4 +1,4 @@
-package com.nexters.house.activity;
+package com.nexters.house.entity;
 
 public class DataObject {
 	

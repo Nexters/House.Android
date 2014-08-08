@@ -42,7 +42,7 @@
             android:orientation="vertical" >
 
             <EditText
-                android:id="@+id/et_sign_up_username"
+                android:id="@+id/hs_sign_up_username"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="108"
@@ -87,7 +87,7 @@
             android:orientation="vertical" >
 
             <EditText
-                android:id="@+id/et_sign_up_email"
+                android:id="@+id/hs_sign_up_email"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="108"
@@ -133,7 +133,7 @@
             android:orientation="vertical" >
 
             <EditText
-                android:id="@+id/et_sign_up_password"
+                android:id="@+id/hs_sign_up_password"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="108"
@@ -179,7 +179,7 @@
             android:orientation="vertical" >
 
             <EditText
-                android:id="@+id/et_sign_up_password_check"
+                android:id="@+id/hs_sign_up_password_check"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="108"

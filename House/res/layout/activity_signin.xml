@@ -42,7 +42,7 @@
             android:orientation="vertical" >
 
             <EditText
-                android:id="@+id/et_sign_in_email"
+                android:id="@+id/hs_sign_in_email"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="108"
@@ -88,7 +88,7 @@
             android:orientation="vertical" >
 
             <EditText
-                android:id="@+id/et_sign_in_password"
+                android:id="@+id/hs_sign_in_password"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="108"

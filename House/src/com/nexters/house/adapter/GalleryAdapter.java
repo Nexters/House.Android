@@ -1,4 +1,4 @@
-package com.nexters.house.activity;
+package com.nexters.house.adapter;
 
 import java.util.*;
 
@@ -8,6 +8,7 @@ import android.view.*;
 import android.widget.*;
 
 import com.nexters.house.*;
+import com.nexters.house.entity.CustomGallery;
 import com.nostra13.universalimageloader.core.*;
 import com.nostra13.universalimageloader.core.assist.*;
 

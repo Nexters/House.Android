@@ -1,14 +1,22 @@
 package com.nexters.house.activity;
 
-import android.os.*;
-import android.support.v4.app.*;
-import android.util.*;
-import android.view.*;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
+import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.*;
+import android.widget.Button;
 
-import com.nexters.house.*;
-import com.nexters.house.fragment.*;
+import com.nexters.house.R;
+import com.nexters.house.fragment.BoardFragment;
+import com.nexters.house.fragment.InteriorFragment;
+import com.nexters.house.fragment.MyPageFragment;
 
 public class MainActivity extends FragmentActivity implements OnClickListener {
 
@@ -23,11 +31,18 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	private Button btn_board;
 	private Button btn_mypage;
 
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		boolean logout = getIntent().getBooleanExtra("logout", false);
+		if (logout) {
+			Log.d("logout", "logout : ");
+			startActivity(new Intent(this, StartActivity.class));
+			finish();
+			return;
+		}
 
 		initResources();
 		initEvent();
@@ -36,21 +51,34 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		fragmentReplace(mCurrentFragmentIndex);
 	}
 
-	private void initResources(){
+	private void initResources() {
 		btn_interior = (Button) findViewById(R.id.btn_interior);
 		btn_board = (Button) findViewById(R.id.btn_board);
 		btn_mypage = (Button) findViewById(R.id.btn_mypage);
 
 	}
 
-	private void initEvent(){
+	private void initEvent() {
 
 		btn_interior.setOnClickListener(this);
 		btn_board.setOnClickListener(this);
 		btn_mypage.setOnClickListener(this);
 
-	}
+		// logout
+		IntentFilter intentFilter = new IntentFilter();
+		intentFilter.addAction("com.package.ACTION_LOGOUT");
+		registerReceiver(new BroadcastReceiver() {
 
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				Log.d("onReceive", "Logout in progress");
+				// At this point you should start the login activity and finish
+				// this one
+				finish();
+			}
+		}, intentFilter);
+
+	}
 
 	public void fragmentReplace(int reqNewFragmentIndex) {
 
@@ -73,7 +101,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 
 	private Fragment getFragment(int idx) {
 		Fragment newFragment = null;
-		
 
 		switch (idx) {
 		case FRAGMENT_INTERIOR:
@@ -94,16 +121,16 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		return newFragment;
 	}
 
-	//	 http://tools.android.com/tips/non-constant-fields 참조
+	// http://tools.android.com/tips/non-constant-fields 참조
 	@Override
 	public void onClick(View v) {
-		if(v.getId() == R.id.btn_interior) {
+		if (v.getId() == R.id.btn_interior) {
 			mCurrentFragmentIndex = FRAGMENT_INTERIOR;
 			fragmentReplace(mCurrentFragmentIndex);
-		} else if(v.getId() == R.id.btn_board) {
+		} else if (v.getId() == R.id.btn_board) {
 			mCurrentFragmentIndex = FRAGMENT_BOARD;
 			fragmentReplace(mCurrentFragmentIndex);
-		} else if(v.getId() == R.id.btn_mypage) {
+		} else if (v.getId() == R.id.btn_mypage) {
 			mCurrentFragmentIndex = FRAGMENT_MYPAGE;
 			fragmentReplace(mCurrentFragmentIndex);
 		}
