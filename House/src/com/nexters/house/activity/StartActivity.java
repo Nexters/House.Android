@@ -49,6 +49,8 @@ public class StartActivity extends Activity implements View.OnClickListener {
                     @Override
                     public void onCompleted(GraphUser user, Response response) {
                         if (user != null) {
+                        	Log.d("user", "User : " + user.getName() + " thumbnailpath : " + user.getId());
+                        	SessionManager.getInstance(StartActivity.this).createLoginSession(user.getName(), null, com.facebook.Session.getActiveSession().getAccessToken(), user.getId());
                             finish();
                         }
                     }
@@ -63,8 +65,10 @@ public class StartActivity extends Activity implements View.OnClickListener {
             UserManagement.requestMe(new MeResponseCallback() {
                 @Override
                 protected void onSuccess(final UserProfile userProfile) {
+//                	userProfile.getId()
                     // 성공.
-                    Log.d("user", "User : " + userProfile.getNickname());
+                    Log.d("user", "User : " + userProfile.getNickname() + " thumbnailpath : " + userProfile.getThumbnailImagePath());
+                    SessionManager.getInstance(StartActivity.this).createLoginSession(userProfile.getNickname(), null, com.kakao.Session.getCurrentSession().getAccessToken(), userProfile.getThumbnailImagePath());
                     finish();
                 }
                 @Override

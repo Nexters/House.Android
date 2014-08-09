@@ -81,7 +81,6 @@ public class SetFragment extends Fragment implements View.OnClickListener {
         // 현재창에서 해결
         mBtnLogout.setOnClickListener(this);
         mBtnWithdraw.setOnClickListener(this);
-
         //
         mBtnSend.setOnClickListener(setFragmentPagerListener);
         mBtnNickName.setOnClickListener(setFragmentPagerListener);
@@ -115,37 +114,7 @@ public class SetFragment extends Fragment implements View.OnClickListener {
         confirmDialog.setPositiveButton("예", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                boolean isKakao = com.kakao.Session.getCurrentSession().isOpened();
-                boolean isFacebook = com.facebook.Session.getActiveSession().isOpened();
-                boolean isUser = SessionManager.getInstance(mActivity).isLoggedIn();
-
-                Log.d("isUser", "isUser : " + isUser);
-                if (isKakao) {
-                    UserManagement.requestLogout(new LogoutResponseCallback() {
-                        @Override
-                        protected void onSuccess(final long userId) {
-                        	   onSessionClosed();
-                        }
-                        @Override
-                        protected void onFailure(final APIErrorResult apiErrorResult) {
-                        }
-                    });
-                } else if (isFacebook) {
-                    Session session = Session.getActiveSession();
-                    if (session != null && !session.isClosed()) {
-                        session.closeAndClearTokenInformation();
-                    }
-                    onSessionClosed();
-                } else if (isUser) {
-                    SessionManager.getInstance(mActivity).logoutUser();
-                    onSessionClosed();
-                }
-            }
-            public void onSessionClosed() {
-                final Intent intent = new Intent(mActivity, MainActivity.class);
-                intent.putExtra("logout", true);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // To clean up all activities
-                startActivity(intent);
+            	SessionManager.getInstance(mActivity).logoutUser();
             }
         });
         confirmDialog.setNegativeButton("아니오", null);

@@ -96,7 +96,7 @@ public class SignInActivity extends FragmentActivity implements View.OnClickList
 //            }
 //        });
         SessionManager sessionManager = SessionManager.getInstance(this);
-        sessionManager.createLoginSession("BoBinLee", "cultist_tp@naver.com", "1234");
+        sessionManager.createLoginSession("BoBinLee", "cultist_tp@naver.com", "1234", "123.png");
         finish();
     }
 }
