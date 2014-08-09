@@ -26,6 +26,7 @@ import com.kakao.exception.KakaoException;
 import com.kakao.widget.LoginButton;
 import com.nexters.house.R;
 //import com.nexters.house.core.App;
+import com.nexters.house.core.SessionManager;
 
 
 public class StartActivity extends Activity implements View.OnClickListener {
@@ -49,8 +50,6 @@ public class StartActivity extends Activity implements View.OnClickListener {
                     public void onCompleted(GraphUser user, Response response) {
                         if (user != null) {
                             finish();
-                            //   TextView welcome = (TextView) findViewById(R.id.welcome);
-                            //  welcome.setText("Hello " + user.getName() + "!");
                         }
                     }
                 }).executeAsync();

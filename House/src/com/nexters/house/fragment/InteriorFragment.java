@@ -25,16 +25,14 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 	private PullToRefreshLayout mPullToRefreshLayout;
 
 	private ArrayList<InteriorEntity> mInteriorItemArrayList;
-	private ListView lv_main;
+	private ListView mLvMain;
 	private InteriorAdapter mListAdapter;
-	private Button btn_write;
+	private Button mBtnWrite;
 	private Boolean loading = true;
-
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-
 		View v = inflater.inflate(R.layout.fragment_interior, container, false);
 		initResources(v);
 		initEvents();
@@ -52,12 +50,12 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 		.listener(this)
 		.setup(mPullToRefreshLayout);
 
-		btn_write=(Button)v.findViewById(R.id.btn_write);
-		btn_write.setText("쓰기");
-		btn_write.bringToFront();
+		mBtnWrite=(Button)v.findViewById(R.id.btn_write);
+		mBtnWrite.setText("쓰기");
+		mBtnWrite.bringToFront();
 
 		 mPullToRefreshLayout = (PullToRefreshLayout)v.findViewById(R.id.ptr_layout);
-		lv_main = (ListView) v.findViewById(R.id.lv_interior_view);
+		mLvMain = (ListView) v.findViewById(R.id.lv_interior_view);
 		mInteriorItemArrayList = new ArrayList<InteriorEntity>();
 
 		View footerView = ((LayoutInflater)getActivity().
@@ -67,23 +65,20 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 				getApplicationContext(), mInteriorItemArrayList, R.layout.custom_view_interior);
 
 		//footerview를  listview 제일 하단에 붙임 
-		lv_main.addFooterView(footerView);
-		lv_main.setAdapter(mListAdapter);
+		mLvMain.addFooterView(footerView);
+		mLvMain.setAdapter(mListAdapter);
 
 		//Load the first 5 items
 		Thread thread =  new Thread(null, loadListItems);
 		thread.start();
-
-
 	}
 
 	private void initEvents(){
-		btn_write.setOnClickListener(clickListener);
-		lv_main.setOnScrollListener(scrollListener);
-
+		mBtnWrite.setOnClickListener(clickListener);
+		mLvMain.setOnScrollListener(scrollListener);
 
 		// Set a listener to be invoked when the list should be refreshed.
-		//        ((PullToRefreshListView) lv_main).setOnRefreshListener(new OnRefreshListener() {
+		//        ((PullToRefreshListView) mLvMain).setOnRefreshListener(new OnRefreshListener() {
 		//            @Override
 		//            public void onRefresh() {
 		////            	Thread thread =  new Thread(null, refreshListItem);
@@ -100,7 +95,6 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 			loading = true;
 
 			mHandler.sendEmptyMessage(0);
-
 		}
 	};
 
@@ -110,7 +104,6 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 			loading = true;
 
 			mHandler.sendEmptyMessage(1);
-
 		}
 	};	
 
@@ -173,16 +166,12 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 	};
 
 	private OnScrollListener scrollListener = new OnScrollListener() {
-
 		@Override
-		public void onScrollStateChanged(AbsListView view, int scrollState) {
-			// TODO Auto-generated method stub
-		}
+		public void onScrollStateChanged(AbsListView view, int scrollState) { }
 
 		@Override
 		public void onScroll(AbsListView view, int firstVisibleItem,
 				int visibleItemCount, int totalItemCount) {
-			// TODO Auto-generated method stub
 			//what is the bottom iten that is visible
 			int lastInScreen = firstVisibleItem + visibleItemCount;				
 
@@ -195,11 +184,6 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 
 		}
 	};
-
-
-
-
-
 
 	@Override
 	public void onRefreshStarted(View view) {

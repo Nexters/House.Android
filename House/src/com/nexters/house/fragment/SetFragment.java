@@ -19,8 +19,8 @@ import com.kakao.LogoutResponseCallback;
 import com.kakao.UserManagement;
 import com.nexters.house.R;
 import com.nexters.house.activity.MainActivity;
-import com.nexters.house.activity.SessionManager;
 import com.nexters.house.adapter.SetFragmentPagerAdapter;
+import com.nexters.house.core.SessionManager;
 
 public class SetFragment extends Fragment implements View.OnClickListener {
     private LinearLayout mBtnLogout;
@@ -126,7 +126,6 @@ public class SetFragment extends Fragment implements View.OnClickListener {
                         protected void onSuccess(final long userId) {
                         	   onSessionClosed();
                         }
-
                         @Override
                         protected void onFailure(final APIErrorResult apiErrorResult) {
                         }
@@ -142,7 +141,6 @@ public class SetFragment extends Fragment implements View.OnClickListener {
                     onSessionClosed();
                 }
             }
-
             public void onSessionClosed() {
                 final Intent intent = new Intent(mActivity, MainActivity.class);
                 intent.putExtra("logout", true);

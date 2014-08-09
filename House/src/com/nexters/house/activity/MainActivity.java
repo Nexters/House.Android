@@ -27,9 +27,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	public final static int FRAGMENT_BOARD = 1;
 	public final static int FRAGMENT_MYPAGE = 2;
 
-	private Button btn_interior;
-	private Button btn_board;
-	private Button btn_mypage;
+	private Button mBtnInterior;
+	private Button mBtnBoard;
+	private Button mBtnMypage;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,32 +52,15 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	}
 
 	private void initResources() {
-		btn_interior = (Button) findViewById(R.id.btn_interior);
-		btn_board = (Button) findViewById(R.id.btn_board);
-		btn_mypage = (Button) findViewById(R.id.btn_mypage);
-
+		mBtnInterior = (Button) findViewById(R.id.btn_interior);
+		mBtnBoard = (Button) findViewById(R.id.btn_board);
+		mBtnMypage = (Button) findViewById(R.id.btn_mypage);
 	}
 
 	private void initEvent() {
-
-		btn_interior.setOnClickListener(this);
-		btn_board.setOnClickListener(this);
-		btn_mypage.setOnClickListener(this);
-
-		// logout
-		IntentFilter intentFilter = new IntentFilter();
-		intentFilter.addAction("com.package.ACTION_LOGOUT");
-		registerReceiver(new BroadcastReceiver() {
-
-			@Override
-			public void onReceive(Context context, Intent intent) {
-				Log.d("onReceive", "Logout in progress");
-				// At this point you should start the login activity and finish
-				// this one
-				finish();
-			}
-		}, intentFilter);
-
+		mBtnInterior.setOnClickListener(this);
+		mBtnBoard.setOnClickListener(this);
+		mBtnMypage.setOnClickListener(this);
 	}
 
 	public void fragmentReplace(int reqNewFragmentIndex) {
@@ -112,7 +95,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		case FRAGMENT_MYPAGE:
 			newFragment = new MyPageFragment();
 			break;
-
 		default:
 			Log.d(TAG, "Unhandle case");
 			break;

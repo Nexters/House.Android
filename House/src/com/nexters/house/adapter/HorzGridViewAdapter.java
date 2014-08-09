@@ -22,7 +22,6 @@ public class HorzGridViewAdapter extends BaseAdapter{
 	public List<DataObject> data;	
 	
 	//HorzGridView stuff
-	private final int childLayoutResourceId = R.layout.horz_gridview_child_layout;
 	private int columns;//Used to set childSize in TwoWayGridView
 	private int rows;//used with TwoWayGridView
 	private int itemPadding;
@@ -90,7 +89,7 @@ public class HorzGridViewAdapter extends BaseAdapter{
 			
 			//Only get the inflater when it's needed, then release it-which isn't frequently
 			LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = inflater.inflate(childLayoutResourceId , parent, false);
+			convertView = inflater.inflate(R.layout.horz_gridview_child_layout , parent, false);
 			
 			//User findViewById only when first creating the child view
 			handler = new ViewHandler();

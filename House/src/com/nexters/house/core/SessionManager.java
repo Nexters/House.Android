@@ -1,10 +1,12 @@
-package com.nexters.house.activity;
+package com.nexters.house.core;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
 import java.util.HashMap;
+
+import com.nexters.house.activity.MainActivity;
 
 /**
  * Created by BoBinLee on 2014-08-01.

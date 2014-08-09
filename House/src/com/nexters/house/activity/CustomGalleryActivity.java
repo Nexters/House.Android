@@ -24,16 +24,17 @@ import com.nostra13.universalimageloader.core.assist.*;
 import com.nostra13.universalimageloader.utils.*;
 
 public class CustomGalleryActivity extends Activity {
-
-	GridView gridGallery;
-	Handler handler;
-	GalleryAdapter adapter;
-
-	ImageView imgNoMedia;
-	Button btnGalleryOk;
-
+	GridView mGridGallery;
+	ImageView mImgNoMedia;
+	ImageLoader mImageLoader;
+	Button mBtnGalleryOk;
+	
+	GalleryAdapter mGalleryAdapter;
+	
+	Handler mHandler;
+	
 	String action;
-	private ImageLoader imageLoader;
+	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -68,8 +69,8 @@ public class CustomGalleryActivity extends Activity {
 					.memoryCache(new WeakMemoryCache());
 
 			ImageLoaderConfiguration config = builder.build();
-			imageLoader = ImageLoader.getInstance();
-			imageLoader.init(config);
+			mImageLoader = ImageLoader.getInstance();
+			mImageLoader.init(config);
 
 		} catch (Exception e) {
 
@@ -77,46 +78,39 @@ public class CustomGalleryActivity extends Activity {
 	}
 
 	private void init() {
-
-		handler = new Handler();
-		gridGallery = (GridView) findViewById(R.id.gridGallery);
-		gridGallery.setFastScrollEnabled(true);
-		adapter = new GalleryAdapter(getApplicationContext(), imageLoader);
-		PauseOnScrollListener listener = new PauseOnScrollListener(imageLoader,
+		mHandler = new Handler();
+		mGridGallery = (GridView) findViewById(R.id.gridGallery);
+		mGridGallery.setFastScrollEnabled(true);
+		mGalleryAdapter = new GalleryAdapter(getApplicationContext(), mImageLoader);
+		PauseOnScrollListener listener = new PauseOnScrollListener(mImageLoader,
 				true, true);
-		gridGallery.setOnScrollListener(listener);
+		mGridGallery.setOnScrollListener(listener);
 
 		if (action.equalsIgnoreCase(Action.ACTION_MULTIPLE_PICK)) {
-
 			findViewById(R.id.llBottomContainer).setVisibility(View.VISIBLE);
-			gridGallery.setOnItemClickListener(mItemMulClickListener);
-			adapter.setMultiplePick(true);
-
+			mGridGallery.setOnItemClickListener(mItemMulClickListener);
+			mGalleryAdapter.setMultiplePick(true);
 		} else if (action.equalsIgnoreCase(Action.ACTION_PICK)) {
-
 			findViewById(R.id.llBottomContainer).setVisibility(View.GONE);
-			gridGallery.setOnItemClickListener(mItemSingleClickListener);
-			adapter.setMultiplePick(false);
-
+			mGridGallery.setOnItemClickListener(mItemSingleClickListener);
+			mGalleryAdapter.setMultiplePick(false);
 		}
 		
-		adapter.isShow = true;
-		gridGallery.setAdapter(adapter);
-		imgNoMedia = (ImageView) findViewById(R.id.imgNoMedia);
+		mGalleryAdapter.toggleGallery(true);
+		mGridGallery.setAdapter(mGalleryAdapter);
+		mImgNoMedia = (ImageView) findViewById(R.id.imgNoMedia);
 
-		btnGalleryOk = (Button) findViewById(R.id.btnGalleryOk);
-		btnGalleryOk.setOnClickListener(mOkClickListener);
+		mBtnGalleryOk = (Button) findViewById(R.id.btnGalleryOk);
+		mBtnGalleryOk.setOnClickListener(mOkClickListener);
 
 		new Thread() {
-
 			@Override
 			public void run() {
 				Looper.prepare();
-				handler.post(new Runnable() {
-
+				mHandler.post(new Runnable() {
 					@Override
 					public void run() {
-						adapter.addAll(getGalleryPhotos());
+						mGalleryAdapter.addAll(getGalleryPhotos());
 						checkImageStatus();
 					}
 				});
@@ -128,18 +122,17 @@ public class CustomGalleryActivity extends Activity {
 	}
 
 	private void checkImageStatus() {
-		if (adapter.isEmpty()) {
-			imgNoMedia.setVisibility(View.VISIBLE);
+		if (mGalleryAdapter.isEmpty()) {
+			mImgNoMedia.setVisibility(View.VISIBLE);
 		} else {
-			imgNoMedia.setVisibility(View.GONE);
+			mImgNoMedia.setVisibility(View.GONE);
 		}
 	}
 
 	View.OnClickListener mOkClickListener = new View.OnClickListener() {
-
 		@Override
 		public void onClick(View v) {
-			ArrayList<CustomGallery> selected = adapter.getSelected();
+			ArrayList<CustomGallery> selected = mGalleryAdapter.getSelected();
 			Log.d("size", "sadfasdlkndsaf : " + selected.size());
 			String[] allPath = new String[selected.size()];
 			for (int i = 0; i < allPath.length; i++) {
@@ -152,13 +145,9 @@ public class CustomGalleryActivity extends Activity {
 		}
 	};
 	AdapterView.OnItemClickListener mItemMulClickListener = new AdapterView.OnItemClickListener() {
-
 		@Override
 		public void onItemClick(AdapterView<?> l, View v, int position, long id) {		
-		
-		
-			adapter.changeSelection(v, position);
-			
+			mGalleryAdapter.changeSelection(v, position);
 		}
 	};
 
@@ -166,7 +155,7 @@ public class CustomGalleryActivity extends Activity {
 
 		@Override
 		public void onItemClick(AdapterView<?> l, View v, int position, long id) {
-			CustomGallery item = adapter.getItem(position);
+			CustomGallery item = mGalleryAdapter.getItem(position);
 			Intent data = new Intent().putExtra("single_path", item.sdcardPath);
 			setResult(RESULT_OK, data);
 			finish();

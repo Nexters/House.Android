@@ -7,7 +7,7 @@ import android.os.Handler;
 import android.view.Window;
 
 import com.nexters.house.R;
-import com.nexters.house.core.AccountManager;
+import com.nexters.house.core.SessionManager;
 
 public class IntroActivity extends Activity {
 	private static int INTRO_LOADING_TIME = 1000;
@@ -28,14 +28,14 @@ public class IntroActivity extends Activity {
 	}
 
 	private void endIntro() {
-        if (AccountManager.getInstance().isSignedIn(this)) {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
+//        if (SessionManager.getInstance(this).isSignedIn()) {
+//            Intent intent = new Intent(this, MainActivity.class);
+//            startActivity(intent);
+//            finish();
+//        } else {
             Intent intent = new Intent(this, StartActivity.class);
             startActivity(intent);
             finish();
-        }
+//        }
 	}
 }

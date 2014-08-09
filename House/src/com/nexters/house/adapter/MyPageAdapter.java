@@ -9,12 +9,9 @@ import com.nexters.house.*;
 public class MyPageAdapter extends BaseAdapter{
 	private Context mContext;
 	
-
-
 	public MyPageAdapter(Context c) {
 		mContext = c;
 	}
-
 
 	@Override
     public int getCount() {
@@ -36,7 +33,6 @@ public class MyPageAdapter extends BaseAdapter{
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imageView;
-        
         
         if (convertView == null) {  // if it's not recycled, initialize some attributes
             imageView = new ImageView(mContext);
@@ -61,7 +57,6 @@ public class MyPageAdapter extends BaseAdapter{
             R.drawable.ic_launcher, R.drawable.ic_launcher,
             R.drawable.ic_launcher, R.drawable.ic_launcher,
             R.drawable.ic_launcher, R.drawable.ic_launcher,
-
     };
 
 }

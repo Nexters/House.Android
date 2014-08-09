@@ -13,14 +13,13 @@ import com.nexters.house.activity.*;
 import com.nexters.house.adapter.*;
 
 public class BoardFragment extends Fragment {
-	ListView listView;
+	ListView mListView;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
 		View v = inflater.inflate(R.layout.fragment_board, container, false);
 
-		listView = (ListView) v.findViewById(R.id.listview);
+		mListView = (ListView) v.findViewById(R.id.listview);
 
 		Button b=(Button)v.findViewById(R.id.btn_write_board);
 	    b.setText("쓰기");
@@ -57,7 +56,7 @@ public class BoardFragment extends Fragment {
 
 		BoardAdapter boardAdapter = new BoardAdapter(getActivity(), arrayList);
 
-		listView.setAdapter(boardAdapter);
+		mListView.setAdapter(boardAdapter);
 	}
 
 }

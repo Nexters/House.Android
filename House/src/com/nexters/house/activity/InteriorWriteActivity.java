@@ -17,19 +17,16 @@ import com.nostra13.universalimageloader.core.*;
 import com.nostra13.universalimageloader.core.assist.*;
 
 public class InteriorWriteActivity extends Activity {
+	GalleryAdapter mGalleryAdapter;
 
-	GridView gridGallery;
-	
-	Handler handler;
-	GalleryAdapter adapter;
+	ImageView mImgSinglePick;
+	Button mBtnGalleryPick;
+	Button mBtnGalleryPickMul;
 
-	ImageView imgSinglePick;
-	Button btnGalleryPick;
-	Button btnGalleryPickMul;
+	ViewSwitcher mViewSwitcher;
+	ImageLoader mImageLoader;
 
 	String action;
-	ViewSwitcher viewSwitcher;
-	ImageLoader imageLoader;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -53,37 +50,23 @@ public class InteriorWriteActivity extends Activity {
 				new WeakMemoryCache());
 
 		ImageLoaderConfiguration config = builder.build();
-		imageLoader = ImageLoader.getInstance();
-		imageLoader.init(config);
+		mImageLoader = ImageLoader.getInstance();
+		mImageLoader.init(config);
 	}
 
 	private void init() {
-
-		handler = new Handler();
-	//	gridGallery = (GridView) findViewById(R.id.gridGallery);
-	//	gridGallery.setFastScrollEnabled(true);
-	//	gridGallery.setOnItemClickListener(mItemDeleteListener);
-	
+		mGalleryAdapter = new GalleryAdapter(getApplicationContext(),
+				mImageLoader);
+		mGalleryAdapter.setMultiplePick(false);
+		mGalleryAdapter.clear();
 		
-		adapter = new GalleryAdapter(getApplicationContext(), imageLoader);
-		adapter.setMultiplePick(false);
-	//	gridGallery.setAdapter(adapter);
+		mViewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher);
+		mViewSwitcher.setDisplayedChild(1);
 
-	
-		
+		mImgSinglePick = (ImageView) findViewById(R.id.imgSinglePick);
 
-	
-		GalleryAdapter.dataChecked.clear(); //버튼 누를때마다 리스트 초기화 시켜줭
-	
-		GalleryAdapter.data.clear();
-		GalleryAdapter.selectCnt=0; //숫자도 초기화
-		viewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher);
-		viewSwitcher.setDisplayedChild(1);
-
-		imgSinglePick = (ImageView) findViewById(R.id.imgSinglePick);
-
-		btnGalleryPick = (Button) findViewById(R.id.btnGalleryPick);
-		btnGalleryPick.setOnClickListener(new View.OnClickListener() {
+		mBtnGalleryPick = (Button) findViewById(R.id.btnGalleryPick);
+		mBtnGalleryPick.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(Action.ACTION_PICK);
@@ -91,93 +74,69 @@ public class InteriorWriteActivity extends Activity {
 			}
 		});
 
-		btnGalleryPickMul = (Button) findViewById(R.id.btnGalleryPickMul);
-		btnGalleryPickMul.setOnClickListener(new View.OnClickListener() {
+		mBtnGalleryPickMul = (Button) findViewById(R.id.btnGalleryPickMul);
+		mBtnGalleryPickMul.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
 				startActivityForResult(i, 200);
 			}
 		});
-
 	}
 
-	AdapterView.OnItemClickListener mItemDeleteListener=new AdapterView.OnItemClickListener() {
+	AdapterView.OnItemClickListener mItemDeleteListener = new AdapterView.OnItemClickListener() {
 		@Override
-		public void onItemClick(AdapterView<?> I, View v, int position,
-				long id) {
-/*			adapter.deleteItem(v, position); //클릭한 아이템 지우고
-			
-			ArrayList<CustomGallery> selected = adapter.getSelected();
-
-			String[] allPath = new String[selected.size()];
-			for (int i = 0; i < allPath.length; i++) {
-				allPath[i] = selected.get(i).sdcardPath;
-			}
-
-			Intent data = new Intent().putExtra("all_path", allPath);
-			onActivityResult(200,Activity.RESULT_OK,data);
-		//	setResult(RESULT_OK, data);
-		//	finish();
-		 * 
-		 */
+		public void onItemClick(AdapterView<?> I, View v, int position, long id) {
+			/*
+			 * mGalleryAdapter.deleteItem(v, position); //클릭한 아이템 지우고
+			 * 
+			 * ArrayList<CustomGallery> selected =
+			 * mGalleryAdapter.getSelected();
+			 * 
+			 * String[] allPath = new String[selected.size()]; for (int i = 0; i
+			 * < allPath.length; i++) { allPath[i] = selected.get(i).sdcardPath;
+			 * }
+			 * 
+			 * Intent data = new Intent().putExtra("all_path", allPath);
+			 * onActivityResult(200,Activity.RESULT_OK,data); //
+			 * setResult(RESULT_OK, data); // finish();
+			 */
 		}
 
-	}; 
+	};
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
 		if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
-			adapter.clear();
+			mGalleryAdapter.clear();
 
-			viewSwitcher.setDisplayedChild(1);
+			mViewSwitcher.setDisplayedChild(1);
 			String single_path = data.getStringExtra("single_path");
-			imageLoader.displayImage("file://" + single_path, imgSinglePick);
+			mImageLoader.displayImage("file://" + single_path, mImgSinglePick);
 
 		} else if (requestCode == 200 && resultCode == Activity.RESULT_OK) {
-	//		String[] all_path = data.getStringArrayExtra("all_path");
+			// String[] all_path = data.getStringArrayExtra("all_path");
+			SliderLayout previewSlider = (SliderLayout) findViewById(R.id.previewSlider);
+			String[] allPath = new String[mGalleryAdapter.getSelected().size()];
 
-
-			SliderLayout previewSlider=(SliderLayout)findViewById(R.id.previewSlider);
-			String[] allPath = new String[adapter.getSelected().size()];
 			for (int i = 0; i < allPath.length; i++) {
-				allPath[i] = adapter.getSelected().get(i).sdcardPath;
-			
+				allPath[i] = mGalleryAdapter.getSelected().get(i).sdcardPath;
 			}
-			
-		for (String url : allPath) {
-				TextSliderView textSliderView = new TextSliderView(getApplicationContext());
+			for (String url : allPath) {
+				TextSliderView textSliderView = new TextSliderView(
+						getApplicationContext());
 				// initialize a SliderLayout
 				textSliderView.image(url);
 				// .setScaleType(BaseSliderView.ScaleType.Fit);
 				previewSlider.addSlider(textSliderView);
-				
+
 			}
-/*<<<<<<< HEAD
-			ArrayList<CustomGallery> dataT = new ArrayList<CustomGallery>();
-
-			for (String string : all_path) {
-				CustomGallery item = new CustomGallery();
-				
-				item.sdcardPath = string;
-
-				dataT.add(item);
-			}
-
-			viewSwitcher.setDisplayedChild(0);
-			adapter.addAll(dataT);
-			
-
-*/
-
-
-			
-			
-			viewSwitcher.setDisplayedChild(0);
-			adapter.isShow = false;
-			adapter.notifyDataSetChanged();
-//			adapter.addAll(GalleryAdapter.dataChecked);
+			mViewSwitcher.setDisplayedChild(0);
+			mGalleryAdapter.toggleGallery(false);
+			mGalleryAdapter.notifyDataSetChanged();
+			// mGalleryAdapter.addAll(GalleryAdapter.dataChecked);
 
 		}
 	}

@@ -3,6 +3,7 @@ package com.nexters.house.activity;
 import org.json.JSONObject;
 
 import com.nexters.house.R;
+import com.nexters.house.core.SessionManager;
 
 import android.content.Intent;
 import android.os.Bundle;
