@@ -18,13 +18,13 @@ import com.nexters.house.activity.MainActivity;
  * 카카오톡, 페이스북, 서버로그인 부분
  */
 public class SessionManager {
-	// Shared Preferences
+	public static final int NONE = -1;
+	public static final int FACEBOOK = 1;
+	public static final int KAKAO = 2;
+	public static final int HOUSE = 3;
+	
 	SharedPreferences mPref;
-
-	// Editor for Shared preferences
 	SharedPreferences.Editor mEditor;
-
-	// Context
 	Context mContext;
 
 	// Shared pref mode
@@ -33,8 +33,11 @@ public class SessionManager {
 	// Sharedpref file name
 	private static final String PREF_NAME = "SessionPref";
 
+	// User LoginType
+	public static final String KEY_LOGIN_TYPE = "type";
+	
 	// All Shared Preferences Keys
-	private static final String IS_LOGIN = "IsLoggedIn";
+	private static final String IS_LOGIN = "isLogin";
 
 	// User name (make variable public to access from outside)
 	public static final String KEY_NAME = "name";
@@ -48,14 +51,15 @@ public class SessionManager {
 	// User Profile
 	public static final String KEY_PROFILE_PATH = "profile";
 	
-	// Constructor
+	// User AutoLogin
+	public static final String KEY_AUTO_LOGIN = "autoLogin";
+	
 	public SessionManager(Context context) {
 		this.mContext = context;
 		mPref = mContext.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
 		mEditor = mPref.edit();
 	}
 
-	// Instance
 	public static SessionManager getInstance(Context context) {
 		return new SessionManager(context);
 	}
@@ -63,7 +67,10 @@ public class SessionManager {
 	/**
 	 * Create login session
 	 * */
-	public void createLoginSession(String name, String email, String token, String profile) {
+	public void createLoginSession(int loginType, String name, String email, String token, String profile, boolean isAuto) {
+		// Storing type in pref
+		mEditor.putInt(KEY_LOGIN_TYPE, loginType);
+		
 		// Storing login value as TRUE
 		mEditor.putBoolean(IS_LOGIN, true);
 
@@ -79,33 +86,20 @@ public class SessionManager {
 		// Storing profile in pref
 		mEditor.putString(KEY_PROFILE_PATH, profile);
 		
+		// Storing auto in pref
+		mEditor.putBoolean(KEY_AUTO_LOGIN, isAuto);
+		
 		// commit changes
 		mEditor.commit();
 	}
 
-	/**
-	 * Check login method wil check user login status If false it will redirect
-	 * user to login page Else won't do anything
-	 * */
 	public void checkLogin() {
 		// Check login status
 		if (!this.isLoggedIn()) {
-			// user is not logged in redirect him to Login Activity
-			Intent i = new Intent(mContext, MainActivity.class);
-			// Closing all the Activities
-			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-			// Add new Flag to start new Activity
-			i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-			// Staring Login Activity
-			mContext.startActivity(i);
+			onSessionClosed();
 		}
 	}
 
-	/**
-	 * Get stored session data
-	 * */
 	public HashMap<String, String> getUserDetails() {
 		HashMap<String, String> user = new HashMap<String, String>();
 		// user name
@@ -121,9 +115,6 @@ public class SessionManager {
 		return user;
 	}
 
-	/**
-	 * Clear session details
-	 * */
 	public void logoutUser() {
 		// Clearing all data from Shared Preferences
 		boolean isKakao = com.kakao.Session.getCurrentSession().isOpened();
@@ -163,10 +154,15 @@ public class SessionManager {
 		mContext.startActivity(intent);
 	}
 
-	/**
-	 * Quick check for login
-	 * **/
-	// Get Login State
+	public boolean checkAutoLogin(){
+		boolean isAutoLogin = mPref.getBoolean(KEY_AUTO_LOGIN, false);
+		return isAutoLogin;
+	}
+	
+	public int getLoginType(){
+		return mPref.getInt(KEY_LOGIN_TYPE, NONE);
+	}
+	
 	public boolean isLoggedIn() {
 		return mPref.getBoolean(IS_LOGIN, false);
 	}

@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
@@ -34,11 +35,12 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
 
 		boolean logout = getIntent().getBooleanExtra("logout", false);
 		if (logout) {
-			Log.d("logout", "logout : ");
+//			Log.d("logout", "logout : ");
 			startActivity(new Intent(this, StartActivity.class));
 			finish();
 			return;

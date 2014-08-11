@@ -11,8 +11,8 @@ import android.widget.Button;
 
 import com.nexters.house.R;
 import com.nexters.house.fragment.SetFragment;
-import com.nexters.house.fragment.SetMailFragment;
 import com.nexters.house.fragment.SetNickNameFragment;
+import com.nexters.house.fragment.SetPwFragment;
 import com.nexters.house.fragment.SetVersionFragment;
 /**
  * Created by Leucosian on 4/17/14.
@@ -23,7 +23,7 @@ public class SetFragmentPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment mSetFragment = null;
     public Fragment mNickNameFragment = null;
     public Fragment mVersionFragment = null;
-    public Fragment mMailFragment = null;
+    public Fragment mPwFragment = null;
     public Fragment[] mTargetFragments = null;
     private ViewPager mViewPager = null;
     private ActionBar mActionBar = null;
@@ -38,13 +38,9 @@ public class SetFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
     private void initResources() {
         mSetFragment = SetFragment.newInstance();
-        mNickNameFragment = SetNickNameFragment.newInstance();
-        mVersionFragment = SetVersionFragment.newInstance();
-        mMailFragment = SetMailFragment.newInstance();
-
         mTargetFragments = new Fragment[2];
-        mTargetFragments[0] = mSetFragment;
-        mTargetFragments[1] = mMailFragment;
+        mTargetFragments[0] = SetFragment.newInstance();
+        mTargetFragments[1] = SetFragment.newInstance();
     }
 
     @Override
@@ -82,15 +78,15 @@ public class SetFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
     public void setFragment(int id){
         switch (id){
-            case R.layout.fragment_set_mail :
-                mTargetFragments[1] = mMailFragment;
-                break;
             case R.layout.fragment_set_nickname :
-                mTargetFragments[1] = mNickNameFragment;
+                mTargetFragments[1] = SetNickNameFragment.newInstance();
                 break;
             case R.layout.fragment_set_version :
-                mTargetFragments[1] = mVersionFragment;
+                mTargetFragments[1] = SetVersionFragment.newInstance();
                 break;
+            case R.layout.fragment_set_pw :
+            	mTargetFragments[1] = SetPwFragment.newInstance();
+            	break;
         }
     }
 
@@ -120,10 +116,10 @@ public class SetFragmentPagerAdapter extends FragmentStatePagerAdapter {
                     index = 1;
                     mSetFragmentPagerAdapter.setFragment(R.layout.fragment_set_version);
                     break;
-                case R.id.btn_send:
-                    index = 1;
-                    mSetFragmentPagerAdapter.setFragment(R.layout.fragment_set_mail);
-                    break;
+                case R.id.btn_modifypw:
+                	index = 1;
+                	mSetFragmentPagerAdapter.setFragment(R.layout.fragment_set_pw);
+                	break;
                 case R.id.btn_back:
                     index = 0;
                     break;

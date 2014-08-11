@@ -11,13 +11,18 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class SignInActivity extends FragmentActivity implements View.OnClickListener {
     private EditText mHsEmail;
     private EditText mHsPassword;
     private Button mBtnSignIn;
-
+    private CheckBox mCbAutoLogin;
+    private boolean mAutoLogin;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,17 +37,25 @@ public class SignInActivity extends FragmentActivity implements View.OnClickList
         mHsEmail = (EditText) findViewById(R.id.hs_sign_in_email);
         mHsPassword = (EditText) findViewById(R.id.hs_sign_in_password);
         mBtnSignIn = (Button) findViewById(R.id.btn_sign_in);
+        mCbAutoLogin = (CheckBox) findViewById(R.id.cb_auto_login);
     }
 
     private void initEvents() {
         mBtnSignIn.setOnClickListener(this);
+        mCbAutoLogin.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				mAutoLogin = isChecked;
+			}
+        });
     }
 
     public void onClick(View v) {
 //        if (!isAllFormsFilled()) {
-////            showAlert(R.string.error_fill_in_all_forms);
+//            showAlert(R.string.error_fill_in_all_forms);
 //        } else if (!isValidEmail()) {
-////            showAlert(R.string.error_invalid_email);
+//            showAlert(R.string.error_invalid_email);
 //        } else {
             executeSignIn();
 //        }
@@ -96,7 +109,7 @@ public class SignInActivity extends FragmentActivity implements View.OnClickList
 //            }
 //        });
         SessionManager sessionManager = SessionManager.getInstance(this);
-        sessionManager.createLoginSession("BoBinLee", "cultist_tp@naver.com", "1234", "123.png");
+        sessionManager.createLoginSession(SessionManager.HOUSE ,"BoBinLee", "cultist_tp@naver.com", "1234", "123.png", mAutoLogin);
         finish();
     }
 }

@@ -4,21 +4,16 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.facebook.Session;
-import com.kakao.APIErrorResult;
-import com.kakao.LogoutResponseCallback;
-import com.kakao.UserManagement;
 import com.nexters.house.R;
-import com.nexters.house.activity.MainActivity;
 import com.nexters.house.adapter.SetFragmentPagerAdapter;
 import com.nexters.house.core.SessionManager;
 
@@ -28,6 +23,7 @@ public class SetFragment extends Fragment implements View.OnClickListener {
     private LinearLayout mBtnNickName;
     private LinearLayout mBtnVersion;
     private LinearLayout mBtnWithdraw;
+    private LinearLayout mBtnModifypw;
     private Activity mActivity;
     private View mView;
 
@@ -71,7 +67,8 @@ public class SetFragment extends Fragment implements View.OnClickListener {
         mBtnNickName = (LinearLayout) mView.findViewById(R.id.btn_nickname);
         mBtnVersion = (LinearLayout) mView.findViewById(R.id.btn_version);
         mBtnWithdraw = (LinearLayout) mView.findViewById(R.id.btn_withdraw);
-
+        mBtnModifypw = (LinearLayout) mView.findViewById(R.id.btn_modifypw);
+        
         ViewPager viewPager = (ViewPager)getActivity().findViewById(R.id.set_view_pager);
         SetFragmentPagerAdapter myFragmentPagerAdapter = (SetFragmentPagerAdapter) viewPager.getTag();
         setFragmentPagerListener = new SetFragmentPagerAdapter.MyFragmentPagerListener(myFragmentPagerAdapter, viewPager);
@@ -81,10 +78,12 @@ public class SetFragment extends Fragment implements View.OnClickListener {
         // 현재창에서 해결
         mBtnLogout.setOnClickListener(this);
         mBtnWithdraw.setOnClickListener(this);
+        mBtnSend.setOnClickListener(this);
+        
         //
-        mBtnSend.setOnClickListener(setFragmentPagerListener);
         mBtnNickName.setOnClickListener(setFragmentPagerListener);
         mBtnVersion.setOnClickListener(setFragmentPagerListener);
+        mBtnModifypw.setOnClickListener(setFragmentPagerListener);
     }
     
     @Override
@@ -93,15 +92,9 @@ public class SetFragment extends Fragment implements View.OnClickListener {
             case R.id.btn_logout:
                 dispatchLogout();
                 break;
-//            case R.id.btn_send:
-//                dispatchSend();
-//                break;
-//            case R.id.btn_nickname:
-//                dispatchNickName();
-//                break;
-//            case R.id.btn_version:
-//                dispatchVersion();
-//                break;
+            case R.id.btn_send:
+                dispatchSend();
+                break;
             case R.id.btn_withdraw:
                 dispatchWithdraw();
                 break;
@@ -122,19 +115,14 @@ public class SetFragment extends Fragment implements View.OnClickListener {
     }
 
     private void dispatchSend() {
-
-    }
-
-    private void dispatchNickName() {
-
-    }
-
-    private void dispatchVersion() {
-
+    	Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                "mailto","cultisttp@gmail.com", null));
+		emailIntent.putExtra(Intent.EXTRA_SUBJECT, "EXTRA_SUBJECT");
+		startActivity(Intent.createChooser(emailIntent, "Send email..."));
     }
 
     private void dispatchWithdraw() {
-
+    	
     }
 
     @Override

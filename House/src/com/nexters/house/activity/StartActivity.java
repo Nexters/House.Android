@@ -50,7 +50,7 @@ public class StartActivity extends Activity implements View.OnClickListener {
                     public void onCompleted(GraphUser user, Response response) {
                         if (user != null) {
                         	Log.d("user", "User : " + user.getName() + " thumbnailpath : " + user.getId());
-                        	SessionManager.getInstance(StartActivity.this).createLoginSession(user.getName(), null, com.facebook.Session.getActiveSession().getAccessToken(), user.getId());
+                        	SessionManager.getInstance(StartActivity.this).createLoginSession(SessionManager.FACEBOOK, user.getName(), null, com.facebook.Session.getActiveSession().getAccessToken(), user.getId(), true);
                             finish();
                         }
                     }
@@ -68,7 +68,7 @@ public class StartActivity extends Activity implements View.OnClickListener {
 //                	userProfile.getId()
                     // 성공.
                     Log.d("user", "User : " + userProfile.getNickname() + " thumbnailpath : " + userProfile.getThumbnailImagePath());
-                    SessionManager.getInstance(StartActivity.this).createLoginSession(userProfile.getNickname(), null, com.kakao.Session.getCurrentSession().getAccessToken(), userProfile.getThumbnailImagePath());
+                    SessionManager.getInstance(StartActivity.this).createLoginSession(SessionManager.KAKAO, userProfile.getNickname(), null, com.kakao.Session.getCurrentSession().getAccessToken(), userProfile.getThumbnailImagePath(), true);
                     finish();
                 }
                 @Override
@@ -116,11 +116,22 @@ public class StartActivity extends Activity implements View.OnClickListener {
     }
 
     private void initResources() {
-    	SessionManager sessionManager = new SessionManager(this);
         mBtnSignIn = (Button) findViewById(R.id.btn_sign_in);
         mBtnSignUp = (Button) findViewById(R.id.btn_sign_up);
         mBtnKakao = (LoginButton) findViewById(R.id.btn_kakao_in);
         videoViewIntro = (VideoView) findViewById(R.id.vv_house_intro);
+        
+//      Settings
+        // 세션을 초기화 한다
+        if(com.kakao.Session.initializeSession(this, kakaoCallback)){
+            // 1. 세션을 갱신 중이면, 프로그레스바를 보이거나 버튼을 숨기는 등의 액션을 취한다
+            mBtnKakao.setVisibility(View.GONE);
+        }
+        
+        // Check autoLogin
+        SessionManager sessionManager = SessionManager.getInstance(this);
+        if(sessionManager.isLoggedIn() && !sessionManager.checkAutoLogin())
+        	sessionManager.logoutUser(); 
     }
 
     private void initEvents() {
@@ -192,11 +203,7 @@ public class StartActivity extends Activity implements View.OnClickListener {
         uiHelper.onResume();
         playVideoIntro();
 
-        // 세션을 초기화 한다
-        if(com.kakao.Session.initializeSession(this, kakaoCallback)){
-            // 1. 세션을 갱신 중이면, 프로그레스바를 보이거나 버튼을 숨기는 등의 액션을 취한다
-            mBtnKakao.setVisibility(View.GONE);
-        } else if (com.kakao.Session.getCurrentSession().isOpened() || com.facebook.Session.getActiveSession().isOpened() || SessionManager.getInstance(this).isLoggedIn()){
+        if (com.kakao.Session.getCurrentSession().isOpened() || com.facebook.Session.getActiveSession().isOpened() || SessionManager.getInstance(this).isLoggedIn()){
             // 2. 세션이 오픈된된 상태이면, 다음 activity로 이동한다.
             onSessionOpened();
         }
