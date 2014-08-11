@@ -28,7 +28,7 @@ public class HorzGridViewAdapter extends BaseAdapter{
 	private int columnWidth;
 	private int rowHeight;
 
-	public HorzGridViewAdapter(Context context,List<DataObject> data){
+	public HorzGridViewAdapter(Context context,List<DataObject> data,final int type){
 		this.mContext = context;
 		this.data = data;
 		//Get dimensions from values folders; note that the value will change
@@ -41,25 +41,39 @@ public class HorzGridViewAdapter extends BaseAdapter{
 		
 		
 		//Initialize the layout params
-		
-		TalkWriteActivity.horzGridView.setNumRows(rows);
+		ViewTreeObserver vto;
+		if(type==1){
+			TalkWriteActivity.horzGridView.setNumRows(rows);
 		//HorzGridView size not established yet, so need to set it using a viewtreeobserver
-		ViewTreeObserver vto = TalkWriteActivity.horzGridView.getViewTreeObserver();
-		
+			vto = TalkWriteActivity.horzGridView.getViewTreeObserver();
+		}
+		else{
+			InteriorWrite2Activity.horzGridView.setNumRows(rows);
+			vto=InteriorWrite2Activity.horzGridView.getViewTreeObserver();
+		}
 		OnGlobalLayoutListener onGlobalLayoutListener = new OnGlobalLayoutListener() {
 			
 			@SuppressWarnings("deprecation")
 			@SuppressLint("NewApi")
 			@Override
 			public void onGlobalLayout() {
+				ViewTreeObserver vto;
 				//First use the gridview height and width to determine child values
+				if(type==1){
 				rowHeight =(int)((float)(TalkWriteActivity.horzGridView.getHeight()/rows)-2*itemPadding);
-				columnWidth = (int)((float)(TalkWriteActivity.horzGridView.getWidth()/columns)-2*itemPadding);
-				
+				columnWidth = (int)((float)(TalkWriteActivity.horzGridView.getWidth()/columns)-2*itemPadding);				
 				TalkWriteActivity.horzGridView.setRowHeight(rowHeight);
-				
+				vto = TalkWriteActivity.horzGridView.getViewTreeObserver();
+				}
+				else{
+					rowHeight =(int)((float)(InteriorWrite2Activity.horzGridView.getHeight()/rows)-2*itemPadding);
+					columnWidth = (int)((float)(InteriorWrite2Activity.horzGridView.getWidth()/columns)-2*itemPadding);
+					InteriorWrite2Activity.horzGridView.setRowHeight(rowHeight);
+					vto = InteriorWrite2Activity.horzGridView.getViewTreeObserver();
+					
+				}
 				//Then remove the listener
-				ViewTreeObserver vto = TalkWriteActivity.horzGridView.getViewTreeObserver();
+			
 				
 				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
 					vto.removeOnGlobalLayoutListener(this);

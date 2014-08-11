@@ -167,7 +167,7 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 	private View.OnClickListener clickListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
-			Intent intent=new Intent(getActivity(),SelectWriteActivity.class);
+			Intent intent=new Intent(getActivity(),InteriorWriteActivity.class);
 			startActivity(intent);
 		}
 	};

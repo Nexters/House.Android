@@ -3,6 +3,6 @@
 
     <item android:drawable="@drawable/checkbox_selected" android:state_selected="true"></item>
     <item android:drawable="@drawable/checkbox_selected" android:state_checked="true"></item>
-    <item android:drawable="@drawable/checkbox_up"></item>
+         <item android:drawable="@drawable/checkbox_up"></item> 
 
 </selector>

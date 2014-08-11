@@ -17,7 +17,7 @@ import com.nostra13.universalimageloader.core.*;
 import com.nostra13.universalimageloader.core.assist.*;
 public class TalkWriteActivity extends Activity {
 
-	private int NUMBER_SOURCE_ITEMS = 500;
+
 	private HorzGridViewAdapter horzGridViewAdapter;
 
 	private Context mContext;
@@ -120,29 +120,6 @@ public class TalkWriteActivity extends Activity {
 
 	}
 
-	AdapterView.OnItemClickListener mItemDeleteListener=new AdapterView.OnItemClickListener() {
-
-		@Override
-		public void onItemClick(AdapterView<?> I, View v, int position,
-				long id) {
-/*			adapter.deleteItem(v, position); //클릭한 아이템 지우고
-			
-			ArrayList<CustomGallery> selected = adapter.getSelected();
-
-			String[] allPath = new String[selected.size()];
-			for (int i = 0; i < allPath.length; i++) {
-				allPath[i] = selected.get(i).sdcardPath;
-			}
-
-			Intent data = new Intent().putExtra("all_path", allPath);
-			onActivityResult(200,Activity.RESULT_OK,data);
-		//	setResult(RESULT_OK, data);
-		//	finish();
-		 * 
-		 */
-		}
-
-	}; 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -163,7 +140,7 @@ public class TalkWriteActivity extends Activity {
 
 			if(horzGridViewAdapter==null){
 			
-				horzGridViewAdapter = new HorzGridViewAdapter(mContext,horzData);
+				horzGridViewAdapter = new HorzGridViewAdapter(mContext,horzData,1);
 				horzGridView.setAdapter(horzGridViewAdapter);
 
 			}else
