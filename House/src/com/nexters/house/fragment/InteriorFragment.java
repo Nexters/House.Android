@@ -2,18 +2,19 @@ package com.nexters.house.fragment;
 
 import java.util.*;
 
+import uk.co.senab.actionbarpulltorefresh.library.*;
+import uk.co.senab.actionbarpulltorefresh.library.listeners.*;
 import android.annotation.*;
+import android.app.Activity;
 import android.content.*;
 import android.os.*;
 import android.support.v4.app.*;
+import android.util.*;
 import android.view.*;
 import android.widget.*;
 import android.widget.AbsListView.OnScrollListener;
-import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
-import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
-import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
-import android.os.AsyncTask;
-import com.nexters.house.*;
+
+import com.nexters.house.R;
 import com.nexters.house.activity.*;
 import com.nexters.house.adapter.*;
 import com.nexters.house.entity.*;
@@ -29,7 +30,17 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 	private InteriorAdapter mListAdapter;
 	private Button btn_write;
 	private Boolean loading = true;
+	private TextView tvContent;
+	private FragmentActivity mFragmentActivity;
 
+	public InteriorFragment(FragmentActivity fragmentActivity) {
+		this.mFragmentActivity = fragmentActivity;
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,6 +52,7 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 
 		return v;
 	}
+
 
 
 	@SuppressLint("InflateParams")
@@ -56,7 +68,8 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 		btn_write.setText("쓰기");
 		btn_write.bringToFront();
 
-		 mPullToRefreshLayout = (PullToRefreshLayout)v.findViewById(R.id.ptr_layout);
+
+		mPullToRefreshLayout = (PullToRefreshLayout)v.findViewById(R.id.ptr_layout);
 		lv_main = (ListView) v.findViewById(R.id.lv_interior_view);
 		mInteriorItemArrayList = new ArrayList<InteriorEntity>();
 
@@ -64,7 +77,7 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 				getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.listfooter, null, false);
 
 		mListAdapter = new InteriorAdapter(getActivity().
-				getApplicationContext(), mInteriorItemArrayList, R.layout.custom_view_interior);
+				getApplicationContext(), mInteriorItemArrayList, R.layout.custom_view_interior, mFragmentActivity);
 
 		//footerview를  listview 제일 하단에 붙임 
 		lv_main.addFooterView(footerView);
@@ -81,17 +94,6 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 		btn_write.setOnClickListener(clickListener);
 		lv_main.setOnScrollListener(scrollListener);
 
-
-		// Set a listener to be invoked when the list should be refreshed.
-		//        ((PullToRefreshListView) lv_main).setOnRefreshListener(new OnRefreshListener() {
-		//            @Override
-		//            public void onRefresh() {
-		////            	Thread thread =  new Thread(null, refreshListItem);
-		////				thread.start();
-		//                // Do work to refresh the list here.
-		//                
-		//            }
-		//        });
 	}
 
 	private Runnable loadListItems = new Runnable(){
@@ -142,23 +144,10 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 				loading = false;
 				break;
 			case 2:
-				//	        	InteriorEntity e = new InteriorEntity();
-				//	        	e.id = "refreshId";
-				//	        	e.category ="refresh";
-				//	        	e.content = "refresh content";
-				//	    		e.image_urls = new ArrayList<String>(){{
-				//	    			add("https://fbcdn-sphotos-g-a.akamaihd.net/hphotos-ak-xfa1/t1.0-9/10487348_570244969751450_1480175892860352468_n.jpg");
-				//	    			add("https://fbcdn-sphotos-f-a.akamaihd.net/hphotos-ak-xpa1/t1.0-9/1546376_570244983084782_3616217572638065925_n.jpg");
-				//	    			add("https://fbcdn-sphotos-d-a.akamaihd.net/hphotos-ak-xpf1/t1.0-9/10487342_570244993084781_3890212537564580615_n.jpg");
-				//	    			}};
-				//    			e.badge = 0;
-				//    			e.reply = 1;
-				//    			e.scrap = 1;
-				//    			e.share = 1;
-				//    			mInteriorItemArrayList.add(0,e);
-				//    			mListAdapter.notifyDataSetChanged();
+
 				break;
 			case 3:
+
 				break;
 			}
 		}
@@ -167,6 +156,15 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 	private View.OnClickListener clickListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
+
+			Log.d("Click View Id","Soyoon = " + Integer.toString(v.getId()));
+			switch(v.getId()){
+			case R.id.btn_write:
+				Intent intent=new Intent(getActivity(),SelectWriteActivity.class);
+				startActivity(intent);
+				break;
+
+			}
 			Intent intent=new Intent(getActivity(),InteriorWriteActivity.class);
 			startActivity(intent);
 		}
@@ -195,11 +193,6 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 
 		}
 	};
-
-
-
-
-
 
 	@Override
 	public void onRefreshStarted(View view) {

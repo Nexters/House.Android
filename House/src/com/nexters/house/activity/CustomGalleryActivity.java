@@ -73,6 +73,7 @@ public class CustomGalleryActivity extends Activity {
 		}
 	}
 
+	@SuppressWarnings("static-access")
 	private void init() {
 		handler = new Handler();
 		gridGallery = (GridView) findViewById(R.id.gridGallery);
@@ -171,6 +172,7 @@ public class CustomGalleryActivity extends Activity {
 					MediaStore.Images.Media._ID };
 			final String orderBy = MediaStore.Images.Media._ID;
 
+			@SuppressWarnings("deprecation")
 			Cursor imagecursor = managedQuery(
 					MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns,
 					null, null, orderBy);

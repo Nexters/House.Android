@@ -105,6 +105,7 @@ public class GalleryAdapter extends BaseAdapter {
 		return dataChecked;
 	}
 
+	@SuppressWarnings("static-access")
 	public void addAll(ArrayList<CustomGallery> files) {
 
 		try {
