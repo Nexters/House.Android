@@ -32,11 +32,11 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 	private Boolean loading = true;
 	private TextView tvContent;
 	private FragmentActivity mFragmentActivity;
-	
+
 	public InteriorFragment(FragmentActivity fragmentActivity) {
 		this.mFragmentActivity = fragmentActivity;
 	}
-	
+
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -47,9 +47,7 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 			Bundle savedInstanceState) {
 
 		View v = inflater.inflate(R.layout.fragment_interior, container, false);
-		//View v2 = inflater.inflate(R.layout.custom_view_interior, container, false);
 		initResources(v);
-		//tvContent = (TextView)v2.findViewById(R.id.tv_content);
 		initEvents();
 
 		return v;
@@ -69,9 +67,9 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 		btn_write=(Button)v.findViewById(R.id.btn_write);
 		btn_write.setText("쓰기");
 		btn_write.bringToFront();
-		
 
-		 mPullToRefreshLayout = (PullToRefreshLayout)v.findViewById(R.id.ptr_layout);
+
+		mPullToRefreshLayout = (PullToRefreshLayout)v.findViewById(R.id.ptr_layout);
 		lv_main = (ListView) v.findViewById(R.id.lv_interior_view);
 		mInteriorItemArrayList = new ArrayList<InteriorEntity>();
 
@@ -95,8 +93,6 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 	private void initEvents(){
 		btn_write.setOnClickListener(clickListener);
 		lv_main.setOnScrollListener(scrollListener);
-		//tvContent.setOnClickListener(mClickListener);
-		Log.d("SetOnClickListener", "Soyoon Event Success");
 
 	}
 
@@ -148,10 +144,10 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 				loading = false;
 				break;
 			case 2:
-				
+
 				break;
 			case 3:
-				
+
 				break;
 			}
 		}
@@ -160,45 +156,19 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 	private View.OnClickListener clickListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
+
 			Log.d("Click View Id","Soyoon = " + Integer.toString(v.getId()));
 			switch(v.getId()){
 			case R.id.btn_write:
-				Log.d(TAG,"Soyoon btn_write click");
 				Intent intent=new Intent(getActivity(),SelectWriteActivity.class);
 				startActivity(intent);
 				break;
 
 			}
-			
+			Intent intent=new Intent(getActivity(),InteriorWriteActivity.class);
+			startActivity(intent);
 		}
 	};
-	
-//	private View.OnClickListener mClickListener = new View.OnClickListener() {
-//		
-//		@Override
-//		public void onClick(View v) {
-//			Log.d(TAG,"Soyoon makes onclicklistener");
-//			// TODO Auto-generated method stub
-//			Log.d(TAG, "Soyoon content click");
-//			//Toast.makeText(getActivity(), "test", Toast.LENGTH_SHORT).show();
-//			Fragment newFragment = null;
-//
-//			//Log.d(TAG, "fragmentReplace " + reqNewFragmentIndex);
-//
-//			newFragment = new ContentDetailFragment();
-//
-//			// replace fragment
-//			final FragmentTransaction transaction = getActivity().getSupportFragmentManager()
-//					.beginTransaction();
-//
-//			transaction.replace(R.id.ll_fragment, newFragment);
-//
-//			// Commit the transaction
-//			transaction.commit();
-//
-//			
-//		}
-//	};
 
 	private OnScrollListener scrollListener = new OnScrollListener() {
 

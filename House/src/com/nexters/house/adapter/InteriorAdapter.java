@@ -174,9 +174,8 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 		Log.d(TAG,"Soyoon click Id ="+Integer.toString(v.getId()));
-		if(v.getId()==R.id.tv_content /*|| v.getId()==R.id.tv_id || v.getId()==R.id.iv_image */){
+		if(v.getId()==R.id.tv_content){
 			Fragment newFragment = null;
-			//Log.d(TAG, "fragmentReplace " + reqNewFragmentIndex);
 			newFragment = new ContentDetailFragment();
 
 			// replace fragment
@@ -184,7 +183,8 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 					.beginTransaction();
 
 			transaction.replace(R.id.ll_fragment, newFragment);
-
+			//뒤로가기 버튼누르면 앞의 프래그먼트 나오도록하는거 
+			transaction.addToBackStack(null);
 			// Commit the transaction
 			transaction.commit();
 		}

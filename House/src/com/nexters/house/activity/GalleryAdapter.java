@@ -105,6 +105,7 @@ public class GalleryAdapter extends BaseAdapter {
 		return dataChecked;
 	}
 
+	@SuppressWarnings("static-access")
 	public void addAll(ArrayList<CustomGallery> files) {
 
 		try {
@@ -131,6 +132,8 @@ public class GalleryAdapter extends BaseAdapter {
 				data.get(position).isSeleted = true;
 				selectCnt++;
 				dataChecked.add(data.get(position)); //체크된거 넣기
+			
+		//		((ViewHolder) v.getTag()).imgQueueMultiSelected.setBackgroundResource(R.drawable.checkbox1);
 			}
 			else{ //10모다 크면
 				Toast.makeText(mContext,"10개까지만", Toast.LENGTH_LONG).show();
@@ -202,7 +205,7 @@ public class GalleryAdapter extends BaseAdapter {
 			if (isActionMultiplePick) {
 				holder.imgQueueMultiSelected
 						.setSelected(tmps.get(position).isSeleted);
-				
+				holder.imgQueueMultiSelected.setBackgroundResource(R.drawable.checkbox1); //이부분을 position에 따라 다른걸로!
 			}
 
 		} catch (Exception e) {

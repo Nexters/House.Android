@@ -38,7 +38,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 
 	}
 
-	
+
 
 	private void initResources(){
 		btn_interior = (Button) findViewById(R.id.btn_interior);
@@ -59,22 +59,12 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	public void fragmentReplace(int reqNewFragmentIndex) {
 		Fragment newFragment = null;
 		newFragment = getFragment(reqNewFragmentIndex);
-		   if (!isFinishing()) {
-			   
-		        FragmentManager manager = getSupportFragmentManager();
-		        FragmentTransaction ft = manager.beginTransaction();
 
-		        ft.replace(R.id.ll_fragment, newFragment);
-		        ft.commit();
-		        }
-		    else {
-		        FragmentManager manager = getSupportFragmentManager();
-		        FragmentTransaction ft = manager.beginTransaction();
+		FragmentManager manager = getSupportFragmentManager();
+		FragmentTransaction ft = manager.beginTransaction();
 
-		        ft.replace(R.id.ll_fragment, newFragment);
-		        ft.addToBackStack(null);
-		        ft.commitAllowingStateLoss();//error shows here also.
-		    }
+		ft.replace(R.id.ll_fragment, newFragment);
+		ft.commit();
 	}
 
 	private Fragment getFragment(int idx) {

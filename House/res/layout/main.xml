@@ -7,12 +7,9 @@
     android:background="@color/bg_light_blue"
     android:orientation="vertical" >
 
-    <include
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        layout="@layout/titlebar" />
+ 
 
-    <TextView
+   <!--  <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
@@ -22,24 +19,25 @@
         android:text="Preview"
         android:textColor="@android:color/white"
         android:textStyle="bold" />
-
+ -->
      
     <ViewSwitcher
         android:id="@+id/viewSwitcher"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
+        android:paddingTop="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_weight="1" >
 
    
-         <com.daimajia.slider.library.SliderLayout
-        android:id="@+id/previewSlider"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        custom:auto_cycle="false"
-        custom:pager_animation="Default"
-        custom:pager_animation_span="1100" />
+        <android.support.v4.view.ViewPager
+     android:id="@+id/previewPager"
+     android:layout_width="fill_parent"
+     android:layout_height="fill_parent"
+     android:layout_above="@+id/bottom"
+     android:layout_below="@+id/ll_title_layout"
+     />
        
         
         <ImageView
@@ -51,7 +49,7 @@
             android:src="@drawable/no_media" />
     </ViewSwitcher>
  
-    <LinearLayout
+ <!--    <LinearLayout
         android:id="@+id/llBottomContainer"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -63,8 +61,8 @@
             style="@style/btn"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/btn_sel"
-            android:text="@string/btn_pick" />
+            android:background="#F79557"
+            android:text="싱글 선택" />
 
         <Button
             android:id="@+id/btnGalleryPickMul"
@@ -72,8 +70,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:background="@drawable/btn_sel"
-            android:text="@string/btn_pick_mul" />
-    </LinearLayout>
+            android:background="#F79557"
+            android:text="다중 선택" />
+    </LinearLayout> -->
 
 </LinearLayout>

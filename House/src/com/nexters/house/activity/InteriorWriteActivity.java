@@ -4,11 +4,13 @@ import android.app.*;
 import android.content.*;
 import android.graphics.*;
 import android.os.*;
+import android.support.v4.view.ViewPager;
 import android.view.*;
 import android.widget.*;
 
 import com.daimajia.slider.library.*;
 import com.daimajia.slider.library.SliderTypes.*;
+import com.nexters.house.adapter.PagerAdapterClass;
 import com.nexters.house.R;
 import com.nostra13.universalimageloader.cache.memory.impl.*;
 import com.nostra13.universalimageloader.core.*;
@@ -16,11 +18,13 @@ import com.nostra13.universalimageloader.core.assist.*;
 
 public class InteriorWriteActivity extends Activity {
 
-	GridView gridGallery;
+//	GridView gridGallery;
 	
 	Handler handler;
 	GalleryAdapter adapter;
 
+	PagerAdapterClass pageradapter;
+	private ViewPager mPager;
 	ImageView imgSinglePick;
 	Button btnGalleryPick;
 	Button btnGalleryPickMul;
@@ -28,20 +32,48 @@ public class InteriorWriteActivity extends Activity {
 	String action;
 	ViewSwitcher viewSwitcher;
 	ImageLoader imageLoader;
+	
+
+	
+	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+	//	requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.main);
-
+	
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		initImageLoader();
 		init();
+		
 		Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
 		startActivityForResult(i, 200);
 
+		
 	}
-
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    // Inflate the menu items for use in the action bar
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.interior_write, menu);
+	    return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle presses on the action bar items
+	    switch (item.getItemId()) {
+	        case android.R.id.home:
+	            moreSelect();
+	            return true;
+	        case R.id.action_next:
+	            openNext();
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
+	}
 	private void initImageLoader() {
 		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
 				.cacheOnDisc().imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
@@ -62,6 +94,7 @@ public class InteriorWriteActivity extends Activity {
 	//	gridGallery.setFastScrollEnabled(true);
 	//	gridGallery.setOnItemClickListener(mItemDeleteListener);
 	
+	
 		
 		adapter = new GalleryAdapter(getApplicationContext(), imageLoader);
 		adapter.setMultiplePick(false);
@@ -80,7 +113,7 @@ public class InteriorWriteActivity extends Activity {
 
 		imgSinglePick = (ImageView) findViewById(R.id.imgSinglePick);
 
-		btnGalleryPick = (Button) findViewById(R.id.btnGalleryPick);
+	/*	btnGalleryPick = (Button) findViewById(R.id.btnGalleryPick);
 		btnGalleryPick.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -96,7 +129,7 @@ public class InteriorWriteActivity extends Activity {
 				Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
 				startActivityForResult(i, 200);
 			}
-		});
+		});*/
 
 	}
 
@@ -136,47 +169,45 @@ public class InteriorWriteActivity extends Activity {
 		} else if (requestCode == 200 && resultCode == Activity.RESULT_OK) {
 	//		String[] all_path = data.getStringArrayExtra("all_path");
 
-
-			SliderLayout previewSlider=(SliderLayout)findViewById(R.id.previewSlider);
-			String[] allPath = new String[adapter.getSelected().size()];
-			for (int i = 0; i < allPath.length; i++) {
-				allPath[i] = adapter.getSelected().get(i).sdcardPath;
-			
-			}
-			
-		for (String url : allPath) {
-				TextSliderView textSliderView = new TextSliderView(getApplicationContext());
-				// initialize a SliderLayout
-				textSliderView.image(url);
-				// .setScaleType(BaseSliderView.ScaleType.Fit);
-				previewSlider.addSlider(textSliderView);
-				
-			}
-/*<<<<<<< HEAD
-			ArrayList<CustomGallery> dataT = new ArrayList<CustomGallery>();
-
-			for (String string : all_path) {
-				CustomGallery item = new CustomGallery();
-				
-				item.sdcardPath = string;
-
-				dataT.add(item);
-			}
-
-			viewSwitcher.setDisplayedChild(0);
-			adapter.addAll(dataT);
-			
-
-*/
-
-
+		
+			mPager=(ViewPager)findViewById(R.id.previewPager);
+			pageradapter=new PagerAdapterClass(getApplicationContext(), mPager);
+	//		mPager.setAdapter(new PagerAdapterClass(getApplicationContext(), mPager));
+		
+			mPager.setAdapter(pageradapter);
 			
 			
+			
+			
+					
 			viewSwitcher.setDisplayedChild(0);
 			adapter.isShow = false;
 			adapter.notifyDataSetChanged();
 //			adapter.addAll(GalleryAdapter.dataChecked);
 
 		}
+	}
+	
+	private void openNext() {
+		
+	
+		pageradapter.notifyDataSetChanged();
+		String allInfo = "";
+		for(int j=0;j<pageradapter.InfoList.size();j++){ //스트링 합치기
+			allInfo=allInfo.concat(pageradapter.InfoList.get(j));
+			allInfo=allInfo.concat(", ");
+			
+		}
+		Intent i =new Intent(this,InteriorWrite2Activity.class);
+		i.putExtra("ALLINFO",allInfo);
+		startActivity(i);
+		
+		
+	}
+
+	private void moreSelect() {
+		Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
+		startActivityForResult(i, 200);
+		
 	}
 }
