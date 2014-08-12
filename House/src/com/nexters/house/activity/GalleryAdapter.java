@@ -145,6 +145,9 @@ public class GalleryAdapter extends BaseAdapter {
 				.get(position).isSeleted);
 	}
 
+	public static void compareChecked(CustomGallery customGallery){
+		data.get(data.indexOf(customGallery)).isSeleted = false;
+	}
 	public void deleteItem(View v, int position) {
 		data.get(position).isSeleted = false;
 		selectCnt--;
@@ -220,6 +223,8 @@ public class GalleryAdapter extends BaseAdapter {
 		ImageView imgQueueMultiSelected;
 	}
 
+	
+	
 	public void clearCache() {
 		imageLoader.clearDiscCache();
 		imageLoader.clearMemoryCache();

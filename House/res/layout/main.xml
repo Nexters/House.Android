@@ -7,7 +7,12 @@
     android:background="@color/bg_light_blue"
     android:orientation="vertical" >
 
- 
+ <LinearLayout
+		android:id="@+id/page_mark"
+		android:orientation="horizontal" 
+		android:layout_width="fill_parent"
+		android:layout_height="30dp"
+		android:gravity="center" />
 
    <!--  <TextView
         android:layout_width="fill_parent"
