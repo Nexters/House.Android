@@ -9,7 +9,7 @@
     android:background="#FFFFFF"
     android:orientation="vertical" >
 
-    <!-- 얘는 처음엔 사람프로필 카테고리 보여주고 그다음엔 텍스트보여주는부분 -->
+    <!--사람프로필사진 + 아이디 + 카테고리-->
 
     <LinearLayout
         android:layout_width="match_parent"

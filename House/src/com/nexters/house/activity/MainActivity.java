@@ -18,6 +18,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	public final static int FRAGMENT_INTERIOR = 0;
 	public final static int FRAGMENT_BOARD = 1;
 	public final static int FRAGMENT_MYPAGE = 2;
+	public final static int FRAGMENT_CONTENT_DETAIL = 3;
 
 	private Button btn_interior;
 	private Button btn_board;
@@ -34,7 +35,10 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 
 		mCurrentFragmentIndex = FRAGMENT_INTERIOR;
 		fragmentReplace(mCurrentFragmentIndex);
+
 	}
+
+	
 
 	private void initResources(){
 		btn_interior = (Button) findViewById(R.id.btn_interior);
@@ -53,31 +57,32 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 
 
 	public void fragmentReplace(int reqNewFragmentIndex) {
-
 		Fragment newFragment = null;
-
-		Log.d(TAG, "fragmentReplace " + reqNewFragmentIndex);
-
 		newFragment = getFragment(reqNewFragmentIndex);
+		   if (!isFinishing()) {
+			   
+		        FragmentManager manager = getSupportFragmentManager();
+		        FragmentTransaction ft = manager.beginTransaction();
 
-		// replace fragment
-		final FragmentTransaction transaction = getSupportFragmentManager()
-				.beginTransaction();
+		        ft.replace(R.id.ll_fragment, newFragment);
+		        ft.commit();
+		        }
+		    else {
+		        FragmentManager manager = getSupportFragmentManager();
+		        FragmentTransaction ft = manager.beginTransaction();
 
-		transaction.replace(R.id.ll_fragment, newFragment);
-
-		// Commit the transaction
-		transaction.commit();
-
+		        ft.replace(R.id.ll_fragment, newFragment);
+		        ft.addToBackStack(null);
+		        ft.commitAllowingStateLoss();//error shows here also.
+		    }
 	}
 
 	private Fragment getFragment(int idx) {
 		Fragment newFragment = null;
-		
 
 		switch (idx) {
 		case FRAGMENT_INTERIOR:
-			newFragment = new InteriorFragment();
+			newFragment = new InteriorFragment(this);
 			break;
 		case FRAGMENT_BOARD:
 			newFragment = new BoardFragment();
@@ -85,7 +90,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		case FRAGMENT_MYPAGE:
 			newFragment = new MyPageFragment();
 			break;
-
 		default:
 			Log.d(TAG, "Unhandle case");
 			break;
@@ -106,7 +110,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		} else if(v.getId() == R.id.btn_mypage) {
 			mCurrentFragmentIndex = FRAGMENT_MYPAGE;
 			fragmentReplace(mCurrentFragmentIndex);
-		}
+		} 
 	}
 
 }

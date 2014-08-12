@@ -1,32 +1,45 @@
 package com.nexters.house.adapter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import android.content.*;
-import android.view.*;
+import android.app.Activity;
+import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.*;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import com.daimajia.slider.library.*;
-import com.daimajia.slider.library.SliderTypes.*;
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.nexters.house.R;
-import com.nexters.house.activity.*;
-import com.nexters.house.entity.*;
-import com.nexters.house.utils.*;
+import com.nexters.house.entity.InteriorEntity;
+import com.nexters.house.fragment.ContentDetailFragment;
+import com.nexters.house.utils.CommonUtils;
 
-public class InteriorAdapter extends BaseAdapter implements OnClickListener {
+public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 	
 	public static final int REQUEST_CONTENT_DETAIL_VIEW = 0;
 
 	final String TAG = "MainListAdapter";
 
 	public Context mContext;
+	public FragmentActivity mFragmentActivity;
 	private ArrayList<InteriorEntity> mInteriorItemArrayList;
 	private LayoutInflater mLayoutInflater;
 	int resource;
 	CommonUtils mUtil = new CommonUtils();
 
-	public InteriorAdapter(Context context, ArrayList<InteriorEntity> mInteriorItemArrayList, int resource) {
+	public InteriorAdapter(Context context, ArrayList<InteriorEntity> mInteriorItemArrayList, int resource, FragmentActivity fragmentActivity) {
+		mFragmentActivity = fragmentActivity;
 		mContext = context;
 		this.mInteriorItemArrayList = mInteriorItemArrayList;
 		this.mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -67,6 +80,9 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener {
 			holder.tv_id = (TextView) convertView.findViewById(R.id.tv_id);
 			holder.tv_category = (TextView) convertView.findViewById(R.id.tv_category);
 			holder.tv_content = (TextView) convertView.findViewById(R.id.tv_content);
+			
+			//holder.tv_contents = (LinearLayout) convertView.findViewById(R.id.tv_content);
+			
 			holder.iv_image = (ImageView) convertView.findViewById(R.id.iv_image);
 			holder.tv_badge = (TextView)convertView.findViewById(R.id.tv_total_badge);
 			holder.tv_reply = (TextView)convertView.findViewById(R.id.tv_total_reply);
@@ -99,7 +115,7 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener {
 		String id = mInteriorItemArrayList.get(position).id;
 		String content = mInteriorItemArrayList.get(position).content;
 		String category = mInteriorItemArrayList.get(position).category;
-		//List<String> image = mInteriorItemArrayList.get(position).image_urls;
+		List<String> image = mInteriorItemArrayList.get(position).image_urls;
 		int nBadge = mInteriorItemArrayList.get(position).badge;
 		int nReply = mInteriorItemArrayList.get(position).reply;
 		int nShare = mInteriorItemArrayList.get(position).share;
@@ -116,19 +132,20 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener {
 		
 		// set click listener
 		
-		holder.tv_id.setOnClickListener(this);
+//		holder.tv_id.setOnClickListener(this);
 		holder.tv_content.setOnClickListener(this);
-		//holder.iv_image.setOnClickListener(this);
-		holder.tv_badge.setOnClickListener(this);
-		holder.tv_reply.setOnClickListener(this);
-		holder.tv_share.setOnClickListener(this);
-		holder.tv_scrap.setOnClickListener(this);
+//		holder.iv_image.setOnClickListener(this);
+//		holder.tv_badge.setOnClickListener(this);
+//		holder.tv_reply.setOnClickListener(this);
+//		holder.tv_share.setOnClickListener(this);
+//		holder.tv_scrap.setOnClickListener(this);
 
 		return convertView;
 	}
 
 	private class Holder {
 		ImageView iv_image;
+		LinearLayout tv_contents;
 		TextView tv_id, tv_content, tv_category;
 		TextView tv_badge, tv_reply, tv_share, tv_scrap;
 	}
@@ -156,15 +173,20 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
-		if(v.getId()==R.id.tv_content|| v.getId()==R.id.tv_id /*|| v.getId()==R.id.iv_image */){
-			Intent intent = new Intent(v.getContext(), ContentDetailActivity.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			mContext.startActivity(intent);
+		Log.d(TAG,"Soyoon click Id ="+Integer.toString(v.getId()));
+		if(v.getId()==R.id.tv_content /*|| v.getId()==R.id.tv_id || v.getId()==R.id.iv_image */){
+			Fragment newFragment = null;
+			//Log.d(TAG, "fragmentReplace " + reqNewFragmentIndex);
+			newFragment = new ContentDetailFragment();
+
+			// replace fragment
+			final FragmentTransaction transaction = mFragmentActivity.getSupportFragmentManager()
+					.beginTransaction();
+
+			transaction.replace(R.id.ll_fragment, newFragment);
+
+			// Commit the transaction
+			transaction.commit();
 		}
-		
 	}
-
-	
-
 }
