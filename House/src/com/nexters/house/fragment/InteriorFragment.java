@@ -37,6 +37,7 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 		this.mFragmentActivity = fragmentActivity;
 	}
 
+
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -160,13 +161,11 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 			Log.d("Click View Id","Soyoon = " + Integer.toString(v.getId()));
 			switch(v.getId()){
 			case R.id.btn_write:
-				Intent intent=new Intent(getActivity(),SelectWriteActivity.class);
+				Intent intent=new Intent(getActivity(),InteriorWriteActivity.class);
 				startActivity(intent);
 				break;
 
 			}
-			Intent intent=new Intent(getActivity(),InteriorWriteActivity.class);
-			startActivity(intent);
 		}
 	};
 
