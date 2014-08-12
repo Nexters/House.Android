@@ -74,7 +74,6 @@ public class CustomGalleryActivity extends Activity {
 	}
 
 	private void init() {
-
 		handler = new Handler();
 		gridGallery = (GridView) findViewById(R.id.gridGallery);
 		gridGallery.setFastScrollEnabled(true);
@@ -90,11 +89,9 @@ public class CustomGalleryActivity extends Activity {
 			adapter.setMultiplePick(true);
 
 		} else if (action.equalsIgnoreCase(Action.ACTION_PICK)) {
-
 			findViewById(R.id.llBottomContainer).setVisibility(View.GONE);
 			gridGallery.setOnItemClickListener(mItemSingleClickListener);
 			adapter.setMultiplePick(false);
-
 		}
 		
 		adapter.isShow = true;
@@ -133,7 +130,6 @@ public class CustomGalleryActivity extends Activity {
 	}
 
 	View.OnClickListener mOkClickListener = new View.OnClickListener() {
-
 		@Override
 		public void onClick(View v) {
 			ArrayList<CustomGallery> selected = adapter.getSelected();
@@ -152,10 +148,7 @@ public class CustomGalleryActivity extends Activity {
 
 		@Override
 		public void onItemClick(AdapterView<?> l, View v, int position, long id) {		
-		
-		
 			adapter.changeSelection(v, position);
-			
 		}
 	};
 

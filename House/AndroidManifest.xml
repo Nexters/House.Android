@@ -50,7 +50,8 @@
         </activity>
         <activity
             android:name="com.nexters.house.activity.TalkWriteActivity"
-            android:label="@string/title_activity_talk_write" >
+            android:label="@string/title_activity_talk_write"
+            android:theme="@style/Theme.Sherlock.Light" >
         </activity>
         <activity
             android:name="com.nexters.house.activity.InteriorWriteActivity"
@@ -72,7 +73,8 @@
         </activity>
         <activity
             android:name="com.nexters.house.activity.InteriorWrite2Activity"
-            android:label="@string/title_activity_interior_write2" >
+            android:label="@string/title_activity_interior_write2"
+            android:theme="@style/Theme.Sherlock.Light" >
         </activity>
     </application>
 
