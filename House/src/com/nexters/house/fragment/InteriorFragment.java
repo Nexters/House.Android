@@ -5,10 +5,11 @@ import java.util.*;
 import uk.co.senab.actionbarpulltorefresh.library.*;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.*;
 import android.annotation.*;
-import android.app.Activity;
+import android.app.*;
 import android.content.*;
 import android.os.*;
 import android.support.v4.app.*;
+import android.support.v4.app.Fragment;
 import android.util.*;
 import android.view.*;
 import android.widget.*;
@@ -36,6 +37,7 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 	public InteriorFragment(FragmentActivity fragmentActivity) {
 		this.mFragmentActivity = fragmentActivity;
 	}
+
 
 	@Override
 	public void onAttach(Activity activity) {

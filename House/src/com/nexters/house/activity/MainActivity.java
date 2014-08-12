@@ -18,7 +18,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	public final static int FRAGMENT_INTERIOR = 0;
 	public final static int FRAGMENT_BOARD = 1;
 	public final static int FRAGMENT_MYPAGE = 2;
-	public final static int FRAGMENT_CONTENT_DETAIL = 3;
 
 	private Button btn_interior;
 	private Button btn_board;
@@ -37,7 +36,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		fragmentReplace(mCurrentFragmentIndex);
 
 	}
-
 
 
 	private void initResources(){
@@ -88,7 +86,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		return newFragment;
 	}
 
-	//	 http://tools.android.com/tips/non-constant-fields 참조
 	@Override
 	public void onClick(View v) {
 		if(v.getId() == R.id.btn_interior) {
