@@ -131,8 +131,8 @@ public class InteriorWrite2Activity extends Activity {
 
 		String path;
 		
-		for(int i=0;i<GalleryAdapter.dataChecked.size();i++){
-			path=GalleryAdapter.dataChecked.get(i).sdcardPath;
+		for(int i=0;i<GalleryAdapter.customGalleriesChecked.size();i++){
+			path=GalleryAdapter.customGalleriesChecked.get(i).sdcardPath;
 			
 			DataObject singleObject= new DataObject(path);
 			allData.add(singleObject);

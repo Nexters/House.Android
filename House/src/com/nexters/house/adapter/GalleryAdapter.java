@@ -16,9 +16,10 @@ public class GalleryAdapter extends BaseAdapter {
 
 	private Context mContext;
 	private LayoutInflater infalter;
-	public static ArrayList<CustomGallery> data = new ArrayList<CustomGallery>();
+	public static ArrayList<CustomGallery> customGalleries = new ArrayList<CustomGallery>();
 	ImageLoader imageLoader;
-	public static ArrayList<CustomGallery> dataChecked = new ArrayList<CustomGallery>();
+	public static ArrayList<CustomGallery> customGalleriesChecked = new ArrayList<CustomGallery>();
+	public static HashSet<String> customGalleriesSet = new HashSet<String>();
 	private boolean isActionMultiplePick;
 	public static int selectCnt = 0;
 	public static boolean isShow = true;
@@ -36,16 +37,16 @@ public class GalleryAdapter extends BaseAdapter {
 	public int getCount() {
 
 		if(isShow)
-			tmps = data;
+			tmps = customGalleries;
 		else 
-			tmps = dataChecked;
+			tmps = customGalleriesChecked;
 		
 		return tmps.size();
 	}
 
 	@Override
 	public CustomGallery getItem(int position) {
-		return data.get(position);
+		return customGalleries.get(position);
 	}
 
 	@Override
@@ -61,8 +62,8 @@ public class GalleryAdapter extends BaseAdapter {
 
 	
 	public void selectAll(boolean selection) {
-		for (int i = 0; i < data.size(); i++) {
-			data.get(i).isSeleted = selection;
+		for (int i = 0; i < customGalleries.size(); i++) {
+			customGalleries.get(i).isSeleted = selection;
 
 		}
 		notifyDataSetChanged();
@@ -71,8 +72,8 @@ public class GalleryAdapter extends BaseAdapter {
 	public boolean isAllSelected() {
 		boolean isAllSelected = true;
 
-		for (int i = 0; i < data.size(); i++) {
-			if (!data.get(i).isSeleted) {
+		for (int i = 0; i < customGalleries.size(); i++) {
+			if (!customGalleries.get(i).isSeleted) {
 				isAllSelected = false;
 				break;
 			}
@@ -84,8 +85,8 @@ public class GalleryAdapter extends BaseAdapter {
 	public boolean isAnySelected() {
 		boolean isAnySelected = false;
 
-		for (int i = 0; i < data.size(); i++) {
-			if (data.get(i).isSeleted) {
+		for (int i = 0; i < customGalleries.size(); i++) {
+			if (customGalleries.get(i).isSeleted) {
 				isAnySelected = true;
 				break;
 			}
@@ -103,36 +104,37 @@ public class GalleryAdapter extends BaseAdapter {
 		 * 
 		 * return dataT;
 		 */
-		return dataChecked;
+		return customGalleriesChecked;
 	}
 
 	@SuppressWarnings("static-access")
 	public void addAll(ArrayList<CustomGallery> files) {
-
 		try {
-			// this.data.clear();
-			this.data.addAll(files);
-
+			for(CustomGallery cg : files){
+				if(!customGalleriesSet.contains(cg.sdcardPath)){
+					this.customGalleriesSet.add(cg.sdcardPath);
+					this.customGalleries.add(cg);
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		notifyDataSetChanged();
 	}
 
 	public void changeSelection(View v, int position) {
 
-		if (data.get(position).isSeleted) {
-			data.get(position).isSeleted = false;
+		if (customGalleries.get(position).isSeleted) {
+			customGalleries.get(position).isSeleted = false;
 
-			dataChecked.remove(data.get(position)); //들어가있는거 빼기
+			customGalleriesChecked.remove(customGalleries.get(position)); //들어가있는거 빼기
 			if(selectCnt!=0)selectCnt--; //0이면 빼지마
 		} else { //체크안되있을때
 		
 			if(selectCnt<10){ //그리고 10보다 작을때만 넣어
-				data.get(position).isSeleted = true;
+				customGalleries.get(position).isSeleted = true;
 				selectCnt++;
-				dataChecked.add(data.get(position)); //체크된거 넣기
+				customGalleriesChecked.add(customGalleries.get(position)); //체크된거 넣기
 			
 		//		((ViewHolder) v.getTag()).imgQueueMultiSelected.setBackgroundResource(R.drawable.checkbox1);
 			}
@@ -142,19 +144,19 @@ public class GalleryAdapter extends BaseAdapter {
 			}
 }
 
-		((ViewHolder) v.getTag()).imgQueueMultiSelected.setSelected(data
+		((ViewHolder) v.getTag()).imgQueueMultiSelected.setSelected(customGalleries
 				.get(position).isSeleted);
 	}
 
 	public static void compareChecked(CustomGallery customGallery){
-		data.get(data.indexOf(customGallery)).isSeleted = false;
+		customGalleries.get(customGalleries.indexOf(customGallery)).isSeleted = false;
 	}
 	public void deleteItem(View v, int position) {
-		data.get(position).isSeleted = false;
+		customGalleries.get(position).isSeleted = false;
 		selectCnt--;
-		dataChecked.remove(data.get(position));
+		customGalleriesChecked.remove(customGalleries.get(position));
 
-		((ViewHolder) v.getTag()).imgQueueMultiSelected.setSelected(data
+		((ViewHolder) v.getTag()).imgQueueMultiSelected.setSelected(customGalleries
 				.get(position).isSeleted);
 	}
 
@@ -164,9 +166,9 @@ public class GalleryAdapter extends BaseAdapter {
 		
 		
 		if(isShow)
-			tmps = data;
+			tmps = customGalleries;
 		else 
-			tmps = dataChecked;
+			tmps = customGalleriesChecked;
 		
 		if (convertView == null) {
 			convertView = infalter.inflate(R.layout.gallery_item, null);
@@ -215,7 +217,7 @@ public class GalleryAdapter extends BaseAdapter {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		Log.e("testdadsfsfsdf", "fdgdfg123 : " + data.get(position).isSeleted + "");
+		Log.e("testdadsfsfsdf", "fdgdfg123 : " + customGalleries.get(position).isSeleted + "");
 		return convertView;
 	}
 
@@ -232,8 +234,8 @@ public class GalleryAdapter extends BaseAdapter {
 	}
 
 	public void clear() {
-		data.clear();
-		dataChecked.clear();
+		customGalleries.clear();
+		customGalleriesChecked.clear();
 		notifyDataSetChanged();
 	}
 }

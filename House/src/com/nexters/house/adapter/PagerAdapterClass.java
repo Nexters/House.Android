@@ -23,7 +23,7 @@ import com.nexters.house.entity.CustomGallery;
 public class PagerAdapterClass extends PagerAdapter {
 	private LayoutInflater mInflater;
 	private ArrayList<View> views;
-	private int pageNum = GalleryAdapter.dataChecked.size();
+	private int pageNum = GalleryAdapter.customGalleriesChecked.size();
 //	private ArrayList<EditText> singleInfo;
 //	public ArrayList<String> InfoList;
 	private Context c;
@@ -53,12 +53,12 @@ public class PagerAdapterClass extends PagerAdapter {
 			options.inSampleSize=2;
 		
 //			InfoList.add(singleInfo.get(i).getText().toString());
-			Bitmap bmp=BitmapFactory.decodeFile(GalleryAdapter.dataChecked.get(i).sdcardPath,options);
+			Bitmap bmp=BitmapFactory.decodeFile(GalleryAdapter.customGalleriesChecked.get(i).sdcardPath,options);
 			singleImg.setImageBitmap(bmp);
 			
 			final int index = i;
 			btn.setOnClickListener(new View.OnClickListener() {
-				CustomGallery customGallery = GalleryAdapter.dataChecked.get(index);  
+				CustomGallery customGallery = GalleryAdapter.customGalleriesChecked.get(index);  
 				
 				@Override
 				public void onClick(View v) {
@@ -72,7 +72,7 @@ public class PagerAdapterClass extends PagerAdapter {
 					mInteriorWriteActivity.removePageMark();
 					
 					GalleryAdapter.compareChecked(customGallery);
-					GalleryAdapter.dataChecked.remove(customGallery);
+					GalleryAdapter.customGalleriesChecked.remove(customGallery);
 					GalleryAdapter.selectCnt--;
 					notifyDataSetChanged();
 				}
