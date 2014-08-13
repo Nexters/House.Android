@@ -22,8 +22,11 @@ public class ContentDetailFragment extends Fragment {
 	private final String TAG = "ContentDetailFragment";
 
 	private ListView lvContent;
-	private ArrayList<ContentEntity> mExamItemArrayList;
+	private ListView lvReply;
+	private ArrayList<ContentEntity> mImageArrayList;
+	private ArrayList<ReplyEntity> mReplyArrayList;
 	private ContentDetailAdapter mMainListAdapter;
+	private ReplyAdapter mReplyAdapter;
 	private ImageView ivImage;
 
 
@@ -43,12 +46,21 @@ public class ContentDetailFragment extends Fragment {
 	private void initResources(View v){
 		
 		lvContent = (ListView) v.findViewById(R.id.lv_interior_image);
-		mExamItemArrayList = new ArrayList<ContentEntity>();
+		lvReply = (ListView)v.findViewById(R.id.lv_reply);
+		
+		mImageArrayList = new ArrayList<ContentEntity>();
+		mReplyArrayList = new ArrayList<ReplyEntity>();
+		
 		ivImage = (ImageView) v.findViewById(R.id.image_row);
 
-		mExamItemArrayList = new ArrayList<ContentEntity>();
+	
 		mMainListAdapter = new ContentDetailAdapter(getActivity().getApplicationContext(),
-				mExamItemArrayList, R.layout.image_row);
+				mImageArrayList, R.layout.image_row);
+		mReplyAdapter = new ReplyAdapter(getActivity().getApplicationContext(),
+				mReplyArrayList, R.layout.reply);
+		
+		
+		
 
 		lvContent.setAdapter(mMainListAdapter);
 		for (int itemCount = 0; itemCount < 15; itemCount++) {
@@ -56,15 +68,23 @@ public class ContentDetailFragment extends Fragment {
 			
 			mExamEntity.imageUrl="https://fbcdn-sphotos-b-a.akamaihd.net/hphotos-ak-xpa1/v/t1.0-9/10524374_570245013084779_7454008372005256632_n.jpg?oh=4761db9f33b72709585016c2649c747e&oe=5434C617&__gda__=1413811119_55884851b246ddb301725a0a78cacc84"; 
 
-			mExamItemArrayList.add(mExamEntity);
+			mImageArrayList.add(mExamEntity);
 
 		}
 
 		mMainListAdapter.notifyDataSetChanged();
-
+		
+		lvReply.setAdapter(mReplyAdapter);
+		for (int itemCount = 0; itemCount <20; itemCount++){
+			ReplyEntity mReplyEntity = new ReplyEntity();
+			
+			mReplyArrayList.add(mReplyEntity);
+			
+		}
 
 	}
 	
+	//스크롤뷰안에 리스트뷰 스크롤제대로 되도록
 	public static void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter(); 
         if (listAdapter == null) {
