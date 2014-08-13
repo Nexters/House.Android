@@ -70,9 +70,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		Fragment newFragment = null;
 
 		Log.d(TAG, "fragmentReplace " + reqNewFragmentIndex);
-
 		newFragment = getFragment(reqNewFragmentIndex);
-
+		
 		// replace fragment
 		final FragmentTransaction transaction = getSupportFragmentManager()
 				.beginTransaction();
