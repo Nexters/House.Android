@@ -17,7 +17,9 @@ import android.widget.LinearLayout;
 import android.widget.ViewSwitcher;
 
 import com.nexters.house.R;
+import com.nexters.house.adapter.GalleryAdapter;
 import com.nexters.house.adapter.PagerAdapterClass;
+import com.nexters.house.entity.Action;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;

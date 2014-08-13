@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 
 import com.nexters.house.R;
 import com.nexters.house.activity.*;
+import com.nexters.house.entity.CustomGallery;
 
 public class PagerAdapterClass extends PagerAdapter {
 	private LayoutInflater mInflater;

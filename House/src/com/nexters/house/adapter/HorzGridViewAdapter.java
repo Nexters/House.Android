@@ -14,6 +14,7 @@ import android.widget.*;
 
 import com.nexters.house.*;
 import com.nexters.house.activity.*;
+import com.nexters.house.entity.DataObject;
 
 public class HorzGridViewAdapter extends BaseAdapter{
 	
