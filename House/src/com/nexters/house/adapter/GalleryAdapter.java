@@ -35,12 +35,10 @@ public class GalleryAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-
 		if (isShow)
 			tmps = customGalleries;
 		else
 			tmps = customGalleriesChecked;
-
 		return tmps.size();
 	}
 
@@ -74,7 +72,6 @@ public class GalleryAdapter extends BaseAdapter {
 				break;
 			}
 		}
-
 		return isAllSelected;
 	}
 
@@ -87,14 +84,12 @@ public class GalleryAdapter extends BaseAdapter {
 				break;
 			}
 		}
-
 		return isAnySelected;
 	}
 
 	public ArrayList<CustomGallery> getSelected() {
 		/*
 		 * ArrayList<CustomGallery> dataT = new ArrayList<CustomGallery>();
-		 * 
 		 * for (int i = 0; i < data.size(); i++) { if (data.get(i).isSeleted) {
 		 * dataT.add(data.get(i)); } }
 		 * 
@@ -126,21 +121,17 @@ public class GalleryAdapter extends BaseAdapter {
 			if (selectCnt != 0)
 				selectCnt--; // 0이면 빼지마
 		} else { // 체크안되있을때
-
 			if (selectCnt < 10) { // 그리고 10보다 작을때만 넣어
 				customGalleries.get(position).isSeleted = true;
 				selectCnt++;
 				customGalleriesChecked.add(customGalleries.get(position)); // 체크된거
 																			// 넣기
-
 				// ((ViewHolder)
 				// v.getTag()).imgQueueMultiSelected.setBackgroundResource(R.drawable.checkbox1);
 			} else { // 10모다 크면
 				Toast.makeText(mContext, "10개까지만", Toast.LENGTH_LONG).show();
-
 			}
 		}
-
 		((ViewHolder) v.getTag()).imgQueueMultiSelected
 				.setSelected(customGalleries.get(position).isSeleted);
 	}

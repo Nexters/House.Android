@@ -62,7 +62,6 @@ public class PagerAdapterClass extends PagerAdapter {
 				
 				@Override
 				public void onClick(View v) {
-					
 					if (views.size() == 1)
 						return;
 					// 버튼의 뷰를 찾아서 ArrayList에서 빼야함. index로 할 경우, 사이즈가 밀려서 제대로 된
@@ -70,7 +69,6 @@ public class PagerAdapterClass extends PagerAdapter {
 					views.remove(v.getParent());
 					
 					mInteriorWriteActivity.removePageMark();
-					
 					GalleryAdapter.compareChecked(customGallery);
 					GalleryAdapter.customGalleriesChecked.remove(customGallery);
 					GalleryAdapter.selectCnt--;
