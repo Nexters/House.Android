@@ -7,13 +7,14 @@
     android:paddingRight="@dimen/activity_horizontal_margin" >
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/interior_content"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:ems="10"
         android:gravity="top"
         android:hint="이야기를 적어주세요"
         android:scrollbars="vertical" >
+
         <requestFocus />
     </EditText>
 
@@ -23,8 +24,8 @@
         android:paddingTop="3dp"
         android:text="인테리어 정보" />
 
- <EditText
-        android:id="@+id/interiorInfo"
+    <EditText
+        android:id="@+id/interior_info"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:ems="10"
@@ -47,10 +48,9 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_weight="1" >
-
         <com.jess.ui.TwoWayGridView
             xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/horz_gridview_2"
+            android:id="@+id/interior_gridview_2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -60,7 +60,6 @@
             app:scrollDirectionPortrait="horizontal"
             app:stretchMode="none"
             app:verticalSpacing="0dp" />
-
         <ImageView
             android:id="@+id/imgSinglePick_interior2"
             android:layout_width="wrap_content"

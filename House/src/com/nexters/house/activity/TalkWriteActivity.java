@@ -18,22 +18,17 @@ import com.nostra13.universalimageloader.cache.memory.impl.*;
 import com.nostra13.universalimageloader.core.*;
 import com.nostra13.universalimageloader.core.assist.*;
 public class TalkWriteActivity extends Activity {
-
-
 	private HorzGridViewAdapter horzGridViewAdapter;
-
 	private Context mContext;
 	public static TwoWayGridView horzGridView;
 	GridView gridGallery;
 	Handler handler;
 	GalleryAdapter adapter;
-
 	public final static int COLUMN_PORT = 0;
 	public final static int COLUMN_LAND = 1;
 	public static int column_selected;
 	public static int[] displayWidth;
 	public static int[] displayHeight;
-	
 	
 	
 	ImageView imgSinglePick;

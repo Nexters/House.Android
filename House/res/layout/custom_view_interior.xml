@@ -10,7 +10,6 @@
     android:orientation="vertical" >
 
     <!--사람프로필사진 + 아이디 + 카테고리-->
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"

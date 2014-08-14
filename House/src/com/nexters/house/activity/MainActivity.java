@@ -30,7 +30,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	private Button mBtnBoard;
 	private Button mBtnMypage;
 
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -50,9 +49,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 
 		mCurrentFragmentIndex = FRAGMENT_INTERIOR;
 		fragmentReplace(mCurrentFragmentIndex);
-
 	}
-
 
 	private void initResources(){
 		mBtnInterior = (Button) findViewById(R.id.btn_interior);
@@ -62,23 +59,20 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	}
 
 	private void initEvent(){
-
 		mBtnInterior.setOnClickListener(this);
 		mBtnBoard.setOnClickListener(this);
 		mBtnMypage.setOnClickListener(this);
-
 	}
-
 
 	public void fragmentReplace(int reqNewFragmentIndex) {
 		Fragment newFragment = null;
 		newFragment = getFragment(reqNewFragmentIndex);
 
 		FragmentManager manager = getSupportFragmentManager();
-		FragmentTransaction ft = manager.beginTransaction();
+		FragmentTransaction fragmentTransaction = manager.beginTransaction();
 
-		ft.replace(R.id.ll_fragment, newFragment);
-		ft.commit();
+		fragmentTransaction.replace(R.id.ll_fragment, newFragment);
+		fragmentTransaction.commit();
 	}
 
 	private Fragment getFragment(int idx) {
@@ -98,7 +92,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 			Log.d(TAG, "Unhandle case");
 			break;
 		}
-
 		return newFragment;
 	}
 

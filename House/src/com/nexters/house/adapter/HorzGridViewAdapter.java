@@ -49,8 +49,8 @@ public class HorzGridViewAdapter extends BaseAdapter{
 			vto = TalkWriteActivity.horzGridView.getViewTreeObserver();
 		}
 		else{
-			InteriorWrite2Activity.horzGridView.setNumRows(rows);
-			vto=InteriorWrite2Activity.horzGridView.getViewTreeObserver();
+			InteriorWrite2Activity.interiorGridView2.setNumRows(rows);
+			vto=InteriorWrite2Activity.interiorGridView2.getViewTreeObserver();
 		}
 		OnGlobalLayoutListener onGlobalLayoutListener = new OnGlobalLayoutListener() {
 			
@@ -67,26 +67,21 @@ public class HorzGridViewAdapter extends BaseAdapter{
 				vto = TalkWriteActivity.horzGridView.getViewTreeObserver();
 				}
 				else{
-					rowHeight =(int)((float)(InteriorWrite2Activity.horzGridView.getHeight()/rows)-2*itemPadding);
-					columnWidth = (int)((float)(InteriorWrite2Activity.horzGridView.getWidth()/columns)-2*itemPadding);
-					InteriorWrite2Activity.horzGridView.setRowHeight(rowHeight);
-					vto = InteriorWrite2Activity.horzGridView.getViewTreeObserver();
+					rowHeight =(int)((float)(InteriorWrite2Activity.interiorGridView2.getHeight()/rows)-2*itemPadding);
+					columnWidth = (int)((float)(InteriorWrite2Activity.interiorGridView2.getWidth()/columns)-2*itemPadding);
+					InteriorWrite2Activity.interiorGridView2.setRowHeight(rowHeight);
+					vto = InteriorWrite2Activity.interiorGridView2.getViewTreeObserver();
 					
 				}
-				//Then remove the listener
-			
 				
+				//Then remove the listener
 				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
 					vto.removeOnGlobalLayoutListener(this);
 				}else{
 					vto.removeGlobalOnLayoutListener(this);
 				}
-				
-				
-				
 			}
 		};
-		
 		vto.addOnGlobalLayoutListener(onGlobalLayoutListener);
 	}
 
@@ -139,19 +134,16 @@ public class HorzGridViewAdapter extends BaseAdapter{
 
 	@Override
 	public int getCount() {
-		
 		return data.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		
 		return data.get(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
-		
 		return 0;
 	}
 
