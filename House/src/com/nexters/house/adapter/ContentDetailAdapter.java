@@ -1,5 +1,6 @@
 package com.nexters.house.adapter;
 
+import java.net.*;
 import java.util.*;
 
 import android.content.*;

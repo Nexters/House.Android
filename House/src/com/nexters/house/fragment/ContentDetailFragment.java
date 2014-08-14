@@ -64,15 +64,15 @@ public class ContentDetailFragment extends Fragment {
 
 		lvContent.setAdapter(mMainListAdapter);
 		for (int itemCount = 0; itemCount < 15; itemCount++) {
-			ContentEntity mExamEntity = new ContentEntity();
-			
-			mExamEntity.imageUrl="https://fbcdn-sphotos-b-a.akamaihd.net/hphotos-ak-xpa1/v/t1.0-9/10524374_570245013084779_7454008372005256632_n.jpg?oh=4761db9f33b72709585016c2649c747e&oe=5434C617&__gda__=1413811119_55884851b246ddb301725a0a78cacc84"; 
+			ContentEntity mExamEntity = new ContentEntity();	 
 
 			mImageArrayList.add(mExamEntity);
 
 		}
 
 		mMainListAdapter.notifyDataSetChanged();
+		
+		
 		
 		lvReply.setAdapter(mReplyAdapter);
 		for (int itemCount = 0; itemCount <20; itemCount++){
