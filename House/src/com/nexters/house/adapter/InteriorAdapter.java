@@ -34,7 +34,7 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 	private ArrayList<InteriorEntity> mInteriorItemArrayList;
 	private LayoutInflater mLayoutInflater;
 	private int resource;
-	CommonUtils mUtil;
+	private CommonUtils mUtil;
 
 	public InteriorAdapter(Context context, ArrayList<InteriorEntity> mInteriorItemArrayList, int resource, FragmentActivity fragmentActivity) {
 		mFragmentActivity = fragmentActivity;
@@ -47,19 +47,16 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 	
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
 		return mInteriorItemArrayList.size();
 	}
 
 	@Override
 	public Object getItem(int arg0) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public long getItemId(int arg0) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
