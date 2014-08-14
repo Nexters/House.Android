@@ -7,13 +7,12 @@ import android.os.Handler;
 import android.view.Window;
 
 import com.nexters.house.R;
-import com.nexters.house.core.AccountManager;
 
 public class IntroActivity extends Activity {
 	private static int INTRO_LOADING_TIME = 1000;
-    private Handler mHandler = null;
+	private Handler mHandler = null;
 
-    @Override
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -21,21 +20,21 @@ public class IntroActivity extends Activity {
 
 		mHandler = new Handler();
 		mHandler.postDelayed(new Runnable() {
-            public void run() {
-                endIntro();
-            }
-        }, INTRO_LOADING_TIME);
+			public void run() {
+				endIntro();
+			}
+		}, INTRO_LOADING_TIME);
 	}
 
 	private void endIntro() {
-        if (AccountManager.getInstance().isSignedIn(this)) {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
-            Intent intent = new Intent(this, StartActivity.class);
-            startActivity(intent);
-            finish();
-        }
+		// if (SessionManager.getInstance(this).isSignedIn()) {
+		// Intent intent = new Intent(this, MainActivity.class);
+		// startActivity(intent);
+		// finish();
+		// } else {
+		Intent intent = new Intent(this, StartActivity.class);
+		startActivity(intent);
+		finish();
+		// }
 	}
 }

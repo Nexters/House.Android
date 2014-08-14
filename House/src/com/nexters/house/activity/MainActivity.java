@@ -1,14 +1,21 @@
 package com.nexters.house.activity;
 
-import android.os.*;
-import android.support.v4.app.*;
-import android.util.*;
-import android.view.*;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
+import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.*;
+import android.view.Window;
+import android.widget.Button;
 
-import com.nexters.house.*;
-import com.nexters.house.fragment.*;
+import com.nexters.house.R;
+import com.nexters.house.fragment.BoardFragment;
+import com.nexters.house.fragment.InteriorFragment;
+import com.nexters.house.fragment.MyPageFragment;
 
 public class MainActivity extends FragmentActivity implements OnClickListener {
 
@@ -19,16 +26,25 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	public final static int FRAGMENT_BOARD = 1;
 	public final static int FRAGMENT_MYPAGE = 2;
 
-	private Button btn_interior;
-	private Button btn_board;
-	private Button btn_mypage;
+	private Button mBtnInterior;
+	private Button mBtnBoard;
+	private Button mBtnMypage;
 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
 
+		boolean logout = getIntent().getBooleanExtra("logout", false);
+		if (logout) {
+//			Log.d("logout", "logout : ");
+			startActivity(new Intent(this, StartActivity.class));
+			finish();
+			return;
+		}
+		
 		initResources();
 		initEvent();
 
@@ -39,17 +55,17 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 
 
 	private void initResources(){
-		btn_interior = (Button) findViewById(R.id.btn_interior);
-		btn_board = (Button) findViewById(R.id.btn_board);
-		btn_mypage = (Button) findViewById(R.id.btn_mypage);
+		mBtnInterior = (Button) findViewById(R.id.btn_interior);
+		mBtnBoard = (Button) findViewById(R.id.btn_board);
+		mBtnMypage = (Button) findViewById(R.id.btn_mypage);
 
 	}
 
 	private void initEvent(){
 
-		btn_interior.setOnClickListener(this);
-		btn_board.setOnClickListener(this);
-		btn_mypage.setOnClickListener(this);
+		mBtnInterior.setOnClickListener(this);
+		mBtnBoard.setOnClickListener(this);
+		mBtnMypage.setOnClickListener(this);
 
 	}
 

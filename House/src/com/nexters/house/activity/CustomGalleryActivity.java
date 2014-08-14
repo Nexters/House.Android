@@ -14,6 +14,9 @@ import android.view.*;
 import android.widget.*;
 
 import com.nexters.house.*;
+import com.nexters.house.adapter.GalleryAdapter;
+import com.nexters.house.entity.Action;
+import com.nexters.house.entity.CustomGallery;
 import com.nostra13.universalimageloader.cache.disc.impl.*;
 import com.nostra13.universalimageloader.cache.memory.impl.*;
 import com.nostra13.universalimageloader.core.*;

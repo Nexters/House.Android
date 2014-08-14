@@ -17,7 +17,9 @@ import android.widget.LinearLayout;
 import android.widget.ViewSwitcher;
 
 import com.nexters.house.R;
+import com.nexters.house.adapter.GalleryAdapter;
 import com.nexters.house.adapter.PagerAdapterClass;
+import com.nexters.house.entity.Action;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -95,9 +97,9 @@ public class InteriorWriteActivity extends Activity {
 		adapter.setMultiplePick(false);
 
 
-		GalleryAdapter.dataChecked.clear(); //버튼 누를때마다 리스트 초기화 시켜줭
+		GalleryAdapter.customGalleriesChecked.clear(); //버튼 누를때마다 리스트 초기화 시켜줭
 	
-		GalleryAdapter.data.clear();
+		GalleryAdapter.customGalleries.clear();
 		GalleryAdapter.selectCnt=0; //숫자도 초기화
 		viewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher);
 		viewSwitcher.setDisplayedChild(1);
@@ -150,7 +152,7 @@ public class InteriorWriteActivity extends Activity {
 			});
 			
 			mPrevPosition=0;
-			for(int i=0;i<GalleryAdapter.dataChecked.size();i++)
+			for(int i=0;i<GalleryAdapter.customGalleriesChecked.size();i++)
 				addPageMark();
 			mPageMark.getChildAt(mPrevPosition).setBackgroundResource(R.drawable.page_select);
 					
@@ -172,7 +174,7 @@ public class InteriorWriteActivity extends Activity {
 		
 	//	iv.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 
-		int checkedSize=GalleryAdapter.dataChecked.size();
+		int checkedSize=GalleryAdapter.customGalleriesChecked.size();
 	
 		
 		Log.d("removePage", "removePage : " + mPager.getCurrentItem() + " , " + checkedSize + ", " + mPageMark.getChildCount());

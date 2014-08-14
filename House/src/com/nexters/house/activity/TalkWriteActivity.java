@@ -12,6 +12,8 @@ import android.widget.*;
 import com.jess.ui.*;
 import com.nexters.house.R;
 import com.nexters.house.adapter.*;
+import com.nexters.house.entity.Action;
+import com.nexters.house.entity.DataObject;
 import com.nostra13.universalimageloader.cache.memory.impl.*;
 import com.nostra13.universalimageloader.core.*;
 import com.nostra13.universalimageloader.core.assist.*;
@@ -87,8 +89,8 @@ public class TalkWriteActivity extends Activity {
 		adapter.setMultiplePick(false);
 	//	gridGallery.setAdapter(adapter);
 
-		GalleryAdapter.dataChecked.clear(); //버튼 누를때마다 리스트 초기화 시켜줭
-		GalleryAdapter.data.clear();
+		GalleryAdapter.customGalleriesChecked.clear(); //버튼 누를때마다 리스트 초기화 시켜줭
+		GalleryAdapter.customGalleries.clear();
 		GalleryAdapter.selectCnt=0; //숫자도 초기화
 		horzGridView.clearDisappearingChildren();
 		viewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher_talk);
@@ -159,8 +161,8 @@ public class TalkWriteActivity extends Activity {
 
 		String path;
 		
-		for(int i=0;i<GalleryAdapter.dataChecked.size();i++){
-			path=GalleryAdapter.dataChecked.get(i).sdcardPath;
+		for(int i=0;i<GalleryAdapter.customGalleriesChecked.size();i++){
+			path=GalleryAdapter.customGalleriesChecked.get(i).sdcardPath;
 			
 			DataObject singleObject= new DataObject(path);
 			allData.add(singleObject);
