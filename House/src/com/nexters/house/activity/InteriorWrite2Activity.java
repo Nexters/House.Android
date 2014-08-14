@@ -125,7 +125,7 @@ public class InteriorWrite2Activity extends Activity {
 		        }
 		        }).setNegativeButton("아니요",
 		        new DialogInterface.OnClickListener() {
-		        public void onClick(DialogInterface dialog, int id) {
+	        public void onClick(DialogInterface dialog, int id) {
 		            // Action for 'NO' Button
 		            dialog.cancel();
 		        }
