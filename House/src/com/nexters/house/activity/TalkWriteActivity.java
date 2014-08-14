@@ -89,8 +89,8 @@ public class TalkWriteActivity extends Activity {
 		adapter.setMultiplePick(false);
 	//	gridGallery.setAdapter(adapter);
 
-		GalleryAdapter.customGalleriesChecked.clear(); //버튼 누를때마다 리스트 초기화 시켜줭
-		GalleryAdapter.customGalleries.clear();
+		GalleryAdapter.clear(); //버튼 누를때마다 리스트 초기화 시켜줭
+		
 		GalleryAdapter.selectCnt=0; //숫자도 초기화
 		horzGridView.clearDisappearingChildren();
 		viewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher_talk);

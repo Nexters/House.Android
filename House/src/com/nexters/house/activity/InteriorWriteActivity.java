@@ -97,9 +97,8 @@ public class InteriorWriteActivity extends Activity {
 		adapter.setMultiplePick(false);
 
 
-		GalleryAdapter.customGalleriesChecked.clear(); //버튼 누를때마다 리스트 초기화 시켜줭
+		GalleryAdapter.clear(); //버튼 누를때마다 리스트 초기화 시켜줭
 	
-		GalleryAdapter.customGalleries.clear();
 		GalleryAdapter.selectCnt=0; //숫자도 초기화
 		viewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher);
 		viewSwitcher.setDisplayedChild(1);

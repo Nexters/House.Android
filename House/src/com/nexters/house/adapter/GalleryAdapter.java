@@ -56,15 +56,11 @@ public class GalleryAdapter extends BaseAdapter {
 
 	public void setMultiplePick(boolean isMultiplePick) {
 		this.isActionMultiplePick = isMultiplePick;
-	
-		
 	}
-
 	
 	public void selectAll(boolean selection) {
 		for (int i = 0; i < customGalleries.size(); i++) {
 			customGalleries.get(i).isSeleted = selection;
-
 		}
 		notifyDataSetChanged();
 	}
@@ -233,9 +229,10 @@ public class GalleryAdapter extends BaseAdapter {
 		imageLoader.clearMemoryCache();
 	}
 
-	public void clear() {
+	public static void clear() {
 		customGalleries.clear();
+		customGalleriesSet.clear();
 		customGalleriesChecked.clear();
-		notifyDataSetChanged();
+//		notifyDataSetChanged();
 	}
 }
