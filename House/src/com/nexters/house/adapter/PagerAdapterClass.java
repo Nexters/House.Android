@@ -44,7 +44,7 @@ public class PagerAdapterClass extends PagerAdapter {
 //		InfoList=new ArrayList<String>();
 		
 		for (int i = 0; i <pageNum; i++) {
-			View v = mInflater.inflate(R.layout.pageritem, null);
+			View v = mInflater.inflate(R.layout.pager_item, null);
 			Button btn = (Button) v.findViewById(R.id.btn_delete);
 			ImageView singleImg=(ImageView)v.findViewById(R.id.singleImage);
 		

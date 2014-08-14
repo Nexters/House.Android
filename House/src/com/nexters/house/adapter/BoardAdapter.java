@@ -14,10 +14,11 @@ public class BoardAdapter extends BaseAdapter {
 	private Context mContext;
 	private LayoutInflater mInflater;
 	private ArrayList<String> mArrayList;
-	private CommonUtils mUtil = new CommonUtils();
+	private CommonUtils mUtil;
 
 	public BoardAdapter() {
 		super();
+		mUtil = new CommonUtils();
 	}
 
 	public BoardAdapter(Context context, ArrayList<String> arrayList) {
