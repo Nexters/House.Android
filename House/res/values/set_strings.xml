@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="activity_my">설정</string>
+    <string name="btn_logout">로그아웃</string>
+    <string name="btn_modifypw">비밀번호 변경</string>
+    <string name="btn_nickname">닉네임 수정</string>
+    <string name="btn_version">버젼정보</string>
+    <string name="btn_send">의견보내기</string>
+    <string name="btn_withdraw">회원탈퇴</string>
+</resources>

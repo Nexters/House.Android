@@ -35,7 +35,7 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 	public FragmentActivity mFragmentActivity;
 	private ArrayList<InteriorEntity> mInteriorItemArrayList;
 	private LayoutInflater mLayoutInflater;
-	int resource;
+	private int resource;
 	CommonUtils mUtil = new CommonUtils();
 
 	public InteriorAdapter(Context context, ArrayList<InteriorEntity> mInteriorItemArrayList, int resource, FragmentActivity fragmentActivity) {
@@ -71,23 +71,22 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 
 		Holder holder = new Holder();
 		int minHeight = mUtil.pxToDp(mContext, 1500);
-		//Log.d(TAG, "pxToDp"+ minHeight);
 
 		if (convertView == null) {
 			convertView = mLayoutInflater.inflate(resource, null);
 
 			// find resource
-			holder.tv_id = (TextView) convertView.findViewById(R.id.tv_id);
-			holder.tv_category = (TextView) convertView.findViewById(R.id.tv_category);
-			holder.tv_content = (TextView) convertView.findViewById(R.id.tv_content);
+			holder.tvId = (TextView) convertView.findViewById(R.id.tv_id);
+			holder.tvCategory = (TextView) convertView.findViewById(R.id.tv_category);
+			holder.tvContent = (TextView) convertView.findViewById(R.id.tv_content);
 			
 			//holder.tv_contents = (LinearLayout) convertView.findViewById(R.id.tv_content);
 			
-			holder.iv_image = (ImageView) convertView.findViewById(R.id.iv_image);
-			holder.tv_badge = (TextView)convertView.findViewById(R.id.tv_total_badge);
-			holder.tv_reply = (TextView)convertView.findViewById(R.id.tv_total_reply);
-			holder.tv_share = (TextView)convertView.findViewById(R.id.tv_total_share);
-			holder.tv_scrap = (TextView)convertView.findViewById(R.id.tv_total_scrap);
+			holder.ivImage = (ImageView) convertView.findViewById(R.id.iv_image);
+			holder.tvCntLikes = (TextView)convertView.findViewById(R.id.tv_cnt_likes);
+			holder.tvCntReply = (TextView)convertView.findViewById(R.id.tv_cnt_reply);
+			holder.tvCntShare = (TextView)convertView.findViewById(R.id.tv_cnt_share);
+			holder.tvCntScrap = (TextView)convertView.findViewById(R.id.tv_cnt_scrap);
 			
 			convertView.setTag(holder);
 			
@@ -122,21 +121,21 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 		int nScrap = mInteriorItemArrayList.get(position).scrap;
 		
 		
-		holder.tv_id.setText(id);
-		holder.tv_content.setText(content);
-		holder.tv_category.setText(category);
-		holder.tv_badge.setText(Integer.toString(nBadge));
-		holder.tv_reply.setText(Integer.toString(nReply));
-		holder.tv_share.setText(Integer.toString(nShare));
-		holder.tv_scrap.setText(Integer.toString(nScrap));
+		holder.tvId.setText(id);
+		holder.tvContent.setText(content);
+		holder.tvCategory.setText(category);
+		holder.tvCntLikes.setText(Integer.toString(nBadge));
+		holder.tvCntReply.setText(Integer.toString(nReply));
+		holder.tvCntShare.setText(Integer.toString(nShare));
+		holder.tvCntScrap.setText(Integer.toString(nScrap));
 		
 		// set click listener
 		
 //		holder.tv_id.setOnClickListener(this);
-		holder.tv_content.setOnClickListener(this);
-//		holder.iv_image.setOnClickListener(this);
-//		holder.tv_badge.setOnClickListener(this);
-//		holder.tv_reply.setOnClickListener(this);
+		holder.tvContent.setOnClickListener(this);
+		holder.ivImage.setOnClickListener(this);
+		holder.tvCntLikes.setOnClickListener(this);
+		holder.tvCntReply.setOnClickListener(this);
 //		holder.tv_share.setOnClickListener(this);
 //		holder.tv_scrap.setOnClickListener(this);
 
@@ -144,10 +143,10 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 	}
 
 	private class Holder {
-		ImageView iv_image;
-		LinearLayout tv_contents;
-		TextView tv_id, tv_content, tv_category;
-		TextView tv_badge, tv_reply, tv_share, tv_scrap;
+		ImageView ivImage;
+		LinearLayout tvContents;
+		TextView tvId, tvContent, tvCategory;
+		TextView tvCntLikes, tvCntReply, tvCntShare, tvCntScrap;
 	}
 	
 	@SuppressWarnings("serial")
@@ -173,7 +172,6 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 
 	@Override
 	public void onClick(View v) {
-		Log.d(TAG,"Soyoon click Id ="+Integer.toString(v.getId()));
 		if(v.getId()==R.id.tv_content){
 			Fragment newFragment = null;
 			newFragment = new ContentDetailFragment();

@@ -1,8 +1,75 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible" >
+
+        <VideoView
+            android:id="@+id/vv_house_intro"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="#fff" >
+        </VideoView>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:orientation="vertical"
+        android:padding="20dp" >
+
+        <com.facebook.widget.LoginButton
+            android:id="@+id/btn_facebook_in"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp" />
+
+        <com.kakao.widget.LoginButton
+            android:id="@+id/btn_kakao_in"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/btn_sign_in"
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_height="50dp"
+                android:text="로그인" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="/" />
+
+            <Button
+                android:id="@+id/btn_sign_up"
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_height="50dp"
+                android:text="회원가입" />
+        </LinearLayout>
+    </LinearLayout>
+    <!--
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -24,6 +91,30 @@
             android:layout_height="match_parent"
             android:layout_weight="600"
             android:orientation="vertical" >
+
+            <com.facebook.widget.LoginButton
+                android:id="@+id/btn_facebook_in"
+                android:layout_width="300dp"
+                android:layout_height="0dp"
+                android:layout_weight="120"
+                 />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="20" />
+
+            <com.kakao.widget.LoginButton
+                android:id="@+id/btn_kakao_in"
+                android:layout_width="300dp"
+                android:layout_height="0dp"
+                android:layout_weight="120"
+                 />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="20" />
 
             <Button
                 android:id="@+id/btn_sign_up"
@@ -64,5 +155,6 @@
             android:layout_height="match_parent"
             android:layout_weight="60" />
     </LinearLayout>
+    -->
 
-</LinearLayout>
+</FrameLayout>

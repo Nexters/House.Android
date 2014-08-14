@@ -5,8 +5,11 @@ import java.util.List;
 
 import com.jess.ui.TwoWayGridView;
 import com.nexters.house.R;
+import com.nexters.house.adapter.GalleryAdapter;
 import com.nexters.house.adapter.HorzGridViewAdapter;
 import com.nexters.house.adapter.PagerAdapterClass;
+import com.nexters.house.entity.Action;
+import com.nexters.house.entity.DataObject;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -174,8 +177,8 @@ public class InteriorWrite2Activity extends Activity {
 
 		String path;
 		
-		for(int i=0;i<GalleryAdapter.dataChecked.size();i++){
-			path=GalleryAdapter.dataChecked.get(i).sdcardPath;
+		for(int i=0;i<GalleryAdapter.customGalleriesChecked.size();i++){
+			path=GalleryAdapter.customGalleriesChecked.get(i).sdcardPath;
 			
 			DataObject singleObject= new DataObject(path);
 			allData.add(singleObject);

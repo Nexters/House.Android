@@ -1,13 +1,40 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:facebook="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <ImageView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="5"
-        android:src="@drawable/ic_launcher" />
+        android:layout_weight="5" >
+
+        <ImageView
+            android:id="@+id/house_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+            android:visibility="gone" />
+
+        <com.facebook.widget.ProfilePictureView
+            android:id="@+id/facebook_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_horizontal"
+            android:visibility="gone"
+            facebook:preset_size="normal" />
+
+        <Button
+            android:id="@+id/rl_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="설정" />
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
