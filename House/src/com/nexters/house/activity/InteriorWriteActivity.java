@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,30 +28,32 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 public class InteriorWriteActivity extends Activity {
-	int mPrevPosition;
-	String action;
+	private int mPrevPosition;
+	private String action;
 	
-	GalleryAdapter mGalleryAdapter;
-	PagerAdapterClass mPagerAdapterClass;
-	ImageView imgSinglePick;
-	Button btnGalleryPick;
-	Button btnGalleryPickMul;
+	private GalleryAdapter mGalleryAdapter;
+	private PagerAdapterClass mPagerAdapterClass;
 	
-	ImageLoader mImageLoader;
-	LinearLayout mPageMark;
+	private ImageView imgSinglePick;
+	private ImageLoader mImageLoader;
+	
+	private LinearLayout mPageMark;
 
-	ViewSwitcher mViewSwitcher;
-	ViewPager mPager;
+	private ViewSwitcher mViewSwitcher;
+	private ViewPager mPager;
+	
+	private Button btnGalleryPick;
+	private Button btnGalleryPickMul;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.main);
+//		 requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setContentView(R.layout.activity_preview_write);
 
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		initActionBar();
 		initImageLoader();
-		init();
+		initResource();
 
 		Intent multiplePickIntent = new Intent(Action.ACTION_MULTIPLE_PICK);
 		startActivityForResult(multiplePickIntent, 200);
@@ -79,6 +82,10 @@ public class InteriorWriteActivity extends Activity {
 		}
 	}
 
+	private void initActionBar(){
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+	}
+	
 	private void initImageLoader() {
 		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
 				.cacheOnDisc().imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
@@ -92,7 +99,7 @@ public class InteriorWriteActivity extends Activity {
 		mImageLoader.init(config);
 	}
 
-	private void init() {
+	private void initResource() {
 		mGalleryAdapter = new GalleryAdapter(getApplicationContext(), mImageLoader);
 		mGalleryAdapter.setMultiplePick(false);
 
@@ -112,8 +119,7 @@ public class InteriorWriteActivity extends Activity {
 		if(mPagerAdapterClass != null){
 			refreshPager();
 		}
-		Log.d("adapter : ", "adapter : " + mGalleryAdapter.customGalleriesChecked.size());
-//		adapter.notifyDataSetChanged();
+//		Log.d("adapter : ", "adapter : " + mGalleryAdapter.customGalleriesChecked.size());
 	}
 
 	@Override

@@ -26,27 +26,25 @@ import com.nexters.house.fragment.ContentDetailFragment;
 import com.nexters.house.utils.CommonUtils;
 
 public class InteriorAdapter extends BaseAdapter implements OnClickListener{
+	private Context mContext;
+	private FragmentActivity mFragmentActivity;
 	
 	public static final int REQUEST_CONTENT_DETAIL_VIEW = 0;
-
-	final String TAG = "MainListAdapter";
-
-	public Context mContext;
-	public FragmentActivity mFragmentActivity;
+	private final String TAG = "MainListAdapter";	
 	private ArrayList<InteriorEntity> mInteriorItemArrayList;
 	private LayoutInflater mLayoutInflater;
 	private int resource;
-	CommonUtils mUtil = new CommonUtils();
+	CommonUtils mUtil;
 
 	public InteriorAdapter(Context context, ArrayList<InteriorEntity> mInteriorItemArrayList, int resource, FragmentActivity fragmentActivity) {
 		mFragmentActivity = fragmentActivity;
 		mContext = context;
+		mUtil = new CommonUtils();
 		this.mInteriorItemArrayList = mInteriorItemArrayList;
 		this.mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.resource = resource;
 	}
-
-
+	
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub

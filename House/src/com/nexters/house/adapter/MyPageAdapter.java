@@ -8,13 +8,10 @@ import com.nexters.house.*;
 
 public class MyPageAdapter extends BaseAdapter{
 	private Context mContext;
-	
 
-
-	public MyPageAdapter(Context c) {
-		mContext = c;
+	public MyPageAdapter(Context context) {
+		mContext = context;
 	}
-
 
 	@Override
     public int getCount() {

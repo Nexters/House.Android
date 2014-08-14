@@ -35,10 +35,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
-
+		
 		boolean logout = getIntent().getBooleanExtra("logout", false);
 		if (logout) {
-//			Log.d("logout", "logout : ");
 			startActivity(new Intent(this, StartActivity.class));
 			finish();
 			return;

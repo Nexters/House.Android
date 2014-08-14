@@ -31,12 +31,6 @@ import android.widget.ImageView;
 import android.widget.ViewSwitcher;
 
 public class InteriorWrite2Activity extends Activity {
-
-	EditText interiorInfo;
-	private HorzGridViewAdapter mHorzGridViewAdapter;
-	private Context mContext;
-	public static TwoWayGridView interiorGridView2;
-	GalleryAdapter adapter;
 	public final static int COLUMN_PORT = 0;
 	public final static int COLUMN_LAND = 1;
 	public static int column_selected;
@@ -44,40 +38,50 @@ public class InteriorWrite2Activity extends Activity {
 	public static int[] displayHeight;
 	private static String savedContent = "";
 	private static String savedInfo = "";
-	ViewSwitcher viewSwitcher;
-	ImageLoader imageLoader;
+	public static TwoWayGridView mInteriorGridView2;
 
-	EditText interiorContent;
+	private Context mContext;
 
-	ImageView imgSinglePick;
-	Button btnGalleryPick;
-	Button btnGalleryPickMul;
-	Button previewOk;
-	PagerAdapterClass pageradapter;
-	private ViewPager mPager;
+	private EditText mInteriorContent;
+	private EditText mInteriorInfo;
+
+	private GalleryAdapter mGalleryAdapter;
+	private HorzGridViewAdapter mHorzGridViewAdapter;
+	private PagerAdapterClass mPagerAdapterClass;
+	private ViewPager mViewPager;
+
+	private ViewSwitcher mViewSwitcher;
+	private ImageLoader mImageLoader;
+
+	private ImageView mImgSinglePick;
+	private Button btnGalleryPick;
+	private Button btnGalleryPickMul;
+	private Button previewOk;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_interior_write2);
+
+		initResource();
 	}
-	
-	public void initResource(){
+
+	private void initResource() {
 		// 입력한 정보 끌어오기
-		interiorInfo = (EditText) findViewById(R.id.interior_info); // 인테리어정보
-		interiorContent = (EditText) findViewById(R.id.interior_content); // 이야기
-		viewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher_interior2);
-		interiorGridView2 = (TwoWayGridView) findViewById(R.id.interior_gridview_2);
+		mInteriorInfo = (EditText) findViewById(R.id.interior_info); // 인테리어정보
+		mInteriorContent = (EditText) findViewById(R.id.interior_content); // 이야기
+		mViewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher_interior2);
+		mInteriorGridView2 = (TwoWayGridView) findViewById(R.id.interior_gridview_2);
 		mContext = getApplicationContext();
 
 		List<DataObject> horzData = generateGridViewObjects();
 		mHorzGridViewAdapter = new HorzGridViewAdapter(mContext, horzData, 0);
-		interiorGridView2.setAdapter(mHorzGridViewAdapter);
-		
-		interiorContent.setText(savedContent);
-		interiorInfo.setText(savedInfo);
+		mInteriorGridView2.setAdapter(mHorzGridViewAdapter);
+
+		mInteriorContent.setText(savedContent);
+		mInteriorInfo.setText(savedInfo);
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -86,9 +90,9 @@ public class InteriorWrite2Activity extends Activity {
 	}
 
 	public void addImage_interior2(View view) {
-		savedContent = interiorContent.getText().toString(); // 저장해놓고
-		savedInfo = interiorInfo.getText().toString();
-		
+		savedContent = mInteriorContent.getText().toString(); // 저장해놓고
+		savedInfo = mInteriorInfo.getText().toString();
+
 		// onBackPressed();
 		Intent multiplePickIntent = new Intent(Action.ACTION_MULTIPLE_PICK);
 		startActivityForResult(multiplePickIntent, 200);
@@ -99,17 +103,17 @@ public class InteriorWrite2Activity extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 
 		if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
-			adapter.clear();
-			adapter.notifyDataSetChanged();
-			viewSwitcher.setDisplayedChild(1);
+			mGalleryAdapter.clear();
+			mGalleryAdapter.notifyDataSetChanged();
+			mViewSwitcher.setDisplayedChild(1);
 			String single_path = data.getStringExtra("single_path");
-			imageLoader.displayImage("file://" + single_path, imgSinglePick);
+			mImageLoader.displayImage("file://" + single_path, mImgSinglePick);
 		} else if (requestCode == 200 && resultCode == Activity.RESULT_OK) {
 			List<DataObject> horzData = generateGridViewObjects();
-			mHorzGridViewAdapter.data = horzData;
+			mHorzGridViewAdapter.setHorzData(horzData);
 			mHorzGridViewAdapter.notifyDataSetChanged();
 
-			viewSwitcher.setDisplayedChild(0);
+			mViewSwitcher.setDisplayedChild(0);
 		}
 	}
 

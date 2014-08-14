@@ -18,6 +18,10 @@ public class IntroActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_intro);
 
+		initResource();
+	}
+
+	private void initResource(){
 		mHandler = new Handler();
 		mHandler.postDelayed(new Runnable() {
 			public void run() {
@@ -25,13 +29,8 @@ public class IntroActivity extends Activity {
 			}
 		}, INTRO_LOADING_TIME);
 	}
-
+	
 	private void endIntro() {
-		// if (SessionManager.getInstance(this).isSignedIn()) {
-		// Intent intent = new Intent(this, MainActivity.class);
-		// startActivity(intent);
-		// finish();
-		// } else {
 		Intent intent = new Intent(this, StartActivity.class);
 		startActivity(intent);
 		finish();

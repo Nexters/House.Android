@@ -10,10 +10,9 @@ import com.nexters.house.*;
 import com.nexters.house.entity.*;
 
 public class ContentDetailAdapter extends BaseAdapter{
-
 	final String TAG = "MainListAdapter";
 
-	public Context mContext;
+	private Context mContext;
 	private ArrayList<ContentEntity> mExamItemArrayList;
 	private LayoutInflater mLayoutInflater;
 	int resource;

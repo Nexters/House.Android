@@ -23,23 +23,23 @@ import com.nexters.house.entity.CustomGallery;
 public class PagerAdapterClass extends PagerAdapter {
 	private LayoutInflater mInflater;
 	private ArrayList<View> views;
-	private int pageNum = GalleryAdapter.customGalleriesChecked.size();
+	private int pageNum;
 //	private ArrayList<EditText> singleInfo;
 //	public ArrayList<String> InfoList;
-	private Context c;
-	private ViewPager mPager;
-
+	private Context mContext;
+	private ViewPager mViewPagers;
 	private InteriorWriteActivity mInteriorWriteActivity;
 	private int currentPosition;
 	
-	public PagerAdapterClass(Context c, ViewPager pager, InteriorWriteActivity interiorWriteActivity) {
+	public PagerAdapterClass(Context context, ViewPager pager, InteriorWriteActivity interiorWriteActivity) {
 		super();
 		mInteriorWriteActivity = interiorWriteActivity;
-		this.c = c;
-		this.mPager = pager;
-		mInflater = LayoutInflater.from(c);
+		this.mContext = context;
+		this.mViewPagers = pager;
+		mInflater = LayoutInflater.from(context);
 		views = new ArrayList<View>();
-
+		pageNum = GalleryAdapter.customGalleriesChecked.size();
+		
 //		singleInfo=new ArrayList<EditText>();
 //		InfoList=new ArrayList<String>();
 		
@@ -93,11 +93,7 @@ public class PagerAdapterClass extends PagerAdapter {
 	public Object instantiateItem(final View pager, final int position) {
 		Log.d("create", "create : " + views.get(position) + " - " + position
 				+ " - size " + getCount());
-
-		
 		((ViewPager) pager).addView(views.get(position));
-		
-	
 /*		if( singleInfo.get(position).getText().toString()!="")
 			InfoList.set(position, singleInfo.get(position).getText().toString());
 */		return views.get(position);

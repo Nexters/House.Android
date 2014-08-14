@@ -13,33 +13,34 @@ import com.nostra13.universalimageloader.core.*;
 import com.nostra13.universalimageloader.core.assist.*;
 
 public class GalleryAdapter extends BaseAdapter {
-
-	private Context mContext;
-	private LayoutInflater infalter;
 	public static ArrayList<CustomGallery> customGalleries = new ArrayList<CustomGallery>();
-	ImageLoader imageLoader;
 	public static ArrayList<CustomGallery> customGalleriesChecked = new ArrayList<CustomGallery>();
 	public static HashSet<String> customGalleriesSet = new HashSet<String>();
-	private boolean isActionMultiplePick;
+	
 	public static int selectCnt = 0;
 	public static boolean isShow = true;
-	public static ArrayList<CustomGallery> tmps = null;
+	public static ArrayList<CustomGallery> selectedGarlleries = null;
+	
+	private Context mContext;
+	private LayoutInflater mInfalter;
+	private ImageLoader mImageLoader;
+	private boolean isActionMultiplePick;
 
 	public GalleryAdapter(Context c, ImageLoader imageLoader) {
-		infalter = (LayoutInflater) c
+		mInfalter = (LayoutInflater) c
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mContext = c;
-		this.imageLoader = imageLoader;
+		this.mImageLoader = imageLoader;
 		// clearCache();
 	}
 
 	@Override
 	public int getCount() {
 		if (isShow)
-			tmps = customGalleries;
+			selectedGarlleries = customGalleries;
 		else
-			tmps = customGalleriesChecked;
-		return tmps.size();
+			selectedGarlleries = customGalleriesChecked;
+		return selectedGarlleries.size();
 	}
 
 	@Override
@@ -154,12 +155,12 @@ public class GalleryAdapter extends BaseAdapter {
 		final ViewHolder holder;
 
 		if (isShow)
-			tmps = customGalleries;
+			selectedGarlleries = customGalleries;
 		else
-			tmps = customGalleriesChecked;
+			selectedGarlleries = customGalleriesChecked;
 
 		if (convertView == null) {
-			convertView = infalter.inflate(R.layout.gallery_item, null);
+			convertView = mInfalter.inflate(R.layout.gallery_item, null);
 			holder = new ViewHolder();
 			holder.imgQueue = (ImageView) convertView
 					.findViewById(R.id.imgQueue);
@@ -182,7 +183,7 @@ public class GalleryAdapter extends BaseAdapter {
 		try {
 			// imageLoader.displayImage("file://" +
 			// data.get(position).sdcardPath,
-			imageLoader.displayImage("file://" + tmps.get(position).sdcardPath,
+			mImageLoader.displayImage("file://" + selectedGarlleries.get(position).sdcardPath,
 
 			holder.imgQueue, new SimpleImageLoadingListener() {
 				@Override
@@ -193,7 +194,7 @@ public class GalleryAdapter extends BaseAdapter {
 			});
 			if (isActionMultiplePick) {
 				holder.imgQueueMultiSelected
-						.setSelected(tmps.get(position).isSeleted);
+						.setSelected(selectedGarlleries.get(position).isSeleted);
 				holder.imgQueueMultiSelected
 						.setBackgroundResource(R.drawable.checkbox1); // 이부분을
 																		// position에
@@ -214,8 +215,8 @@ public class GalleryAdapter extends BaseAdapter {
 	}
 
 	public void clearCache() {
-		imageLoader.clearDiscCache();
-		imageLoader.clearMemoryCache();
+		mImageLoader.clearDiscCache();
+		mImageLoader.clearMemoryCache();
 	}
 
 	public static void clear() {

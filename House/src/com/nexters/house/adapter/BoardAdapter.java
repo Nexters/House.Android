@@ -11,10 +11,10 @@ import com.nexters.house.*;
 import com.nexters.house.utils.*;
 
 public class BoardAdapter extends BaseAdapter {
-	Context mContext;
-	LayoutInflater mInflater;
-	ArrayList<String> mArrayList;
-	CommonUtils mUtil = new CommonUtils();
+	private Context mContext;
+	private LayoutInflater mInflater;
+	private ArrayList<String> mArrayList;
+	private CommonUtils mUtil = new CommonUtils();
 
 	public BoardAdapter() {
 		super();
