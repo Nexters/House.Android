@@ -1,6 +1,8 @@
 package com.nexters.house.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -107,6 +109,7 @@ public class InteriorWriteActivity extends Activity {
 	}
 
 	
+	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -182,14 +185,9 @@ public class InteriorWriteActivity extends Activity {
 	}
 	
 	private void openNext() {
-	/*	pageradapter.notifyDataSetChanged();
-		String allInfo = "";
-		for(int j=0;j<pageradapter.InfoList.size();j++){ //스트링 합치기
-			allInfo=allInfo.concat(pageradapter.InfoList.get(j));
-			allInfo=allInfo.concat(", ");
-			
-		}
-	*/	Intent i =new Intent(this,InteriorWrite2Activity.class);
+
+		finish();
+		Intent i =new Intent(this,InteriorWrite2Activity.class);
 		startActivity(i);
 		
 		
@@ -200,4 +198,29 @@ public class InteriorWriteActivity extends Activity {
 		startActivityForResult(i, 200);
 		
 	}
+	@Override
+	public void onBackPressed(){
+		 AlertDialog.Builder alt_bld = new AlertDialog.Builder(this);
+		    alt_bld.setMessage("입력을 취소하시겠습니까 ?").setCancelable(
+		        false).setPositiveButton("예",
+		        new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface dialog, int id) {
+		            finish();
+		        }
+		        }).setNegativeButton("아니오",
+		        new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface dialog, int id) {
+		            // Action for 'NO' Button
+		            dialog.cancel();
+		        }
+		        });
+		    AlertDialog alert = alt_bld.create();
+		    // Title for AlertDialog
+		   // alert.setTitle("Title");
+		    // Icon for AlertDialog
+		   // alert.setIcon(R.drawable.icon);
+		    alert.show();
+
+	}
+
 }

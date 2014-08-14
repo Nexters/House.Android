@@ -16,15 +16,20 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import android.os.Bundle;
 import android.os.Handler;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 public class InteriorWrite2Activity extends Activity {
@@ -87,6 +92,49 @@ public class InteriorWrite2Activity extends Activity {
 		getMenuInflater().inflate(R.menu.interior_write2, menu);
 		return true;
 	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle presses on the action bar items
+	    switch (item.getItemId()) {
+	        case R.id.complete:
+	            completeWrite();
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
+	}
+	private void completeWrite() {
+		finish();
+		Toast.makeText(this, "작성한 내용이 업로드됩니다.", Toast.LENGTH_SHORT).show();
+	
+		
+	}
+
+	@Override
+	public void onBackPressed(){
+		 AlertDialog.Builder alt_bld = new AlertDialog.Builder(this);
+		    alt_bld.setMessage("입력을 취소하시겠습니까?").setCancelable(
+		        false).setPositiveButton("예",
+		        new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface dialog, int id) {
+		            finish();
+		        }
+		        }).setNegativeButton("아니요",
+		        new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface dialog, int id) {
+		            // Action for 'NO' Button
+		            dialog.cancel();
+		        }
+		        });
+		    AlertDialog alert = alt_bld.create();
+		    // Title for AlertDialog
+		    alert.setTitle("Title");
+		    // Icon for AlertDialog
+		    alert.setIcon(R.drawable.icon);
+		    alert.show();
+
+	}
 	public void addImage_interior2(View view){	
 	
 		
@@ -95,7 +143,9 @@ public class InteriorWrite2Activity extends Activity {
 	//	onBackPressed();
 		Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
 		startActivityForResult(i, 200);
-	}
+	
+		
+		}
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -108,11 +158,7 @@ public class InteriorWrite2Activity extends Activity {
 			imageLoader.displayImage("file://" + single_path, imgSinglePick);
 
 		} else if (requestCode == 200 && resultCode == Activity.RESULT_OK) {
-
-
 	
-	
-			
 			List<DataObject> horzData = generateGridViewObjects();
 				horzGridViewAdapter.data=horzData;
 			horzGridViewAdapter.notifyDataSetChanged();

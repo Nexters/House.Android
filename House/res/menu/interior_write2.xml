@@ -4,7 +4,7 @@
         android:id="@+id/complete"
         android:icon="@drawable/ic_launcher"
         android:orderInCategory="100"
-        android:showAsAction="never"
+        android:showAsAction="ifRoom"
         android:title="interiorWrite_complete"/>
 
 </menu>
