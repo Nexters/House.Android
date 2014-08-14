@@ -114,7 +114,8 @@ public class InteriorWriteActivity extends Activity {
 
 		if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
 			adapter.clear();
-
+			adapter.notifyDataSetChanged();
+			
 			viewSwitcher.setDisplayedChild(1);
 			String single_path = data.getStringExtra("single_path");
 			imageLoader.displayImage("file://" + single_path, imgSinglePick);

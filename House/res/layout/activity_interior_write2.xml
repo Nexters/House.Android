@@ -14,7 +14,6 @@
         android:gravity="top"
         android:hint="이야기를 적어주세요"
         android:scrollbars="vertical" >
-
         <requestFocus />
     </EditText>
 
@@ -31,7 +30,6 @@
         android:ems="10"
         android:gravity="top"
         android:scrollbars="vertical" >
-
         <requestFocus />
     </EditText>
 

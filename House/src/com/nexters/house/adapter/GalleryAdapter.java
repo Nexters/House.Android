@@ -24,7 +24,7 @@ public class GalleryAdapter extends BaseAdapter {
 	public static int selectCnt = 0;
 	public static boolean isShow = true;
 	public static ArrayList<CustomGallery> tmps = null;
-	
+
 	public GalleryAdapter(Context c, ImageLoader imageLoader) {
 		infalter = (LayoutInflater) c
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -36,11 +36,11 @@ public class GalleryAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 
-		if(isShow)
+		if (isShow)
 			tmps = customGalleries;
-		else 
+		else
 			tmps = customGalleriesChecked;
-		
+
 		return tmps.size();
 	}
 
@@ -57,7 +57,7 @@ public class GalleryAdapter extends BaseAdapter {
 	public void setMultiplePick(boolean isMultiplePick) {
 		this.isActionMultiplePick = isMultiplePick;
 	}
-	
+
 	public void selectAll(boolean selection) {
 		for (int i = 0; i < customGalleries.size(); i++) {
 			customGalleries.get(i).isSeleted = selection;
@@ -106,8 +106,8 @@ public class GalleryAdapter extends BaseAdapter {
 	@SuppressWarnings("static-access")
 	public void addAll(ArrayList<CustomGallery> files) {
 		try {
-			for(CustomGallery cg : files){
-				if(!customGalleriesSet.contains(cg.sdcardPath)){
+			for (CustomGallery cg : files) {
+				if (!customGalleriesSet.contains(cg.sdcardPath)) {
 					this.customGalleriesSet.add(cg.sdcardPath);
 					this.customGalleries.add(cg);
 				}
@@ -119,53 +119,54 @@ public class GalleryAdapter extends BaseAdapter {
 	}
 
 	public void changeSelection(View v, int position) {
-
 		if (customGalleries.get(position).isSeleted) {
 			customGalleries.get(position).isSeleted = false;
+			customGalleriesChecked.remove(customGalleries.get(position)); // 들어가있는거
+																			// 빼기
+			if (selectCnt != 0)
+				selectCnt--; // 0이면 빼지마
+		} else { // 체크안되있을때
 
-			customGalleriesChecked.remove(customGalleries.get(position)); //들어가있는거 빼기
-			if(selectCnt!=0)selectCnt--; //0이면 빼지마
-		} else { //체크안되있을때
-		
-			if(selectCnt<10){ //그리고 10보다 작을때만 넣어
+			if (selectCnt < 10) { // 그리고 10보다 작을때만 넣어
 				customGalleries.get(position).isSeleted = true;
 				selectCnt++;
-				customGalleriesChecked.add(customGalleries.get(position)); //체크된거 넣기
-			
-		//		((ViewHolder) v.getTag()).imgQueueMultiSelected.setBackgroundResource(R.drawable.checkbox1);
-			}
-			else{ //10모다 크면
-				Toast.makeText(mContext,"10개까지만", Toast.LENGTH_LONG).show();
-			
-			}
-}
+				customGalleriesChecked.add(customGalleries.get(position)); // 체크된거
+																			// 넣기
 
-		((ViewHolder) v.getTag()).imgQueueMultiSelected.setSelected(customGalleries
-				.get(position).isSeleted);
+				// ((ViewHolder)
+				// v.getTag()).imgQueueMultiSelected.setBackgroundResource(R.drawable.checkbox1);
+			} else { // 10모다 크면
+				Toast.makeText(mContext, "10개까지만", Toast.LENGTH_LONG).show();
+
+			}
+		}
+
+		((ViewHolder) v.getTag()).imgQueueMultiSelected
+				.setSelected(customGalleries.get(position).isSeleted);
 	}
 
-	public static void compareChecked(CustomGallery customGallery){
+	public static void compareChecked(CustomGallery customGallery) {
 		customGalleries.get(customGalleries.indexOf(customGallery)).isSeleted = false;
 	}
+
 	public void deleteItem(View v, int position) {
 		customGalleries.get(position).isSeleted = false;
 		selectCnt--;
 		customGalleriesChecked.remove(customGalleries.get(position));
 
-		((ViewHolder) v.getTag()).imgQueueMultiSelected.setSelected(customGalleries
-				.get(position).isSeleted);
+		((ViewHolder) v.getTag()).imgQueueMultiSelected
+				.setSelected(customGalleries.get(position).isSeleted);
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		final ViewHolder holder;
-		
-		
-		if(isShow)
+
+		if (isShow)
 			tmps = customGalleries;
-		else 
+		else
 			tmps = customGalleriesChecked;
-		
+
 		if (convertView == null) {
 			convertView = infalter.inflate(R.layout.gallery_item, null);
 			holder = new ViewHolder();
@@ -175,7 +176,6 @@ public class GalleryAdapter extends BaseAdapter {
 			holder.imgQueueMultiSelected = (ImageView) convertView
 					.findViewById(R.id.imgQueueMultiSelected);
 
-			
 			if (isActionMultiplePick) {
 				holder.imgQueueMultiSelected.setVisibility(View.VISIBLE);
 			} else {
@@ -189,31 +189,31 @@ public class GalleryAdapter extends BaseAdapter {
 		holder.imgQueue.setTag(position);
 
 		try {
-
-	//		imageLoader.displayImage("file://" + data.get(position).sdcardPath,
-
+			// imageLoader.displayImage("file://" +
+			// data.get(position).sdcardPath,
 			imageLoader.displayImage("file://" + tmps.get(position).sdcardPath,
 
-					holder.imgQueue, new SimpleImageLoadingListener() {
-						@Override
-						public void onLoadingStarted(String imageUri, View view) {
-							holder.imgQueue
-									.setImageResource(R.drawable.no_media);
-							super.onLoadingStarted(imageUri, view);
-						}
-					});
-			
-		
+			holder.imgQueue, new SimpleImageLoadingListener() {
+				@Override
+				public void onLoadingStarted(String imageUri, View view) {
+					holder.imgQueue.setImageResource(R.drawable.no_media);
+					super.onLoadingStarted(imageUri, view);
+				}
+			});
 			if (isActionMultiplePick) {
 				holder.imgQueueMultiSelected
 						.setSelected(tmps.get(position).isSeleted);
-				holder.imgQueueMultiSelected.setBackgroundResource(R.drawable.checkbox1); //이부분을 position에 따라 다른걸로!
+				holder.imgQueueMultiSelected
+						.setBackgroundResource(R.drawable.checkbox1); // 이부분을
+																		// position에
+																		// 따라
+																		// 다른걸로!
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		Log.e("testdadsfsfsdf", "fdgdfg123 : " + customGalleries.get(position).isSeleted + "");
+		Log.e("testdadsfsfsdf", "fdgdfg123 : "
+				+ customGalleries.get(position).isSeleted + "");
 		return convertView;
 	}
 
@@ -222,8 +222,6 @@ public class GalleryAdapter extends BaseAdapter {
 		ImageView imgQueueMultiSelected;
 	}
 
-	
-	
 	public void clearCache() {
 		imageLoader.clearDiscCache();
 		imageLoader.clearMemoryCache();
@@ -233,6 +231,6 @@ public class GalleryAdapter extends BaseAdapter {
 		customGalleries.clear();
 		customGalleriesSet.clear();
 		customGalleriesChecked.clear();
-//		notifyDataSetChanged();
+		// notifyDataSetChanged();
 	}
 }
