@@ -58,7 +58,32 @@ public class TalkWriteActivity extends Activity {
 	
 
 	}
-
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    // Inflate the menu items for use in the action bar
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.talk_write, menu);
+	    return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle presses on the action bar items
+	    switch (item.getItemId()) {
+	        case R.id.completeTalk:
+	            completeTalkWrite();
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
+	}
+	
+	private void completeTalkWrite() {
+		finish();
+		Toast.makeText(this, "작성한 내용이 업로드됩니다.", Toast.LENGTH_SHORT).show();
+	
+		
+	}
 	public void addImage_talk(View view){
 		initImageLoader();
 		init();
@@ -153,6 +178,31 @@ public class TalkWriteActivity extends Activity {
 //			adapter.isShow = false;
 //			adapter.notifyDataSetChanged();		
 			}
+	}
+
+	@Override
+	public void onBackPressed(){
+		 AlertDialog.Builder alt_bld = new AlertDialog.Builder(this);
+		    alt_bld.setMessage("입력을 취소하시겠습니까 ?").setCancelable(
+		        false).setPositiveButton("예",
+		        new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface dialog, int id) {
+		            finish();
+		        }
+		        }).setNegativeButton("아니오",
+		        new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface dialog, int id) {
+		            // Action for 'NO' Button
+		            dialog.cancel();
+		        }
+		        });
+		    AlertDialog alert = alt_bld.create();
+		    // Title for AlertDialog
+		   // alert.setTitle("Title");
+		    // Icon for AlertDialog
+		   // alert.setIcon(R.drawable.icon);
+		    alert.show();
+
 	}
 
 

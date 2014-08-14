@@ -9,6 +9,7 @@ import android.graphics.*;
 import android.os.*;
 import android.util.*;
 import android.view.*;
+import android.view.View.OnClickListener;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.*;
 
@@ -127,6 +128,7 @@ public class HorzGridViewAdapter extends BaseAdapter{
 			= new FrameLayout.LayoutParams(columnWidth, rowHeight);// convertView.getLayoutParams();
 		handler.iv.setLayoutParams(lp);
 
+		
 		Log.d("HorzGVAdapter","Position:"+position+",children:"+parent.getChildCount());
 		return convertView;
 	}
@@ -134,6 +136,7 @@ public class HorzGridViewAdapter extends BaseAdapter{
 	private class ViewHandler{
 		ImageView iv;
 		TextView tv;
+	
 	}
 	
 
