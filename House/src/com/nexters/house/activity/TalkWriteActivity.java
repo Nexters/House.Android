@@ -37,9 +37,9 @@ public class TalkWriteActivity extends Activity {
 	private GridView mGridGallery;
 	private Handler mHandler;
 
-	private ImageView imgSinglePick;
-	private ViewSwitcher viewSwitcher;
-	private ImageLoader imageLoader;
+	private ImageView mImgSinglePick;
+	private ViewSwitcher mViewSwitcher;
+	private ImageLoader mImageLoader;
 
 	private Button btnGalleryPick;
 	private Button btnGalleryPickMul;
@@ -56,6 +56,11 @@ public class TalkWriteActivity extends Activity {
 	private void initResource() {
 		mContext = getApplicationContext();
 		mHorzGridView = (TwoWayGridView) findViewById(R.id.horz_gridview);
+		
+		List<DataObject> horzData = new ArrayList<DataObject>();
+		mHorzGridViewAdapter = new HorzGridViewAdapter(mContext,
+				horzData, 1);
+		mHorzGridView.setAdapter(mHorzGridViewAdapter);
 	}
 
 	@Override
@@ -81,8 +86,6 @@ public class TalkWriteActivity extends Activity {
 	private void completeTalkWrite() {
 		finish();
 		Toast.makeText(this, "작성한 내용이 업로드됩니다.", Toast.LENGTH_SHORT).show();
-	
-		
 	}
 
 	public void addImage_talk(View view) {
@@ -101,8 +104,8 @@ public class TalkWriteActivity extends Activity {
 				new WeakMemoryCache());
 
 		ImageLoaderConfiguration config = builder.build();
-		imageLoader = ImageLoader.getInstance();
-		imageLoader.init(config);
+		mImageLoader = ImageLoader.getInstance();
+		mImageLoader.init(config);
 	}
 
 	private void init() {
@@ -111,7 +114,7 @@ public class TalkWriteActivity extends Activity {
 		// gridGallery.setFastScrollEnabled(true);
 		// gridGallery.setOnItemClickListener(mItemDeleteListener);
 		mGalleryAdapter = new GalleryAdapter(getApplicationContext(),
-				imageLoader);
+				mImageLoader);
 		mGalleryAdapter.setMultiplePick(false);
 		// gridGallery.setAdapter(adapter);
 
@@ -119,10 +122,10 @@ public class TalkWriteActivity extends Activity {
 
 		GalleryAdapter.selectCnt = 0; // 숫자도 초기화
 		mHorzGridView.clearDisappearingChildren();
-		viewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher_talk);
-		viewSwitcher.setDisplayedChild(1);
+		mViewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher_talk);
+		mViewSwitcher.setDisplayedChild(1);
 
-		imgSinglePick = (ImageView) findViewById(R.id.imgSinglePick_talk);
+		mImgSinglePick = (ImageView) findViewById(R.id.imgSinglePick_talk);
 		/*
 		 * btnGalleryPick = (Button) findViewById(R.id.btnGalleryPick);
 		 * btnGalleryPick.setOnClickListener(new View.OnClickListener() {
@@ -151,33 +154,44 @@ public class TalkWriteActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
-		if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
-			mGalleryAdapter.clear();
-			mGalleryAdapter.notifyDataSetChanged();
-
-			viewSwitcher.setDisplayedChild(1);
-			String single_path = data.getStringExtra("single_path");
-			imageLoader.displayImage("file://" + single_path, imgSinglePick);
-
-		} else if (requestCode == 200 && resultCode == Activity.RESULT_OK) {
-			// String[] all_path = data.getStringArrayExtra("all_path");
-
+//		if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
+//			mViewSwitcher.setDisplayedChild(1);
+////			String single_path = data.getStringExtra("single_path");
+////			imageLoader.displayImage("file://" + single_path, imgSinglePick);
+//		} else if (requestCode == 200 && resultCode == Activity.RESULT_OK) {
 			List<DataObject> horzData = generateGridViewObjects();
 
-			if (mHorzGridViewAdapter == null) {
-				mHorzGridViewAdapter = new HorzGridViewAdapter(mContext,
-						horzData, 1);
-				mHorzGridView.setAdapter(mHorzGridViewAdapter);
-			} else
+//			if (mHorzGridViewAdapter == null) {
+//		
+//			} else
 				mHorzGridViewAdapter.setHorzData(horzData);
 			mHorzGridViewAdapter.notifyDataSetChanged();
 
-			viewSwitcher.setDisplayedChild(0);
-			// adapter.isShow = false;
-			// adapter.notifyDataSetChanged();
-		}
+			mViewSwitcher.setDisplayedChild(0);
+//		}
 	}
 
+	
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
+		// refreshHorzGrid();
+	}
+	
+	public void refreshHorzGrid(){
+		// 이미지 하나도 선택 안할 경우 null 아닐 경우 그 밖
+		List<DataObject> horzData = generateGridViewObjects();
+		if(horzData == null){
+			mViewSwitcher.setDisplayedChild(1);
+		} else {
+			mHorzGridViewAdapter.setHorzData(horzData);
+			mHorzGridViewAdapter.notifyDataSetChanged();
+			mViewSwitcher.setDisplayedChild(0);
+		}
+	}
+	
 	@Override
 	public void onBackPressed(){
 		 AlertDialog.Builder alt_bld = new AlertDialog.Builder(this);
@@ -205,16 +219,15 @@ public class TalkWriteActivity extends Activity {
 
 	private List<DataObject> generateGridViewObjects() {
 		List<DataObject> allData = new ArrayList<DataObject>();
-
-
 		String path;
+
+		if(GalleryAdapter.customGalleriesChecked.size() <= 0)
+			return null;
 		for (int i = 0; i < GalleryAdapter.customGalleriesChecked.size(); i++) {
 			path = GalleryAdapter.customGalleriesChecked.get(i).sdcardPath;
-
 			DataObject singleObject = new DataObject(path);
 			allData.add(singleObject);
 		}
 		return allData;
 	}
-
 }

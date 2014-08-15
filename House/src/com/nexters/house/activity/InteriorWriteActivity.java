@@ -192,9 +192,8 @@ public class InteriorWriteActivity extends Activity {
 	}
 
 	private void openNext() {
-
 		finish();
-		Intent i = new Intent(this, InteriorWrite2Activity.class);
+		Intent intent = new Intent(this, InteriorWrite2Activity.class);
 		/*
 		 * pageradapter.notifyDataSetChanged(); String allInfo = ""; for(int
 		 * j=0;j<pageradapter.InfoList.size();j++){ //스트링 합치기
@@ -203,8 +202,7 @@ public class InteriorWriteActivity extends Activity {
 		 * 
 		 * }
 		 */
-
-		startActivity(i);
+		startActivity(intent);
 	}
 
 	private void moreSelect() {

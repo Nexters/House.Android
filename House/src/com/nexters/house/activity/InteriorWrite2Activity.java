@@ -72,10 +72,10 @@ public class InteriorWrite2Activity extends Activity {
 		mInteriorGridView2 = (TwoWayGridView) findViewById(R.id.interior_gridview_2);
 		mContext = getApplicationContext();
 
-		List<DataObject> horzData = generateGridViewObjects();
+		List<DataObject> horzData = new ArrayList<DataObject>();
 		mHorzGridViewAdapter = new HorzGridViewAdapter(mContext, horzData, 0);
 		mInteriorGridView2.setAdapter(mHorzGridViewAdapter);
-
+		
 		mInteriorContent.setText(savedContent);
 		mInteriorInfo.setText(savedInfo);
 	}
