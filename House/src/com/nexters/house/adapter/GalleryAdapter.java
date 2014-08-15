@@ -223,6 +223,7 @@ public class GalleryAdapter extends BaseAdapter {
 		customGalleries.clear();
 		customGalleriesSet.clear();
 		customGalleriesChecked.clear();
+		selectCnt = 0;
 		// notifyDataSetChanged();
 	}
 }

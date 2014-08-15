@@ -96,7 +96,7 @@ public class CustomGalleryActivity extends Activity {
 			gridGallery.setOnItemClickListener(mItemSingleClickListener);
 			adapter.setMultiplePick(false);
 		}
-		
+
 		adapter.isShow = true;
 		gridGallery.setAdapter(adapter);
 		imgNoMedia = (ImageView) findViewById(R.id.imgNoMedia);
@@ -105,7 +105,6 @@ public class CustomGalleryActivity extends Activity {
 		btnGalleryOk.setOnClickListener(mOkClickListener);
 
 		new Thread() {
-
 			@Override
 			public void run() {
 				Looper.prepare();
@@ -132,25 +131,18 @@ public class CustomGalleryActivity extends Activity {
 		}
 	}
 
+	// 사진 선택 완료 버튼 누를 시
 	View.OnClickListener mOkClickListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
-			ArrayList<CustomGallery> selected = adapter.getSelected();
-			Log.d("size", "sadfasdlkndsaf : " + selected.size());
-			String[] allPath = new String[selected.size()];
-			for (int i = 0; i < allPath.length; i++) {
-				allPath[i] = selected.get(i).sdcardPath;
-			}
-
-			Intent data = new Intent().putExtra("all_path", allPath);
-			setResult(RESULT_OK, data);
+//			setResult(RESULT_OK);
 			finish();
 		}
 	};
 	AdapterView.OnItemClickListener mItemMulClickListener = new AdapterView.OnItemClickListener() {
 
 		@Override
-		public void onItemClick(AdapterView<?> l, View v, int position, long id) {		
+		public void onItemClick(AdapterView<?> l, View v, int position, long id) {
 			adapter.changeSelection(v, position);
 		}
 	};

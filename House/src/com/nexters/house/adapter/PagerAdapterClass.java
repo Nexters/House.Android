@@ -91,12 +91,12 @@ public class PagerAdapterClass extends PagerAdapter {
 
 	@Override
 	public Object instantiateItem(final View pager, final int position) {
-		Log.d("create", "create : " + views.get(position) + " - " + position
-				+ " - size " + getCount());
+		
+		
+//		Log.d("create", "create : " + views.get(position) + " - " + position
+//				+ " - size " + getCount());
 		((ViewPager) pager).addView(views.get(position));
-/*		if( singleInfo.get(position).getText().toString()!="")
-			InfoList.set(position, singleInfo.get(position).getText().toString());
-*/		return views.get(position);
+		return views.get(position);
 	}
 
 	@Override

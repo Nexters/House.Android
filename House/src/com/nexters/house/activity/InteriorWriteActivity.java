@@ -32,25 +32,25 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 public class InteriorWriteActivity extends Activity {
 	private int mPrevPosition;
 	private String action;
-	
+
 	private GalleryAdapter mGalleryAdapter;
 	private PagerAdapterClass mPagerAdapterClass;
-	
+
 	private ImageView imgSinglePick;
 	private ImageLoader mImageLoader;
-	
+
 	private LinearLayout mPageMark;
 
 	private ViewSwitcher mViewSwitcher;
 	private ViewPager mPager;
-	
+
 	private Button btnGalleryPick;
 	private Button btnGalleryPickMul;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-//		 requestWindowFeature(Window.FEATURE_NO_TITLE);
+	//	requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_preview_write);
 
 		initActionBar();
@@ -84,10 +84,10 @@ public class InteriorWriteActivity extends Activity {
 		}
 	}
 
-	private void initActionBar(){
+	private void initActionBar() {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 	}
-	
+
 	private void initImageLoader() {
 		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
 				.cacheOnDisc().imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
@@ -102,52 +102,38 @@ public class InteriorWriteActivity extends Activity {
 	}
 
 	private void initResource() {
-		mGalleryAdapter = new GalleryAdapter(getApplicationContext(), mImageLoader);
+		mGalleryAdapter = new GalleryAdapter(getApplicationContext(),
+				mImageLoader);
 		mGalleryAdapter.setMultiplePick(false);
 
-		GalleryAdapter.clear(); // 버튼 누를때마다 리스트 초기화 시켜줭
-
-		GalleryAdapter.selectCnt = 0; // 숫자도 초기화
+		GalleryAdapter.clear(); // 버튼 누를때마다 리스트 초기화 시켜줭 + 숫자도 초기화
 		mViewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher);
 		mViewSwitcher.setDisplayedChild(1);
 
 		imgSinglePick = (ImageView) findViewById(R.id.imgSinglePick);
+
+		// pagination
+		mPageMark = (LinearLayout) findViewById(R.id.page_mark);
+		mPager = (ViewPager) findViewById(R.id.previewPager);
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
-		if(mPagerAdapterClass != null){
-			refreshPager();
-		}
-//		Log.d("adapter : ", "adapter : " + mGalleryAdapter.customGalleriesChecked.size());
+
+		refreshPager();
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-
-		if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
-			mGalleryAdapter.clear();
-			mGalleryAdapter.notifyDataSetChanged();
-
-			mViewSwitcher.setDisplayedChild(1);
-			String single_path = data.getStringExtra("single_path");
-			mImageLoader.displayImage("file://" + single_path, imgSinglePick);
-		} else if (requestCode == 200 && resultCode == Activity.RESULT_OK) {
-			refreshPager();
-		}
 	}
 
 	public void refreshPager() {
-		// String[] all_path = data.getStringArrayExtra("all_path");
-		mPageMark = (LinearLayout) findViewById(R.id.page_mark);
-		mPager = (ViewPager) findViewById(R.id.previewPager);
-		mPagerAdapterClass = new PagerAdapterClass(getApplicationContext(), mPager,
-				this);
-
+		mPagerAdapterClass = new PagerAdapterClass(getApplicationContext(),
+				mPager, this);
 		mPager.setAdapter(mPagerAdapterClass);
+		
 		mPageMark.removeAllViews(); // 다시 다 지워
 		mPager.setOnPageChangeListener(new OnPageChangeListener() {
 			@Override
@@ -170,16 +156,20 @@ public class InteriorWriteActivity extends Activity {
 			public void onPageScrollStateChanged(int state) {
 			}
 		});
-		mPrevPosition = 0;
-		for (int i = 0; i < GalleryAdapter.customGalleriesChecked.size(); i++)
-			addPageMark();
-		mPageMark.getChildAt(mPrevPosition).setBackgroundResource(
-				R.drawable.page_select);
 
-		mViewSwitcher.setDisplayedChild(0);
+		if (GalleryAdapter.customGalleriesChecked.size() > 0) {
+			mPrevPosition = 0;
+			for (int i = 0; i < GalleryAdapter.customGalleriesChecked.size(); i++)
+				addPageMark();
+			mPageMark.getChildAt(mPrevPosition).setBackgroundResource(
+					R.drawable.page_select);
+			
+			mViewSwitcher.setDisplayedChild(0);
+		} else {
+			mViewSwitcher.setDisplayedChild(1);
+		}
 		mGalleryAdapter.isShow = false;
 		mGalleryAdapter.notifyDataSetChanged();
-		// adapter.addAll(GalleryAdapter.dataChecked);
 	}
 
 	private void addPageMark() {
@@ -203,9 +193,8 @@ public class InteriorWriteActivity extends Activity {
 
 	private void openNext() {
 
-
 		finish();
-		Intent i =new Intent(this,InteriorWrite2Activity.class);
+		Intent i = new Intent(this, InteriorWrite2Activity.class);
 		/*
 		 * pageradapter.notifyDataSetChanged(); String allInfo = ""; for(int
 		 * j=0;j<pageradapter.InfoList.size();j++){ //스트링 합치기
@@ -222,28 +211,30 @@ public class InteriorWriteActivity extends Activity {
 		Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
 		startActivityForResult(i, 200);
 	}
+
 	@Override
-	public void onBackPressed(){
-		 AlertDialog.Builder alt_bld = new AlertDialog.Builder(this);
-		    alt_bld.setMessage("입력을 취소하시겠습니까 ?").setCancelable(
-		        false).setPositiveButton("예",
-		        new DialogInterface.OnClickListener() {
-		        public void onClick(DialogInterface dialog, int id) {
-		            finish();
-		        }
-		        }).setNegativeButton("아니오",
-		        new DialogInterface.OnClickListener() {
-		        public void onClick(DialogInterface dialog, int id) {
-		            // Action for 'NO' Button
-		            dialog.cancel();
-		        }
-		        });
-		    AlertDialog alert = alt_bld.create();
-		    // Title for AlertDialog
-		   // alert.setTitle("Title");
-		    // Icon for AlertDialog
-		   // alert.setIcon(R.drawable.icon);
-		    alert.show();
+	public void onBackPressed() {
+		AlertDialog.Builder alt_bld = new AlertDialog.Builder(this);
+		alt_bld.setMessage("입력을 취소하시겠습니까 ?")
+				.setCancelable(false)
+				.setPositiveButton("예", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						finish();
+					}
+				})
+				.setNegativeButton("아니오",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								// Action for 'NO' Button
+								dialog.cancel();
+							}
+						});
+		AlertDialog alert = alt_bld.create();
+		// Title for AlertDialog
+		// alert.setTitle("Title");
+		// Icon for AlertDialog
+		// alert.setIcon(R.drawable.icon);
+		alert.show();
 
 	}
 

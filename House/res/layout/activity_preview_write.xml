@@ -7,14 +7,14 @@
     android:background="@color/bg_light_blue"
     android:orientation="vertical" >
 
- <LinearLayout
-		android:id="@+id/page_mark"
-		android:orientation="horizontal" 
-		android:layout_width="fill_parent"
-		android:layout_height="30dp"
-		android:gravity="center" />
-
-   <!--  <TextView
+    <LinearLayout
+        android:id="@+id/page_mark"
+        android:layout_width="fill_parent"
+        android:layout_height="30dp"
+        android:gravity="center"
+        android:orientation="horizontal" />
+    <!--
+         <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
@@ -23,28 +23,22 @@
         android:padding="5dp"
         android:text="Preview"
         android:textColor="@android:color/white"
-        android:textStyle="bold" />
- -->
-     
+        android:textStyle="bold" />    -->
+
     <ViewSwitcher
         android:id="@+id/viewSwitcher"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:paddingTop="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:layout_weight="1" >
-
-   
+        android:layout_weight="1"
+        android:paddingTop="5dp" >
         <android.support.v4.view.ViewPager
-     android:id="@+id/previewPager"
-     android:layout_width="fill_parent"
-     android:layout_height="fill_parent"
-     android:layout_above="@+id/bottom"
-     android:layout_below="@+id/ll_title_layout"
-     />
-       
-        
+            android:id="@+id/previewPager"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@+id/bottom"
+            android:layout_below="@+id/ll_title_layout" />
         <ImageView
             android:id="@+id/imgSinglePick"
             android:layout_width="wrap_content"
@@ -53,8 +47,8 @@
             android:contentDescription="@string/app_name"
             android:src="@drawable/no_media" />
     </ViewSwitcher>
- 
- <!--    <LinearLayout
+    <!--
+    <LinearLayout
         android:id="@+id/llBottomContainer"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -77,6 +71,7 @@
             android:layout_marginTop="5dp"
             android:background="#F79557"
             android:text="다중 선택" />
-    </LinearLayout> -->
+    </LinearLayout>
+    -->
 
 </LinearLayout>

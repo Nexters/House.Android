@@ -3,28 +3,12 @@ package com.nexters.house.activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jess.ui.TwoWayGridView;
-import com.nexters.house.R;
-import com.nexters.house.adapter.GalleryAdapter;
-import com.nexters.house.adapter.HorzGridViewAdapter;
-import com.nexters.house.adapter.PagerAdapterClass;
-import com.nexters.house.entity.Action;
-import com.nexters.house.entity.DataObject;
-import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-
-import android.os.Bundle;
-import android.os.Handler;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.support.v4.app.NavUtils;
+import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,6 +18,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
+
+import com.jess.ui.TwoWayGridView;
+import com.nexters.house.R;
+import com.nexters.house.adapter.GalleryAdapter;
+import com.nexters.house.adapter.HorzGridViewAdapter;
+import com.nexters.house.adapter.PagerAdapterClass;
+import com.nexters.house.entity.Action;
+import com.nexters.house.entity.DataObject;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class InteriorWrite2Activity extends Activity {
 	public final static int COLUMN_PORT = 0;
@@ -149,27 +142,33 @@ public class InteriorWrite2Activity extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
+		refreshHorzGrid();
+	}
 
-		if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
-			mGalleryAdapter.clear();
-			mGalleryAdapter.notifyDataSetChanged();
+	public void refreshHorzGrid(){
+		// 이미지 하나도 선택 안할 경우 null 아닐 경우 그 밖
+		List<DataObject> horzData = generateGridViewObjects();
+		if(horzData == null){
 			mViewSwitcher.setDisplayedChild(1);
-			String single_path = data.getStringExtra("single_path");
-			mImageLoader.displayImage("file://" + single_path, mImgSinglePick);
-		} else if (requestCode == 200 && resultCode == Activity.RESULT_OK) {
-
-			List<DataObject> horzData = generateGridViewObjects();
+		} else {
 			mHorzGridViewAdapter.setHorzData(horzData);
 			mHorzGridViewAdapter.notifyDataSetChanged();
-
 			mViewSwitcher.setDisplayedChild(0);
 		}
 	}
-
+	
 	private List<DataObject> generateGridViewObjects() {
 		List<DataObject> allData = new ArrayList<DataObject>();
 		String path;
 
+		if(GalleryAdapter.customGalleriesChecked.size() <= 0)
+			return null;
 		for (int i = 0; i < GalleryAdapter.customGalleriesChecked.size(); i++) {
 			path = GalleryAdapter.customGalleriesChecked.get(i).sdcardPath;
 			DataObject singleObject = new DataObject(path);
