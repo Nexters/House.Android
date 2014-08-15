@@ -13,30 +13,35 @@ import com.nexters.house.activity.*;
 import com.nexters.house.adapter.*;
 
 public class BoardFragment extends Fragment {
-	ListView listView;
-
+	ListView mBoardList;
+	Button mBtnWrite;
+	View mView;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		mView = inflater.inflate(R.layout.fragment_board, container, false);
 
-		View v = inflater.inflate(R.layout.fragment_board, container, false);
-
-		listView = (ListView) v.findViewById(R.id.listview);
-
-		Button b=(Button)v.findViewById(R.id.btn_write_board);
-	    b.setText("쓰기");
-	    b.bringToFront();
-		b.setOnClickListener(new Button.OnClickListener() {
-			
+		initResource();
+		initEvent();
+		return mView;
+	}
+	
+	public void initResource(){
+		mBoardList = (ListView) mView.findViewById(R.id.board_list);
+		
+		mBtnWrite = (Button)mView.findViewById(R.id.btn_write);
+	    mBtnWrite.setText("쓰기");
+	    mBtnWrite.bringToFront();
+	}
+	
+	public void initEvent(){
+		mBtnWrite.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent intent=new Intent(getActivity(),TalkWriteActivity.class);
-				
 			 	startActivity(intent);
-				
 			}
 		});
-		
-		return v;
 	}
 
 	@Override
@@ -57,7 +62,7 @@ public class BoardFragment extends Fragment {
 
 		BoardAdapter boardAdapter = new BoardAdapter(getActivity(), arrayList);
 
-		listView.setAdapter(boardAdapter);
+		mBoardList.setAdapter(boardAdapter);
 	}
 
 }

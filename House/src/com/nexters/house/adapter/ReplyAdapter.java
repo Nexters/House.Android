@@ -56,7 +56,7 @@ public class ReplyAdapter extends BaseAdapter{
 			
 			holder.userProfileImage = (ImageView) convertView.findViewById(R.id.iv_user_profile_image);
 			holder.userName = (TextView) convertView.findViewById(R.id.tv_user_profile_name);
-			holder.replyContent = (TextView) convertView.findViewById(R.id.tv_content);
+			//holder.replyContent = (TextView) convertView.findViewById(R.id.tv_content);
 			convertView.setTag(holder);
 			
 

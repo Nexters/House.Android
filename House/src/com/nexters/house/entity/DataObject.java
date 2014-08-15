@@ -5,7 +5,6 @@ public class DataObject {
 	private int color;
 	private String name;
 	
-	
 	public DataObject(String name,int color){
 		this.name=name;
 		this.color=color;

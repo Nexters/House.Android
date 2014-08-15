@@ -1,22 +1,19 @@
 package com.nexters.house.activity;
 
-import org.json.JSONObject;
-
-import com.nexters.house.R;
-import com.nexters.house.core.SessionManager;
-
-import android.content.Intent;
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.EditText;
 
-public class SignInActivity extends FragmentActivity implements View.OnClickListener {
+import com.nexters.house.R;
+import com.nexters.house.core.SessionManager;
+
+public class SignInActivity extends Activity implements View.OnClickListener {
     private EditText mHsEmail;
     private EditText mHsPassword;
     private Button mBtnSignIn;

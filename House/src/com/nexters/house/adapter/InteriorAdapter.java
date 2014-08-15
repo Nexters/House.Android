@@ -26,42 +26,37 @@ import com.nexters.house.fragment.ContentDetailFragment;
 import com.nexters.house.utils.CommonUtils;
 
 public class InteriorAdapter extends BaseAdapter implements OnClickListener{
+	private Context mContext;
+	private FragmentActivity mFragmentActivity;
 	
 	public static final int REQUEST_CONTENT_DETAIL_VIEW = 0;
-
-	final String TAG = "MainListAdapter";
-
-	public Context mContext;
-	public FragmentActivity mFragmentActivity;
+	private final String TAG = "MainListAdapter";	
 	private ArrayList<InteriorEntity> mInteriorItemArrayList;
 	private LayoutInflater mLayoutInflater;
 	private int resource;
-	CommonUtils mUtil = new CommonUtils();
+	private CommonUtils mUtil;
 
 	public InteriorAdapter(Context context, ArrayList<InteriorEntity> mInteriorItemArrayList, int resource, FragmentActivity fragmentActivity) {
 		mFragmentActivity = fragmentActivity;
 		mContext = context;
+		mUtil = new CommonUtils();
 		this.mInteriorItemArrayList = mInteriorItemArrayList;
 		this.mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.resource = resource;
 	}
-
-
+	
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
 		return mInteriorItemArrayList.size();
 	}
 
 	@Override
 	public Object getItem(int arg0) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public long getItemId(int arg0) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -76,17 +71,17 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 			convertView = mLayoutInflater.inflate(resource, null);
 
 			// find resource
-			holder.tvId = (TextView) convertView.findViewById(R.id.tv_id);
-			holder.tvCategory = (TextView) convertView.findViewById(R.id.tv_category);
-			holder.tvContent = (TextView) convertView.findViewById(R.id.tv_content);
+			holder.houseId = (TextView) convertView.findViewById(R.id.house_id);
+			holder.interiorCategory = (TextView) convertView.findViewById(R.id.interior_category);
+			holder.interiorContent = (TextView) convertView.findViewById(R.id.interior_content);
 			
 			//holder.tv_contents = (LinearLayout) convertView.findViewById(R.id.tv_content);
 			
-			holder.ivImage = (ImageView) convertView.findViewById(R.id.iv_image);
-			holder.tvCntLikes = (TextView)convertView.findViewById(R.id.tv_cnt_likes);
-			holder.tvCntReply = (TextView)convertView.findViewById(R.id.tv_cnt_reply);
-			holder.tvCntShare = (TextView)convertView.findViewById(R.id.tv_cnt_share);
-			holder.tvCntScrap = (TextView)convertView.findViewById(R.id.tv_cnt_scrap);
+			holder.houseProfile = (ImageView) convertView.findViewById(R.id.house_profile);
+			holder.interiorLikes = (TextView)convertView.findViewById(R.id.interior_likes_cnt);
+			holder.interiorReplies = (TextView)convertView.findViewById(R.id.interior_reply_cnt);
+			holder.interiorShares = (TextView)convertView.findViewById(R.id.interior_share_cnt);
+			holder.interiorScraps = (TextView)convertView.findViewById(R.id.interior_scrap_cnt);
 			
 			convertView.setTag(holder);
 			
@@ -121,21 +116,21 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 		int nScrap = mInteriorItemArrayList.get(position).scrap;
 		
 		
-		holder.tvId.setText(id);
-		holder.tvContent.setText(content);
-		holder.tvCategory.setText(category);
-		holder.tvCntLikes.setText(Integer.toString(nBadge));
-		holder.tvCntReply.setText(Integer.toString(nReply));
-		holder.tvCntShare.setText(Integer.toString(nShare));
-		holder.tvCntScrap.setText(Integer.toString(nScrap));
+		holder.houseId.setText(id);
+		holder.interiorContent.setText(content);
+		holder.interiorCategory.setText(category);
+		holder.interiorLikes.setText(Integer.toString(nBadge));
+		holder.interiorReplies.setText(Integer.toString(nReply));
+		holder.interiorShares.setText(Integer.toString(nShare));
+		holder.interiorScraps.setText(Integer.toString(nScrap));
 		
 		// set click listener
 		
 //		holder.tv_id.setOnClickListener(this);
-		holder.tvContent.setOnClickListener(this);
-		holder.ivImage.setOnClickListener(this);
-		holder.tvCntLikes.setOnClickListener(this);
-		holder.tvCntReply.setOnClickListener(this);
+		holder.interiorContent.setOnClickListener(this);
+		holder.houseProfile.setOnClickListener(this);
+		holder.interiorLikes.setOnClickListener(this);
+		holder.interiorReplies.setOnClickListener(this);
 //		holder.tv_share.setOnClickListener(this);
 //		holder.tv_scrap.setOnClickListener(this);
 
@@ -143,10 +138,10 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 	}
 
 	private class Holder {
-		ImageView ivImage;
+		ImageView houseProfile;
 		LinearLayout tvContents;
-		TextView tvId, tvContent, tvCategory;
-		TextView tvCntLikes, tvCntReply, tvCntShare, tvCntScrap;
+		TextView houseId, interiorContent, interiorCategory;
+		TextView interiorLikes, interiorReplies, interiorShares, interiorScraps;
 	}
 	
 	@SuppressWarnings("serial")
@@ -172,14 +167,13 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 
 	@Override
 	public void onClick(View v) {
-		if(v.getId()==R.id.tv_content){
+		if(v.getId()==R.id.interior_content){
 			Fragment newFragment = null;
 			newFragment = new ContentDetailFragment();
 
 			// replace fragment
 			final FragmentTransaction transaction = mFragmentActivity.getSupportFragmentManager()
 					.beginTransaction();
-
 			transaction.replace(R.id.ll_fragment, newFragment);
 			//뒤로가기 버튼누르면 앞의 프래그먼트 나오도록하는거 
 			transaction.addToBackStack(null);

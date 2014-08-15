@@ -10,27 +10,26 @@
     android:orientation="vertical" >
 
     <!--사람프로필사진 + 아이디 + 카테고리-->
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal" >
 
         <ImageView
-            android:id="@+id/iv_image"
+            android:id="@+id/house_profile"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:src="@drawable/soyoon" />
 
         <TextView
-            android:id="@+id/tv_id"
+            android:id="@+id/house_id"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="ID_soyoon"
             android:textSize="15sp" />
 
         <TextView
-            android:id="@+id/tv_category"
+            android:id="@+id/interior_category"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="right"
@@ -46,7 +45,7 @@
         custom:pager_animation_span="1100" />
 
     <TextView
-        android:id="@+id/tv_content"
+        android:id="@+id/interior_content"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:gravity="center"
@@ -58,53 +57,53 @@
         android:orientation="horizontal" >
 
         <ImageView
-            android:id="@+id/iv_likes"
+            android:id="@+id/interior_likes_img"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_weight="1"
             android:src="@drawable/ic_launcher" />
 
         <TextView
-            android:id="@+id/tv_cnt_likes"
+            android:id="@+id/interior_likes_cnt"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:text="1000" />
 
         <ImageView
-            android:id="@+id/iv_reply"
+            android:id="@+id/interior_reply_img"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@drawable/ic_launcher" />
 
         <TextView
-            android:id="@+id/tv_cnt_reply"
+            android:id="@+id/interior_reply_cnt"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:text="800" />
 
         <ImageView
-            android:id="@+id/iv_share"
+            android:id="@+id/interior_share_img"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@drawable/ic_launcher" />
 
         <TextView
-            android:id="@+id/tv_cnt_share"
+            android:id="@+id/interior_share_cnt"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:text="70" />
 
         <ImageView
-            android:id="@+id/iv_scrap"
+            android:id="@+id/interior_scrap_img"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@drawable/ic_launcher" />
 
         <TextView
-            android:id="@+id/tv_cnt_scrap"
+            android:id="@+id/interior_scrap_cnt"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"

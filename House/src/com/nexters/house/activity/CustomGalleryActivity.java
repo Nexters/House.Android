@@ -24,7 +24,6 @@ import com.nostra13.universalimageloader.core.assist.*;
 import com.nostra13.universalimageloader.utils.*;
 
 public class CustomGalleryActivity extends Activity {
-
 	GridView gridGallery;
 	Handler handler;
 	GalleryAdapter adapter;

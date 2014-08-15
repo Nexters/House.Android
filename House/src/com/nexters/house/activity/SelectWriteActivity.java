@@ -15,11 +15,7 @@ import android.view.Menu;
 import android.view.View;
 
 public class SelectWriteActivity extends Activity {
-
- 
-
 	//private static final int SELECT_PICTURE = 15;
-
     //private String selectedImagePath;
     //ADDED
     //private String filemanagerstring;
