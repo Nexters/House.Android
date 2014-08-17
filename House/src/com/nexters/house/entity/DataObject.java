@@ -10,7 +10,6 @@ public class DataObject {
 		this.color=color;
 	}
 	public DataObject(String path) {
-		
 		this.name = path;
 	}
 

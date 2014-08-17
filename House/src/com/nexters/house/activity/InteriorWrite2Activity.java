@@ -75,7 +75,7 @@ public class InteriorWrite2Activity extends Activity {
 		
 		mContext = getApplicationContext();
 		List<DataObject> horzData = new ArrayList<DataObject>();
-		mHorzGridViewAdapter = new HorzGridViewAdapter(mContext, horzData, 0);
+		mHorzGridViewAdapter = new HorzGridViewAdapter(mContext, horzData, mInteriorGridView2);
 		mInteriorGridView2.setAdapter(mHorzGridViewAdapter);
 		
 		mInteriorContent.setText(savedContent);
@@ -151,7 +151,6 @@ public class InteriorWrite2Activity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
 		refreshHorzGrid();
 	}
 

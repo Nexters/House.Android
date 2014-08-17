@@ -13,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.*;
 
+import com.jess.ui.TwoWayGridView;
 import com.nexters.house.*;
 import com.nexters.house.activity.*;
 import com.nexters.house.entity.DataObject;
@@ -21,6 +22,7 @@ public class HorzGridViewAdapter extends BaseAdapter{
 	
 	private Context mContext;
 	private List<DataObject> mHorzData;	
+	private TwoWayGridView mHorzGridView;
 	
 	//HorzGridView stuff
 	private int childLayoutResourceId = R.layout.horz_gridview_child_layout;
@@ -30,10 +32,15 @@ public class HorzGridViewAdapter extends BaseAdapter{
 	private int columnWidth;
 	private int rowHeight;
 
-	public HorzGridViewAdapter(Context context,List<DataObject> data,final int type){
+	//Initialize the layout params
+	private ViewTreeObserver mViewTreeObserver;
+	
+	public HorzGridViewAdapter(Context context,List<DataObject> data,final TwoWayGridView horzGridView){
 		childLayoutResourceId = R.layout.horz_gridview_child_layout;
 		this.mContext = context;
 		this.mHorzData = data;
+		this.mHorzGridView = horzGridView;
+		
 		//Get dimensions from values folders; note that the value will change
 		//based on the device size but the dimension name will remain the same
 		Resources res = mContext.getResources();
@@ -41,48 +48,32 @@ public class HorzGridViewAdapter extends BaseAdapter{
 		int[] rowsColumns = res.getIntArray(R.array.horz_gv_rows_columns);
 		rows = rowsColumns[0];
 		columns = rowsColumns[1];
-		
-		//Initialize the layout params
-		ViewTreeObserver vto;
-		if(type==1){
-			//HorzGridView size not established yet, so need to set it using a viewtreeobserver
-			TalkWriteActivity.mTalkHorzGridView.setNumRows(rows);
-			vto = TalkWriteActivity.mTalkHorzGridView.getViewTreeObserver();
-		}
-		else{
-			InteriorWrite2Activity.mInteriorGridView2.setNumRows(rows);
-			vto=InteriorWrite2Activity.mInteriorGridView2.getViewTreeObserver();
-		}
+
+		//HorzGridView size not established yet, so need to set it using a viewtreeobserver
+		mHorzGridView.setNumRows(rows);
+		mViewTreeObserver = mHorzGridView.getViewTreeObserver();
 		
 		OnGlobalLayoutListener onGlobalLayoutListener = new OnGlobalLayoutListener() {
 			@SuppressWarnings("deprecation")
 			@SuppressLint("NewApi")
 			@Override
 			public void onGlobalLayout() {
-				ViewTreeObserver vto;
 				//First use the gridview height and width to determine child values
-				if(type == 1){
-					rowHeight =(int)((float)(TalkWriteActivity.mTalkHorzGridView.getHeight()/rows)-2*itemPadding);
-					columnWidth = (int)((float)(TalkWriteActivity.mTalkHorzGridView.getWidth()/columns)-2*itemPadding);				
-					TalkWriteActivity.mTalkHorzGridView.setRowHeight(rowHeight);
-					vto = TalkWriteActivity.mTalkHorzGridView.getViewTreeObserver();
-				}
-				else{
-					rowHeight =(int)((float)(InteriorWrite2Activity.mInteriorGridView2.getHeight()/rows)-2*itemPadding);
-					columnWidth = (int)((float)(InteriorWrite2Activity.mInteriorGridView2.getWidth()/columns)-2*itemPadding);
-					InteriorWrite2Activity.mInteriorGridView2.setRowHeight(rowHeight);
-					vto = InteriorWrite2Activity.mInteriorGridView2.getViewTreeObserver();
-				}
+				rowHeight =(int)((float)(mHorzGridView.getHeight()/rows)-2*itemPadding);
+				columnWidth = (int)((float)(mHorzGridView.getWidth()/columns)-2*itemPadding);
 				
-				//Then remove the listener
-				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
-					vto.removeOnGlobalLayoutListener(this);
-				}else{
-					vto.removeGlobalOnLayoutListener(this);
-				}
+				mHorzGridView.setRowHeight(rowHeight);
+				
+//				Log.d("onGlobalLayout", "onGlobalLayout : " + rowHeight + ", " + columnWidth);
+				//Then remove the listener 
+//				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
+//					vto.removeOnGlobalLayoutListener(this);
+//				}else{
+//					vto.removeGlobalOnLayoutListener(this);
+//				}
 			}
 		};
-		vto.addOnGlobalLayoutListener(onGlobalLayoutListener);
+		mViewTreeObserver.addOnGlobalLayoutListener(onGlobalLayoutListener);
 	}
 	
 	@Override
@@ -116,7 +107,6 @@ public class HorzGridViewAdapter extends BaseAdapter{
 		FrameLayout.LayoutParams lp 
 			= new FrameLayout.LayoutParams(columnWidth, rowHeight);// convertView.getLayoutParams();
 		handler.iv.setLayoutParams(lp);
-	
 //		Log 
 //		Log.d("HorzGVAdapter","Position:"+position+",children:"+parent.getChildCount());
 		return convertView;
@@ -144,5 +134,11 @@ public class HorzGridViewAdapter extends BaseAdapter{
 
 	public void setHorzData(List<DataObject> horzData){
 		mHorzData = horzData;
+	}
+
+	@Override
+	public void notifyDataSetChanged() {
+		super.notifyDataSetChanged();
+		mViewTreeObserver.dispatchOnGlobalLayout();
 	}
 }

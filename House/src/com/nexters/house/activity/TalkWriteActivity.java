@@ -44,12 +44,12 @@ public class TalkWriteActivity extends Activity {
 	public static TwoWayGridView mTalkHorzGridView;
 
 	private Context mContext;
-	
+
 	private String action;
 
 	private GalleryAdapter mGalleryAdapter;
 	private HorzGridViewAdapter mHorzGridViewAdapter;
-	
+
 	private GridView mGridGallery;
 	private ImageView mImgSinglePick;
 
@@ -63,60 +63,59 @@ public class TalkWriteActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_talk_write);
-		
+
 		initImageLoader();
 		initResource();
 		initEvent();
 	}
 
 	private void initResource() {
-//		mGalleryAdapter = new GalleryAdapter(getApplicationContext(),
-//				mImageLoader);
-//		mGalleryAdapter.setMultiplePick(false);
+		mGalleryAdapter = new GalleryAdapter(getApplicationContext(),
+				mImageLoader);
+		mGalleryAdapter.setMultiplePick(false);
+		GalleryAdapter.clear(); // 버튼 누를때마다 리스트 초기화 시켜줭 + 숫자도 초기화
 
-//		GalleryAdapter.clear(); // 버튼 누를때마다 리스트 초기화 시켜줭 + 숫자도 초기화
-		
 		mTalkHorzGridView = (TwoWayGridView) findViewById(R.id.horz_gridview);
 		mViewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher_talk);
 		btnGalleryPick = (Button) findViewById(R.id.btn_gallery);
-		
+
 		mContext = getApplicationContext();
 		List<DataObject> horzData = new ArrayList<DataObject>();
-		mHorzGridViewAdapter = new HorzGridViewAdapter(mContext,
-				horzData, 1);
+		mHorzGridViewAdapter = new HorzGridViewAdapter(mContext, horzData,
+				mTalkHorzGridView);
 		mTalkHorzGridView.setAdapter(mHorzGridViewAdapter);
-//		mTalkHorzGridView.clearDisappearingChildren();
 	}
 
-	private void initEvent(){
+	private void initEvent() {
 		btnGalleryPick.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent multiplePickIntent = new Intent(Action.ACTION_MULTIPLE_PICK);
+				Intent multiplePickIntent = new Intent(
+						Action.ACTION_MULTIPLE_PICK);
 				startActivityForResult(multiplePickIntent, 200);
 			}
 		});
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-	    // Inflate the menu items for use in the action bar
-	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.talk_write, menu);
-	    return super.onCreateOptionsMenu(menu);
+		// Inflate the menu items for use in the action bar
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.talk_write, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-	    switch (item.getItemId()) {
-	        case R.id.completeTalk:
-	            completeTalkWrite();
-	            return true;
-	        default:
-	            return super.onOptionsItemSelected(item);
-	    }
+		switch (item.getItemId()) {
+		case R.id.completeTalk:
+			completeTalkWrite();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
-	
+
 	private void completeTalkWrite() {
 		finish();
 		Toast.makeText(this, "작성한 내용이 업로드됩니다.", Toast.LENGTH_SHORT).show();
@@ -134,24 +133,19 @@ public class TalkWriteActivity extends Activity {
 		mImageLoader = ImageLoader.getInstance();
 		mImageLoader.init(config);
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
-		 refreshHorzGrid();
+		refreshHorzGrid();
 	}
-	
-	public void refreshHorzGrid(){
-		mGalleryAdapter = new GalleryAdapter(getApplicationContext(),
-		mImageLoader);
-		mGalleryAdapter.setMultiplePick(false);
-		
+
+	public void refreshHorzGrid() {
 		// 이미지 하나도 선택 안할 경우 null 아닐 경우 그 밖
 		List<DataObject> horzData = generateGridViewObjects();
-		Log.d("dataObject: ", "dataObject:" + horzData);
-		
-		// mViewSwitcher.setDisplayedChild(1); 이미지 뷰를 부를 때 문제가 생김 뭔진 몰라도..
-		if(horzData == null){
+		// Log.d("dataObject: ", "dataObject:" + horzData);
+
+		if (horzData == null) {
 			mViewSwitcher.setDisplayedChild(1);
 		} else {
 			mHorzGridViewAdapter.setHorzData(horzData);
@@ -159,37 +153,39 @@ public class TalkWriteActivity extends Activity {
 			mViewSwitcher.setDisplayedChild(0);
 		}
 	}
-	
+
 	@Override
-	public void onBackPressed(){
-		 AlertDialog.Builder alt_bld = new AlertDialog.Builder(this);
-		    alt_bld.setMessage("입력을 취소하시겠습니까 ?").setCancelable(
-		        false).setPositiveButton("예",
-		        new DialogInterface.OnClickListener() {
-		        public void onClick(DialogInterface dialog, int id) {
-		            finish();
-		        }
-		        }).setNegativeButton("아니오",
-		        new DialogInterface.OnClickListener() {
-		        public void onClick(DialogInterface dialog, int id) {
-		            // Action for 'NO' Button
-		            dialog.cancel();
-		        }
-		        });
-		    AlertDialog alert = alt_bld.create();
-		    // Title for AlertDialog
-		   // alert.setTitle("Title");
-		    // Icon for AlertDialog
-		   // alert.setIcon(R.drawable.icon);
-		    alert.show();
+	public void onBackPressed() {
+		AlertDialog.Builder alt_bld = new AlertDialog.Builder(this);
+		alt_bld.setMessage("입력을 취소하시겠습니까 ?")
+				.setCancelable(false)
+				.setPositiveButton("예", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						finish();
+					}
+				})
+				.setNegativeButton("아니오",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								// Action for 'NO' Button
+								dialog.cancel();
+							}
+						});
+		AlertDialog alert = alt_bld.create();
+		// Title for AlertDialog
+		// alert.setTitle("Title");
+		// Icon for AlertDialog
+		// alert.setIcon(R.drawable.icon);
+		alert.show();
 	}
 
 	private List<DataObject> generateGridViewObjects() {
 		List<DataObject> allData = new ArrayList<DataObject>();
 		String path;
-
-//		Log.d("GalleryAdapter.customGalleriesChecked.size()", "GalleryAdapter.customGalleriesChecked.size() : " + GalleryAdapter.customGalleriesChecked.size());
-		if(GalleryAdapter.customGalleriesChecked.size() <= 0)
+		// Log.d("GalleryAdapter.customGalleriesChecked.size()",
+		// "GalleryAdapter.customGalleriesChecked.size() : " +
+		// GalleryAdapter.customGalleriesChecked.size());
+		if (GalleryAdapter.customGalleriesChecked.size() <= 0)
 			return null;
 		for (int i = 0; i < GalleryAdapter.customGalleriesChecked.size(); i++) {
 			path = GalleryAdapter.customGalleriesChecked.get(i).sdcardPath;
