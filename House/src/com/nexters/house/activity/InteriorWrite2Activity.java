@@ -62,6 +62,7 @@ public class InteriorWrite2Activity extends Activity {
 		setContentView(R.layout.activity_interior_write2);
 
 		initResource();
+		initEvent();
 	}
 
 	private void initResource() {
@@ -70,8 +71,9 @@ public class InteriorWrite2Activity extends Activity {
 		mInteriorContent = (EditText) findViewById(R.id.interior_content); // 이야기
 		mViewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher_interior2);
 		mInteriorGridView2 = (TwoWayGridView) findViewById(R.id.interior_gridview_2);
+		btnGalleryPick = (Button) findViewById(R.id.btn_gallery);
+		
 		mContext = getApplicationContext();
-
 		List<DataObject> horzData = new ArrayList<DataObject>();
 		mHorzGridViewAdapter = new HorzGridViewAdapter(mContext, horzData, 0);
 		mInteriorGridView2.setAdapter(mHorzGridViewAdapter);
@@ -80,6 +82,19 @@ public class InteriorWrite2Activity extends Activity {
 		mInteriorInfo.setText(savedInfo);
 	}
 
+	private void initEvent(){
+		btnGalleryPick.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				savedContent = mInteriorContent.getText().toString(); // 저장해놓고
+				savedInfo = mInteriorInfo.getText().toString();
+				// onBackPressed();
+				Intent multiplePickIntent = new Intent(Action.ACTION_MULTIPLE_PICK);
+				startActivityForResult(multiplePickIntent, 200);
+			}
+		});
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -101,8 +116,6 @@ public class InteriorWrite2Activity extends Activity {
 	private void completeWrite() {
 		finish();
 		Toast.makeText(this, "작성한 내용이 업로드됩니다.", Toast.LENGTH_SHORT).show();
-	
-		
 	}
 
 	@Override
@@ -128,15 +141,6 @@ public class InteriorWrite2Activity extends Activity {
 		    alert.setIcon(R.drawable.icon);
 		    alert.show();
 
-	}
-
-	public void addImage_interior2(View view) {
-		savedContent = mInteriorContent.getText().toString(); // 저장해놓고
-		savedInfo = mInteriorInfo.getText().toString();
-
-		// onBackPressed();
-		Intent multiplePickIntent = new Intent(Action.ACTION_MULTIPLE_PICK);
-		startActivityForResult(multiplePickIntent, 200);
 	}
 
 	@Override

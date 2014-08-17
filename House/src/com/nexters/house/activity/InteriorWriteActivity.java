@@ -61,29 +61,6 @@ public class InteriorWriteActivity extends Activity {
 		startActivityForResult(multiplePickIntent, 200);
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu items for use in the action bar
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.interior_write, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle presses on the action bar items
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			moreSelect();
-			return true;
-		case R.id.action_next:
-			openNext();
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
-
 	private void initActionBar() {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 	}
@@ -120,7 +97,6 @@ public class InteriorWriteActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-
 		refreshPager();
 	}
 
@@ -199,7 +175,6 @@ public class InteriorWriteActivity extends Activity {
 		 * j=0;j<pageradapter.InfoList.size();j++){ //스트링 합치기
 		 * allInfo=allInfo.concat(pageradapter.InfoList.get(j));
 		 * allInfo=allInfo.concat(", ");
-		 * 
 		 * }
 		 */
 		startActivity(intent);
@@ -209,7 +184,7 @@ public class InteriorWriteActivity extends Activity {
 		Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
 		startActivityForResult(i, 200);
 	}
-
+	
 	@Override
 	public void onBackPressed() {
 		AlertDialog.Builder alt_bld = new AlertDialog.Builder(this);
@@ -236,4 +211,26 @@ public class InteriorWriteActivity extends Activity {
 
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu items for use in the action bar
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.interior_write, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle presses on the action bar items
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			moreSelect();
+			return true;
+		case R.id.action_next:
+			openNext();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
 }

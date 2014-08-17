@@ -32,7 +32,6 @@ public class HorzGridViewAdapter extends BaseAdapter{
 
 	public HorzGridViewAdapter(Context context,List<DataObject> data,final int type){
 		childLayoutResourceId = R.layout.horz_gridview_child_layout;
-		
 		this.mContext = context;
 		this.mHorzData = data;
 		//Get dimensions from values folders; note that the value will change
@@ -43,18 +42,18 @@ public class HorzGridViewAdapter extends BaseAdapter{
 		rows = rowsColumns[0];
 		columns = rowsColumns[1];
 		
-		
 		//Initialize the layout params
 		ViewTreeObserver vto;
 		if(type==1){
-			TalkWriteActivity.mHorzGridView.setNumRows(rows);
-		//HorzGridView size not established yet, so need to set it using a viewtreeobserver
-			vto = TalkWriteActivity.mHorzGridView.getViewTreeObserver();
+			//HorzGridView size not established yet, so need to set it using a viewtreeobserver
+			TalkWriteActivity.mTalkHorzGridView.setNumRows(rows);
+			vto = TalkWriteActivity.mTalkHorzGridView.getViewTreeObserver();
 		}
 		else{
 			InteriorWrite2Activity.mInteriorGridView2.setNumRows(rows);
 			vto=InteriorWrite2Activity.mInteriorGridView2.getViewTreeObserver();
 		}
+		
 		OnGlobalLayoutListener onGlobalLayoutListener = new OnGlobalLayoutListener() {
 			@SuppressWarnings("deprecation")
 			@SuppressLint("NewApi")
@@ -62,18 +61,17 @@ public class HorzGridViewAdapter extends BaseAdapter{
 			public void onGlobalLayout() {
 				ViewTreeObserver vto;
 				//First use the gridview height and width to determine child values
-				if(type==1){
-				rowHeight =(int)((float)(TalkWriteActivity.mHorzGridView.getHeight()/rows)-2*itemPadding);
-				columnWidth = (int)((float)(TalkWriteActivity.mHorzGridView.getWidth()/columns)-2*itemPadding);				
-				TalkWriteActivity.mHorzGridView.setRowHeight(rowHeight);
-				vto = TalkWriteActivity.mHorzGridView.getViewTreeObserver();
+				if(type == 1){
+					rowHeight =(int)((float)(TalkWriteActivity.mTalkHorzGridView.getHeight()/rows)-2*itemPadding);
+					columnWidth = (int)((float)(TalkWriteActivity.mTalkHorzGridView.getWidth()/columns)-2*itemPadding);				
+					TalkWriteActivity.mTalkHorzGridView.setRowHeight(rowHeight);
+					vto = TalkWriteActivity.mTalkHorzGridView.getViewTreeObserver();
 				}
 				else{
 					rowHeight =(int)((float)(InteriorWrite2Activity.mInteriorGridView2.getHeight()/rows)-2*itemPadding);
 					columnWidth = (int)((float)(InteriorWrite2Activity.mInteriorGridView2.getWidth()/columns)-2*itemPadding);
 					InteriorWrite2Activity.mInteriorGridView2.setRowHeight(rowHeight);
 					vto = InteriorWrite2Activity.mInteriorGridView2.getViewTreeObserver();
-					
 				}
 				
 				//Then remove the listener
@@ -97,7 +95,6 @@ public class HorzGridViewAdapter extends BaseAdapter{
 		
 		//If reusing a view get the handler info; if view is null, create it
 		if(convertView == null){
-			
 			//Only get the inflater when it's needed, then release it-which isn't frequently
 			LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = inflater.inflate(childLayoutResourceId , parent, false);
@@ -107,22 +104,18 @@ public class HorzGridViewAdapter extends BaseAdapter{
 			handler.iv = (ImageView) convertView.findViewById(R.id.horz_gv_iv);
 			
 			convertView.setTag(handler);
-			
 		}else{
 			handler = (ViewHandler) convertView.getTag();
 		}
-		
 		//Set the data outside once the handler and view are instantiated
-		BitmapFactory.Options options=new BitmapFactory.Options();
+		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inSampleSize=4;
 		Bitmap bmp=BitmapFactory.decodeFile(thisData.getName(),options);
 		handler.iv.setImageBitmap(bmp); //이미지 그려주기
-
 		
 		FrameLayout.LayoutParams lp 
 			= new FrameLayout.LayoutParams(columnWidth, rowHeight);// convertView.getLayoutParams();
 		handler.iv.setLayoutParams(lp);
-
 		
 		Log.d("HorzGVAdapter","Position:"+position+",children:"+parent.getChildCount());
 		return convertView;
@@ -131,7 +124,6 @@ public class HorzGridViewAdapter extends BaseAdapter{
 	private class ViewHandler{
 		ImageView iv;
 		TextView tv;
-	
 	}
 
 	@Override

@@ -86,11 +86,9 @@ public class CustomGalleryActivity extends Activity {
 		gridGallery.setOnScrollListener(listener);
 
 		if (action.equalsIgnoreCase(Action.ACTION_MULTIPLE_PICK)) {
-
 			findViewById(R.id.llBottomContainer).setVisibility(View.VISIBLE);
 			gridGallery.setOnItemClickListener(mItemMulClickListener);
 			adapter.setMultiplePick(true);
-
 		} else if (action.equalsIgnoreCase(Action.ACTION_PICK)) {
 			findViewById(R.id.llBottomContainer).setVisibility(View.GONE);
 			gridGallery.setOnItemClickListener(mItemSingleClickListener);
@@ -120,7 +118,6 @@ public class CustomGalleryActivity extends Activity {
 			};
 
 		}.start();
-
 	}
 
 	private void checkImageStatus() {
@@ -135,7 +132,7 @@ public class CustomGalleryActivity extends Activity {
 	View.OnClickListener mOkClickListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
-//			setResult(RESULT_OK);
+			setResult(RESULT_OK);
 			finish();
 		}
 	};
@@ -172,7 +169,6 @@ public class CustomGalleryActivity extends Activity {
 					null, null, orderBy);
 
 			if (imagecursor != null && imagecursor.getCount() > 0) {
-
 				while (imagecursor.moveToNext()) {
 					CustomGallery item = new CustomGallery();
 
@@ -180,7 +176,6 @@ public class CustomGalleryActivity extends Activity {
 							.getColumnIndex(MediaStore.Images.Media.DATA);
 
 					item.sdcardPath = imagecursor.getString(dataColumnIndex);
-
 					galleryList.add(item);
 				}
 			}
