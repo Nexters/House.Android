@@ -70,16 +70,14 @@ public class TalkWriteActivity extends Activity {
 	}
 
 	private void initResource() {
-		mGalleryAdapter = new GalleryAdapter(getApplicationContext(),
-				mImageLoader);
-		mGalleryAdapter.setMultiplePick(false);
+//		mGalleryAdapter = new GalleryAdapter(getApplicationContext(),
+//				mImageLoader);
+//		mGalleryAdapter.setMultiplePick(false);
 
-		GalleryAdapter.clear(); // 버튼 누를때마다 리스트 초기화 시켜줭 + 숫자도 초기화
+//		GalleryAdapter.clear(); // 버튼 누를때마다 리스트 초기화 시켜줭 + 숫자도 초기화
 		
 		mTalkHorzGridView = (TwoWayGridView) findViewById(R.id.horz_gridview);
 		mViewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher_talk);
-//		mViewSwitcher.setDisplayedChild(1);
-		mImgSinglePick = (ImageView) findViewById(R.id.imgSinglePick_talk);
 		btnGalleryPick = (Button) findViewById(R.id.btn_gallery);
 		
 		mContext = getApplicationContext();
@@ -144,18 +142,22 @@ public class TalkWriteActivity extends Activity {
 	}
 	
 	public void refreshHorzGrid(){
+		mGalleryAdapter = new GalleryAdapter(getApplicationContext(),
+		mImageLoader);
+		mGalleryAdapter.setMultiplePick(false);
+		
 		// 이미지 하나도 선택 안할 경우 null 아닐 경우 그 밖
 		List<DataObject> horzData = generateGridViewObjects();
 		Log.d("dataObject: ", "dataObject:" + horzData);
 		
 		// mViewSwitcher.setDisplayedChild(1); 이미지 뷰를 부를 때 문제가 생김 뭔진 몰라도..
-//		if(horzData == null){
-////			mViewSwitcher.setDisplayedChild(1);
-//		} else {
+		if(horzData == null){
+			mViewSwitcher.setDisplayedChild(1);
+		} else {
 			mHorzGridViewAdapter.setHorzData(horzData);
 			mHorzGridViewAdapter.notifyDataSetChanged();
 			mViewSwitcher.setDisplayedChild(0);
-//		}
+		}
 	}
 	
 	@Override
@@ -187,8 +189,8 @@ public class TalkWriteActivity extends Activity {
 		String path;
 
 //		Log.d("GalleryAdapter.customGalleriesChecked.size()", "GalleryAdapter.customGalleriesChecked.size() : " + GalleryAdapter.customGalleriesChecked.size());
-//		if(GalleryAdapter.customGalleriesChecked.size() <= 0)
-//			return null;
+		if(GalleryAdapter.customGalleriesChecked.size() <= 0)
+			return null;
 		for (int i = 0; i < GalleryAdapter.customGalleriesChecked.size(); i++) {
 			path = GalleryAdapter.customGalleriesChecked.get(i).sdcardPath;
 			DataObject singleObject = new DataObject(path);

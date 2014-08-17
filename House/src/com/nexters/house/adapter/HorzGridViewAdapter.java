@@ -116,8 +116,9 @@ public class HorzGridViewAdapter extends BaseAdapter{
 		FrameLayout.LayoutParams lp 
 			= new FrameLayout.LayoutParams(columnWidth, rowHeight);// convertView.getLayoutParams();
 		handler.iv.setLayoutParams(lp);
-		
-		Log.d("HorzGVAdapter","Position:"+position+",children:"+parent.getChildCount());
+	
+//		Log 
+//		Log.d("HorzGVAdapter","Position:"+position+",children:"+parent.getChildCount());
 		return convertView;
 	}
 	

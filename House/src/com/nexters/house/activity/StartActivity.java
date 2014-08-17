@@ -58,6 +58,8 @@ public class StartActivity extends Activity implements View.OnClickListener {
 		setContentView(R.layout.activity_start);
 
 		initResources();
+		// 로그인 관련 초기화 
+		initLogin();
 		initEvents();
 		playVideoIntro();
 	}
@@ -68,21 +70,23 @@ public class StartActivity extends Activity implements View.OnClickListener {
 		mBtnKakao = (com.kakao.widget.LoginButton) findViewById(R.id.btn_kakao_in);
 		mBtnFacebook = (com.facebook.widget.LoginButton) findViewById(R.id.btn_facebook_in);
 		videoViewIntro = (VideoView) findViewById(R.id.vv_house_intro);
+	}
 
-		// mBtnFacebook.setReadPermissions(Arrays.asList("email"));
+	private void initLogin(){
 		// Settings
 		// 세션을 초기화 한다
 		if (com.kakao.Session.initializeSession(this, kakaoCallback)) {
 			// 1. 세션을 갱신 중이면, 프로그레스바를 보이거나 버튼을 숨기는 등의 액션을 취한다
 			mBtnKakao.setVisibility(View.GONE);
 		}
-
 		// Check autoLogin
 		SessionManager sessionManager = SessionManager.getInstance(this);
-		if (sessionManager.isLoggedIn() && !sessionManager.checkAutoLogin())
+		if (sessionManager.isLoggedIn() && !sessionManager.checkAutoLogin()){
 			sessionManager.logoutUser();
+			finish();
+		}
 	}
-
+	
 	private void initEvents() {
 		mBtnSignIn.setOnClickListener(this);
 		mBtnSignUp.setOnClickListener(this);
