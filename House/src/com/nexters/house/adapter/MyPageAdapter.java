@@ -39,7 +39,7 @@ public class MyPageAdapter extends BaseAdapter{
             imageView = new ImageView(mContext);
             imageView.setLayoutParams(new GridView.LayoutParams(200, 200));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setPadding(8, 8, 8, 8);
+            imageView.setPadding(1, 1, 1, 1);
         } else {
             imageView = (ImageView) convertView;
         }
@@ -51,13 +51,13 @@ public class MyPageAdapter extends BaseAdapter{
 	
     // references to our images
     private Integer[] mThumbIds = {
-            R.drawable.ic_launcher, R.drawable.ic_launcher,
-            R.drawable.ic_launcher, R.drawable.ic_launcher,
-            R.drawable.ic_launcher, R.drawable.ic_launcher,
-            R.drawable.ic_launcher, R.drawable.ic_launcher,
-            R.drawable.ic_launcher, R.drawable.ic_launcher,
-            R.drawable.ic_launcher, R.drawable.ic_launcher,
-            R.drawable.ic_launcher, R.drawable.ic_launcher,
+            R.drawable.preview_image_01, R.drawable.preview_image_02,
+            R.drawable.preview_image_03, R.drawable.preview_image_02,
+            R.drawable.preview_image_02, R.drawable.preview_image_02,
+            R.drawable.preview_image_03, R.drawable.preview_image_03,
+            R.drawable.preview_image_03, R.drawable.preview_image_03,
+            R.drawable.preview_image_01, R.drawable.preview_image_01,
+            R.drawable.preview_image_01, R.drawable.preview_image_01,
 
     };
 

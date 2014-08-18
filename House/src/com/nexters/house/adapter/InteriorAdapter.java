@@ -72,7 +72,7 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 
 			// find resource
 			holder.houseId = (TextView) convertView.findViewById(R.id.house_id);
-			holder.interiorCategory = (TextView) convertView.findViewById(R.id.interior_category);
+//			holder.interiorCategory = (TextView) convertView.findViewById(R.id.interior_category);
 			holder.interiorContent = (TextView) convertView.findViewById(R.id.interior_content);
 			
 			//holder.tv_contents = (LinearLayout) convertView.findViewById(R.id.tv_content);
@@ -80,9 +80,9 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 			holder.houseProfile = (ImageView) convertView.findViewById(R.id.house_profile);
 			holder.interiorLikes = (TextView)convertView.findViewById(R.id.interior_likes_cnt);
 			holder.interiorReplies = (TextView)convertView.findViewById(R.id.interior_reply_cnt);
-			holder.interiorShares = (TextView)convertView.findViewById(R.id.interior_share_cnt);
-			holder.interiorScraps = (TextView)convertView.findViewById(R.id.interior_scrap_cnt);
-			
+//			holder.interiorShares = (TextView)convertView.findViewById(R.id.interior_share_cnt);
+//			holder.interiorScraps = (TextView)convertView.findViewById(R.id.interior_scrap_cnt);
+//			
 			convertView.setTag(holder);
 			
 			SliderLayout slider = (SliderLayout) convertView.findViewById(R.id.slider);
@@ -108,29 +108,29 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 		// 여기에서 게시물의 사용자 아이디/ 카테고리/ 내용/ 이미지를 넣어줄거임.
 		String id = mInteriorItemArrayList.get(position).id;
 		String content = mInteriorItemArrayList.get(position).content;
-		String category = mInteriorItemArrayList.get(position).category;
+//		String category = mInteriorItemArrayList.get(position).category;
 		List<String> image = mInteriorItemArrayList.get(position).image_urls;
 		int nBadge = mInteriorItemArrayList.get(position).badge;
 		int nReply = mInteriorItemArrayList.get(position).reply;
-		int nShare = mInteriorItemArrayList.get(position).share;
-		int nScrap = mInteriorItemArrayList.get(position).scrap;
+//		int nShare = mInteriorItemArrayList.get(position).share;
+//		int nScrap = mInteriorItemArrayList.get(position).scrap;
 		
 		
 		holder.houseId.setText(id);
 		holder.interiorContent.setText(content);
-		holder.interiorCategory.setText(category);
+//		holder.interiorCategory.setText(category);
 		holder.interiorLikes.setText(Integer.toString(nBadge));
 		holder.interiorReplies.setText(Integer.toString(nReply));
-		holder.interiorShares.setText(Integer.toString(nShare));
-		holder.interiorScraps.setText(Integer.toString(nScrap));
+//		holder.interiorShares.setText(Integer.toString(nShare));
+//		holder.interiorScraps.setText(Integer.toString(nScrap));
 		
 		// set click listener
 		
 //		holder.tv_id.setOnClickListener(this);
-		holder.interiorContent.setOnClickListener(this);
-		holder.houseProfile.setOnClickListener(this);
-		holder.interiorLikes.setOnClickListener(this);
-		holder.interiorReplies.setOnClickListener(this);
+//		holder.interiorContent.setOnClickListener(this);
+//		holder.houseProfile.setOnClickListener(this);
+//		holder.interiorLikes.setOnClickListener(this);
+//		holder.interiorReplies.setOnClickListener(this);
 //		holder.tv_share.setOnClickListener(this);
 //		holder.tv_scrap.setOnClickListener(this);
 
@@ -141,7 +141,7 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 		ImageView houseProfile;
 		LinearLayout tvContents;
 		TextView houseId, interiorContent, interiorCategory;
-		TextView interiorLikes, interiorReplies, interiorShares, interiorScraps;
+		TextView interiorLikes, interiorReplies;
 	}
 	
 	@SuppressWarnings("serial")
@@ -149,7 +149,7 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 		InteriorEntity e = new InteriorEntity();
 		e.badge = 1;
 		e.category = "new";
-		e.content = "넥스터즈 인유어하우스팀에서 개발중인 하우스 어플리케이션입니다. 사진을 먼저올리고 하단에는 컨텐츠내용을 일부 보여주는걸로~ 몇자 제한인지 그리고 더보기누를수는있으나 누르면 걍 디테일컨텐츠뷰로 가면될듯";
+		e.content = "넥스터즈 인유어하우스팀에서 개발중인 하우스 어플리케이션입니다. 누르면 걍 디테일컨텐츠뷰로 가면될듯";
 		e.id = "newId";
 		e.image_urls = new ArrayList<String>(){{
 			add("https://fbcdn-sphotos-a-a.akamaihd.net/hphotos-ak-xfp1/v/t1.0-9/10402950_570244953084785_2207844659246242948_n.jpg?oh=b19d78a504af3a54501e629f0383da87&oe=5448A4C6&__gda__=1413348687_974d19e8b5ddcf217cb99b77b0186685");
@@ -159,8 +159,8 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 			add("https://fbcdn-sphotos-b-a.akamaihd.net/hphotos-ak-xpa1/v/t1.0-9/10524374_570245013084779_7454008372005256632_n.jpg?oh=4761db9f33b72709585016c2649c747e&oe=5434C617&__gda__=1413811119_55884851b246ddb301725a0a78cacc84");
 			}};
 		e.reply = 1;
-		e.scrap = 1;
-		e.share = 1;
+//		e.scrap = 1;
+//		e.share = 1;
 		
 		mInteriorItemArrayList.add(e);
 	}

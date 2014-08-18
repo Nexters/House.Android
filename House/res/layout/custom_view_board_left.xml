@@ -5,7 +5,7 @@
     android:id="@+id/ll_interior_custom_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp"
+    android:layout_margin="20dp"
     android:background="#FFFFFF"
     android:orientation="horizontal" >
 
@@ -29,6 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:gravity="center"
             android:text="UserName"
             android:textSize="15sp" />
 
@@ -39,29 +40,65 @@
             android:layout_marginTop="5dp"
             android:gravity="center"
             android:text="50분전"
-            android:textSize="13sp" />
+            android:textSize="11sp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_marginRight="15dp"
         android:layout_weight="3"
         android:orientation="vertical" >
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginTop="20dp"
+            android:gravity="right"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/icon_heart" />
+
+            <TextView
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:text="20"
+                android:textSize="10sp" />
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/icon_comment" />
+
+            <TextView
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:text="20"
+                android:textSize="10sp" />
+        </LinearLayout>
+		<TextView
+		    android:id="@+id/board_title"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:textSize="15sp" 
+		    android:textStyle="bold"
+		    android:text="하우스 게시판 제목이 오는 자리. "/>
         <TextView
             android:id="@+id/board_content"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:gravity="center"
+            android:layout_height="wrap_content"
             android:text="게시판 컨텐츠가 보여질 부분입니다. "
-            android:textSize="15sp" />
+            android:textSize="13sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_margin="20dp"
             android:layout_gravity="top"
+            android:layout_weight="1"
             android:orientation="horizontal" >
 
             <ImageView

@@ -10,6 +10,6 @@ public class InteriorEntity {
 	//public int like;
 	public int badge;
 	public int reply;
-	public int share;
-	public int scrap;
+//	public int share;
+//	public int scrap;
 }

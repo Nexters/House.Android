@@ -15,7 +15,7 @@
             android:layout_height="match_parent"
             android:gravity="center_horizontal|center_vertical"
             android:text="Sign in"
-            android:textColor="#F79557"
+            android:textColor="#8bd0c0"
             android:textSize="18sp" />
     </LinearLayout>
 
@@ -137,7 +137,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="400"
-            android:background="#F79557"
+            android:background="#8bd0c0"
             android:gravity="center_horizontal|center_vertical"
             android:text="Sign in"
             android:textColor="#FFFFFF"
@@ -149,7 +149,7 @@
             android:layout_height="match_parent"
             android:layout_weight="200"
             android:layout_marginLeft="10dp"
-            android:background="#F79557"
+            android:background="#8bd0c0"
             android:gravity="center"
             android:text="자동로그인"
             android:textColor="#FFFFFF"
