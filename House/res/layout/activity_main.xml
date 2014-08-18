@@ -2,50 +2,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#FFFFFF"
+    android:orientation="vertical"
     tools:context="com.nexters.house.activity.MainActivity" >
-	
+
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/btn_interior"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:src="@drawable/header_icon_house" />
+
+        <ImageView
+            android:id="@+id/btn_board"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:src="@drawable/header_icon_chat" />
+
+        <ImageView
+            android:id="@+id/btn_mypage"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:src="@drawable/header_icon_profile" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_fragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btn_interior"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="Interior"
-                android:textSize="15sp"
-                android:textColor="#FFFFFF"
-                android:background="#F79557"/>
-
-            <Button
-                android:id="@+id/btn_board"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="Board"
-                android:textSize="15sp"
-                android:textColor="#FFFFFF"
-                android:background="#F79557"/>
-            <Button
-                android:id="@+id/btn_mypage"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="MyPage"
-                android:textSize="15sp"
-                android:textColor="#FFFFFF"
-                android:background="#F79557"/>
+        android:orientation="vertical" >
     </LinearLayout>
-	<LinearLayout
-	    android:id="@+id/ll_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="12"
-        android:orientation="vertical"
-         ></LinearLayout>
+
 </LinearLayout>

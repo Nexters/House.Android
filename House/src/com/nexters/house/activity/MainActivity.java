@@ -1,21 +1,15 @@
 package com.nexters.house.activity;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
-import android.view.View;
+import android.content.*;
+import android.os.*;
+import android.support.v4.app.*;
+import android.util.*;
+import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.Window;
-import android.widget.Button;
+import android.widget.*;
 
-import com.nexters.house.R;
-import com.nexters.house.fragment.BoardFragment;
-import com.nexters.house.fragment.InteriorFragment;
-import com.nexters.house.fragment.MyPageFragment;
+import com.nexters.house.*;
+import com.nexters.house.fragment.*;
 
 public class MainActivity extends FragmentActivity implements OnClickListener {
 
@@ -26,14 +20,14 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	public final static int FRAGMENT_BOARD = 1;
 	public final static int FRAGMENT_MYPAGE = 2;
 
-	private Button mBtnInterior;
-	private Button mBtnBoard;
-	private Button mBtnMypage;
+	private ImageView mBtnInterior;
+	private ImageView mBtnBoard;
+	private ImageView mBtnMypage;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		// requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
 		
 		boolean logout = getIntent().getBooleanExtra("logout", false);
@@ -51,9 +45,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	}
 
 	private void initResources(){
-		mBtnInterior = (Button) findViewById(R.id.btn_interior);
-		mBtnBoard = (Button) findViewById(R.id.btn_board);
-		mBtnMypage = (Button) findViewById(R.id.btn_mypage);
+		mBtnInterior = (ImageView) findViewById(R.id.btn_interior);
+		mBtnBoard = (ImageView) findViewById(R.id.btn_board);
+		mBtnMypage = (ImageView) findViewById(R.id.btn_mypage);
 
 	}
 
