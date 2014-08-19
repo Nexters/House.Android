@@ -9,15 +9,12 @@ import android.database.*;
 import android.graphics.*;
 import android.os.*;
 import android.provider.*;
-import android.util.*;
 import android.view.*;
 import android.widget.*;
 
 import com.nexters.house.*;
-import com.nexters.house.adapter.GalleryAdapter;
-import com.nexters.house.entity.Action;
-import com.nexters.house.entity.CustomGallery;
-import com.nexters.house.utils.TypefaceUtil;
+import com.nexters.house.adapter.*;
+import com.nexters.house.entity.*;
 import com.nostra13.universalimageloader.cache.disc.impl.*;
 import com.nostra13.universalimageloader.cache.memory.impl.*;
 import com.nostra13.universalimageloader.core.*;

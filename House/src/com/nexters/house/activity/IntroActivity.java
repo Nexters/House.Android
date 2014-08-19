@@ -1,13 +1,11 @@
 package com.nexters.house.activity;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.view.Window;
+import android.app.*;
+import android.content.*;
+import android.os.*;
+import android.view.*;
 
-import com.nexters.house.R;
-import com.nexters.house.utils.TypefaceUtil;
+import com.nexters.house.*;
 
 public class IntroActivity extends Activity {
 	private static int INTRO_LOADING_TIME = 1000;

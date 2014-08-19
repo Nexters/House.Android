@@ -10,7 +10,6 @@ import android.widget.*;
 
 import com.nexters.house.*;
 import com.nexters.house.fragment.*;
-import com.nexters.house.utils.TypefaceUtil;
 
 public class MainActivity extends FragmentActivity implements OnClickListener {
 

@@ -1,33 +1,19 @@
 package com.nexters.house.activity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.view.ViewPager;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Toast;
-import android.widget.ViewSwitcher;
+import android.app.*;
+import android.content.*;
+import android.os.*;
+import android.support.v4.view.*;
+import android.view.*;
+import android.widget.*;
 
-import com.jess.ui.TwoWayGridView;
+import com.jess.ui.*;
 import com.nexters.house.R;
-import com.nexters.house.adapter.GalleryAdapter;
-import com.nexters.house.adapter.HorzGridViewAdapter;
-import com.nexters.house.adapter.PagerAdapterClass;
-import com.nexters.house.entity.Action;
-import com.nexters.house.entity.DataObject;
-import com.nexters.house.utils.TypefaceUtil;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nexters.house.adapter.*;
+import com.nexters.house.entity.*;
+import com.nostra13.universalimageloader.core.*;
 
 public class InteriorWrite2Activity extends Activity {
 	public final static int COLUMN_PORT = 0;
