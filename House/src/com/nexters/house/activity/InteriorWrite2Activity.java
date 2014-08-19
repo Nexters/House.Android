@@ -26,6 +26,7 @@ import com.nexters.house.adapter.HorzGridViewAdapter;
 import com.nexters.house.adapter.PagerAdapterClass;
 import com.nexters.house.entity.Action;
 import com.nexters.house.entity.DataObject;
+import com.nexters.house.utils.TypefaceUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class InteriorWrite2Activity extends Activity {
