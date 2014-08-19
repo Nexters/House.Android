@@ -127,7 +127,7 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 		// set click listener
 		
 //		holder.tv_id.setOnClickListener(this);
-//		holder.interiorContent.setOnClickListener(this);
+		holder.interiorContent.setOnClickListener(this);
 //		holder.houseProfile.setOnClickListener(this);
 //		holder.interiorLikes.setOnClickListener(this);
 //		holder.interiorReplies.setOnClickListener(this);
