@@ -27,7 +27,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// requestWindowFeature(Window.FEATURE_NO_TITLE);
+		//requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
 		
 		boolean logout = getIntent().getBooleanExtra("logout", false);
@@ -37,8 +37,10 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 			return;
 		}
 		
+		initActionBar();
 		initResources();
 		initEvent();
+		
 
 		mCurrentFragmentIndex = FRAGMENT_INTERIOR;
 		fragmentReplace(mCurrentFragmentIndex);
@@ -56,6 +58,14 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		mBtnBoard.setOnClickListener(this);
 		mBtnMypage.setOnClickListener(this);
 	}
+	
+    private void initActionBar() {
+        getActionBar().setDisplayShowTitleEnabled(false);
+        getActionBar().setDisplayShowHomeEnabled(false);
+        getActionBar().setDisplayShowCustomEnabled(true);
+
+        getActionBar().setCustomView(R.layout.action_main);
+    }
 
 	public void fragmentReplace(int reqNewFragmentIndex) {
 		Fragment newFragment = null;
@@ -91,12 +101,23 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		if(v.getId() == R.id.btn_interior) {
+			mBtnBoard.setImageResource(R.drawable.header_icon_chat);
+			mBtnMypage.setImageResource(R.drawable.header_icon_mypage);
+			mBtnInterior.setImageResource(R.drawable.header_icon_house_click);
+			
 			mCurrentFragmentIndex = FRAGMENT_INTERIOR;
 			fragmentReplace(mCurrentFragmentIndex);
 		} else if(v.getId() == R.id.btn_board) {
+			
+			mBtnMypage.setImageResource(R.drawable.header_icon_mypage);
+			mBtnInterior.setImageResource(R.drawable.header_icon_house);
+			mBtnBoard.setImageResource(R.drawable.header_icon_chat_click);
 			mCurrentFragmentIndex = FRAGMENT_BOARD;
 			fragmentReplace(mCurrentFragmentIndex);
 		} else if(v.getId() == R.id.btn_mypage) {
+			mBtnBoard.setImageResource(R.drawable.header_icon_chat);
+			mBtnInterior.setImageResource(R.drawable.header_icon_house);
+			mBtnMypage.setImageResource(R.drawable.header_icon_mypage_click);
 			mCurrentFragmentIndex = FRAGMENT_MYPAGE;
 			fragmentReplace(mCurrentFragmentIndex);
 		} 
