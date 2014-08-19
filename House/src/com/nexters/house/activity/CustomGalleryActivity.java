@@ -17,6 +17,7 @@ import com.nexters.house.*;
 import com.nexters.house.adapter.GalleryAdapter;
 import com.nexters.house.entity.Action;
 import com.nexters.house.entity.CustomGallery;
+import com.nexters.house.utils.TypefaceUtil;
 import com.nostra13.universalimageloader.cache.disc.impl.*;
 import com.nostra13.universalimageloader.cache.memory.impl.*;
 import com.nostra13.universalimageloader.core.*;
@@ -37,6 +38,7 @@ public class CustomGalleryActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		TypefaceUtil.overrideFont(getApplicationContext(), "SERIF", "/NotoSansKR-Black.otf"); // font from assets:
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.gallery);
 

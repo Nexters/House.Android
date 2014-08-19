@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.view.Window;
 
 import com.nexters.house.R;
+import com.nexters.house.utils.TypefaceUtil;
 
 public class IntroActivity extends Activity {
 	private static int INTRO_LOADING_TIME = 1000;
@@ -18,6 +19,9 @@ public class IntroActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_intro);
 
+		// default font
+		TypefaceUtil.overrideFont(getApplicationContext(), "SERIF", "fonts/NotoSansKR-Light.otf");
+		
 		initResource();
 	}
 
