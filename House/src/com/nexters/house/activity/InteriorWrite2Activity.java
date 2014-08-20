@@ -47,46 +47,44 @@ public class InteriorWrite2Activity extends Activity {
 	public static int column_selected;
 	public static int[] displayWidth;
 	public static int[] displayHeight;
-	private static String savedContent="";
-	private static String savedInfo="";
+	private static String savedContent = "";
+	private static String savedInfo = "";
 	ViewSwitcher viewSwitcher;
 	ImageLoader imageLoader;
 
 	EditText write2Content;
-	
+
 	ImageView imgSinglePick;
 	Button btnGalleryPick;
 	Button btnGalleryPickMul;
 	Button previewOk;
 	PagerAdapterClass pageradapter;
 	private ViewPager mPager;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_interior_write2);
-		//입력한 정보 끌어오기
-		interiorInfo=(EditText)findViewById(R.id.interiorInfo); //인테리어정보
-	/*	Intent intent=getIntent();
-		String allInfo=intent.getExtras().getString("ALLINFO");
-		interiorInfo.setText(allInfo);	*/
-				
-		mContext=getApplicationContext();
-		write2Content=(EditText)findViewById(R.id.editText); //이야기
+		// 입력한 정보 끌어오기
+		interiorInfo = (EditText) findViewById(R.id.interiorInfo); // 인테리어정보
+		/*
+		 * Intent intent=getIntent(); String
+		 * allInfo=intent.getExtras().getString("ALLINFO");
+		 * interiorInfo.setText(allInfo);
+		 */
+
+		mContext = getApplicationContext();
+		write2Content = (EditText) findViewById(R.id.editText); // 이야기
 		write2Content.setText(savedContent);
 		interiorInfo.setText(savedInfo);
-		
+
 		viewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher_interior2);
-	
-		
-		horzGridView 
-		= (TwoWayGridView) findViewById(R.id.horz_gridview_2);
-		
+
+		horzGridView = (TwoWayGridView) findViewById(R.id.horz_gridview_2);
+
 		List<DataObject> horzDataInit = generateGridViewObjects();
-			
-			horzGridViewAdapter = new HorzGridViewAdapter(mContext,horzDataInit,0);
-			horzGridView.setAdapter(horzGridViewAdapter);
-		
+		horzGridViewAdapter = new HorzGridViewAdapter(mContext, horzDataInit, 0);
+		horzGridView.setAdapter(horzGridViewAdapter);
 	}
 
 	@Override
@@ -95,6 +93,7 @@ public class InteriorWrite2Activity extends Activity {
 		getMenuInflater().inflate(R.menu.interior_write2, menu);
 		return true;
 	}
+
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -149,38 +148,36 @@ public class InteriorWrite2Activity extends Activity {
 	
 		
 		}
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
 		if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
 			adapter.clear();
-
+			adapter.notifyDataSetChanged();
 			viewSwitcher.setDisplayedChild(1);
 			String single_path = data.getStringExtra("single_path");
 			imageLoader.displayImage("file://" + single_path, imgSinglePick);
-
 		} else if (requestCode == 200 && resultCode == Activity.RESULT_OK) {
-	
+
 			List<DataObject> horzData = generateGridViewObjects();
-				horzGridViewAdapter.data=horzData;
+			horzGridViewAdapter.data = horzData;
 			horzGridViewAdapter.notifyDataSetChanged();
-				
+
 			viewSwitcher.setDisplayedChild(0);
-			
-			}
+		}
 	}
 
-
-	private List<DataObject> generateGridViewObjects(){
-		List<DataObject> allData=new ArrayList<DataObject>();
+	private List<DataObject> generateGridViewObjects() {
+		List<DataObject> allData = new ArrayList<DataObject>();
 
 		String path;
-		
-		for(int i=0;i<GalleryAdapter.customGalleriesChecked.size();i++){
-			path=GalleryAdapter.customGalleriesChecked.get(i).sdcardPath;
-			
-			DataObject singleObject= new DataObject(path);
+
+		for (int i = 0; i < GalleryAdapter.customGalleriesChecked.size(); i++) {
+			path = GalleryAdapter.customGalleriesChecked.get(i).sdcardPath;
+
+			DataObject singleObject = new DataObject(path);
 			allData.add(singleObject);
 		}
 		return allData;
