@@ -1,6 +1,7 @@
 package com.nexters.house.activity;
 
-import android.app.Activity;
+import org.springframework.http.MediaType;
+
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -11,9 +12,11 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 
 import com.nexters.house.R;
-import com.nexters.house.core.SessionManager;
+import com.nexters.house.entity.APICode.CM0001;
+import com.nexters.house.handler.AuthHandler;
+import com.nexters.house.thread.PostMessageTask;
 
-public class SignInActivity extends Activity implements View.OnClickListener {
+public class SignInActivity extends AbstractAsyncActivity implements View.OnClickListener {
     private EditText mHsEmail;
     private EditText mHsPassword;
     private Button mBtnSignIn;
@@ -75,38 +78,15 @@ public class SignInActivity extends Activity implements View.OnClickListener {
     }
 
     private void executeSignIn() {
-//        String url = URL.SIGN_IN;
-//
-//        RequestParams params = new RequestParams();
-//        params.put(User.EMAIL, getEmail());
-//        params.put(User.PASSWORD, getPassword());
-//
-//        HttpUtil.post(url, null, params, new APIResponseHandler(SignInActivity.this) {
-//
-//            @Override
-//            public void onStart() {
-//                super.onStart();
-//                showLoading();
-//            }
-//
-//            @Override
-//            public void onFinish() {
-//                super.onFinish();
-//                hideLoading();
-//            }
-//
-//            @Override
-//            public void onSuccess(JSONObject response) {
-//                AccountManager.getInstance().signIn(SignInActivity.this, User.build(response));
-//
-//                Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-//                startActivity(intent);
-//                setResult(RESULT_OK, null);
-//                finish();
-//            }
-//        });
-        SessionManager sessionManager = SessionManager.getInstance(this);
-        sessionManager.createLoginSession(SessionManager.HOUSE ,"BoBinLee", "cultist_tp@naver.com", "1234", "123.png", mAutoLogin);
-        finish();
+    	CM0001 cm = new CM0001();
+    	cm.setUsrId(mHsEmail.getText().toString());
+    	cm.setUsrPw(mHsPassword.getText().toString());
+
+    	AuthHandler<CM0001> authHandler = new AuthHandler<CM0001>(this, "CM0001");
+    	authHandler.setLoginAuto(mAutoLogin);
+    	authHandler.addTranData(cm);
+    	
+    	PostMessageTask signInTask = new PostMessageTask(this, authHandler, AuthHandler.LOGIN_METHOD);
+    	signInTask.execute(MediaType.APPLICATION_JSON);
     }
 }

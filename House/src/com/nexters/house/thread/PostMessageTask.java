@@ -11,36 +11,40 @@ import org.springframework.http.converter.xml.SimpleXmlHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.nexters.house.R;
 import com.nexters.house.activity.AbstractAsyncActivity;
-import com.nexters.house.entity.JavaBean;
-import com.nexters.house.entity.TransferMultipartFile;
-import com.nexters.house.utils.BeanUtils;
+import com.nexters.house.core.SessionManager;
+import com.nexters.house.entity.APICode;
+import com.nexters.house.handler.AbstractHandler;
+import com.nexters.house.utils.JacksonUtils;
 
 // ***************************************
 // Private classes
 // ***************************************
-public class PostMessageTask extends AsyncTask<MediaType, Void, String> {
+public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
+	public static int POST_SUCCESS = 1;
+	public static int POST_FAIL = 0;
+	
 	private AbstractAsyncActivity mAbstractAsyncActivity;
-    private JavaBean javaBean;
-
+    private AbstractHandler mAbstractHandler;
+    private int mHandlerType;
+    
+    public PostMessageTask(AbstractAsyncActivity abstractAsyncActivity, AbstractHandler abstractHandler, int handlerType) {
+    	mAbstractAsyncActivity = abstractAsyncActivity;
+    	mAbstractHandler = abstractHandler;
+    	mHandlerType = handlerType;
+    }
+    
     @Override
     protected void onPreExecute() {
-    //    showLoadingProgressDialog();
-
-        javaBean = new JavaBean();
-
-        javaBean.setContent("ㅎt");
-        javaBean.setName("이보빈");
-        javaBean.setImage("sdfds".getBytes());
-        javaBean.setUpload(new TransferMultipartFile("test", "test", "test".getBytes(), "test", 4, false));
-        // String originalFilename, String name,
-//        byte[] content, String contentType, long size, boolean isEmpt
+    	mAbstractAsyncActivity.showLoadingProgressDialog();
     }
 
     @Override
-    protected String doInBackground(MediaType... params) {
+    protected Integer doInBackground(MediaType... params) {
+    	 
         try {
             if (params.length <= 0) {
                 return null;
@@ -48,18 +52,19 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, String> {
             MediaType mediaType = params[0];
 
             // The URL for making the POST request
-            final String url = mAbstractAsyncActivity.getString(R.string.base_uri) + "/json.app";
+            final String url = mAbstractAsyncActivity.getString(R.string.base_uri) + "/house/{code}.app?token={token}";
 
             HttpHeaders requestHeaders = new HttpHeaders();
-
+            	
+            // Set Token	
+            String token = SessionManager.getInstance(mAbstractAsyncActivity.getApplicationContext()).getUserDetails().get(SessionManager.KEY_TOKEN);
+            
             // Sending a JSON or XML object i.e. "application/json" or "application/xml"
             requestHeaders.setContentType(mediaType);
 
             // Populate the Message object to serialize and headers in an
-            // HttpEntity object to use for the request
-            HttpEntity<JavaBean> requestEntity = new HttpEntity<JavaBean>(javaBean, requestHeaders);
-            
-//            new HttpEntity<T>(body, headers)
+            // HttpEntity object to use for the request mAbstractHandler
+            HttpEntity<APICode> requestEntity = new HttpEntity<APICode>(mAbstractHandler.getReqCode(), requestHeaders);
             
             // Create a new RestTemplate instance
             RestTemplate restTemplate = new RestTemplate();
@@ -71,25 +76,31 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, String> {
             }
 
             // Make the network request, posting the message, expecting a String in response from the server
-            ResponseEntity<JavaBean> response = restTemplate.exchange(url, HttpMethod.POST, requestEntity,
-                    JavaBean.class);
-            javaBean = response.getBody();
-
+            ResponseEntity<APICode> response = null;
+            Log.d("request : ", "request : " + JacksonUtils.objectToJson(mAbstractHandler.getReqCode()));
+        	response = restTemplate.exchange(url, HttpMethod.POST, requestEntity,
+            		APICode.class, mAbstractHandler.getReqCode().getTranCd(), token);
+            Log.d("response : ", "response : " + JacksonUtils.objectToJson(response.getBody()));
+            mAbstractHandler.setResCode(response.getBody());
             // Return the response body to display to the user
-            return "success";
+            return POST_FAIL;
         } catch (Exception e) {
-//            Log.e(TAG, e.getMessage(), e);
-        }
-        return null;
+        	e.printStackTrace();
+            Log.e("POST_ERROR : ", "POST_ERROR : " + e.getMessage());
+        } 
+        return POST_FAIL;
     }
 
     @Override
-    protected void onPostExecute(String result) {
+    protected void onPostExecute(Integer result) {
     	mAbstractAsyncActivity.dismissProgressDialog();
-        try {
-        	mAbstractAsyncActivity.showResult(BeanUtils.getBeanGetValue(javaBean));
-        } catch(Exception e){
-            e.printStackTrace();
-        }
+        
+    	if(POST_SUCCESS == result)
+    		mAbstractHandler.handle(mHandlerType);
+//    	try {
+////        	mAbstractAsyncActivity.showResult(BeanUtils.getBeanGetValue(javaBean));
+//        } catch(Exception e){
+//            e.printStackTrace();
+//        }
     }
 }
