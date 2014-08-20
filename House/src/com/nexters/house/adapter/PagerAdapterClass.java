@@ -23,28 +23,28 @@ import com.nexters.house.entity.CustomGallery;
 public class PagerAdapterClass extends PagerAdapter {
 	private LayoutInflater mInflater;
 	private ArrayList<View> views;
-	private int pageNum = GalleryAdapter.customGalleriesChecked.size();
+	private int pageNum;
 //	private ArrayList<EditText> singleInfo;
 //	public ArrayList<String> InfoList;
-	private Context c;
-	private ViewPager mPager;
-
+	private Context mContext;
+	private ViewPager mViewPagers;
 	private InteriorWriteActivity mInteriorWriteActivity;
 	private int currentPosition;
 	
-	public PagerAdapterClass(Context c, ViewPager pager, InteriorWriteActivity interiorWriteActivity) {
+	public PagerAdapterClass(Context context, ViewPager pager, InteriorWriteActivity interiorWriteActivity) {
 		super();
 		mInteriorWriteActivity = interiorWriteActivity;
-		this.c = c;
-		this.mPager = pager;
-		mInflater = LayoutInflater.from(c);
+		this.mContext = context;
+		this.mViewPagers = pager;
+		mInflater = LayoutInflater.from(context);
 		views = new ArrayList<View>();
-
+		pageNum = GalleryAdapter.customGalleriesChecked.size();
+		
 //		singleInfo=new ArrayList<EditText>();
 //		InfoList=new ArrayList<String>();
 		
 		for (int i = 0; i <pageNum; i++) {
-			View v = mInflater.inflate(R.layout.pageritem, null);
+			View v = mInflater.inflate(R.layout.pager_item, null);
 			Button btn = (Button) v.findViewById(R.id.btn_delete);
 			ImageView singleImg=(ImageView)v.findViewById(R.id.singleImage);
 		
@@ -62,7 +62,6 @@ public class PagerAdapterClass extends PagerAdapter {
 				
 				@Override
 				public void onClick(View v) {
-					
 					if (views.size() == 1)
 						return;
 					// 버튼의 뷰를 찾아서 ArrayList에서 빼야함. index로 할 경우, 사이즈가 밀려서 제대로 된
@@ -70,7 +69,6 @@ public class PagerAdapterClass extends PagerAdapter {
 					views.remove(v.getParent());
 					
 					mInteriorWriteActivity.removePageMark();
-					
 					GalleryAdapter.compareChecked(customGallery);
 					GalleryAdapter.customGalleriesChecked.remove(customGallery);
 					GalleryAdapter.selectCnt--;
@@ -93,16 +91,12 @@ public class PagerAdapterClass extends PagerAdapter {
 
 	@Override
 	public Object instantiateItem(final View pager, final int position) {
-		Log.d("create", "create : " + views.get(position) + " - " + position
-				+ " - size " + getCount());
-
 		
+		
+//		Log.d("create", "create : " + views.get(position) + " - " + position
+//				+ " - size " + getCount());
 		((ViewPager) pager).addView(views.get(position));
-		
-	
-/*		if( singleInfo.get(position).getText().toString()!="")
-			InfoList.set(position, singleInfo.get(position).getText().toString());
-*/		return views.get(position);
+		return views.get(position);
 	}
 
 	@Override

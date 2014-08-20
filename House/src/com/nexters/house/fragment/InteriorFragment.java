@@ -224,8 +224,8 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 				}};
 				e.badge = 0;
 				e.reply = 0;
-				e.scrap = 0;
-				e.share = 0;
+				//e.scrap = 0;
+				//e.share = 0;
 				mInteriorItemArrayList.add(0,e);
 				mListAdapter.notifyDataSetChanged();
 				// Notify PullToRefreshLayout that the refresh has finished

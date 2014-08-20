@@ -1,33 +1,44 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
-    <style name="AppBaseTheme" parent="android:Theme.Light">
+    <style name="AppBaseTheme" parent="@android:style/Theme.Holo.Light">
         <!--
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
+        <item name="android:textViewStyle">@style/HouseTextViewStyle</item>
+       	<item name="android:buttonStyle">@style/HouseButtonStyle</item>
+        Theme customizations available in newer API levels can go in
+        res/values-vXX/styles.xml, while customizations related to
+        backward-compatibility can go here.
         -->
     </style>
 
     <!-- Application theme. -->
-    <style name="AppTheme" parent="AppBaseTheme">
-        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    <style name="AppTheme" parent="@android:style/Theme.Holo.Light">
+        <!-- All customizations that are NOT specific to a particular API-level can go here.-->
+  		<item name="android:typeface">serif</item> 
     </style>
 
-     <style name="SelectTheme" parent="android:Theme.Dialog"> 
+    <style name="SelectTheme" parent="android:Theme.Dialog"></style>
+
+    <style name="SelectTheme.TransparentTest">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
     </style>
-    <style name="SelectTheme.TransparentTest"> 
-      <item name="android:windowBackground">@android:color/transparent</item> 
-      <item name="android:windowFrame">@null</item> 
-      <item name="android:windowContentOverlay">@null</item> 
-      <item name="android:windowIsFloating">true</item> 
-      <item name="android:backgroundDimEnabled">true</item> 
-      <item name="android:windowIsTranslucent">true</item> 
-      <item name="android:windowNoTitle">true</item> 
-      <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item> 
-     </style> 
-    
+<!--  <item name="android:typeface">serif</item>
+    <style name="HouseTextViewStyle" parent="@android:style/Widget.Holo.Light.TextView">
+        <item name="android:fontFamily">NotoSansKR-Black</item>
+    </style>
+
+    <style name="HouseButtonStyle" parent="android:Widget.Holo.Light.Button">
+        <item name="android:fontFamily">NotoSansKR-Light</item>
+    </style>
+     -->
 </resources>

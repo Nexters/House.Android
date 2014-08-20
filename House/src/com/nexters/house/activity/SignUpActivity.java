@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class SignUpActivity extends Activity implements View.OnClickListener {
-
     private EditText mHsUsername;
     private EditText mHsEmail;
     private EditText mHsPassword;

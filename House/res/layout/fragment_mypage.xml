@@ -1,5 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:facebook="http://schemas.android.com/apk/res-auto"
+    xmlns:facebook="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
@@ -7,15 +7,16 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="5" >
+        android:layout_weight="7"
+        android:background="@drawable/sample_background" >
 
         <ImageView
             android:id="@+id/house_profile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_centerHorizontal="true"
-            android:gravity="center_horizontal"
-            android:visibility="gone" />
+            android:layout_centerVertical="true"
+            android:src="@drawable/user_1" />
 
         <com.facebook.widget.ProfilePictureView
             android:id="@+id/facebook_profile"
@@ -27,21 +28,43 @@
             android:visibility="gone"
             facebook:preset_size="normal" />
 
-        <Button
-            android:id="@+id/rl_setting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/btn_setting"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:text="설정" />
+            android:layout_margin="15dp"
+            android:src="@drawable/icon_settings" />
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="#F79557"
+        android:background="#FFFFFF"
         android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="1dp"
+            android:layout_weight="1"
+            android:text="업로드"
+            android:textColor="#FFFFFF"
+            android:background="#8bd0c0"
+            android:gravity="center"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="스크랩"
+            android:textColor="#FFFFFF"
+            android:background="#8bd0c0"
+            android:gravity="center"
+            android:textSize="12sp" />
     </LinearLayout>
 
     <GridView
@@ -49,11 +72,10 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="9"
-        android:columnWidth="90dp"
+        android:columnWidth="100dp"
         android:gravity="center"
-        android:horizontalSpacing="1dp"
+        android:horizontalSpacing="-10dp"
         android:numColumns="auto_fit"
         android:stretchMode="columnWidth"
-        android:verticalSpacing="1dp" />
-
+        android:verticalSpacing="-10dp" />
 </LinearLayout>

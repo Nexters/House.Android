@@ -14,7 +14,6 @@
         android:gravity="top"
         android:hint="이야기를 적어주세요"
         android:scrollbars="vertical" >
-
         <requestFocus />
     </EditText>
 
@@ -47,10 +46,9 @@
     </RadioGroup>
 
     <Button
-        android:id="@+id/btn_addPhoto"
+        android:id="@+id/btn_gallery"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="addImage_talk"
         android:text="사진추가" />
 
     <ViewSwitcher
@@ -60,7 +58,6 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_weight="1" >
-
         <com.jess.ui.TwoWayGridView
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/horz_gridview"
@@ -73,7 +70,6 @@
             app:scrollDirectionPortrait="horizontal"
             app:stretchMode="none"
             app:verticalSpacing="0dp" />
-
         <ImageView
             android:id="@+id/imgSinglePick_talk"
             android:layout_width="wrap_content"

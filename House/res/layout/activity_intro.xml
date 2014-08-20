@@ -12,7 +12,7 @@
         android:layout_weight="5"
         android:gravity="center"
         android:text="House"
-        android:textColor="#F97557"
+        android:textColor="#8bd0c0"
         android:textSize="50sp" />
 
 </LinearLayout>

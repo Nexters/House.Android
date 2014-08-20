@@ -11,13 +11,14 @@ import com.nexters.house.*;
 import com.nexters.house.utils.*;
 
 public class BoardAdapter extends BaseAdapter {
-	Context mContext;
-	LayoutInflater mInflater;
-	ArrayList<String> mArrayList;
-	CommonUtils mUtil = new CommonUtils();
+	private Context mContext;
+	private LayoutInflater mInflater;
+	private ArrayList<String> mArrayList;
+	private CommonUtils mUtil;
 
 	public BoardAdapter() {
 		super();
+		mUtil = new CommonUtils();
 	}
 
 	public BoardAdapter(Context context, ArrayList<String> arrayList) {
@@ -62,14 +63,6 @@ public class BoardAdapter extends BaseAdapter {
 		TextView textView = (TextView) convertView
 				.findViewById(R.id.board_content);
 		textView.setText(mArrayList.get(position));
-		// TextView heartTextView = (TextView)
-		// convertView.findViewById(R.id.heart_btn);
-		// heartTextView.setOnClickListener(new View.OnClickListener(){
-		// @Override
-		// public void onClick(View v) {
-		// Toast.makeText(context, "Heart Btn", Toast.LENGTH_SHORT).show();
-		// }
-		// });
 		// 리스트뷰안의 아이템 높이 설정하는 메소드
 		convertView.setMinimumHeight(minHeight);
 

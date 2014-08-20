@@ -36,7 +36,7 @@ public class MyPageFragment extends Fragment {
     private ImageView mHouseProfile;
     private ProfilePictureView mFacebookProfile;
     
-	private Button mBtnSetting; 
+	private ImageView mBtnSetting; 
     private GridView mGridview;
     
     private Activity mActivity;
@@ -63,7 +63,7 @@ public class MyPageFragment extends Fragment {
 		mFacebookProfile = (ProfilePictureView) mView.findViewById(R.id.facebook_profile);
 		
 		mGridview = (GridView) mView.findViewById(R.id.gv_mypage);
-		mBtnSetting = (Button) mView.findViewById(R.id.rl_setting);
+		mBtnSetting = (ImageView) mView.findViewById(R.id.btn_setting);
 		
 		
 //		Settings

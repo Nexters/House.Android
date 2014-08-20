@@ -41,130 +41,7 @@ public class StartActivity extends Activity implements View.OnClickListener {
 	private boolean userSkippedLogin = false;
 	private boolean isResumed = false;
 	private UiLifecycleHelper uiHelper;
-	private Session.StatusCallback facebookCallback = new Session.StatusCallback() {
-		@Override
-		public void call(Session session, SessionState state,
-				Exception exception) {
-			if (session.isOpened()) {
 
-				// make request to the /me API
-				Request request = Request.newMeRequest(session,
-						new Request.GraphUserCallback() {
-
-							// callback after Graph API response with user
-							// object
-							@Override
-							public void onCompleted(GraphUser user,
-									Response response) {
-								if (user != null) {
-									// facebook Id 로 - email은 ㄴㄴ
-									Log.d("email",
-											"email : "
-													+ user.getName()
-													+ ","
-													+ user.getUsername()
-													+ ","
-													+ user.getId()
-													+ ","
-													+ user.getLink()
-													+ ","
-													+ user.getFirstName()
-													+ ","
-													+ user.getProperty("gender"));
-									// Log.d("user", "User : " + user.getName()
-									// + " thumbnailpath : " + user.getId() +
-									// "Email : " +
-									// user.asMap().get("email").toString());
-									SessionManager.getInstance(
-											StartActivity.this)
-											.createLoginSession(
-													SessionManager.FACEBOOK,
-													user.getName(),
-													null,
-													com.facebook.Session
-															.getActiveSession()
-															.getAccessToken(),
-													user.getId(), true);
-									finish();
-								}
-							}
-						});
-				request.executeAsync();
-			}
-		}
-	};
-	private final SessionCallback kakaoCallback = new SessionCallback() {
-		@Override
-		public void onSessionOpened() {
-			// showShortToast("Session Opened");
-			UserManagement.requestMe(new MeResponseCallback() {
-				@Override
-				protected void onSuccess(final UserProfile userProfile) {
-					// userProfile.getId()
-					// 성공.
-					// kakao Id 로 - email은 ㄴㄴ
-					Log.d("user",
-							"Email kakao : " + userProfile.getId() + " User : " + userProfile.getNickname()
-									+ " thumbnailpath : "
-									+ userProfile.getThumbnailImagePath());
-					SessionManager.getInstance(StartActivity.this)
-							.createLoginSession(
-									SessionManager.KAKAO,
-									userProfile.getNickname(),
-									null,
-									com.kakao.Session.getCurrentSession()
-											.getAccessToken(),
-									userProfile.getThumbnailImagePath(), true);
-					finish();
-				}
-
-				@Override
-				protected void onNotSignedUp() {
-					// 가입 페이지로 이동
-					showShortToast("가입 페이지로 이동");
-				}
-
-				@Override
-				protected void onSessionClosedFailure(
-						final APIErrorResult errorResult) {
-					// 다시 로그인 시도
-					showShortToast("다시 로그인 시도");
-				}
-
-				@Override
-				protected void onFailure(final APIErrorResult errorResult) {
-					// 실패
-					Toast.makeText(getApplicationContext(),
-							"failed to update profile. msg = " + errorResult,
-							Toast.LENGTH_LONG).show();
-				}
-				
-//				public void readProfile() {
-//				    KakaoStoryService.requestProfile(new MyStoryHttpResponseHandler<KakaoStoryProfile>() {
-//				        @Override
-//				        protected void onHttpSuccess(final KakaoStoryProfile storyProfile) {
-//				        	storyProfile.
-//				              final String nickName = storyProfile.getNickName();
-//				              final String profileImageURL = storyProfile.getProfileImageURL();
-//				              final String thumbnailURL = storyProfile.getThumbnailURL();
-//				              final String backgroundURL = storyProfile.getBgImageURL();
-//				              final Calendar birthday = storyProfile.getBirthdayCalendar();
-//				              final BirthdayType birthDayType = storyProfile.getBirthdayType();
-//				              // display
-//				        }
-//				    });
-//				}
-			});
-		}
-
-		@Override
-		public void onSessionClosed(KakaoException exception) {
-			exception.printStackTrace();
-			// 프로그레스바를 보이고 있었다면 중지하고 세션 오픈을 못했으니 다시 로그인 버튼 노출.
-			// showShortToast("Session onSessionClosed");
-			mBtnKakao.setVisibility(View.VISIBLE);
-		}
-	};
 	private Button mBtnSignIn;
 	private Button mBtnSignUp;
 	private com.facebook.widget.LoginButton mBtnFacebook;
@@ -181,6 +58,8 @@ public class StartActivity extends Activity implements View.OnClickListener {
 		setContentView(R.layout.activity_start);
 
 		initResources();
+		// 로그인 관련 초기화 
+		initLogin();
 		initEvents();
 		playVideoIntro();
 	}
@@ -191,21 +70,23 @@ public class StartActivity extends Activity implements View.OnClickListener {
 		mBtnKakao = (com.kakao.widget.LoginButton) findViewById(R.id.btn_kakao_in);
 		mBtnFacebook = (com.facebook.widget.LoginButton) findViewById(R.id.btn_facebook_in);
 		videoViewIntro = (VideoView) findViewById(R.id.vv_house_intro);
+	}
 
-//		mBtnFacebook.setReadPermissions(Arrays.asList("email"));
+	private void initLogin(){
 		// Settings
 		// 세션을 초기화 한다
 		if (com.kakao.Session.initializeSession(this, kakaoCallback)) {
 			// 1. 세션을 갱신 중이면, 프로그레스바를 보이거나 버튼을 숨기는 등의 액션을 취한다
 			mBtnKakao.setVisibility(View.GONE);
 		}
-
 		// Check autoLogin
 		SessionManager sessionManager = SessionManager.getInstance(this);
-		if (sessionManager.isLoggedIn() && !sessionManager.checkAutoLogin())
+		if (sessionManager.isLoggedIn() && !sessionManager.checkAutoLogin()){
 			sessionManager.logoutUser();
+			finish();
+		}
 	}
-
+	
 	private void initEvents() {
 		mBtnSignIn.setOnClickListener(this);
 		mBtnSignUp.setOnClickListener(this);
@@ -302,4 +183,132 @@ public class StartActivity extends Activity implements View.OnClickListener {
 	public void showShortToast(String msg) {
 		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
 	}
+
+	
+	// -------------------------- 연동 로그인 부분
+	private Session.StatusCallback facebookCallback = new Session.StatusCallback() {
+		@Override
+		public void call(Session session, SessionState state,
+				Exception exception) {
+			if (session.isOpened()) {
+
+				// make request to the /me API
+				Request request = Request.newMeRequest(session,
+						new Request.GraphUserCallback() {
+
+							// callback after Graph API response with user
+							// object
+							@Override
+							public void onCompleted(GraphUser user,
+									Response response) {
+								if (user != null) {
+									// facebook Id 로 - email은 ㄴㄴ
+									Log.d("email",
+											"email : "
+													+ user.getName()
+													+ ","
+													+ user.getUsername()
+													+ ","
+													+ user.getId()
+													+ ","
+													+ user.getLink()
+													+ ","
+													+ user.getFirstName()
+													+ ","
+													+ user.getProperty("gender"));
+									// Log.d("user", "User : " + user.getName()
+									// + " thumbnailpath : " + user.getId() +
+									// "Email : " +
+									// user.asMap().get("email").toString());
+									SessionManager.getInstance(
+											StartActivity.this)
+											.createLoginSession(
+													SessionManager.FACEBOOK,
+													user.getName(),
+													null,
+													com.facebook.Session
+															.getActiveSession()
+															.getAccessToken(),
+													user.getId(), true);
+									finish();
+								}
+							}
+						});
+				request.executeAsync();
+			}
+		}
+	};
+	private final SessionCallback kakaoCallback = new SessionCallback() {
+		@Override
+		public void onSessionOpened() {
+			// showShortToast("Session Opened");
+			UserManagement.requestMe(new MeResponseCallback() {
+				@Override
+				protected void onSuccess(final UserProfile userProfile) {
+					Log.d("user",
+							"Email kakao : " + userProfile.getId() + " User : "
+									+ userProfile.getNickname()
+									+ " thumbnailpath : "
+									+ userProfile.getThumbnailImagePath());
+					SessionManager.getInstance(StartActivity.this)
+							.createLoginSession(
+									SessionManager.KAKAO,
+									userProfile.getNickname(),
+									null,
+									com.kakao.Session.getCurrentSession()
+											.getAccessToken(),
+									userProfile.getThumbnailImagePath(), true);
+					finish();
+				}
+
+				@Override
+				protected void onNotSignedUp() {
+					// 가입 페이지로 이동
+					showShortToast("가입 페이지로 이동");
+				}
+
+				@Override
+				protected void onSessionClosedFailure(
+						final APIErrorResult errorResult) {
+					// 다시 로그인 시도
+					showShortToast("다시 로그인 시도");
+				}
+
+				@Override
+				protected void onFailure(final APIErrorResult errorResult) {
+					// 실패
+					Toast.makeText(getApplicationContext(),
+							"failed to update profile. msg = " + errorResult,
+							Toast.LENGTH_LONG).show();
+				}
+				// public void readProfile() {
+				// KakaoStoryService.requestProfile(new
+				// MyStoryHttpResponseHandler<KakaoStoryProfile>() {
+				// @Override
+				// protected void onHttpSuccess(final KakaoStoryProfile
+				// storyProfile) {
+				// storyProfile.
+				// final String nickName = storyProfile.getNickName();
+				// final String profileImageURL =
+				// storyProfile.getProfileImageURL();
+				// final String thumbnailURL = storyProfile.getThumbnailURL();
+				// final String backgroundURL = storyProfile.getBgImageURL();
+				// final Calendar birthday = storyProfile.getBirthdayCalendar();
+				// final BirthdayType birthDayType =
+				// storyProfile.getBirthdayType();
+				// // display
+				// }
+				// });
+				// }
+			});
+		}
+
+		@Override
+		public void onSessionClosed(KakaoException exception) {
+			exception.printStackTrace();
+			// 프로그레스바를 보이고 있었다면 중지하고 세션 오픈을 못했으니 다시 로그인 버튼 노출.
+			// showShortToast("Session onSessionClosed");
+			mBtnKakao.setVisibility(View.VISIBLE);
+		}
+	};
 }

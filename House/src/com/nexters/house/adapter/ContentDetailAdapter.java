@@ -1,5 +1,6 @@
 package com.nexters.house.adapter;
 
+import java.net.*;
 import java.util.*;
 
 import android.content.*;
@@ -10,10 +11,9 @@ import com.nexters.house.*;
 import com.nexters.house.entity.*;
 
 public class ContentDetailAdapter extends BaseAdapter{
-
 	final String TAG = "MainListAdapter";
 
-	public Context mContext;
+	private Context mContext;
 	private ArrayList<ContentEntity> mExamItemArrayList;
 	private LayoutInflater mLayoutInflater;
 	int resource;
@@ -54,14 +54,12 @@ public class ContentDetailAdapter extends BaseAdapter{
 
 			// find resource
 			
-			holder.iv_image = (ImageView) convertView.findViewById(R.id.iv_image);
+			holder.houseProfile = (ImageView) convertView.findViewById(R.id.house_profile);
 			convertView.setTag(holder);
 
 		} else {
 			holder = (Holder) convertView.getTag();
 		}
-
-
 		return convertView;
 	}
 	
@@ -86,8 +84,7 @@ public class ContentDetailAdapter extends BaseAdapter{
 }
 
 	private class Holder {
-		
-		ImageView iv_image;
+		ImageView houseProfile;
 	}
 
 }

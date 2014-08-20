@@ -7,6 +7,7 @@ import android.app.*;
 import android.content.*;
 import android.database.*;
 import android.graphics.*;
+import android.graphics.drawable.StateListDrawable;
 import android.os.*;
 import android.provider.*;
 import android.util.*;
@@ -17,6 +18,7 @@ import com.nexters.house.*;
 import com.nexters.house.adapter.GalleryAdapter;
 import com.nexters.house.entity.Action;
 import com.nexters.house.entity.CustomGallery;
+import com.nexters.house.utils.TypefaceUtil;
 import com.nostra13.universalimageloader.cache.disc.impl.*;
 import com.nostra13.universalimageloader.cache.memory.impl.*;
 import com.nostra13.universalimageloader.core.*;
@@ -24,7 +26,6 @@ import com.nostra13.universalimageloader.core.assist.*;
 import com.nostra13.universalimageloader.utils.*;
 
 public class CustomGalleryActivity extends Activity {
-
 	GridView gridGallery;
 	Handler handler;
 	GalleryAdapter adapter;
@@ -38,6 +39,7 @@ public class CustomGalleryActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		TypefaceUtil.overrideFont(getApplicationContext(), "SERIF", "/NotoSansKR-Black.otf"); // font from assets:
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.gallery);
 
@@ -86,18 +88,17 @@ public class CustomGalleryActivity extends Activity {
 				true, true);
 		gridGallery.setOnScrollListener(listener);
 
+//		gridGallery.setSelector(new StateListDrawable());
 		if (action.equalsIgnoreCase(Action.ACTION_MULTIPLE_PICK)) {
-
-			findViewById(R.id.llBottomContainer).setVisibility(View.VISIBLE);
+		//	findViewById(R.id.llBottomContainer).setVisibility(View.VISIBLE);
 			gridGallery.setOnItemClickListener(mItemMulClickListener);
 			adapter.setMultiplePick(true);
-
 		} else if (action.equalsIgnoreCase(Action.ACTION_PICK)) {
-			findViewById(R.id.llBottomContainer).setVisibility(View.GONE);
+		//	findViewById(R.id.llBottomContainer).setVisibility(View.GONE);
 			gridGallery.setOnItemClickListener(mItemSingleClickListener);
 			adapter.setMultiplePick(false);
 		}
-		
+
 		adapter.isShow = true;
 		gridGallery.setAdapter(adapter);
 		imgNoMedia = (ImageView) findViewById(R.id.imgNoMedia);
@@ -106,7 +107,6 @@ public class CustomGalleryActivity extends Activity {
 		btnGalleryOk.setOnClickListener(mOkClickListener);
 
 		new Thread() {
-
 			@Override
 			public void run() {
 				Looper.prepare();
@@ -122,7 +122,6 @@ public class CustomGalleryActivity extends Activity {
 			};
 
 		}.start();
-
 	}
 
 	private void checkImageStatus() {
@@ -133,25 +132,18 @@ public class CustomGalleryActivity extends Activity {
 		}
 	}
 
+	// 사진 선택 완료 버튼 누를 시
 	View.OnClickListener mOkClickListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
-			ArrayList<CustomGallery> selected = adapter.getSelected();
-			Log.d("size", "sadfasdlkndsaf : " + selected.size());
-			String[] allPath = new String[selected.size()];
-			for (int i = 0; i < allPath.length; i++) {
-				allPath[i] = selected.get(i).sdcardPath;
-			}
-
-			Intent data = new Intent().putExtra("all_path", allPath);
-			setResult(RESULT_OK, data);
+			setResult(RESULT_OK);
 			finish();
 		}
 	};
 	AdapterView.OnItemClickListener mItemMulClickListener = new AdapterView.OnItemClickListener() {
 
 		@Override
-		public void onItemClick(AdapterView<?> l, View v, int position, long id) {		
+		public void onItemClick(AdapterView<?> l, View v, int position, long id) {
 			adapter.changeSelection(v, position);
 		}
 	};
@@ -181,7 +173,6 @@ public class CustomGalleryActivity extends Activity {
 					null, null, orderBy);
 
 			if (imagecursor != null && imagecursor.getCount() > 0) {
-
 				while (imagecursor.moveToNext()) {
 					CustomGallery item = new CustomGallery();
 
@@ -189,7 +180,6 @@ public class CustomGalleryActivity extends Activity {
 							.getColumnIndex(MediaStore.Images.Media.DATA);
 
 					item.sdcardPath = imagecursor.getString(dataColumnIndex);
-
 					galleryList.add(item);
 				}
 			}

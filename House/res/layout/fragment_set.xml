@@ -6,8 +6,8 @@
     <LinearLayout
         android:id="@+id/btn_nickname"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="1dp"
         android:background="@drawable/btn_effect_bg_color_white"
         android:clickable="true"
         android:orientation="horizontal" >
@@ -18,8 +18,7 @@
             android:gravity="center_vertical"
             android:paddingLeft="20dp"
             android:text="@string/btn_nickname"
-            android:textColor="@color/mint"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -27,15 +26,14 @@
             android:gravity="center_vertical|right"
             android:paddingRight="20dp"
             android:text=">"
-            android:textColor="@color/mint"
             android:textSize="30sp" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/btn_modifypw"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="1dp"
         android:background="@drawable/btn_effect_bg_color_white"
         android:clickable="true"
         android:orientation="horizontal" >
@@ -46,8 +44,7 @@
             android:gravity="center_vertical"
             android:paddingLeft="20dp"
             android:text="@string/btn_modifypw"
-            android:textColor="@color/mint"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -55,15 +52,14 @@
             android:gravity="center_vertical|right"
             android:paddingRight="20dp"
             android:text=">"
-            android:textColor="@color/mint"
             android:textSize="30sp" />
     </LinearLayout>
 
       <LinearLayout
         android:id="@+id/btn_send"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="1dp"
         android:background="@drawable/btn_effect_bg_color_white"
         android:clickable="true"
         android:orientation="horizontal" >
@@ -74,8 +70,7 @@
             android:gravity="center_vertical"
             android:paddingLeft="20dp"
             android:text="@string/btn_send"
-            android:textColor="@color/mint"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -83,17 +78,16 @@
             android:gravity="center_vertical|right"
             android:paddingRight="20dp"
             android:text=">"
-            android:textColor="@color/mint"
             android:textSize="30sp" />
     </LinearLayout>
     
     <LinearLayout
         android:id="@+id/btn_version"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="45dp"
         android:background="@drawable/btn_effect_bg_color_white"
         android:clickable="true"
+        android:layout_marginTop="1dp"
         android:orientation="horizontal" >
 
         <TextView
@@ -102,8 +96,7 @@
             android:gravity="center_vertical"
             android:paddingLeft="20dp"
             android:text="@string/btn_version"
-            android:textColor="@color/mint"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -111,15 +104,20 @@
             android:gravity="center_vertical|right"
             android:paddingRight="20dp"
             android:text=">"
-            android:textColor="@color/mint"
             android:textSize="30sp" />
     </LinearLayout>
-
+	<TextView 
+	    android:layout_width="match_parent"
+	    android:layout_height="28dp"
+	    android:text="하우스 더 알아보기"
+	    android:textSize="12sp"
+	    android:textColor="@color/light_black"
+	    android:gravity="center"/>
      <LinearLayout
         android:id="@+id/btn_logout"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="1dp"
         android:background="@drawable/btn_effect_bg_color_white"
         android:clickable="true"
         android:orientation="horizontal" >
@@ -130,8 +128,7 @@
             android:gravity="center_vertical"
             android:paddingLeft="20dp"
             android:text="@string/btn_logout"
-            android:textColor="@color/mint"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -139,15 +136,14 @@
             android:gravity="center_vertical|right"
             android:paddingRight="20dp"
             android:text=">"
-            android:textColor="@color/mint"
             android:textSize="30sp" />
     </LinearLayout>
   
     <LinearLayout
         android:id="@+id/btn_withdraw"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="1dp"
         android:background="@drawable/btn_effect_bg_color_white"
         android:clickable="true"
         android:orientation="horizontal" >
@@ -158,8 +154,7 @@
             android:gravity="center_vertical"
             android:paddingLeft="20dp"
             android:text="@string/btn_withdraw"
-            android:textColor="@color/mint"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -167,7 +162,6 @@
             android:gravity="center_vertical|right"
             android:paddingRight="20dp"
             android:text=">"
-            android:textColor="@color/mint"
             android:textSize="30sp" />
     </LinearLayout>
 </LinearLayout>

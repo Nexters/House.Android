@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.view.Window;
 
 import com.nexters.house.R;
+import com.nexters.house.utils.TypefaceUtil;
 
 public class IntroActivity extends Activity {
 	private static int INTRO_LOADING_TIME = 1000;
@@ -18,6 +19,13 @@ public class IntroActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_intro);
 
+		// default font
+		TypefaceUtil.overrideFont(getApplicationContext(), "SERIF", "fonts/NotoSansKR-Light.otf");
+		
+		initResource();
+	}
+
+	private void initResource(){
 		mHandler = new Handler();
 		mHandler.postDelayed(new Runnable() {
 			public void run() {
@@ -25,13 +33,8 @@ public class IntroActivity extends Activity {
 			}
 		}, INTRO_LOADING_TIME);
 	}
-
+	
 	private void endIntro() {
-		// if (SessionManager.getInstance(this).isSignedIn()) {
-		// Intent intent = new Intent(this, MainActivity.class);
-		// startActivity(intent);
-		// finish();
-		// } else {
 		Intent intent = new Intent(this, StartActivity.class);
 		startActivity(intent);
 		finish();
