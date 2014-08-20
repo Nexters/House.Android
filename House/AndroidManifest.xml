@@ -17,7 +17,9 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Sherlock">
+        android:theme="@style/Theme.Sherlock" >
+        
+
         <activity
             android:name="com.nexters.house.activity.IntroActivity"
             android:label="@string/app_name"
@@ -61,7 +63,7 @@
         <activity
             android:name="com.nexters.house.activity.InteriorWriteActivity"
             android:label="@string/title_activity_interior_write"
-            android:theme="@style/Theme.Sherlock.Light" >
+            android:theme="@style/Theme.Sherlock.Light.DarkActionBar" >
         </activity>
         <activity android:name="com.nexters.house.activity.CustomGalleryActivity" >
             <intent-filter>

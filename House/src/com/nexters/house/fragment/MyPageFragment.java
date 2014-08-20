@@ -75,7 +75,7 @@ public class MyPageFragment extends Fragment {
 		if(sessionManager.getLoginType() == SessionManager.FACEBOOK){
 			mFacebookProfile.setProfileId(imgSrc);
 			mFacebookProfile.setVisibility(View.VISIBLE);
-		} else {
+		} else if(imgSrc != null){
 			new DownloadImageTask(mHouseProfile).execute(imgSrc);
 			mHouseProfile.setVisibility(View.VISIBLE);
 		}
