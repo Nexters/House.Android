@@ -35,6 +35,11 @@ public class AuthHandler<T> extends AbstractHandler<T> {
 		}
 	}
 	
+	@Override
+	public void showError() {
+		mAbstractAsyncActivity.showResult("Fail");		
+	}
+
 	public void login(){
 		SessionManager sessionManager = SessionManager.getInstance(mAbstractAsyncActivity.getApplicationContext());
 		
@@ -46,8 +51,8 @@ public class AuthHandler<T> extends AbstractHandler<T> {
 		if(sessionManager.isLoggedIn()){
 			Intent intent = new Intent(mAbstractAsyncActivity, MainActivity.class);
 			mAbstractAsyncActivity.startActivity(intent);
-		} else {
-			mAbstractAsyncActivity.showResult("Fail");
-		}
+			mAbstractAsyncActivity.finish();
+		} else 
+			showError();
 	}
 }

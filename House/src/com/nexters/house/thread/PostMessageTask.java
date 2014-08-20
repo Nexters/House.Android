@@ -18,7 +18,7 @@ import com.nexters.house.activity.AbstractAsyncActivity;
 import com.nexters.house.core.SessionManager;
 import com.nexters.house.entity.APICode;
 import com.nexters.house.handler.AbstractHandler;
-import com.nexters.house.utils.JacksonUtils;
+import com.nexters.house.utils.BeanUtils;
 
 // ***************************************
 // Private classes
@@ -77,13 +77,13 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
 
             // Make the network request, posting the message, expecting a String in response from the server
             ResponseEntity<APICode> response = null;
-            Log.d("request : ", "request : " + JacksonUtils.objectToJson(mAbstractHandler.getReqCode()));
+//            Log.d("request : ", "request : " + JacksonUtils.objectToJson(mAbstractHandler.getReqCode()));
         	response = restTemplate.exchange(url, HttpMethod.POST, requestEntity,
             		APICode.class, mAbstractHandler.getReqCode().getTranCd(), token);
-            Log.d("response : ", "response : " + JacksonUtils.objectToJson(response.getBody()));
+//            Log.d("response : ", "response : " + JacksonUtils.objectToJson(response.getBody()));
             mAbstractHandler.setResCode(response.getBody());
             // Return the response body to display to the user
-            return POST_FAIL;
+            return POST_SUCCESS;
         } catch (Exception e) {
         	e.printStackTrace();
             Log.e("POST_ERROR : ", "POST_ERROR : " + e.getMessage());
@@ -97,10 +97,7 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
         
     	if(POST_SUCCESS == result)
     		mAbstractHandler.handle(mHandlerType);
-//    	try {
-////        	mAbstractAsyncActivity.showResult(BeanUtils.getBeanGetValue(javaBean));
-//        } catch(Exception e){
-//            e.printStackTrace();
-//        }
+    	else if(POST_FAIL == result)
+    		mAbstractHandler.showError();
     }
 }

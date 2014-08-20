@@ -19,6 +19,7 @@ public abstract class AbstractHandler <T> {
 	}
 	
 	abstract public void handle(int method);
+	abstract public void showError();
 	
 	public void addTranData(T obj){
 		tranData.add(obj);
