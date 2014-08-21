@@ -23,12 +23,12 @@ public class SessionManager {
 	public static final int KAKAO = 2;
 	public static final int HOUSE = 3;
 	
-	SharedPreferences mPref;
-	SharedPreferences.Editor mEditor;
-	Context mContext;
+	private SharedPreferences mPref;
+	private SharedPreferences.Editor mEditor;
+	private Context mContext;
 
 	// Shared pref mode
-	int PRIVATE_MODE = 0;
+	private int PRIVATE_MODE = 0;
 
 	// Sharedpref file name
 	private static final String PREF_NAME = "SessionPref";
@@ -111,7 +111,9 @@ public class SessionManager {
 		// user profile
 		user.put(KEY_PROFILE_PATH, mPref.getString(KEY_PROFILE_PATH, null));
 		
-		// return user
+		// return token
+		user.put(KEY_TOKEN, mPref.getString(KEY_TOKEN, null));
+		
 		return user;
 	}
 

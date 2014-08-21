@@ -88,6 +88,7 @@ public class InteriorWrite2Activity extends Activity {
 		getMenuInflater().inflate(R.menu.interior_write2, menu);
 		return true;
 	}
+
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -116,7 +117,7 @@ public class InteriorWrite2Activity extends Activity {
 		        }
 		        }).setNegativeButton("아니요",
 		        new DialogInterface.OnClickListener() {
-		        public void onClick(DialogInterface dialog, int id) {
+	        public void onClick(DialogInterface dialog, int id) {
 		            // Action for 'NO' Button
 		            dialog.cancel();
 		        }
@@ -130,9 +131,12 @@ public class InteriorWrite2Activity extends Activity {
 
 	}
 
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
+
+
 	}
 	
 	@Override
@@ -140,6 +144,7 @@ public class InteriorWrite2Activity extends Activity {
 		super.onResume();
 		refreshHorzGrid();
 	}
+
 
 	public void refreshHorzGrid(){
 		// 이미지 하나도 선택 안할 경우 null 아닐 경우 그 밖

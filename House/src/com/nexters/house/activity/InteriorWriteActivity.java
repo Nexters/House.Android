@@ -116,10 +116,10 @@ public class InteriorWriteActivity extends Activity {
 			public void onPageSelected(int position) {
 				if (mPageMark.getChildAt(mPrevPosition) != null) {
 					mPageMark.getChildAt(mPrevPosition).setBackgroundResource(
-							R.drawable.page_not);
+							R.drawable.icon_doldol);
 				}
 				mPageMark.getChildAt(position).setBackgroundResource(
-						R.drawable.page_select);
+						R.drawable.icon_doldol_click);
 				mPrevPosition = position;
 			}
 

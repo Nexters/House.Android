@@ -7,6 +7,7 @@ import android.app.*;
 import android.content.*;
 import android.database.*;
 import android.graphics.*;
+import android.graphics.drawable.StateListDrawable;
 import android.os.*;
 import android.provider.*;
 import android.view.*;
@@ -85,12 +86,13 @@ public class CustomGalleryActivity extends Activity {
 				true, true);
 		gridGallery.setOnScrollListener(listener);
 
+//		gridGallery.setSelector(new StateListDrawable());
 		if (action.equalsIgnoreCase(Action.ACTION_MULTIPLE_PICK)) {
-			findViewById(R.id.llBottomContainer).setVisibility(View.VISIBLE);
+		//	findViewById(R.id.llBottomContainer).setVisibility(View.VISIBLE);
 			gridGallery.setOnItemClickListener(mItemMulClickListener);
 			adapter.setMultiplePick(true);
 		} else if (action.equalsIgnoreCase(Action.ACTION_PICK)) {
-			findViewById(R.id.llBottomContainer).setVisibility(View.GONE);
+		//	findViewById(R.id.llBottomContainer).setVisibility(View.GONE);
 			gridGallery.setOnItemClickListener(mItemSingleClickListener);
 			adapter.setMultiplePick(false);
 		}

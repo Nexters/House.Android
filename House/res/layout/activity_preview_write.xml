@@ -4,7 +4,7 @@
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/bg_light_blue"
+    android:background="#000000"
     android:orientation="vertical" >
 
     <LinearLayout
