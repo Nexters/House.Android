@@ -16,7 +16,6 @@ import com.nexters.house.R;
 import com.nexters.house.adapter.*;
 import com.nexters.house.entity.*;
 
-
 public class ContentDetailFragment extends Fragment {
 
 	private final String TAG = "ContentDetailFragment";
@@ -29,82 +28,73 @@ public class ContentDetailFragment extends Fragment {
 	private ReplyAdapter mReplyAdapter;
 	private ImageView ivImage;
 
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		View v = inflater.inflate(R.layout.content_detail_page, container, false);
+		View v = inflater.inflate(R.layout.content_detail_page, container,
+				false);
 		initResources(v);
 
 		setListViewHeightBasedOnChildren(lvContent);
 		return v;
 	}
 
-
 	@SuppressLint("InflateParams")
-	private void initResources(View v){
-		
+	private void initResources(View v) {
+
 		lvContent = (ListView) v.findViewById(R.id.lv_interior_image);
-		lvReply = (ListView)v.findViewById(R.id.lv_reply);
-		
+		lvReply = (ListView) v.findViewById(R.id.lv_reply);
+
 		mImageArrayList = new ArrayList<ContentEntity>();
 		mReplyArrayList = new ArrayList<ReplyEntity>();
-		
+
 		ivImage = (ImageView) v.findViewById(R.id.image_row);
 
-	
-		mMainListAdapter = new ContentDetailAdapter(getActivity().getApplicationContext(),
-				mImageArrayList, R.layout.image_row);
+		mMainListAdapter = new ContentDetailAdapter(getActivity()
+				.getApplicationContext(), mImageArrayList, R.layout.image_row);
 		mReplyAdapter = new ReplyAdapter(getActivity().getApplicationContext(),
 				mReplyArrayList, R.layout.reply);
-		
-		
-		
 
 		lvContent.setAdapter(mMainListAdapter);
 		for (int itemCount = 0; itemCount < 15; itemCount++) {
-			ContentEntity mExamEntity = new ContentEntity();	 
+			ContentEntity mExamEntity = new ContentEntity();
 
 			mImageArrayList.add(mExamEntity);
 
 		}
 
 		mMainListAdapter.notifyDataSetChanged();
-		
-		
-		
+
 		lvReply.setAdapter(mReplyAdapter);
-		for (int itemCount = 0; itemCount <20; itemCount++){
+		for (int itemCount = 0; itemCount < 20; itemCount++) {
 			ReplyEntity mReplyEntity = new ReplyEntity();
-			
+
 			mReplyArrayList.add(mReplyEntity);
-			
+
 		}
 
 	}
-	
-	//스크롤뷰안에 리스트뷰 스크롤제대로 되도록
+
+	// 스크롤뷰안에 리스트뷰 스크롤제대로 되도록
 	public static void setListViewHeightBasedOnChildren(ListView listView) {
-        ListAdapter listAdapter = listView.getAdapter(); 
-        if (listAdapter == null) {
-            // pre-condition
-            return;
-        }
- 
-        int totalHeight = 0;
-        for (int i = 0; i < listAdapter.getCount(); i++) {
-            View listItem = listAdapter.getView(i, null, listView);
-            listItem.measure(0, 0);
-            totalHeight += listItem.getMeasuredHeight();
-        }
- 
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
-        listView.requestLayout();
-}
+		ListAdapter listAdapter = listView.getAdapter();
+		if (listAdapter == null) {
+			// pre-condition
+			return;
+		}
 
+		int totalHeight = 0;
+		for (int i = 0; i < listAdapter.getCount(); i++) {
+			View listItem = listAdapter.getView(i, null, listView);
+			listItem.measure(0, 0);
+			totalHeight += listItem.getMeasuredHeight();
+		}
 
-
+		ViewGroup.LayoutParams params = listView.getLayoutParams();
+		params.height = totalHeight
+				+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+		listView.setLayoutParams(params);
+		listView.requestLayout();
+	}
 }
