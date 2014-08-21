@@ -8,10 +8,11 @@ import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.nexters.house.*;
 import com.nexters.house.fragment.*;
 
-public class MainActivity extends FragmentActivity implements OnClickListener {
+public class MainActivity extends SherlockFragmentActivity  implements OnClickListener {
 	final String TAG = "MainActivity";
 
 	public int mCurrentFragmentIndex;
@@ -59,11 +60,11 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	}
 	
     private void initActionBar() {
-        getActionBar().setDisplayShowTitleEnabled(false);
-        getActionBar().setDisplayShowHomeEnabled(false);
-        getActionBar().setDisplayShowCustomEnabled(true);
+    	getSupportActionBar().setDisplayShowTitleEnabled(false);
+    	getSupportActionBar().setDisplayShowHomeEnabled(false);
+    	getSupportActionBar().setDisplayShowCustomEnabled(true);
 
-        getActionBar().setCustomView(R.layout.action_main);
+    	getSupportActionBar().setCustomView(R.layout.action_main);
     }
 
 	public void fragmentReplace() {

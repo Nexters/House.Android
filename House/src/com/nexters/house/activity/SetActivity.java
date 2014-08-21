@@ -12,10 +12,11 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.nexters.house.R;
 import com.nexters.house.adapter.SetFragmentPagerAdapter;
 
-public class SetActivity extends FragmentActivity {
+public class SetActivity extends SherlockFragmentActivity  {
 	private SetFragmentPagerAdapter mSetFragmentPagerAdapter = null;
 	private ViewPager mViewPager = null;
 
@@ -40,11 +41,10 @@ public class SetActivity extends FragmentActivity {
 	}
 
 	private void initActionBar() {
-		getActionBar().setDisplayShowTitleEnabled(false);
-		getActionBar().setDisplayShowHomeEnabled(false);
-		getActionBar().setDisplayShowCustomEnabled(true);
-
-		getActionBar().setCustomView(R.layout.action_set);
+		getSupportActionBar().setDisplayShowTitleEnabled(false);
+		getSupportActionBar().setDisplayShowHomeEnabled(false);
+		getSupportActionBar().setDisplayShowCustomEnabled(true);
+		getSupportActionBar().setCustomView(R.layout.action_set);
 	}
 
 	@Override
