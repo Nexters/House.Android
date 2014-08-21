@@ -18,7 +18,7 @@ import com.nexters.house.activity.AbstractAsyncActivity;
 import com.nexters.house.core.SessionManager;
 import com.nexters.house.entity.APICode;
 import com.nexters.house.handler.AbstractHandler;
-import com.nexters.house.utils.BeanUtils;
+import com.nexters.house.utils.JacksonUtils;
 
 // ***************************************
 // Private classes
@@ -52,8 +52,9 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
             MediaType mediaType = params[0];
 
             // The URL for making the POST request
-            final String url = mAbstractAsyncActivity.getString(R.string.base_uri) + "/house/{code}.app?token={token}";
-
+             final String url = mAbstractAsyncActivity.getString(R.string.base_uri) + "/house/{code}.app?token={token}";
+//            final String url = mAbstractAsyncActivity.getString(R.string.base_uri) + "/house/CM0002.app";
+            
             HttpHeaders requestHeaders = new HttpHeaders();
             	
             // Set Token	
@@ -77,7 +78,7 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
 
             // Make the network request, posting the message, expecting a String in response from the server
             ResponseEntity<APICode> response = null;
-//            Log.d("request : ", "request : " + JacksonUtils.objectToJson(mAbstractHandler.getReqCode()));
+//            Log.d("request : ", "request : " + JacksonUtils.objectToJson(mAbstractHandler.getReqCode() + " token : " + token));
         	response = restTemplate.exchange(url, HttpMethod.POST, requestEntity,
             		APICode.class, mAbstractHandler.getReqCode().getTranCd(), token);
 //            Log.d("response : ", "response : " + JacksonUtils.objectToJson(response.getBody()));
