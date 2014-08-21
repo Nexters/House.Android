@@ -37,7 +37,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 			return;
 		}
 		
-		initActionBar();
+		//initActionBar();
 		initResources();
 		initEvent();
 		

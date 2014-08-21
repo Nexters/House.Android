@@ -6,6 +6,7 @@ import android.os.*;
 import android.view.*;
 
 import com.nexters.house.*;
+import com.nexters.house.utils.*;
 
 public class IntroActivity extends Activity {
 	private static int INTRO_LOADING_TIME = 1000;

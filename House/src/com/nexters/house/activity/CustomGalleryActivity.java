@@ -15,6 +15,7 @@ import android.widget.*;
 import com.nexters.house.*;
 import com.nexters.house.adapter.*;
 import com.nexters.house.entity.*;
+import com.nexters.house.utils.*;
 import com.nostra13.universalimageloader.cache.disc.impl.*;
 import com.nostra13.universalimageloader.cache.memory.impl.*;
 import com.nostra13.universalimageloader.core.*;
