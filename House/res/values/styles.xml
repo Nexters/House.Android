@@ -20,6 +20,9 @@
   		<item name="android:typeface">serif</item>
     </style>
 
+	<style name="Theme.Styled" parent="Theme.Sherlock.Light.DarkActionBar">
+	</style>
+    
     <style name="SelectTheme" parent="android:Theme.Dialog"></style>
 
     <style name="SelectTheme.TransparentTest">

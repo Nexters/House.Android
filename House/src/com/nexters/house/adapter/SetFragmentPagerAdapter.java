@@ -95,6 +95,12 @@ public class SetFragmentPagerAdapter extends FragmentStatePagerAdapter {
         super.destroyItem(container, position, object);
     }
 
+    public void changeFragmentPager(int index){
+    	 notifyDataSetChanged();
+         mViewPager.setCurrentItem(index);
+         initActionBar();
+    }
+    
     public static class MyFragmentPagerListener implements View.OnClickListener {
         private SetFragmentPagerAdapter mSetFragmentPagerAdapter;
         private ViewPager mViewPager;
@@ -124,9 +130,7 @@ public class SetFragmentPagerAdapter extends FragmentStatePagerAdapter {
                     index = 0;
                     break;
             }
-            mSetFragmentPagerAdapter.notifyDataSetChanged();
-            mViewPager.setCurrentItem(index);
-            mSetFragmentPagerAdapter.initActionBar();
+            mSetFragmentPagerAdapter.changeFragmentPager(index);
         }
     }
 }

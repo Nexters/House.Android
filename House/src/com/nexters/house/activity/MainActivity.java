@@ -12,7 +12,6 @@ import com.nexters.house.*;
 import com.nexters.house.fragment.*;
 
 public class MainActivity extends FragmentActivity implements OnClickListener {
-
 	final String TAG = "MainActivity";
 
 	public int mCurrentFragmentIndex;
@@ -39,7 +38,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 			return;
 		}
 		
-		//initActionBar();
+		initActionBar();
 		initResources();
 		initEvent();
 
