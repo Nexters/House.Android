@@ -21,13 +21,14 @@ import android.widget.TextView;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.nexters.house.R;
+import com.nexters.house.activity.MainActivity;
 import com.nexters.house.entity.InteriorEntity;
 import com.nexters.house.fragment.ContentDetailFragment;
 import com.nexters.house.utils.CommonUtils;
 
 public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 	private Context mContext;
-	private FragmentActivity mFragmentActivity;
+	private MainActivity mMainActivity;
 	
 	public static final int REQUEST_CONTENT_DETAIL_VIEW = 0;
 	private final String TAG = "MainListAdapter";	
@@ -36,8 +37,8 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 	private int resource;
 	private CommonUtils mUtil;
 
-	public InteriorAdapter(Context context, ArrayList<InteriorEntity> mInteriorItemArrayList, int resource, FragmentActivity fragmentActivity) {
-		mFragmentActivity = fragmentActivity;
+	public InteriorAdapter(Context context, ArrayList<InteriorEntity> mInteriorItemArrayList, int resource, MainActivity mainActivity) {
+		mMainActivity = mainActivity;
 		mContext = context;
 		mUtil = new CommonUtils();
 		this.mInteriorItemArrayList = mInteriorItemArrayList;
@@ -168,17 +169,7 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 		if(v.getId()==R.id.interior_content){
-			Fragment newFragment = null;
-			newFragment = new ContentDetailFragment();
-
-			// replace fragment
-			final FragmentTransaction transaction = mFragmentActivity.getSupportFragmentManager()
-					.beginTransaction();
-			transaction.replace(R.id.ll_fragment, newFragment);
-			//뒤로가기 버튼누르면 앞의 프래그먼트 나오도록하는거 
-			transaction.addToBackStack(null);
-			// Commit the transaction
-			transaction.commit();
+			mMainActivity.changeFragment(MainActivity.FRAGMENT_DETAIL_INTERIOR);
 		}
 	}
 }

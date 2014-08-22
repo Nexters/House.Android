@@ -32,12 +32,11 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 	private ImageView btn_write;
 	private Boolean loading = true;
 	private TextView tvContent;
-	private FragmentActivity mFragmentActivity;
+	private MainActivity mMainActivity;
 
-	public InteriorFragment(FragmentActivity fragmentActivity) {
-		this.mFragmentActivity = fragmentActivity;
+	public InteriorFragment(MainActivity mainActivity) {
+		this.mMainActivity = mainActivity;
 	}
-
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -54,8 +53,6 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 
 		return v;
 	}
-
-
 
 	@SuppressLint("InflateParams")
 	private void initResources(View v){
@@ -78,7 +75,7 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 				getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.listfooter, null, false);
 
 		mListAdapter = new InteriorAdapter(getActivity().
-				getApplicationContext(), mInteriorItemArrayList, R.layout.custom_view_interior, mFragmentActivity);
+				getApplicationContext(), mInteriorItemArrayList, R.layout.custom_view_interior, mMainActivity);
 
 		//footerview를  listview 제일 하단에 붙임 
 		lv_main.addFooterView(footerView);

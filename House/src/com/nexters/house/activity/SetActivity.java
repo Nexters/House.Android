@@ -12,38 +12,47 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.nexters.house.R;
 import com.nexters.house.adapter.SetFragmentPagerAdapter;
 
-public class SetActivity extends FragmentActivity {
-    private SetFragmentPagerAdapter mSetViewPagerAdapter = null;
-    private ViewPager mViewPager = null;
+public class SetActivity extends SherlockFragmentActivity  {
+	private SetFragmentPagerAdapter mSetFragmentPagerAdapter = null;
+	private ViewPager mViewPager = null;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_set);
-        initResources();
-//        Log.d("action", "action : " + getActionBar());
-        initActionBar();
-    }
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_set);
+		initResources();
+		// Log.d("action", "action : " + getActionBar());
+		initActionBar();
+	}
 
 	private void initResources() {
-        // Create
-        this.mViewPager = (ViewPager) findViewById(R.id.set_view_pager);
-        this.mSetViewPagerAdapter = new SetFragmentPagerAdapter(getSupportFragmentManager(), mViewPager, getActionBar());
+		// Create
+		this.mViewPager = (ViewPager) findViewById(R.id.set_view_pager);
+		this.mSetFragmentPagerAdapter = new SetFragmentPagerAdapter(
+				getSupportFragmentManager(), mViewPager, getActionBar());
+		// Set
+		this.mViewPager.setAdapter(mSetFragmentPagerAdapter);
+		// view pager 클릭시 이벤트 설정을 위해서
+		this.mViewPager.setTag(mSetFragmentPagerAdapter);
+	}
 
-        // Set
-        this.mViewPager.setAdapter(mSetViewPagerAdapter);
-        // view pager 클릭시 이벤트 설정을 위해서
-        this.mViewPager.setTag(mSetViewPagerAdapter);
-    }
+	private void initActionBar() {
+		getSupportActionBar().setDisplayShowTitleEnabled(false);
+		getSupportActionBar().setDisplayShowHomeEnabled(false);
+		getSupportActionBar().setDisplayShowCustomEnabled(true);
+		getSupportActionBar().setCustomView(R.layout.action_set);
+	}
 
-    private void initActionBar() {
-        getActionBar().setDisplayShowTitleEnabled(false);
-        getActionBar().setDisplayShowHomeEnabled(false);
-        getActionBar().setDisplayShowCustomEnabled(true);
-
-        getActionBar().setCustomView(R.layout.action_set);
-    }
+	@Override
+	public void onBackPressed() {
+		if (mViewPager.getCurrentItem() == 1) {
+			mSetFragmentPagerAdapter.changeFragmentPager(0);
+			return ;
+		}
+		super.onBackPressed();
+	}
 }

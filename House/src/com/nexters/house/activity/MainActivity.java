@@ -8,18 +8,20 @@ import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.nexters.house.*;
 import com.nexters.house.fragment.*;
 
-public class MainActivity extends FragmentActivity implements OnClickListener {
-
+public class MainActivity extends SherlockFragmentActivity  implements OnClickListener {
 	final String TAG = "MainActivity";
 
-	int mCurrentFragmentIndex;
+	public int mCurrentFragmentIndex;
+	public int mPrevFragmentIndex;
 	public final static int FRAGMENT_INTERIOR = 0;
 	public final static int FRAGMENT_BOARD = 1;
 	public final static int FRAGMENT_MYPAGE = 2;
-
+	public final static int FRAGMENT_DETAIL_INTERIOR = 3;
+	
 	private ImageView mBtnInterior;
 	private ImageView mBtnBoard;
 	private ImageView mBtnMypage;
@@ -40,10 +42,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		initActionBar();
 		initResources();
 		initEvent();
-		
 
-		mCurrentFragmentIndex = FRAGMENT_INTERIOR;
-		fragmentReplace(mCurrentFragmentIndex);
+		changeFragment(FRAGMENT_INTERIOR);
 	}
 
 	private void initResources(){
@@ -60,20 +60,29 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	}
 	
     private void initActionBar() {
-        getActionBar().setDisplayShowTitleEnabled(false);
-        getActionBar().setDisplayShowHomeEnabled(false);
-        getActionBar().setDisplayShowCustomEnabled(true);
+    	getSupportActionBar().setDisplayShowTitleEnabled(false);
+    	getSupportActionBar().setDisplayShowHomeEnabled(false);
+    	getSupportActionBar().setDisplayShowCustomEnabled(true);
 
-        getActionBar().setCustomView(R.layout.action_main);
+    	getSupportActionBar().setCustomView(R.layout.action_main);
     }
 
-	public void fragmentReplace(int reqNewFragmentIndex) {
+	public void fragmentReplace() {
 		Fragment newFragment = null;
-		newFragment = getFragment(reqNewFragmentIndex);
+		newFragment = getFragment(mCurrentFragmentIndex);
 
 		FragmentManager manager = getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = manager.beginTransaction();
-
+		
+		int diffLocation = mPrevFragmentIndex - mCurrentFragmentIndex;
+		if(diffLocation > 0)
+			fragmentTransaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right);
+		else if(diffLocation < 0)
+			fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
+		
+		if(mCurrentFragmentIndex == FRAGMENT_DETAIL_INTERIOR)
+			fragmentTransaction.addToBackStack(null);
+		
 		fragmentTransaction.replace(R.id.ll_fragment, newFragment);
 		fragmentTransaction.commit();
 	}
@@ -91,36 +100,57 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		case FRAGMENT_MYPAGE:
 			newFragment = new MyPageFragment();
 			break;
+		case FRAGMENT_DETAIL_INTERIOR :
+			newFragment = new ContentDetailFragment();
+			break;
 		default:
 			Log.d(TAG, "Unhandle case");
 			break;
 		}
 		return newFragment;
 	}
+	
+	public void setCurrentFragmentIndex(int mCurrentFragmentIndex) {
+		this.mPrevFragmentIndex = this.mCurrentFragmentIndex;
+		this.mCurrentFragmentIndex = mCurrentFragmentIndex;
+	}
 
 	@Override
 	public void onClick(View v) {
 		if(v.getId() == R.id.btn_interior) {
-			mBtnBoard.setImageResource(R.drawable.header_icon_chat);
-			mBtnMypage.setImageResource(R.drawable.header_icon_mypage);
-			mBtnInterior.setImageResource(R.drawable.header_icon_house_click);
-			
-			mCurrentFragmentIndex = FRAGMENT_INTERIOR;
-			fragmentReplace(mCurrentFragmentIndex);
+			changeFragment(FRAGMENT_INTERIOR);
 		} else if(v.getId() == R.id.btn_board) {
-			
-			mBtnMypage.setImageResource(R.drawable.header_icon_mypage);
-			mBtnInterior.setImageResource(R.drawable.header_icon_house);
-			mBtnBoard.setImageResource(R.drawable.header_icon_chat_click);
-			mCurrentFragmentIndex = FRAGMENT_BOARD;
-			fragmentReplace(mCurrentFragmentIndex);
+			changeFragment(FRAGMENT_BOARD);
 		} else if(v.getId() == R.id.btn_mypage) {
-			mBtnBoard.setImageResource(R.drawable.header_icon_chat);
-			mBtnInterior.setImageResource(R.drawable.header_icon_house);
-			mBtnMypage.setImageResource(R.drawable.header_icon_mypage_click);
-			mCurrentFragmentIndex = FRAGMENT_MYPAGE;
-			fragmentReplace(mCurrentFragmentIndex);
+			changeFragment(FRAGMENT_MYPAGE);
 		} 
 	}
 
+	public void changeFragment(int currentFragmentIndex){
+		setCurrentFragmentIndex(currentFragmentIndex);
+		setImageResource(mCurrentFragmentIndex);
+		fragmentReplace();
+	}
+	
+	public void setImageResource(int currentFragmentIndex){
+		mBtnBoard.setImageResource(R.drawable.header_icon_chat);
+		mBtnMypage.setImageResource(R.drawable.header_icon_mypage);
+		mBtnInterior.setImageResource(R.drawable.header_icon_house);
+		
+		if(mCurrentFragmentIndex == FRAGMENT_INTERIOR || mCurrentFragmentIndex == FRAGMENT_DETAIL_INTERIOR)
+			mBtnInterior.setImageResource(R.drawable.header_icon_house_click);
+		if(mCurrentFragmentIndex == FRAGMENT_BOARD)
+			mBtnBoard.setImageResource(R.drawable.header_icon_chat_click);
+		if(mCurrentFragmentIndex == FRAGMENT_MYPAGE)
+			mBtnMypage.setImageResource(R.drawable.header_icon_mypage_click);
+	}
+	
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		
+		if(mCurrentFragmentIndex == FRAGMENT_DETAIL_INTERIOR){
+			changeFragment(FRAGMENT_INTERIOR);
+		} 
+	}
 }

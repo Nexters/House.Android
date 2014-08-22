@@ -49,8 +49,6 @@ public class AuthHandler<T> extends AbstractHandler<T> {
 		}
 		
 		if(sessionManager.isLoggedIn()){
-			Intent intent = new Intent(mAbstractAsyncActivity, MainActivity.class);
-			mAbstractAsyncActivity.startActivity(intent);
 			mAbstractAsyncActivity.finish();
 		} else 
 			showError();
