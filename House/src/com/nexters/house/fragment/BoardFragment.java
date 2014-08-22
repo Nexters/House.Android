@@ -14,7 +14,7 @@ import com.nexters.house.adapter.*;
 
 public class BoardFragment extends Fragment {
 	ListView mBoardList;
-	Button mBtnWrite;
+	ImageView mBtnWrite;
 	View mView;
 	
 	@Override
@@ -29,8 +29,7 @@ public class BoardFragment extends Fragment {
 	public void initResource(){
 		mBoardList = (ListView) mView.findViewById(R.id.board_list);
 		
-		mBtnWrite = (Button)mView.findViewById(R.id.btn_write);
-	    mBtnWrite.setText("쓰기");
+		mBtnWrite = (ImageView)mView.findViewById(R.id.btn_write);
 	    mBtnWrite.bringToFront();
 	}
 	

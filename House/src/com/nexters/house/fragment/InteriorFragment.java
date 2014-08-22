@@ -29,7 +29,7 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 	private ArrayList<InteriorEntity> mInteriorItemArrayList;
 	private ListView lv_main;
 	private InteriorAdapter mListAdapter;
-	private Button btn_write;
+	private ImageView btn_write;
 	private Boolean loading = true;
 	private TextView tvContent;
 	private FragmentActivity mFragmentActivity;
@@ -66,8 +66,7 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 		.listener(this)
 		.setup(mPullToRefreshLayout);
 
-		btn_write=(Button)v.findViewById(R.id.btn_write);
-		btn_write.setText("쓰기");
+		btn_write=(ImageView)v.findViewById(R.id.btn_write);
 		btn_write.bringToFront();
 
 
