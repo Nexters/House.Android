@@ -1,5 +1,7 @@
 package com.nexters.house.activity;
 
+import java.util.HashMap;
+
 import org.springframework.http.MediaType;
 
 import android.os.Bundle;
@@ -12,9 +14,11 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 
 import com.nexters.house.R;
+import com.nexters.house.core.SessionManager;
 import com.nexters.house.entity.APICode.CM0001;
 import com.nexters.house.handler.AuthHandler;
 import com.nexters.house.thread.PostMessageTask;
+import com.nexters.house.utils.JacksonUtils;
 
 public class SignInActivity extends AbstractAsyncActivity implements View.OnClickListener {
     private EditText mHsEmail;
@@ -77,8 +81,15 @@ public class SignInActivity extends AbstractAsyncActivity implements View.OnClic
         return android.util.Patterns.EMAIL_ADDRESS.matcher(getEmail()).matches();
     }
 
+    private void testLogin(){
+    	SessionManager sessionManager = SessionManager.getInstance(this.getApplicationContext());
+		sessionManager.createLoginSession(SessionManager.HOUSE, "test", "test", "test", null, mAutoLogin);
+		finish();
+    }
+    
     private void executeSignIn() {
-    	CM0001 cm = new CM0001();
+    	testLogin();
+    	/* CM0001 cm = new CM0001();
     	cm.setUsrId(mHsEmail.getText().toString());
     	cm.setUsrPw(mHsPassword.getText().toString());
 
@@ -87,6 +98,6 @@ public class SignInActivity extends AbstractAsyncActivity implements View.OnClic
     	authHandler.addTranData(cm);
     	
     	PostMessageTask signInTask = new PostMessageTask(this, authHandler, AuthHandler.LOGIN_METHOD);
-    	signInTask.execute(MediaType.APPLICATION_JSON);
+    	signInTask.execute(MediaType.APPLICATION_JSON); */
     }
 }
