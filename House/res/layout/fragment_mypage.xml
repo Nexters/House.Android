@@ -16,6 +16,8 @@
             android:layout_height="100dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
+            android:padding="7dp"
+            android:background="@drawable/user_profile_background"
             android:src="@drawable/user_1" />
 
         <com.facebook.widget.ProfilePictureView

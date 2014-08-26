@@ -8,5 +8,8 @@
     <string name="title_activity_talk_write">수다톡 글쓰기</string>
     <string name="title_activity_interior_write">인테리어 글쓰기</string>
     <string name="title_activity_interior_write2">InteriorWrite2Activity</string>
-
+    <string name="title_fragment_interior">하우스 게시판</string>
+    <string name="title_fragment_board">수다톡</string>
+    <string name="title_fragment_interior">마이페이지</string>
+	
 </resources>

@@ -11,37 +11,79 @@
         android:layout_height="45dp"
         android:orientation="horizontal" >
 
-        <ImageView
-            android:id="@+id/btn_interior"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#FFFFFF"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
-            android:src="@drawable/header_icon_house_click" />
+            android:background="#E9E9E9"
+            android:orientation="vertical"
+            android:padding="1dp" >
 
-        <ImageView
-            android:id="@+id/btn_board"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:background="#FFFFFF"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
-            android:src="@drawable/header_icon_chat" />
+            <Button
+                android:id="@+id/btn_interior"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+				android:textSize="15sp"
+                android:text="인테리어" />
 
-        <ImageView
-            android:id="@+id/btn_mypage"
+            <View
+                android:id="@+id/header_line_interior"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/white" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
             android:layout_weight="1"
-            android:background="#FFFFFF"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
-            android:src="@drawable/header_icon_profile" />
+            android:background="#E9E9E9"
+            android:orientation="vertical"
+            android:padding="1dp" >
+
+            <Button
+                android:id="@+id/btn_board"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:gravity="center"
+                android:textSize="15sp"
+                android:text="수다톡" />
+
+            <View
+                android:id="@+id/header_line_board"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#E9E9E9"
+            android:orientation="vertical"
+            android:padding="1dp" >
+
+            <Button
+                android:id="@+id/btn_mypage"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:textSize="15sp"
+                android:gravity="center"
+                android:text="마이페이지" />
+
+            <View
+                android:id="@+id/header_line_mypage"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/white" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout

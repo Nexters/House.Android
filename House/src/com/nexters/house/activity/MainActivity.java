@@ -1,6 +1,8 @@
 package com.nexters.house.activity;
 
 import android.content.*;
+import android.content.res.*;
+import android.graphics.*;
 import android.os.*;
 import android.support.v4.app.*;
 import android.util.*;
@@ -22,9 +24,12 @@ public class MainActivity extends SherlockFragmentActivity  implements OnClickLi
 	public final static int FRAGMENT_MYPAGE = 2;
 	public final static int FRAGMENT_DETAIL_INTERIOR = 3;
 	
-	private ImageView mBtnInterior;
-	private ImageView mBtnBoard;
-	private ImageView mBtnMypage;
+	private Button mBtnInterior;
+	private Button mBtnBoard;
+	private Button mBtnMypage;
+	private View mLineInterior;
+	private View mLineBoard;
+	private View mLineMypage;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +52,12 @@ public class MainActivity extends SherlockFragmentActivity  implements OnClickLi
 	}
 
 	private void initResources(){
-		mBtnInterior = (ImageView) findViewById(R.id.btn_interior);
-		mBtnBoard = (ImageView) findViewById(R.id.btn_board);
-		mBtnMypage = (ImageView) findViewById(R.id.btn_mypage);
+		mBtnInterior = (Button) findViewById(R.id.btn_interior);
+		mBtnBoard = (Button) findViewById(R.id.btn_board);
+		mBtnMypage = (Button) findViewById(R.id.btn_mypage);
+		mLineInterior = (View) findViewById(R.id.header_line_interior);
+		mLineBoard = (View) findViewById(R.id.header_line_board);
+		mLineMypage = (View) findViewById(R.id.header_line_mypage);
 
 	}
 
@@ -128,21 +136,28 @@ public class MainActivity extends SherlockFragmentActivity  implements OnClickLi
 
 	public void changeFragment(int currentFragmentIndex){
 		setCurrentFragmentIndex(currentFragmentIndex);
-		setImageResource(mCurrentFragmentIndex);
+		setButtonResource(mCurrentFragmentIndex);
 		fragmentReplace();
 	}
 	
-	public void setImageResource(int currentFragmentIndex){
-		mBtnBoard.setImageResource(R.drawable.header_icon_chat);
-		mBtnMypage.setImageResource(R.drawable.header_icon_mypage);
-		mBtnInterior.setImageResource(R.drawable.header_icon_house);
+	public void setButtonResource(int currentFragmentIndex){
+		mBtnBoard.setTextColor(Color.parseColor("#959595"));
+		mBtnMypage.setTextColor(Color.parseColor("#959595"));
+		mBtnInterior.setTextColor(Color.parseColor("#959595"));
+		mLineInterior.setBackgroundColor(Color.parseColor("#FFFFFF"));
+		mLineBoard.setBackgroundColor(Color.parseColor("#FFFFFF"));
+		mLineMypage.setBackgroundColor(Color.parseColor("#FFFFFF"));
 		
-		if(mCurrentFragmentIndex == FRAGMENT_INTERIOR || mCurrentFragmentIndex == FRAGMENT_DETAIL_INTERIOR)
-			mBtnInterior.setImageResource(R.drawable.header_icon_house_click);
-		if(mCurrentFragmentIndex == FRAGMENT_BOARD)
-			mBtnBoard.setImageResource(R.drawable.header_icon_chat_click);
-		if(mCurrentFragmentIndex == FRAGMENT_MYPAGE)
-			mBtnMypage.setImageResource(R.drawable.header_icon_mypage_click);
+		if(mCurrentFragmentIndex == FRAGMENT_INTERIOR || mCurrentFragmentIndex == FRAGMENT_DETAIL_INTERIOR) {
+			mBtnInterior.setTextColor(Color.parseColor("#8DCEC0"));
+			mLineInterior.setBackgroundColor(Color.parseColor("#8DCEC0"));	
+		}else if(mCurrentFragmentIndex == FRAGMENT_BOARD) {
+			mBtnBoard.setTextColor(Color.parseColor("#8DCEC0"));
+			mLineBoard.setBackgroundColor(Color.parseColor("#8DCEC0"));
+		}else if(mCurrentFragmentIndex == FRAGMENT_MYPAGE){
+			mBtnMypage.setTextColor(Color.parseColor("#8DCEC0"));
+			mLineMypage.setBackgroundColor(Color.parseColor("#8DCEC0"));
+		}
 	}
 	
 	@Override

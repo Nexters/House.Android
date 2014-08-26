@@ -7,4 +7,8 @@
     <color name="dark_grey">#6d6e71</color>
     <color name="red">#FF6857</color>
     <color name="blue_green">#37D5B5</color>
+    <color name="house_header_text_color">#959595</color>
+    <color name="house_main_text_color">#606060</color>
+    <color name="house_talk_background_color">#EFEFEF</color>
+    <color name="house_main_mint_color">#8DCEC0</color>
 </resources>
