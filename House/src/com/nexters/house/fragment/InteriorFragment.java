@@ -37,6 +37,10 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 	public InteriorFragment(MainActivity mainActivity) {
 		this.mMainActivity = mainActivity;
 	}
+	
+	public InteriorFragment(){
+		
+	}
 
 	@Override
 	public void onAttach(Activity activity) {

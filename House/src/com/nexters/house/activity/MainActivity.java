@@ -13,6 +13,7 @@ import android.widget.*;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.nexters.house.*;
 import com.nexters.house.fragment.*;
+import com.nexters.house.utils.*;
 
 public class MainActivity extends SherlockFragmentActivity  implements OnClickListener {
 	final String TAG = "MainActivity";
@@ -168,4 +169,5 @@ public class MainActivity extends SherlockFragmentActivity  implements OnClickLi
 			changeFragment(FRAGMENT_INTERIOR);
 		} 
 	}
+
 }

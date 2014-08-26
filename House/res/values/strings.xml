@@ -11,5 +11,10 @@
     <string name="title_fragment_interior">하우스 게시판</string>
     <string name="title_fragment_board">수다톡</string>
     <string name="title_fragment_interior">마이페이지</string>
-	
+
+    <string-array name="menu_choosing_photo_dialog_items">
+        <item>Camera</item>
+        <item>Gallery</item>
+    </string-array>
+
 </resources>
