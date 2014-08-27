@@ -1,30 +1,20 @@
 package com.nexters.house.adapter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-import android.app.Activity;
-import android.content.Context;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.content.*;
+import android.util.*;
+import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.view.animation.*;
+import android.widget.*;
 
-import com.daimajia.slider.library.SliderLayout;
-import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.daimajia.slider.library.*;
+import com.daimajia.slider.library.SliderTypes.*;
 import com.nexters.house.R;
-import com.nexters.house.activity.MainActivity;
-import com.nexters.house.entity.InteriorEntity;
-import com.nexters.house.fragment.ContentDetailFragment;
-import com.nexters.house.utils.CommonUtils;
+import com.nexters.house.activity.*;
+import com.nexters.house.entity.*;
+import com.nexters.house.utils.*;
 
 public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 	private Context mContext;
@@ -73,17 +63,17 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 
 			// find resource
 			holder.houseId = (TextView) convertView.findViewById(R.id.house_id);
-//			holder.interiorCategory = (TextView) convertView.findViewById(R.id.interior_category);
 			holder.interiorContent = (TextView) convertView.findViewById(R.id.interior_content);
 			
-			//holder.tv_contents = (LinearLayout) convertView.findViewById(R.id.tv_content);
+			holder.btnDown = (ImageView) convertView.findViewById(R.id.icon_down);
+			holder.btnEdit = (ImageView) convertView.findViewById(R.id.icon_edit);
+			holder.btnDelete = (ImageView) convertView.findViewById(R.id.icon_delete);
 			
 			holder.houseProfile = (ImageView) convertView.findViewById(R.id.house_profile);
 			holder.interiorLikes = (TextView)convertView.findViewById(R.id.interior_likes_cnt);
 			holder.interiorReplies = (TextView)convertView.findViewById(R.id.interior_reply_cnt);
-//			holder.interiorShares = (TextView)convertView.findViewById(R.id.interior_share_cnt);
-//			holder.interiorScraps = (TextView)convertView.findViewById(R.id.interior_scrap_cnt);
-//			
+			
+			
 			convertView.setTag(holder);
 			
 			SliderLayout slider = (SliderLayout) convertView.findViewById(R.id.slider);
@@ -109,31 +99,20 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 		// 여기에서 게시물의 사용자 아이디/ 카테고리/ 내용/ 이미지를 넣어줄거임.
 		String id = mInteriorItemArrayList.get(position).id;
 		String content = mInteriorItemArrayList.get(position).content;
-//		String category = mInteriorItemArrayList.get(position).category;
 		List<String> image = mInteriorItemArrayList.get(position).image_urls;
 		int nBadge = mInteriorItemArrayList.get(position).badge;
 		int nReply = mInteriorItemArrayList.get(position).reply;
-//		int nShare = mInteriorItemArrayList.get(position).share;
-//		int nScrap = mInteriorItemArrayList.get(position).scrap;
 		
 		
 		holder.houseId.setText(id);
 		holder.interiorContent.setText(content);
-//		holder.interiorCategory.setText(category);
 		holder.interiorLikes.setText(Integer.toString(nBadge));
 		holder.interiorReplies.setText(Integer.toString(nReply));
-//		holder.interiorShares.setText(Integer.toString(nShare));
-//		holder.interiorScraps.setText(Integer.toString(nScrap));
 		
 		// set click listener
 		
-//		holder.tv_id.setOnClickListener(this);
 		holder.interiorContent.setOnClickListener(this);
-//		holder.houseProfile.setOnClickListener(this);
-//		holder.interiorLikes.setOnClickListener(this);
-//		holder.interiorReplies.setOnClickListener(this);
-//		holder.tv_share.setOnClickListener(this);
-//		holder.tv_scrap.setOnClickListener(this);
+		holder.btnDown.setOnClickListener(this);
 
 		return convertView;
 	}
@@ -143,6 +122,7 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 		LinearLayout tvContents;
 		TextView houseId, interiorContent, interiorCategory;
 		TextView interiorLikes, interiorReplies;
+		ImageView btnDown, btnEdit, btnDelete;
 	}
 	
 	@SuppressWarnings("serial")
@@ -160,8 +140,6 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 			add("https://fbcdn-sphotos-b-a.akamaihd.net/hphotos-ak-xpa1/v/t1.0-9/10524374_570245013084779_7454008372005256632_n.jpg?oh=4761db9f33b72709585016c2649c747e&oe=5434C617&__gda__=1413811119_55884851b246ddb301725a0a78cacc84");
 			}};
 		e.reply = 1;
-//		e.scrap = 1;
-//		e.share = 1;
 		
 		mInteriorItemArrayList.add(e);
 	}
@@ -171,5 +149,16 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 		if(v.getId()==R.id.interior_content){
 			mMainActivity.changeFragment(MainActivity.FRAGMENT_DETAIL_INTERIOR);
 		}
+
+		if(v.getId()==R.id.icon_down){
+			Log.d("Click Click", "했는데 뭐지여기서 널포인트 에러");
+			Animation ani = AnimationUtils.loadAnimation(mContext, R.anim.show_down);
+			ImageView btnEdit = (ImageView)v.findViewById(R.id.icon_edit);
+			ImageView btnDelete = (ImageView)v.findViewById(R.id.icon_delete); 
+			btnEdit.startAnimation(ani);
+			btnDelete.startAnimation(ani);
+		}
 	}
+
+
 }

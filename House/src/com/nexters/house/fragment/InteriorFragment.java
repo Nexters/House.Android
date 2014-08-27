@@ -12,6 +12,7 @@ import android.support.v4.app.*;
 import android.support.v4.app.Fragment;
 import android.util.*;
 import android.view.*;
+import android.view.animation.*;
 import android.widget.*;
 import android.widget.AbsListView.OnScrollListener;
 
@@ -30,16 +31,13 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 	private ListView lv_main;
 	private InteriorAdapter mListAdapter;
 	private ImageView btn_write;
+	private ImageView btnDown;
 	private Boolean loading = true;
 	private TextView tvContent;
 	private MainActivity mMainActivity;
 
 	public InteriorFragment(MainActivity mainActivity) {
 		this.mMainActivity = mainActivity;
-	}
-	
-	public InteriorFragment(){
-		
 	}
 
 	@Override
@@ -95,6 +93,7 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 	private void initEvents(){
 		btn_write.setOnClickListener(clickListener);
 		lv_main.setOnScrollListener(scrollListener);
+
 
 	}
 
@@ -167,6 +166,15 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 				break;
 
 			}
+//
+//			if(v.getId()==R.id.fl_owner_button){
+//				Animation ani = AnimationUtils.loadAnimation(getActivity(), R.anim.show_down);
+//				ImageView btnEdit = (ImageView) getActivity().findViewById(R.id.icon_edit);
+//				ImageView btnDelete = (ImageView) getActivity().findViewById(R.id.icon_delete);
+//
+//				btnEdit.startAnimation(ani);
+//				btnDelete.startAnimation(ani);
+//			}
 		}
 	};
 
