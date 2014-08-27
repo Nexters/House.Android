@@ -43,7 +43,7 @@
                 android:id="@+id/icon_down"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
-                android:src="@drawable/down_icon" />
+                android:src="@drawable/down_icon"/>
 
             <ImageView
                 android:id="@+id/icon_edit"
