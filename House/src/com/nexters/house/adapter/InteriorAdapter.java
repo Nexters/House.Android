@@ -24,7 +24,7 @@ import com.nexters.house.activity.MainActivity;
 import com.nexters.house.entity.InteriorEntity;
 import com.nexters.house.utils.CommonUtils;
 
-public class InteriorAdapter extends BaseAdapter implements OnClickListener{
+public class InteriorAdapter extends BaseAdapter {
 	private Context mContext;
 	private MainActivity mMainActivity;
 	
@@ -67,7 +67,8 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 		//int minHeight = mUtil.dpToPx(mContext, 360);
 
 		if (convertView == null || holder.position != position) {
-			convertView = mLayoutInflater.inflate(resource, null);
+			final View createView;
+			createView = convertView = mLayoutInflater.inflate(resource, null);
 
 			// find resource
 			holder.position = position;
@@ -83,8 +84,29 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 			holder.interiorReplies = (TextView)convertView.findViewById(R.id.interior_reply_cnt);
 			
 			// set click listener
-			holder.interiorContent.setOnClickListener(this);
-			holder.btnDown.setOnClickListener(this);
+			View.OnClickListener convertOnClickListener = new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					View rootView = createView;
+					
+					switch(v.getId()){
+					case R.id.icon_down :
+						Animation ani = AnimationUtils.loadAnimation(mContext, R.anim.show_down);
+						
+						Log.d("Click Click", "down onClick : " + ani + " : ");
+						ImageView btnEdit = (ImageView) rootView.findViewById(R.id.icon_edit);
+						ImageView btnDelete = (ImageView) rootView.findViewById(R.id.icon_delete); 
+						btnEdit.startAnimation(ani);
+						break;
+					case R.id.interior_content :
+						mMainActivity.changeFragment(MainActivity.FRAGMENT_DETAIL_INTERIOR);
+						break;
+					}
+				}
+			};
+			
+			holder.interiorContent.setOnClickListener(convertOnClickListener);
+			holder.btnDown.setOnClickListener(convertOnClickListener);
 			
 			convertView.setTag(holder);
 			
@@ -102,7 +124,6 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 			// 리스트뷰안의 아이템 높이 설정하는 메소드
 			//convertView.setMinimumHeight(minHeight);
 			//Log.d(TAG, "minHeight"+minHeight);
-
 		} else {
 			holder = (Holder) convertView.getTag();
 		}
@@ -149,24 +170,5 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 		e.reply = 1;
 		
 		mInteriorItemArrayList.add(e);
-	}
-
-	@Override
-	public void onClick(View v) {
-		View rootView = v.getRootView();
-//		v.
-		if(v.getId()==R.id.interior_content){
-			mMainActivity.changeFragment(MainActivity.FRAGMENT_DETAIL_INTERIOR);
-		}
-
-		if(v.getId()==R.id.icon_down){
-			Animation ani = AnimationUtils.loadAnimation(mContext, R.anim.show_down);
-			
-			Log.d("Click Click", "down onClick : " + ani + " : ");
-			ImageView btnEdit = (ImageView) rootView.findViewById(R.id.icon_edit);
-			ImageView btnDelete = (ImageView) rootView.findViewById(R.id.icon_delete); 
-			btnEdit.startAnimation(ani);
-			btnDelete.startAnimation(ani);
-		}
 	}
 }
