@@ -166,15 +166,6 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 				break;
 
 			}
-//
-//			if(v.getId()==R.id.fl_owner_button){
-//				Animation ani = AnimationUtils.loadAnimation(getActivity(), R.anim.show_down);
-//				ImageView btnEdit = (ImageView) getActivity().findViewById(R.id.icon_edit);
-//				ImageView btnDelete = (ImageView) getActivity().findViewById(R.id.icon_delete);
-//
-//				btnEdit.startAnimation(ani);
-//				btnDelete.startAnimation(ani);
-//			}
 		}
 	};
 
@@ -232,8 +223,6 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 				}};
 				e.badge = 0;
 				e.reply = 0;
-				//e.scrap = 0;
-				//e.share = 0;
 				mInteriorItemArrayList.add(0,e);
 				mListAdapter.notifyDataSetChanged();
 				// Notify PullToRefreshLayout that the refresh has finished

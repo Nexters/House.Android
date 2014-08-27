@@ -56,7 +56,7 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 	public View getView(final int position, View convertView, ViewGroup parent) {
 
 		Holder holder = new Holder();
-		int minHeight = mUtil.pxToDp(mContext, 1500);
+		//int minHeight = mUtil.dpToPx(mContext, 360);
 
 		if (convertView == null) {
 			convertView = mLayoutInflater.inflate(resource, null);
@@ -89,7 +89,7 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 			}
 			
 			// 리스트뷰안의 아이템 높이 설정하는 메소드
-			convertView.setMinimumHeight(minHeight);
+			//convertView.setMinimumHeight(minHeight);
 			//Log.d(TAG, "minHeight"+minHeight);
 
 		} else {
