@@ -1,20 +1,28 @@
 package com.nexters.house.adapter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import android.content.*;
-import android.util.*;
-import android.view.*;
+import android.content.Context;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.*;
-import android.widget.*;
+import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import com.daimajia.slider.library.*;
-import com.daimajia.slider.library.SliderTypes.*;
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.nexters.house.R;
-import com.nexters.house.activity.*;
-import com.nexters.house.entity.*;
-import com.nexters.house.utils.*;
+import com.nexters.house.activity.MainActivity;
+import com.nexters.house.entity.InteriorEntity;
+import com.nexters.house.utils.CommonUtils;
 
 public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 	private Context mContext;
@@ -58,10 +66,11 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 		Holder holder = new Holder();
 		//int minHeight = mUtil.dpToPx(mContext, 360);
 
-		if (convertView == null) {
+		if (convertView == null || holder.position != position) {
 			convertView = mLayoutInflater.inflate(resource, null);
 
 			// find resource
+			holder.position = position;
 			holder.houseId = (TextView) convertView.findViewById(R.id.house_id);
 			holder.interiorContent = (TextView) convertView.findViewById(R.id.interior_content);
 			
@@ -73,6 +82,9 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 			holder.interiorLikes = (TextView)convertView.findViewById(R.id.interior_likes_cnt);
 			holder.interiorReplies = (TextView)convertView.findViewById(R.id.interior_reply_cnt);
 			
+			// set click listener
+			holder.interiorContent.setOnClickListener(this);
+			holder.btnDown.setOnClickListener(this);
 			
 			convertView.setTag(holder);
 			
@@ -87,7 +99,6 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 				// .setScaleType(BaseSliderView.ScaleType.Fit);
 				slider.addSlider(textSliderView);
 			}
-			
 			// 리스트뷰안의 아이템 높이 설정하는 메소드
 			//convertView.setMinimumHeight(minHeight);
 			//Log.d(TAG, "minHeight"+minHeight);
@@ -109,15 +120,11 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 		holder.interiorLikes.setText(Integer.toString(nBadge));
 		holder.interiorReplies.setText(Integer.toString(nReply));
 		
-		// set click listener
-		
-		holder.interiorContent.setOnClickListener(this);
-		holder.btnDown.setOnClickListener(this);
-
 		return convertView;
 	}
 
 	private class Holder {
+		int position;
 		ImageView houseProfile;
 		LinearLayout tvContents;
 		TextView houseId, interiorContent, interiorCategory;
@@ -146,19 +153,20 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 
 	@Override
 	public void onClick(View v) {
+		View rootView = v.getRootView();
+//		v.
 		if(v.getId()==R.id.interior_content){
 			mMainActivity.changeFragment(MainActivity.FRAGMENT_DETAIL_INTERIOR);
 		}
 
 		if(v.getId()==R.id.icon_down){
-			Log.d("Click Click", "했는데 뭐지여기서 널포인트 에러");
 			Animation ani = AnimationUtils.loadAnimation(mContext, R.anim.show_down);
-			ImageView btnEdit = (ImageView)v.findViewById(R.id.icon_edit);
-			ImageView btnDelete = (ImageView)v.findViewById(R.id.icon_delete); 
+			
+			Log.d("Click Click", "down onClick : " + ani + " : ");
+			ImageView btnEdit = (ImageView) rootView.findViewById(R.id.icon_edit);
+			ImageView btnDelete = (ImageView) rootView.findViewById(R.id.icon_delete); 
 			btnEdit.startAnimation(ani);
 			btnDelete.startAnimation(ani);
 		}
 	}
-
-
 }
