@@ -3,16 +3,15 @@ package com.nexters.house.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,10 +22,9 @@ import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.nexters.house.R;
 import com.nexters.house.activity.MainActivity;
 import com.nexters.house.entity.InteriorEntity;
-import com.nexters.house.fragment.ContentDetailFragment;
 import com.nexters.house.utils.CommonUtils;
 
-public class InteriorAdapter extends BaseAdapter implements OnClickListener{
+public class InteriorAdapter extends BaseAdapter {
 	private Context mContext;
 	private MainActivity mMainActivity;
 	
@@ -66,24 +64,50 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 	public View getView(final int position, View convertView, ViewGroup parent) {
 
 		Holder holder = new Holder();
-		int minHeight = mUtil.pxToDp(mContext, 1500);
+		//int minHeight = mUtil.dpToPx(mContext, 360);
 
-		if (convertView == null) {
-			convertView = mLayoutInflater.inflate(resource, null);
+		if (convertView == null || holder.position != position) {
+			final View createView;
+			createView = convertView = mLayoutInflater.inflate(resource, null);
 
 			// find resource
+			holder.position = position;
 			holder.houseId = (TextView) convertView.findViewById(R.id.house_id);
-//			holder.interiorCategory = (TextView) convertView.findViewById(R.id.interior_category);
 			holder.interiorContent = (TextView) convertView.findViewById(R.id.interior_content);
 			
-			//holder.tv_contents = (LinearLayout) convertView.findViewById(R.id.tv_content);
+			holder.btnDown = (ImageView) convertView.findViewById(R.id.icon_down);
+			holder.btnEdit = (ImageView) convertView.findViewById(R.id.icon_edit);
+			holder.btnDelete = (ImageView) convertView.findViewById(R.id.icon_delete);
 			
 			holder.houseProfile = (ImageView) convertView.findViewById(R.id.house_profile);
 			holder.interiorLikes = (TextView)convertView.findViewById(R.id.interior_likes_cnt);
 			holder.interiorReplies = (TextView)convertView.findViewById(R.id.interior_reply_cnt);
-//			holder.interiorShares = (TextView)convertView.findViewById(R.id.interior_share_cnt);
-//			holder.interiorScraps = (TextView)convertView.findViewById(R.id.interior_scrap_cnt);
-//			
+			
+			// set click listener
+			View.OnClickListener convertOnClickListener = new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					View rootView = createView;
+					
+					switch(v.getId()){
+					case R.id.icon_down :
+						Animation ani = AnimationUtils.loadAnimation(mContext, R.anim.show_down);
+						
+						Log.d("Click Click", "down onClick : " + ani + " : ");
+						ImageView btnEdit = (ImageView) rootView.findViewById(R.id.icon_edit);
+						ImageView btnDelete = (ImageView) rootView.findViewById(R.id.icon_delete); 
+						btnEdit.startAnimation(ani);
+						break;
+					case R.id.interior_content :
+						mMainActivity.changeFragment(MainActivity.FRAGMENT_DETAIL_INTERIOR);
+						break;
+					}
+				}
+			};
+			
+			holder.interiorContent.setOnClickListener(convertOnClickListener);
+			holder.btnDown.setOnClickListener(convertOnClickListener);
+			
 			convertView.setTag(holder);
 			
 			SliderLayout slider = (SliderLayout) convertView.findViewById(R.id.slider);
@@ -97,11 +121,9 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 				// .setScaleType(BaseSliderView.ScaleType.Fit);
 				slider.addSlider(textSliderView);
 			}
-			
 			// 리스트뷰안의 아이템 높이 설정하는 메소드
-			convertView.setMinimumHeight(minHeight);
+			//convertView.setMinimumHeight(minHeight);
 			//Log.d(TAG, "minHeight"+minHeight);
-
 		} else {
 			holder = (Holder) convertView.getTag();
 		}
@@ -109,40 +131,26 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 		// 여기에서 게시물의 사용자 아이디/ 카테고리/ 내용/ 이미지를 넣어줄거임.
 		String id = mInteriorItemArrayList.get(position).id;
 		String content = mInteriorItemArrayList.get(position).content;
-//		String category = mInteriorItemArrayList.get(position).category;
 		List<String> image = mInteriorItemArrayList.get(position).image_urls;
 		int nBadge = mInteriorItemArrayList.get(position).badge;
 		int nReply = mInteriorItemArrayList.get(position).reply;
-//		int nShare = mInteriorItemArrayList.get(position).share;
-//		int nScrap = mInteriorItemArrayList.get(position).scrap;
 		
 		
 		holder.houseId.setText(id);
 		holder.interiorContent.setText(content);
-//		holder.interiorCategory.setText(category);
 		holder.interiorLikes.setText(Integer.toString(nBadge));
 		holder.interiorReplies.setText(Integer.toString(nReply));
-//		holder.interiorShares.setText(Integer.toString(nShare));
-//		holder.interiorScraps.setText(Integer.toString(nScrap));
 		
-		// set click listener
-		
-//		holder.tv_id.setOnClickListener(this);
-		holder.interiorContent.setOnClickListener(this);
-//		holder.houseProfile.setOnClickListener(this);
-//		holder.interiorLikes.setOnClickListener(this);
-//		holder.interiorReplies.setOnClickListener(this);
-//		holder.tv_share.setOnClickListener(this);
-//		holder.tv_scrap.setOnClickListener(this);
-
 		return convertView;
 	}
 
 	private class Holder {
+		int position;
 		ImageView houseProfile;
 		LinearLayout tvContents;
 		TextView houseId, interiorContent, interiorCategory;
 		TextView interiorLikes, interiorReplies;
+		ImageView btnDown, btnEdit, btnDelete;
 	}
 	
 	@SuppressWarnings("serial")
@@ -160,16 +168,7 @@ public class InteriorAdapter extends BaseAdapter implements OnClickListener{
 			add("https://fbcdn-sphotos-b-a.akamaihd.net/hphotos-ak-xpa1/v/t1.0-9/10524374_570245013084779_7454008372005256632_n.jpg?oh=4761db9f33b72709585016c2649c747e&oe=5434C617&__gda__=1413811119_55884851b246ddb301725a0a78cacc84");
 			}};
 		e.reply = 1;
-//		e.scrap = 1;
-//		e.share = 1;
 		
 		mInteriorItemArrayList.add(e);
-	}
-
-	@Override
-	public void onClick(View v) {
-		if(v.getId()==R.id.interior_content){
-			mMainActivity.changeFragment(MainActivity.FRAGMENT_DETAIL_INTERIOR);
-		}
 	}
 }

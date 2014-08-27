@@ -48,6 +48,7 @@ public class BoardAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		@SuppressWarnings("static-access")
 		int minHeight = mUtil.pxToDp(mContext, 700);
+		
 		Log.d("CheckCHeckCheck", "" + position);
 		if (position % 2 == 0) {
 			if (convertView == null) {

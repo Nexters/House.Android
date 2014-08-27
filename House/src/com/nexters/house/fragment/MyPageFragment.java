@@ -40,7 +40,7 @@ public class MyPageFragment extends Fragment{
 
 	private Bitmap mImageBitmap;
 	private int mIvPhotoWidth;
-	
+
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -56,11 +56,11 @@ public class MyPageFragment extends Fragment{
 		//원래 기본사진크기 가져오려고했는데..안됨 우선은 숫자로 넣어둠.
 		mIvPhotoWidth = 200;
 		initEvent();		 
-		 
-		
+
+
 		return mView;
 	}
-	
+
 
 	public void initResource(){
 		mHouseProfile = (ImageView) mView.findViewById(R.id.house_profile);
@@ -97,104 +97,104 @@ public class MyPageFragment extends Fragment{
 		mBtnSetting.setOnClickListener(btnClickListener);
 	}
 
-	
+
 	private View.OnClickListener btnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.btn_setting:
-                	Intent intent = new Intent(mActivity, SetActivity.class);
-        			startActivity(intent);
-                    break;
-                case R.id.house_profile:
-                	dispatchPickFromGalleryIntent();
-                    break;
-            }
-        }
-    };
-    
-//    private void showDialogChoosingPhoto() {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-//        builder.setItems(R.array.menu_choosing_photo_dialog_items, new DialogInterface.OnClickListener() {
-//                   public void onClick(DialogInterface dialog, int which) {
-//                       switch (which) {
-//                           case 0:
-//                               dispatchTakePictureIntent();
-//                               break;
-//                           case 1:
-//                               dispatchPickFromGalleryIntent();
-//                               break;
-//                       }
-//                   }
-//               });
-//        builder.show();
-//    }
-    
-    private void dispatchPickFromGalleryIntent() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-        startActivityForResult(intent, REQUEST_PICK_FROM_GALLERY);
-    }
+		@Override
+		public void onClick(View view) {
+			switch (view.getId()) {
+			case R.id.btn_setting:
+				Intent intent = new Intent(mActivity, SetActivity.class);
+				startActivity(intent);
+				break;
+			case R.id.house_profile:
+				dispatchPickFromGalleryIntent();
+				break;
+			}
+		}
+	};
 
-//    private void dispatchTakePictureIntent() {
-//        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        intent.putExtra(MediaStore.EXTRA_OUTPUT, TempFileManager.getImageFileUri());
-//        startActivityForResult(intent, REQUEST_TAKE_PHOTO);
-//    }
-    
-    private Intent makeCropIntent(Uri uri) {
-    	Intent intent = new Intent("com.android.camera.action.CROP");
-    	intent.setDataAndType(uri, "image/*");
-    	// [주의] outputX, outputY가 커지면 메모리 오류 때문에 프로세스가 중지됨.
-    	// 비트맵을 반환하지 말고 파일 형태로 저장하도록 변경해야할 듯.
-        intent.putExtra("outputX", 256);
-    	intent.putExtra("outputY", 256);
-    	intent.putExtra("aspectX", 1);
-    	intent.putExtra("aspectY", 1);
-    	intent.putExtra("scale", true);
-    	intent.putExtra("return-data", true);
-    	return intent;
-    }
+	//    private void showDialogChoosingPhoto() {
+	//        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+	//        builder.setItems(R.array.menu_choosing_photo_dialog_items, new DialogInterface.OnClickListener() {
+	//                   public void onClick(DialogInterface dialog, int which) {
+	//                       switch (which) {
+	//                           case 0:
+	//                               dispatchTakePictureIntent();
+	//                               break;
+	//                           case 1:
+	//                               dispatchPickFromGalleryIntent();
+	//                               break;
+	//                       }
+	//                   }
+	//               });
+	//        builder.show();
+	//    }
 
-    @Override
+	private void dispatchPickFromGalleryIntent() {
+		Intent intent = new Intent(Intent.ACTION_PICK);
+		intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+		startActivityForResult(intent, REQUEST_PICK_FROM_GALLERY);
+	}
+
+	//    private void dispatchTakePictureIntent() {
+	//        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+	//        intent.putExtra(MediaStore.EXTRA_OUTPUT, TempFileManager.getImageFileUri());
+	//        startActivityForResult(intent, REQUEST_TAKE_PHOTO);
+	//    }
+
+	private Intent makeCropIntent(Uri uri) {
+		Intent intent = new Intent("com.android.camera.action.CROP");
+		intent.setDataAndType(uri, "image/*");
+		// [주의] outputX, outputY가 커지면 메모리 오류 때문에 프로세스가 중지됨.
+		// 비트맵을 반환하지 말고 파일 형태로 저장하도록 변경해야할 듯.
+		intent.putExtra("outputX", 256);
+		intent.putExtra("outputY", 256);
+		intent.putExtra("aspectX", 1);
+		intent.putExtra("aspectY", 1);
+		intent.putExtra("scale", true);
+		intent.putExtra("return-data", true);
+		return intent;
+	}
+
+	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case REQUEST_TAKE_PHOTO:
-            	if (resultCode == Activity.RESULT_OK) {
-            		Intent intent = makeCropIntent(TempFileManager.getImageFileUri());
-                	startActivityForResult(intent, REQUEST_CODE_CROP_IMAGE);
-                }
-                break;
-            case REQUEST_PICK_FROM_GALLERY:
-                if (resultCode == Activity.RESULT_OK) {
-                	Uri uri = data.getData();
-                	Intent intent = makeCropIntent(uri);
-                	startActivityForResult(intent, REQUEST_CODE_CROP_IMAGE);
-                }
-                break;
-            case REQUEST_CODE_CROP_IMAGE:
-                if (resultCode == Activity.RESULT_OK) {
-                    Bundle extras = data.getExtras();
-                    if (extras != null) {
-                        mImageBitmap = extras.getParcelable("data");
-                        if (mImageBitmap != null) {
-                            mHouseProfile.setImageBitmap(ImageManagingHelper.getCroppedBitmap(mImageBitmap, mIvPhotoWidth));
-                            TempFileManager.saveBitmapToImageFile(mImageBitmap);
-                        } else {
-                        	 Toast.makeText(mActivity, "잘린 이미지가 저장되지 않았습니다.", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                    	Toast.makeText(mActivity, "잘린 이미지가 저장되지 않았습니다.", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            	break;
-        }
-    }
-    
+		switch (requestCode) {
+		case REQUEST_TAKE_PHOTO:
+			if (resultCode == Activity.RESULT_OK) {
+				Intent intent = makeCropIntent(TempFileManager.getImageFileUri());
+				startActivityForResult(intent, REQUEST_CODE_CROP_IMAGE);
+			}
+			break;
+		case REQUEST_PICK_FROM_GALLERY:
+			if (resultCode == Activity.RESULT_OK) {
+				Uri uri = data.getData();
+				Intent intent = makeCropIntent(uri);
+				startActivityForResult(intent, REQUEST_CODE_CROP_IMAGE);
+			}
+			break;
+		case REQUEST_CODE_CROP_IMAGE:
+			if (resultCode == Activity.RESULT_OK) {
+				Bundle extras = data.getExtras();
+				if (extras != null) {
+					mImageBitmap = extras.getParcelable("data");
+					if (mImageBitmap != null) {
+						mHouseProfile.setImageBitmap(ImageManagingHelper.getCroppedBitmap(mImageBitmap, mIvPhotoWidth));
+						TempFileManager.saveBitmapToImageFile(mImageBitmap);
+					} else {
+						Toast.makeText(mActivity, "잘린 이미지가 저장되지 않았습니다.", Toast.LENGTH_SHORT).show();
+					}
+				} else {
+					Toast.makeText(mActivity, "잘린 이미지가 저장되지 않았습니다.", Toast.LENGTH_SHORT).show();
+				}
+			}
+			break;
+		}
+	}
+
 	@Override
 	public void onDestroy(){
 		super.onDestroy();
 		TempFileManager.deleteImageFile();
 	}
-    
+
 }

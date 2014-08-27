@@ -106,13 +106,6 @@
             android:text=">"
             android:textSize="30sp" />
     </LinearLayout>
-	<TextView 
-	    android:layout_width="match_parent"
-	    android:layout_height="28dp"
-	    android:text="하우스 더 알아보기"
-	    android:textSize="12sp"
-	    android:textColor="@color/light_black"
-	    android:gravity="center"/>
      <LinearLayout
         android:id="@+id/btn_logout"
         android:layout_width="match_parent"

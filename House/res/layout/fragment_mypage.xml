@@ -19,16 +19,16 @@
             android:background="@drawable/user_profile_background"
             android:padding="7dp"
             android:src="@drawable/user_1" />
-        <TextView 
+
+        <TextView
             android:id="@+id/house_profile_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/house_profile"
             android:layout_centerHorizontal="true"
             android:text="사용자닉네임"
-            android:textSize="13sp"
             android:textColor="@color/white"
-            />
+            android:textSize="13sp" />
 
         <com.facebook.widget.ProfilePictureView
             android:id="@+id/facebook_profile"
@@ -59,11 +59,11 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_margin="1dp"
             android:layout_weight="1"
             android:background="#FFFFFF"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_margin="1dp" >
+            android:orientation="horizontal" >
 
             <ImageView
                 android:layout_width="25dp"
@@ -74,10 +74,10 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:text="내 업로드 보기"
-                android:layout_marginLeft="10dp"
                 android:textColor="#030303"
                 android:textSize="13sp" />
         </LinearLayout>
@@ -85,11 +85,11 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_margin="1dp"
             android:layout_weight="1"
             android:background="#FFFFFF"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_margin="1dp" >
+            android:orientation="horizontal" >
 
             <ImageView
                 android:layout_width="25dp"
@@ -100,9 +100,9 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:layout_marginLeft="10dp"
                 android:text="스크랩 보기"
                 android:textColor="#030303"
                 android:textSize="13sp" />
