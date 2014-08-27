@@ -34,6 +34,17 @@
             android:gravity="center"
             android:scaleType="center"
             android:visibility="gone" />
+        <TextView
+            android:id="@+id/txtNumSelected"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:textColor="#FFFFFF"
+            android:visibility="gone"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="4dp"
+           />
     </FrameLayout>
 
 </LinearLayout>

@@ -8,29 +8,51 @@
     <LinearLayout 
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="50dp"
+        android:layout_height="45dp"
         android:background="#8bd0c0"
         >
-        
+        <ViewSwitcher 
+            android:id="@+id/switchCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        <Button 
+            android:id="@+id/btnCancel"
+             android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="left"
+            android:background="#8bd0c0"
+            android:layout_marginLeft="5dp"
+            android:text="취소"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"/>
+        <ImageView
+             android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="left"
+            android:background="#8bd0c0"
+            android:layout_marginLeft="5dp"
+            />
+        </ViewSwitcher>
+
         <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"    
-        android:gravity="center"
-        android:text="카메라롤"
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        android:textSize="17.5sp"
-        android:layout_marginLeft="140dp"
-        android:layout_marginRight="60dp"
-          />
+            android:id="@+id/txt_cameraRoll"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="65dp"
+            android:layout_marginRight="75dp"
+            android:gravity="center"
+            android:text="카메라롤"
+            android:textColor="#FFFFFF"
+            android:textSize="17.5sp"
+            android:textStyle="bold" />
+
          <Button
             android:id="@+id/btnGalleryOk"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             
             android:background="#8bd0c0"
-            android:layout_marginRight="15dp"
-            android:text="미리보기"
+            android:text="다음"
             android:textColor="#FFFFFF"
             android:textSize="15sp" />
     </LinearLayout>

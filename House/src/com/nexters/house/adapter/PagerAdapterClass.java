@@ -48,9 +48,12 @@ public class PagerAdapterClass extends PagerAdapter {
 			Button btn = (Button) v.findViewById(R.id.btn_delete);
 			ImageView singleImg=(ImageView)v.findViewById(R.id.singleImage);
 		
-//			singleInfo.add((EditText)v.findViewById(R.id.singleInfomation));
 			BitmapFactory.Options options=new BitmapFactory.Options();
-			options.inSampleSize=2;
+			if(getRealHeight(GalleryAdapter.customGalleriesChecked.get(i).sdcardPath)>2000 || getRealWidth(GalleryAdapter.customGalleriesChecked.get(i).sdcardPath)>2000)
+				options.inSampleSize=3;
+//			singleInfo.add((EditText)v.findViewById(R.id.singleInfomation));
+			else
+				options.inSampleSize=2;
 		
 //			InfoList.add(singleInfo.get(i).getText().toString());
 			Bitmap bmp=BitmapFactory.decodeFile(GalleryAdapter.customGalleriesChecked.get(i).sdcardPath,options);
@@ -79,6 +82,18 @@ public class PagerAdapterClass extends PagerAdapter {
 		}
 	}
 
+	private int getRealWidth(String fileName){
+		BitmapFactory.Options options = new BitmapFactory.Options(); 
+        options.inJustDecodeBounds = true; 
+        BitmapFactory.decodeFile(fileName, options); 
+        return options.outWidth; 
+	}
+	private int getRealHeight(String fileName){
+		BitmapFactory.Options options = new BitmapFactory.Options(); 
+        options.inJustDecodeBounds = true; 
+        BitmapFactory.decodeFile(fileName, options); 
+        return options.outHeight; 
+	}
 	@Override
 	public int getCount() {
 		return views.size();

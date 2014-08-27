@@ -2,8 +2,7 @@
 
    
     <item android:id="@+id/action_next"
-        android:icon="@drawable/ic_launcher"
-        android:title="next"
+        android:title="다음"
         android:orderInCategory="100"
         android:showAsAction="ifRoom" />
         

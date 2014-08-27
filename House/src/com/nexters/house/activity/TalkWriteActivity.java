@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -64,6 +65,7 @@ public class TalkWriteActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_talk_write);
 
+		this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		initImageLoader();
 		initResource();
 		initEvent();
@@ -90,6 +92,7 @@ public class TalkWriteActivity extends Activity {
 		btnGalleryPick.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				CustomGalleryActivity.noCancel=1;
 				Intent multiplePickIntent = new Intent(
 						Action.ACTION_MULTIPLE_PICK);
 				startActivityForResult(multiplePickIntent, 200);
@@ -97,30 +100,16 @@ public class TalkWriteActivity extends Activity {
 		});
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu items for use in the action bar
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.talk_write, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.completeTalk:
-			completeTalkWrite();
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
-
-	private void completeTalkWrite() {
+	public void completeTalkWrite(View view) {
+		CustomGalleryActivity.noCancel=0;
 		finish();
 		Toast.makeText(this, "작성한 내용이 업로드됩니다.", Toast.LENGTH_SHORT).show();
 	}
 
+	public void clickedCancel_talk(View view){
+		onBackPressed();
+	}
 	private void initImageLoader() {
 		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
 				.cacheOnDisc().imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
@@ -161,6 +150,7 @@ public class TalkWriteActivity extends Activity {
 				.setCancelable(false)
 				.setPositiveButton("예", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
+						CustomGalleryActivity.noCancel=0;
 						finish();
 					}
 				})

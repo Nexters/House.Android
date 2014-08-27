@@ -56,12 +56,13 @@
         <activity
             android:name="com.nexters.house.activity.TalkWriteActivity"
             android:label="@string/title_activity_talk_write"
-            android:theme="@style/Theme.Sherlock.Light" >
+             android:theme="@style/Theme.Sherlock.Light.NoActionBar" >
         </activity>
         <activity
             android:name="com.nexters.house.activity.InteriorWriteActivity"
             android:label="@string/title_activity_interior_write"
-            android:theme="@style/Theme.Sherlock.Light.DarkActionBar" >
+            android:theme="@style/Theme.Sherlock.Light.NoActionBar"
+             >
         </activity>
         <activity android:name="com.nexters.house.activity.CustomGalleryActivity" >
             <intent-filter>
@@ -79,7 +80,7 @@
         <activity
             android:name="com.nexters.house.activity.InteriorWrite2Activity"
             android:label="@string/title_activity_interior_write2"
-            android:theme="@style/Theme.Sherlock.Light" >
+            android:theme="@style/Theme.Sherlock.Light.NoActionBar" >
         </activity>
 
         <!-- 로그인 관련 -->

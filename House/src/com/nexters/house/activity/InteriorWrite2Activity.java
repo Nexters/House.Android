@@ -21,12 +21,15 @@ public class InteriorWrite2Activity extends Activity {
 	public static int column_selected;
 	public static int[] displayWidth;
 	public static int[] displayHeight;
-	private static String savedContent = "";
-	private static String savedInfo = "";
+
+	
 	public static TwoWayGridView mInteriorGridView2;
 
+	private static String savedContent = "";
+	private static String savedInfo = "";
+	
 	private Context mContext;
-
+	public static Activity fa;
 	private EditText mInteriorContent;
 	private EditText mInteriorInfo;
 
@@ -47,7 +50,11 @@ public class InteriorWrite2Activity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_interior_write2);
-
+		savedContent="";
+		savedInfo="";
+		fa=this;
+		//처음에 포커스 없애기
+		this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		initResource();
 		initEvent();
 	}
@@ -76,13 +83,14 @@ public class InteriorWrite2Activity extends Activity {
 				savedContent = mInteriorContent.getText().toString(); // 저장해놓고
 				savedInfo = mInteriorInfo.getText().toString();
 				// onBackPressed();
+				CustomGalleryActivity.noCancel=1;
 				Intent multiplePickIntent = new Intent(Action.ACTION_MULTIPLE_PICK);
 				startActivityForResult(multiplePickIntent, 200);
 			}
 		});
 	}
 	
-	@Override
+/*	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.interior_write2, menu);
@@ -100,12 +108,18 @@ public class InteriorWrite2Activity extends Activity {
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
-	}
-	private void completeWrite() {
+	}*/
+	public void completeWrite(View view) {
+		fa=null;
+		CustomGalleryActivity.noCancel=0;
+		setResult(RESULT_OK);
 		finish();
 		Toast.makeText(this, "작성한 내용이 업로드됩니다.", Toast.LENGTH_SHORT).show();
 	}
 
+	public void clickedCancel(View view){
+		onBackPressed();
+	}
 	@Override
 	public void onBackPressed(){
 		 AlertDialog.Builder alt_bld = new AlertDialog.Builder(this);
@@ -113,6 +127,8 @@ public class InteriorWrite2Activity extends Activity {
 		        false).setPositiveButton("예",
 		        new DialogInterface.OnClickListener() {
 		        public void onClick(DialogInterface dialog, int id) {
+		        	fa=null;
+		        	CustomGalleryActivity.noCancel=0;
 		            finish();
 		        }
 		        }).setNegativeButton("아니요",
@@ -124,9 +140,7 @@ public class InteriorWrite2Activity extends Activity {
 		        });
 		    AlertDialog alert = alt_bld.create();
 		    // Title for AlertDialog
-		    alert.setTitle("Title");
-		    // Icon for AlertDialog
-		    alert.setIcon(R.drawable.icon);
+
 		    alert.show();
 
 	}

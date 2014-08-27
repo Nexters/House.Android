@@ -3,66 +3,128 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin" >
+    >
 
-    <EditText
-        android:id="@+id/editText1"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:ems="10"
-        android:gravity="top"
-        android:hint="이야기를 적어주세요"
-        android:scrollbars="vertical" >
-        <requestFocus />
-    </EditText>
+     <LinearLayout 
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:background="#8bd0c0"
+        >
+        <Button 
+            android:id="@+id/btnCancel_talk"
+             android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="left"
+            android:background="#8bd0c0"
+            android:layout_marginLeft="5dp"
+            android:text="취소"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:onClick="clickedCancel_talk"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="3dp"
-        android:text="카테고리" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:gravity="center"
+            android:text="수다톡 글쓰기"
+            android:textColor="#FFFFFF"
+            android:textSize="17.5sp"
+            android:textStyle="bold" />
 
-    <RadioGroup
+         <Button
+            android:id="@+id/btnOk_talk"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"           
+            android:background="#8bd0c0"
+            android:text="완료"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:onClick="completeTalkWrite"
+             />
+    </LinearLayout>
+    
+       <RadioGroup
         android:id="@+id/radioG_category"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:layout_height="45dp"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:paddingTop="13dp"
+        android:paddingBottom="13dp"      
+         >
 
         <RadioButton
             android:id="@+id/radio_QnA"
             android:layout_weight="1"
-            android:text="QnA" />
+            android:gravity="center"
+            android:text="QnA"
+            android:textSize="15sp"
+            android:textColor="#d0d0d0" />
 
         <RadioButton
             android:id="@+id/radio_chat"
             android:layout_weight="1"
-            android:text="수다" />
+            android:gravity="center"
+            android:text="수다"
+            android:textSize="15sp"
+            android:textColor="#d0d0d0" />
 
         <RadioButton
             android:id="@+id/radio_review"
             android:layout_weight="1"
-            android:text="리뷰" />
+            android:gravity="center"
+            android:text="리뷰"
+            android:textSize="15sp"
+            android:textColor="#d0d0d0" />
     </RadioGroup>
-
-    <Button
-        android:id="@+id/btn_gallery"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="사진추가" />
+    <ImageView
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dp"
+	    android:background="#d0d0d0"
+	    />
+     <EditText
+         android:layout_width="match_parent"
+         android:layout_height="45dp"
+         android:hint="제목을 입력하세요"
+         android:paddingLeft="@dimen/activity_horizontal_margin"
+ 		 android:paddingRight="@dimen/activity_horizontal_margin"
+    	android:background="@null" />
+  
+       <ImageView
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dp"
+	    android:background="#d0d0d0"
+	    />
+       
+     <EditText
+        android:id="@+id/editText1"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+     	
+        android:ems="10"
+        android:gravity="top"
+        android:hint="이야기를 적어주세요"
+        android:scrollbars="vertical"
+        android:background="@null"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+  	    android:paddingRight="@dimen/activity_horizontal_margin"
+  	    android:paddingTop="15dp" />
+        
+  
 
     <ViewSwitcher
         android:id="@+id/viewSwitcher_talk"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
         android:layout_weight="1" >
         <com.jess.ui.TwoWayGridView
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/horz_gridview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="360dp"
+            android:layout_height="110dp"
             android:layout_gravity="center"
             app:gravity="center"
             app:horizontalSpacing="0dp"
@@ -76,7 +138,21 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/no_media" />
+             />
     </ViewSwitcher>
 
+      <ImageView
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dp"
+	    android:background="#d0d0d0"
+	    android:layout_marginBottom="7dp"/>
+      
+      <Button
+        android:id="@+id/btn_gallery"
+        android:layout_width="45dp"
+        android:layout_height="23dp"
+         android:paddingLeft="@dimen/activity_horizontal_margin"
+  	    android:paddingRight="@dimen/activity_horizontal_margin"
+        android:background="@drawable/icon_write_addphoto"
+        android:layout_marginBottom="7dp" />
 </LinearLayout>

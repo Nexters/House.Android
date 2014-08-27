@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.widget.Button;
@@ -33,6 +34,7 @@ public class InteriorWriteActivity extends Activity {
 	private int mPrevPosition;
 	private String action;
 
+	public static Activity faIn;
 	private GalleryAdapter mGalleryAdapter;
 	private PagerAdapterClass mPagerAdapterClass;
 
@@ -52,8 +54,8 @@ public class InteriorWriteActivity extends Activity {
 		super.onCreate(savedInstanceState);
 	//	requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_preview_write);
+		faIn=this;
 
-		initActionBar();
 		initImageLoader();
 		initResource();
 
@@ -61,9 +63,7 @@ public class InteriorWriteActivity extends Activity {
 		startActivityForResult(multiplePickIntent, 200);
 	}
 
-	private void initActionBar() {
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-	}
+
 
 	private void initImageLoader() {
 		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
@@ -111,6 +111,7 @@ public class InteriorWriteActivity extends Activity {
 		mPager.setAdapter(mPagerAdapterClass);
 		
 		mPageMark.removeAllViews(); // 다시 다 지워
+		
 		mPager.setOnPageChangeListener(new OnPageChangeListener() {
 			@Override
 			public void onPageSelected(int position) {
@@ -138,7 +139,7 @@ public class InteriorWriteActivity extends Activity {
 			for (int i = 0; i < GalleryAdapter.customGalleriesChecked.size(); i++)
 				addPageMark();
 			mPageMark.getChildAt(mPrevPosition).setBackgroundResource(
-					R.drawable.page_select);
+					R.drawable.icon_doldol_click);
 			
 			mViewSwitcher.setDisplayedChild(0);
 		} else {
@@ -148,12 +149,13 @@ public class InteriorWriteActivity extends Activity {
 		mGalleryAdapter.notifyDataSetChanged();
 	}
 
+	
 	private void addPageMark() {
 		ImageView iv = new ImageView(getApplicationContext()); // 페이지 표시 이미지 뷰
-																// 생성
-		iv.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
-				LayoutParams.WRAP_CONTENT));
-		iv.setBackgroundResource(R.drawable.page_not);
+		LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);	
+		params.rightMargin=20;
+		iv.setLayoutParams(params);
+		iv.setBackgroundResource(R.drawable.icon_doldol);
 		mPageMark.addView(iv);// LinearLayout에 추가
 	}
 
@@ -167,8 +169,9 @@ public class InteriorWriteActivity extends Activity {
 		mPageMark.removeView(mPageMark.getChildAt(checkedSize - 1));
 	}
 
-	private void openNext() {
+	public void openNext(View view) {
 		finish();
+		faIn=null;
 		Intent intent = new Intent(this, InteriorWrite2Activity.class);
 		/*
 		 * pageradapter.notifyDataSetChanged(); String allInfo = ""; for(int
@@ -177,12 +180,15 @@ public class InteriorWriteActivity extends Activity {
 		 * allInfo=allInfo.concat(", ");
 		 * }
 		 */
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 	}
 
-	private void moreSelect() {
+	public void moreSelect(View view) {
+	
 		Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
 		startActivityForResult(i, 200);
+		
 	}
 	
 	@Override
@@ -192,6 +198,8 @@ public class InteriorWriteActivity extends Activity {
 				.setCancelable(false)
 				.setPositiveButton("예", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
+						faIn=null;
+						
 						finish();
 					}
 				})
@@ -211,26 +219,5 @@ public class InteriorWriteActivity extends Activity {
 
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu items for use in the action bar
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.interior_write, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle presses on the action bar items
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			moreSelect();
-			return true;
-		case R.id.action_next:
-			openNext();
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
 }

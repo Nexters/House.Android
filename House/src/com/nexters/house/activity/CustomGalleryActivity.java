@@ -10,6 +10,7 @@ import android.graphics.*;
 import android.graphics.drawable.StateListDrawable;
 import android.os.*;
 import android.provider.*;
+import android.support.v4.app.NavUtils;
 import android.view.*;
 import android.widget.*;
 
@@ -28,11 +29,15 @@ public class CustomGalleryActivity extends Activity {
 	Handler handler;
 	GalleryAdapter adapter;
 
+	ViewSwitcher viewSwitcher;
 	ImageView imgNoMedia;
 	Button btnGalleryOk;
 
+	TextView interiorTxt;
+	Button btnCancel;
 	String action;
 	private ImageLoader imageLoader;
+	public static int noCancel=0;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -101,9 +106,19 @@ public class CustomGalleryActivity extends Activity {
 		gridGallery.setAdapter(adapter);
 		imgNoMedia = (ImageView) findViewById(R.id.imgNoMedia);
 
+		viewSwitcher=(ViewSwitcher)findViewById(R.id.switchCancel);
+		
 		btnGalleryOk = (Button) findViewById(R.id.btnGalleryOk);
 		btnGalleryOk.setOnClickListener(mOkClickListener);
-
+		btnCancel=(Button)findViewById(R.id.btnCancel);
+		interiorTxt=(TextView)findViewById(R.id.txt_cameraRoll);
+		if(noCancel==1) //write2에서 왔으면
+		{
+			btnCancel.setVisibility(View.GONE);
+			viewSwitcher.showNext();
+		}
+		btnCancel.setOnClickListener(mCancelClickListener);
+		
 		new Thread() {
 			@Override
 			public void run() {
@@ -136,6 +151,14 @@ public class CustomGalleryActivity extends Activity {
 		public void onClick(View v) {
 			setResult(RESULT_OK);
 			finish();
+		}
+	};
+	View.OnClickListener mCancelClickListener = new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+		
+			onBackPressed();
+
 		}
 	};
 	AdapterView.OnItemClickListener mItemMulClickListener = new AdapterView.OnItemClickListener() {
@@ -188,6 +211,44 @@ public class CustomGalleryActivity extends Activity {
 		// show newest photo at beginning of the list
 		Collections.reverse(galleryList);
 		return galleryList;
+	}
+	@Override
+	public void onBackPressed(){ //interiorWrite2Activity도 finish해주어야..
+		if(noCancel==1){
+			//아무것도 안해.
+		}
+		else{
+		 AlertDialog.Builder alt_bld = new AlertDialog.Builder(this);
+		    alt_bld.setMessage("입력을 취소하시겠습니까?").setCancelable(
+		        false).setPositiveButton("예",
+		        new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface dialog, int id) {
+		        /*	Intent intent=new Intent(CustomGalleryActivity.this,MainActivity.class);
+		    		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		    		if(InteriorWrite2Activity.fa!=null)
+		    			InteriorWrite2Activity.fa.finish();
+		    		setResult(RESULT_OK);
+		    		finish();
+		    		startActivity(intent);*/
+		        	finish();
+		        	if(InteriorWriteActivity.faIn!=null)
+		        	InteriorWriteActivity.faIn.finish(); //뒤 액티비티도 지워.
+		        }
+		        }).setNegativeButton("아니요",
+		        new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int id) {
+		            // Action for 'NO' Button
+		            dialog.cancel();
+		        }
+		        });
+		    AlertDialog alert = alt_bld.create();
+		    // Title for AlertDialog
+
+		    alert.show();
+
+		}
+		
+
 	}
 
 }

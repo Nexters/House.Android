@@ -20,7 +20,7 @@ public class GalleryAdapter extends BaseAdapter {
 	public static int selectCnt = 0;
 	public static boolean isShow = true;
 	public static ArrayList<CustomGallery> selectedGarlleries = null;
-	
+
 	private Context mContext;
 	private LayoutInflater mInfalter;
 	private ImageLoader mImageLoader;
@@ -118,23 +118,27 @@ public class GalleryAdapter extends BaseAdapter {
 		if (customGalleries.get(position).isSeleted) {
 			customGalleries.get(position).isSeleted = false;
 			customGalleriesChecked.remove(customGalleries.get(position)); // 들어가있는거
-																			// 빼기
+		
+			
+			
 			if (selectCnt != 0)
 				selectCnt--; // 0이면 빼지마
 		} else { // 체크안되있을때
-			if (selectCnt < 10) { // 그리고 10보다 작을때만 넣어
+			if (selectCnt < 15) { // 그리고 15보다 작을때만 넣어
 				customGalleries.get(position).isSeleted = true;
 				selectCnt++;
 				customGalleriesChecked.add(customGalleries.get(position)); // 체크된거
-																			// 넣기
-				// ((ViewHolder)
-				// v.getTag()).imgQueueMultiSelected.setBackgroundResource(R.drawable.checkbox1);
-			} else { // 10모다 크면
-				Toast.makeText(mContext, "10개까지만", Toast.LENGTH_LONG).show();
+																// 넣기
+			/*	((ViewHolder) v.getTag()).txtNumSelected.setVisibility(View.VISIBLE);
+				((ViewHolder) v.getTag()).txtNumSelected.setText(Integer.toString(selectCnt));*/
+			} else { // 15보다 크면
+				Toast.makeText(mContext, "15개까지만", Toast.LENGTH_LONG).show();
 			}
 		}
 		((ViewHolder) v.getTag()).imgQueueMultiSelected
 				.setSelected(customGalleries.get(position).isSeleted);
+		notifyDataSetChanged();
+		
 	}
 
 	public static void compareChecked(CustomGallery customGallery) {
@@ -167,11 +171,14 @@ public class GalleryAdapter extends BaseAdapter {
 
 			holder.imgQueueMultiSelected = (ImageView) convertView
 					.findViewById(R.id.imgQueueMultiSelected);
+			holder.txtNumSelected=(TextView)convertView.findViewById(R.id.txtNumSelected);
 
 			if (isActionMultiplePick) {
 				holder.imgQueueMultiSelected.setVisibility(View.VISIBLE);
+				holder.txtNumSelected.setVisibility(View.VISIBLE);
 			} else {
 				holder.imgQueueMultiSelected.setVisibility(View.GONE);
+				holder.txtNumSelected.setVisibility(View.GONE);
 			}
 
 			convertView.setTag(holder);
@@ -197,9 +204,22 @@ public class GalleryAdapter extends BaseAdapter {
 						.setSelected(selectedGarlleries.get(position).isSeleted);
 				holder.imgQueueMultiSelected
 						.setBackgroundResource(R.drawable.checkbox1); // 이부분을
-																		// position에
+			
+				if(selectedGarlleries.get(position).isSeleted){
+					holder.txtNumSelected.setVisibility(View.VISIBLE);
+					int index=customGalleriesChecked.indexOf(selectedGarlleries.get(position));
+					holder.txtNumSelected.setText(Integer.toString(index+1));
+					
+				}
+				else
+					holder.txtNumSelected.setVisibility(View.GONE);
+			
+			
+					
+		//		holder.txtNumSelected.setText(Integer.toString(position));	// position에
 																		// 따라
 																		// 다른걸로!
+				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -212,6 +232,7 @@ public class GalleryAdapter extends BaseAdapter {
 	public class ViewHolder {
 		ImageView imgQueue;
 		ImageView imgQueueMultiSelected;
+		TextView txtNumSelected;
 	}
 
 	public void clearCache() {

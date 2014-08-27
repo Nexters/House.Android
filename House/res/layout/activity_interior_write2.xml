@@ -3,42 +3,97 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin" >
+    >
+    
+     <LinearLayout 
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:background="#8bd0c0"
+        >
+        <Button 
+            android:id="@+id/btnCancel2"
+             android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="left"
+            android:background="#8bd0c0"
+            android:layout_marginLeft="5dp"
+            android:text="취소"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:onClick="clickedCancel"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:gravity="center"
+            android:text="인테리어 글쓰기"
+            android:textColor="#FFFFFF"
+            android:textSize="17.5sp"
+            android:textStyle="bold" />
+
+         <Button
+            android:id="@+id/btnOk_interior"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"           
+            android:background="#8bd0c0"
+            android:text="완료"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:onClick="completeWrite"
+             />
+    </LinearLayout>
+    
 
     <EditText
         android:id="@+id/interior_content"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="140dp"
         android:ems="10"
         android:gravity="top"
         android:hint="이야기를 적어주세요"
-        android:scrollbars="vertical" >
+        android:scrollbars="vertical"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:background="@null"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+ 	    android:paddingRight="@dimen/activity_horizontal_margin"
+ 	    android:layout_marginTop="5dp"
+ 	    >
         <requestFocus />
     </EditText>
-
+	<ImageView
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dp"
+	    android:background="#d0d0d0"
+	    android:layout_marginBottom="5dp"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="3dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+ 	    android:paddingRight="@dimen/activity_horizontal_margin"
         android:text="인테리어 정보" />
 
     <EditText
         android:id="@+id/interior_info"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="60dp"
         android:ems="10"
+        android:hint="ex) 침대 한샘, 화장대 일룸"
         android:gravity="top"
-        android:scrollbars="vertical" >
-        <requestFocus />
-    </EditText>
+        android:scrollbars="vertical"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+ 	    android:paddingRight="@dimen/activity_horizontal_margin"
+        android:background="@null" />
+        
+    
 
-    <Button
-        android:id="@+id/btn_gallery"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="사진추가" />
-
+  
     <ViewSwitcher
         android:id="@+id/viewSwitcher_interior2"
         android:layout_width="fill_parent"
@@ -49,8 +104,8 @@
         <com.jess.ui.TwoWayGridView
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/interior_gridview_2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="360dp"
+            android:layout_height="110dp"
             android:layout_gravity="center"
             app:gravity="center"
             app:horizontalSpacing="0dp"
@@ -64,7 +119,21 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/no_media" />
+             />
     </ViewSwitcher>
 
+    <ImageView
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dp"
+	    android:background="#d0d0d0"
+	    android:layout_marginBottom="10dp"/>
+    
+      <Button
+        android:id="@+id/btn_gallery"
+        android:layout_width="45dp"
+        android:layout_height="23dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+ 	    android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:background="@drawable/icon_write_addphoto" />
+    
 </LinearLayout>
