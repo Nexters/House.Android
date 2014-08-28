@@ -121,11 +121,6 @@ public class InteriorAdapter extends BaseAdapter {
 						mContext.startActivity(intent);
 						break;
 						
-<<<<<<< HEAD
-					case R.id.icon_delete:
-						
-
-=======
 					case R.id.icon_delete:						
 						/*AlertDialog.Builder alt_bld = new AlertDialog.Builder(mContext);
 					    alt_bld.setMessage("삭제하시겠습니까?").setCancelable(
@@ -147,7 +142,6 @@ public class InteriorAdapter extends BaseAdapter {
 					    alert.show();*/
 					
 						break;
->>>>>>> b00bc259d1a47433ab7e5ea4514406b0baf90252
 					}
 				}
 			};

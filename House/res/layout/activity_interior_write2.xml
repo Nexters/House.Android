@@ -2,26 +2,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
-    
-     <LinearLayout 
-        android:orientation="horizontal"
+    android:orientation="vertical" >
+
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="45dp"
         android:background="#8bd0c0"
-        >
-        <Button 
+        android:orientation="horizontal" >
+
+        <Button
             android:id="@+id/btnCancel2"
-             android:layout_width="wrap_content"
+            android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_gravity="left"
-            android:background="#8bd0c0"
             android:layout_marginLeft="5dp"
+            android:background="#8bd0c0"
+            android:onClick="clickedCancel"
             android:text="취소"
             android:textColor="#FFFFFF"
-            android:textSize="15sp"
-            android:onClick="clickedCancel"/>
+            android:textSize="15sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -34,66 +33,63 @@
             android:textSize="17.5sp"
             android:textStyle="bold" />
 
-         <Button
+        <Button
             android:id="@+id/btnOk_interior"
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"           
+            android:layout_height="fill_parent"
             android:background="#8bd0c0"
+            android:onClick="completeWrite"
             android:text="완료"
             android:textColor="#FFFFFF"
-            android:textSize="15sp"
-            android:onClick="completeWrite"
-             />
+            android:textSize="15sp" />
     </LinearLayout>
-    
 
     <EditText
         android:id="@+id/interior_content"
         android:layout_width="match_parent"
         android:layout_height="140dp"
+        android:layout_marginTop="5dp"
+        android:background="@null"
         android:ems="10"
-        android:gravity="top"
-        android:hint="이야기를 적어주세요"
-        android:scrollbars="vertical"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:background="@null"
+        android:gravity="top"
+        android:hint="이야기를 적어주세요"
         android:paddingLeft="@dimen/activity_horizontal_margin"
- 	    android:paddingRight="@dimen/activity_horizontal_margin"
- 	    android:layout_marginTop="5dp"
- 	    >
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:scrollbars="vertical" >
+
         <requestFocus />
     </EditText>
-	<ImageView
-	    android:layout_width="fill_parent"
-	    android:layout_height="1dp"
-	    android:background="#d0d0d0"
-	    android:layout_marginBottom="5dp"/>
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="5dp"
+        android:background="#d0d0d0" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="3dp"
         android:paddingLeft="@dimen/activity_horizontal_margin"
- 	    android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="3dp"
         android:text="인테리어 정보" />
 
     <EditText
         android:id="@+id/interior_info"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:background="@null"
         android:ems="10"
-        android:hint="ex) 침대 한샘, 화장대 일룸"
-        android:gravity="top"
-        android:scrollbars="vertical"
         android:focusable="true"
         android:focusableInTouchMode="true"
+        android:gravity="top"
+        android:hint="ex) 침대 한샘, 화장대 일룸"
         android:paddingLeft="@dimen/activity_horizontal_margin"
- 	    android:paddingRight="@dimen/activity_horizontal_margin"
-        android:background="@null" />
-        
-    
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:scrollbars="vertical" />
 
-  
     <ViewSwitcher
         android:id="@+id/viewSwitcher_interior2"
         android:layout_width="fill_parent"
@@ -101,6 +97,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_weight="1" >
+
         <com.jess.ui.TwoWayGridView
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/interior_gridview_2"
@@ -113,40 +110,44 @@
             app:scrollDirectionPortrait="horizontal"
             app:stretchMode="none"
             app:verticalSpacing="0dp" />
+
         <ImageView
             android:id="@+id/imgSinglePick_interior2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:contentDescription="@string/app_name"
-             />
+            android:contentDescription="@string/app_name" />
     </ViewSwitcher>
 
     <ImageView
-	    android:layout_width="fill_parent"
-	    android:layout_height="1dp"
-	    android:background="#d0d0d0"
-	    android:layout_marginBottom="10dp"/>
-    
-    <LinearLayout android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-      <Button
-        android:id="@+id/btn_gallery"
-        android:layout_width="45dp"
-        android:layout_height="23dp"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
- 	    android:layout_marginBottom="@dimen/activity_horizontal_margin"
-        android:background="@drawable/icon_write_addphoto" />
-      <TextView
-          android:id="@+id/txt_editPhoto"
-         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="right"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
         android:layout_marginBottom="10dp"
-        android:text="수정 중일때는 이미지 변경이 불가능합니다."
-        android:textColor="#d0d0d0"
-        android:visibility="gone"
-        android:layout_marginRight="5dp"/>
+        android:background="#d0d0d0" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btn_gallery"
+            android:layout_width="45dp"
+            android:layout_height="23dp"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:background="@drawable/icon_write_addphoto" />
+
+        <TextView
+            android:id="@+id/txt_editPhoto"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="5dp"
+            android:gravity="right"
+            android:text="수정 중일때는 이미지 변경이 불가능합니다."
+            android:textColor="#d0d0d0"
+            android:visibility="gone" />
     </LinearLayout>
+
 </LinearLayout>
