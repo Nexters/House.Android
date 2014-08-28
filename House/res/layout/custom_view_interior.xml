@@ -8,17 +8,19 @@
     android:background="#FFFFFF" >
 
     <RelativeLayout
+        android:id="@+id/rl_test"
         android:layout_width="150dp"
         android:layout_height="500dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp" >
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp" >
 
         <ImageView
             android:id="@+id/icon_down"
             android:layout_width="15dp"
             android:layout_height="15dp"
+            android:layout_marginRight="20dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:src="@drawable/down_icon" />
@@ -27,6 +29,7 @@
             android:id="@+id/icon_edit"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_marginTop="10dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:src="@drawable/icon_edit"
@@ -36,9 +39,10 @@
             android:id="@+id/icon_delete"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_marginTop="10dp"
             android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:src="@drawable/icon_edit"
+            android:layout_below="@id/icon_edit"
+            android:src="@drawable/icon_delete"
             android:visibility="invisible" />
     </RelativeLayout>
 
@@ -106,45 +110,44 @@
             android:padding="10dp"
             android:textColor="@color/dark_grey"
             android:textSize="14sp" />
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:layout_below="@id/interior_body"
-        android:layout_marginBottom="30dp"
-        android:layout_marginRight="30dp"
-        android:gravity="right"
-        android:orientation="horizontal" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginBottom="30dp"
+            android:layout_marginRight="30dp"
+            android:gravity="right"
+            android:orientation="horizontal" >
 
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginRight="5dp"
-            android:src="@drawable/icon_heart" />
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/icon_heart" />
 
-        <TextView
-            android:id="@+id/interior_likes_cnt"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_marginRight="5dp"
-            android:text="20"
-            android:textColor="@color/dark_grey"
-            android:textSize="13sp" />
+            <TextView
+                android:id="@+id/interior_likes_cnt"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_marginRight="5dp"
+                android:text="20"
+                android:textColor="@color/dark_grey"
+                android:textSize="13sp" />
 
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginRight="5dp"
-            android:src="@drawable/icon_comment" />
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/icon_comment" />
 
-        <TextView
-            android:id="@+id/interior_reply_cnt"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:text="20"
-            android:textColor="@color/dark_grey"
-            android:textSize="13sp" />
+            <TextView
+                android:id="@+id/interior_reply_cnt"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:text="20"
+                android:textColor="@color/dark_grey"
+                android:textSize="13sp" />
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>

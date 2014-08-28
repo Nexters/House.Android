@@ -147,7 +147,6 @@
             android:layout_width="0dp"
             android:layout_height="35dp"
             android:layout_weight="8"
-            android:background="@drawable/edit_text"
             android:focusable="true"
             android:hint="메시지를 입력하세요." />
 
