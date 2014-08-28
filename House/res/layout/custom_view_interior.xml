@@ -14,22 +14,23 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp" >
+        android:layout_marginTop="10dp" >
 
         <ImageView
             android:id="@+id/icon_down"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:layout_marginRight="20dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
+            android:padding="10dp"
             android:src="@drawable/down_icon" />
 
         <ImageView
             android:id="@+id/icon_edit"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="25dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:src="@drawable/icon_edit"
@@ -39,7 +40,7 @@
             android:id="@+id/icon_delete"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_alignParentRight="true"
             android:layout_below="@id/icon_edit"
             android:src="@drawable/icon_delete"
@@ -72,17 +73,6 @@
             android:text="ID_soyoon"
             android:textColor="@color/black"
             android:textSize="15sp" />
-        <!--
-             <TextView
-            android:id="@+id/created_time"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="right"
-            android:text="1일전"
-            android:textColor="@color/black"
-            android:textSize="13sp" />
-        -->
     </LinearLayout>
 
     <LinearLayout

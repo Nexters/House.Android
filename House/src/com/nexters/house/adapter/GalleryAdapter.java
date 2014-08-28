@@ -137,7 +137,8 @@ public class GalleryAdapter extends BaseAdapter {
 		}
 		((ViewHolder) v.getTag()).imgQueueMultiSelected
 				.setSelected(customGalleries.get(position).isSeleted);
-		notifyDataSetChanged();
+		
+	//	notifyDataSetChanged();
 		
 	}
 
@@ -205,6 +206,7 @@ public class GalleryAdapter extends BaseAdapter {
 				holder.imgQueueMultiSelected
 						.setBackgroundResource(R.drawable.checkbox1); // 이부분을
 			
+						
 				if(selectedGarlleries.get(position).isSeleted){
 					holder.txtNumSelected.setVisibility(View.VISIBLE);
 					int index=customGalleriesChecked.indexOf(selectedGarlleries.get(position));

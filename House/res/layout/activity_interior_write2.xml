@@ -128,6 +128,9 @@
 	    android:background="#d0d0d0"
 	    android:layout_marginBottom="10dp"/>
     
+    <LinearLayout android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
       <Button
         android:id="@+id/btn_gallery"
         android:layout_width="45dp"
@@ -135,5 +138,15 @@
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
  	    android:layout_marginBottom="@dimen/activity_horizontal_margin"
         android:background="@drawable/icon_write_addphoto" />
-    
+      <TextView
+          android:id="@+id/txt_editPhoto"
+         android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:layout_marginBottom="10dp"
+        android:text="수정 중일때는 이미지 변경이 불가능합니다."
+        android:textColor="#d0d0d0"
+        android:visibility="gone"
+        android:layout_marginRight="5dp"/>
+    </LinearLayout>
 </LinearLayout>
