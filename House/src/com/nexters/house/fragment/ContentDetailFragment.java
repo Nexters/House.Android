@@ -32,8 +32,7 @@ public class ContentDetailFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		View v = inflater.inflate(R.layout.content_detail_page, container,
-				false);
+		View v = inflater.inflate(R.layout.content_detail_page, container,false);
 		initResources(v);
 
 		setListViewHeightBasedOnChildren(lvContent);

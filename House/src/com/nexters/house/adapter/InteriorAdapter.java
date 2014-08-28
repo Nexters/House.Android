@@ -1,28 +1,19 @@
 package com.nexters.house.adapter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-import android.content.Context;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.view.ViewParent;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.app.*;
+import android.content.*;
+import android.view.*;
+import android.view.animation.*;
+import android.widget.*;
 
-import com.daimajia.slider.library.SliderLayout;
-import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.daimajia.slider.library.*;
+import com.daimajia.slider.library.SliderTypes.*;
 import com.nexters.house.R;
-import com.nexters.house.activity.MainActivity;
-import com.nexters.house.entity.InteriorEntity;
-import com.nexters.house.utils.CommonUtils;
+import com.nexters.house.activity.*;
+import com.nexters.house.entity.*;
+import com.nexters.house.utils.*;
 
 public class InteriorAdapter extends BaseAdapter {
 	private Context mContext;
@@ -34,6 +25,7 @@ public class InteriorAdapter extends BaseAdapter {
 	private LayoutInflater mLayoutInflater;
 	private int resource;
 	private CommonUtils mUtil;
+	private Boolean clicked = false;
 
 	public InteriorAdapter(Context context, ArrayList<InteriorEntity> mInteriorItemArrayList, int resource, MainActivity mainActivity) {
 		mMainActivity = mainActivity;
@@ -88,19 +80,63 @@ public class InteriorAdapter extends BaseAdapter {
 				@Override
 				public void onClick(View v) {
 					View rootView = createView;
+					Animation showDown = AnimationUtils.loadAnimation(mContext, R.anim.show_down);
+					Animation hideUp	= AnimationUtils.loadAnimation(mContext, R.anim.hide_up);
+					
+					ImageView btnEdit = (ImageView) rootView.findViewById(R.id.icon_edit);
+					ImageView btnDelete = (ImageView) rootView.findViewById(R.id.icon_delete);
 					
 					switch(v.getId()){
 					case R.id.icon_down :
-						Animation ani = AnimationUtils.loadAnimation(mContext, R.anim.show_down);
+						//렐러티브레이아웃이 이미지 슬라이더에 가려져서 버튼들이 가려지게됨. 그래서 레이아웃을 맨 위로 올려줌!
+						RelativeLayout test = (RelativeLayout)rootView.findViewById(R.id.rl_test);
+						test.bringToFront();
+
+						if(!clicked){
+							clicked = true;
+							
+							btnEdit.startAnimation(showDown);
+							btnDelete.startAnimation(showDown);
+							
+						}else{
+							clicked = false;
+							
+							btnEdit.startAnimation(hideUp);
+							btnDelete.startAnimation(hideUp);							
+						}
 						
-						Log.d("Click Click", "down onClick : " + ani + " : ");
-						ImageView btnEdit = (ImageView) rootView.findViewById(R.id.icon_edit);
-						ImageView btnDelete = (ImageView) rootView.findViewById(R.id.icon_delete); 
-						btnEdit.startAnimation(ani);
+						//Log.d("Click Click", "down onClick : " + showDown + " : ");
+						
 						break;
 					case R.id.interior_content :
 						mMainActivity.changeFragment(MainActivity.FRAGMENT_DETAIL_INTERIOR);
 						break;
+						
+					case R.id.icon_edit:
+						
+						break;
+						
+					case R.id.icon_delete:
+						
+//						AlertDialog.Builder alt_bld = new AlertDialog.Builder(this);
+//					    alt_bld.setMessage("삭제하시겠습니까?").setCancelable(false).setPositiveButton("예",
+//					        new DialogInterface.OnClickListener() {
+//					        public void onClick(DialogInterface dialog, int id) {
+//					        	
+//					        }
+//					        }).setNegativeButton("아니요",
+//					        new DialogInterface.OnClickListener() {
+//				        public void onClick(DialogInterface dialog, int id) {
+//					            // Action for 'NO' Button
+//					            dialog.cancel();
+//					        }
+//					        });
+//					    AlertDialog alert = alt_bld.create();
+//					    // Title for AlertDialog
+//
+//					    alert.show();
+//						
+//						break;
 					}
 				}
 			};
@@ -171,4 +207,5 @@ public class InteriorAdapter extends BaseAdapter {
 		
 		mInteriorItemArrayList.add(e);
 	}
+	
 }
