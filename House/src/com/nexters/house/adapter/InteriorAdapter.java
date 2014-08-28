@@ -25,7 +25,7 @@ public class InteriorAdapter extends BaseAdapter {
 	private LayoutInflater mLayoutInflater;
 	private int resource;
 	private CommonUtils mUtil;
-	private Boolean clicked = false;
+
 
 	public InteriorAdapter(Context context, ArrayList<InteriorEntity> mInteriorItemArrayList, int resource, MainActivity mainActivity) {
 		mMainActivity = mainActivity;
@@ -77,6 +77,7 @@ public class InteriorAdapter extends BaseAdapter {
 			
 			// set click listener
 			View.OnClickListener convertOnClickListener = new View.OnClickListener() {
+				Boolean clicked = false;
 				@Override
 				public void onClick(View v) {
 					View rootView = createView;
@@ -118,25 +119,7 @@ public class InteriorAdapter extends BaseAdapter {
 						
 					case R.id.icon_delete:
 						
-//						AlertDialog.Builder alt_bld = new AlertDialog.Builder(this);
-//					    alt_bld.setMessage("삭제하시겠습니까?").setCancelable(false).setPositiveButton("예",
-//					        new DialogInterface.OnClickListener() {
-//					        public void onClick(DialogInterface dialog, int id) {
-//					        	
-//					        }
-//					        }).setNegativeButton("아니요",
-//					        new DialogInterface.OnClickListener() {
-//				        public void onClick(DialogInterface dialog, int id) {
-//					            // Action for 'NO' Button
-//					            dialog.cancel();
-//					        }
-//					        });
-//					    AlertDialog alert = alt_bld.create();
-//					    // Title for AlertDialog
-//
-//					    alert.show();
-//						
-//						break;
+
 					}
 				}
 			};

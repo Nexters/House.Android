@@ -17,8 +17,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:background="@drawable/user_profile_background"
-            android:padding="7dp"
-            android:src="@drawable/user_1" />
+            android:src="@drawable/user_profile_image" />
 
         <TextView
             android:id="@+id/house_profile_name"

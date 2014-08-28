@@ -48,8 +48,6 @@ public class BoardAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		@SuppressWarnings("static-access")
 		int minHeight = mUtil.pxToDp(mContext, 700);
-		
-		Log.d("CheckCHeckCheck", "" + position);
 		if (position % 2 == 0) {
 			if (convertView == null) {
 				convertView = mInflater.inflate(
@@ -61,8 +59,8 @@ public class BoardAdapter extends BaseAdapter {
 						R.layout.custom_view_board_right, parent, false);
 			}
 		}
-		TextView textView = (TextView) convertView
-				.findViewById(R.id.board_content);
+		LinearLayout chat = (LinearLayout) convertView.findViewById(R.id.chat_background);
+		TextView textView = (TextView) convertView.findViewById(R.id.board_content);
 		textView.setText(mArrayList.get(position));
 		// 리스트뷰안의 아이템 높이 설정하는 메소드
 		convertView.setMinimumHeight(minHeight);
