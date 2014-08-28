@@ -13,6 +13,7 @@ import com.daimajia.slider.library.SliderTypes.*;
 import com.nexters.house.R;
 import com.nexters.house.activity.*;
 import com.nexters.house.entity.*;
+import com.nexters.house.fragment.InteriorFragment;
 import com.nexters.house.utils.*;
 
 public class InteriorAdapter extends BaseAdapter {
@@ -114,36 +115,40 @@ public class InteriorAdapter extends BaseAdapter {
 						
 					case R.id.icon_edit:
 						
+						Intent intent=new Intent(mContext,EditActivity.class);
+						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						mContext.startActivity(intent);
 						break;
 						
-					case R.id.icon_delete:
-						
-//						AlertDialog.Builder alt_bld = new AlertDialog.Builder(this);
-//					    alt_bld.setMessage("삭제하시겠습니까?").setCancelable(false).setPositiveButton("예",
-//					        new DialogInterface.OnClickListener() {
-//					        public void onClick(DialogInterface dialog, int id) {
-//					        	
-//					        }
-//					        }).setNegativeButton("아니요",
-//					        new DialogInterface.OnClickListener() {
-//				        public void onClick(DialogInterface dialog, int id) {
-//					            // Action for 'NO' Button
-//					            dialog.cancel();
-//					        }
-//					        });
-//					    AlertDialog alert = alt_bld.create();
-//					    // Title for AlertDialog
-//
-//					    alert.show();
-//						
-//						break;
+					case R.id.icon_delete:						
+						/*AlertDialog.Builder alt_bld = new AlertDialog.Builder(mContext);
+					    alt_bld.setMessage("삭제하시겠습니까?").setCancelable(
+					        false).setPositiveButton("예",
+					        new DialogInterface.OnClickListener() {
+					        public void onClick(DialogInterface dialog, int id) {
+					        	
+					        }
+					        }).setNegativeButton("아니요",
+					        new DialogInterface.OnClickListener() {
+				        public void onClick(DialogInterface dialog, int id) {
+					            // Action for 'NO' Button
+					            dialog.cancel();
+					        }
+					        });
+					    AlertDialog alert = alt_bld.create();
+					    // Title for AlertDialog
+
+					    alert.show();*/
+					
+						break;
 					}
 				}
 			};
 			
 			holder.interiorContent.setOnClickListener(convertOnClickListener);
 			holder.btnDown.setOnClickListener(convertOnClickListener);
-			
+			holder.btnEdit.setOnClickListener(convertOnClickListener);
+			holder.btnDelete.setOnClickListener(convertOnClickListener);
 			convertView.setTag(holder);
 			
 			SliderLayout slider = (SliderLayout) convertView.findViewById(R.id.slider);
