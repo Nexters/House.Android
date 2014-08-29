@@ -58,116 +58,121 @@
                 android:id="@+id/txtDetail_interiorStory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:gravity="center"
-                android:text="하우스 디테일뷰 컨텐츠 하우스 디테일뷰 컨텐츠하우스 디테일뷰 컨텐츠하우스 디테일뷰 컨텐츠하우스 디테일뷰 컨텐츠하우스 디테일뷰 컨텐츠 "
-                android:textSize="15sp"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
- 	 		    android:paddingRight="@dimen/activity_horizontal_margin"
- 	 		    android:layout_marginBottom="5dp" />
-            
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:text="하우스 디테일뷰 컨텐츠 하우스 디테일뷰 컨텐츠하우스 디테일뷰 컨텐츠하우스 디테일뷰 컨텐츠하우스 디테일뷰 컨텐츠하우스 디테일뷰 컨텐츠 "
+                android:textSize="15sp" />
+
             <ImageView
-		    	android:layout_width="fill_parent"
-	    		android:layout_height="1dp"
-	    		android:background="#d0d0d0"
-	    		android:layout_marginBottom="5dp"/>
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:background="#d0d0d0" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="인테리어 정보"
-                android:textStyle="bold"
                 android:layout_marginBottom="5dp"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
- 	    		android:paddingRight="@dimen/activity_horizontal_margin"    />
-          	<TextView 
-          	    android:id="@+id/txtDetail_interiorInfo"
-          	    android:layout_width="fill_parent"
-          	    android:layout_height="wrap_content"
-          	    android:text="인테리어정보 들어가는곳곳곳곳곳"
-          	    android:paddingLeft="@dimen/activity_horizontal_margin"
-	  		    android:paddingRight="@dimen/activity_horizontal_margin" />  
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:text="인테리어 정보"
+                android:textStyle="bold" />
 
-          	<LinearLayout android:layout_width="match_parent"
-          	    android:layout_height="40dp"
-          	    android:layout_marginTop="10dp"
-          	    android:layout_marginBottom="10dp"
-          	    android:orientation="horizontal"
-          	    android:paddingLeft="@dimen/activity_horizontal_margin"
- 	    		android:paddingRight="@dimen/activity_horizontal_margin"
-          	    >
-                
-                <Button android:id="@+id/btn_like"
-                    android:layout_height="match_parent"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:paddingLeft="40dp"
-                    android:drawablePadding="5dp"
-                    android:drawableLeft="@drawable/icon_heart"
-                    android:background="#d0d0d0"
-                    android:text="좋아요"  
-                    android:gravity="left"                 
-                    android:layout_marginRight="1dp"/>
-                
-                <Button android:id="@+id/btn_scrap"
-                    android:layout_height="match_parent"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:paddingLeft="40dp"
-                    android:drawablePadding="5dp"
-                    android:drawableLeft="@drawable/icon_comment"
-                    android:background="#d0d0d0"
-                    android:gravity="left"
-                    android:text="스크랩" />
-             </LinearLayout>
-            <LinearLayout android:layout_width="match_parent"
-                android:layout_height="25dp"
+            <TextView
+                android:id="@+id/txtDetail_interiorInfo"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:text="인테리어정보 들어가는곳곳곳곳곳" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal"
-                android:paddingRight="20dp"
-                android:gravity="right">
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin" >
+
+                <Button
+                    android:id="@+id/btn_like"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="1dp"
+                    android:layout_weight="1"
+                    android:background="#d0d0d0"
+                    android:drawableLeft="@drawable/icon_heart"
+                    android:drawablePadding="5dp"
+                    android:gravity="left"
+                    android:paddingLeft="40dp"
+                    android:text="좋아요" />
+
+                <Button
+                    android:id="@+id/btn_scrap"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#d0d0d0"
+                    android:drawableLeft="@drawable/icon_comment"
+                    android:drawablePadding="5dp"
+                    android:gravity="left"
+                    android:paddingLeft="40dp"
+                    android:text="스크랩" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:gravity="right"
+                android:orientation="horizontal"
+                android:paddingRight="20dp" >
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="좋아요"
-               
                     android:layout_marginRight="2dp"
-                    android:textColor="#d0d0d0"/>
-              <TextView
-            android:id="@+id/tv_cnt_likes"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="1000"
-            android:textColor="#d0d0d0"
-           
-            android:layout_marginRight="1dp" />
-              
-              <TextView
+                    android:text="좋아요"
+                    android:textColor="#d0d0d0" />
+
+                <TextView
+                    android:id="@+id/tv_cnt_likes"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="개  댓글"
-                 
+                    android:layout_marginRight="1dp"
+                    android:text="1000"
+                    android:textColor="#d0d0d0" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginRight="2dp"
-                    android:textColor="#d0d0d0"/>
-             <TextView
-         	   android:id="@+id/tv_cnt_reply"
-            	android:layout_width="wrap_content"
-            	android:layout_height="match_parent"
-            	android:text="800"
-             	android:textColor="#d0d0d0"
-            
-            	android:layout_marginRight="1dp" />
-             <TextView
+                    android:text="개  댓글"
+                    android:textColor="#d0d0d0" />
+
+                <TextView
+                    android:id="@+id/tv_cnt_reply"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="1dp"
+                    android:text="800"
+                    android:textColor="#d0d0d0" />
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="개"
-     
-                    android:textColor="#d0d0d0"/>
-            </LinearLayout> 
-          	
-              <ImageView
-		    	android:layout_width="fill_parent"
-	    		android:layout_height="1dp"
-	    		android:background="#d0d0d0"
-	    		android:layout_marginBottom="5dp"/>
+                    android:textColor="#d0d0d0" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:background="#d0d0d0" />
+
             <ListView
                 android:id="@+id/lv_reply"
                 android:layout_width="match_parent"
@@ -178,29 +183,30 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#d0d0d0"/>
-    
-  	<LinearLayout
+        android:background="#d0d0d0" />
+
+    <LinearLayout
         android:id="@+id/ll_bottom"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:orientation="horizontal" >
-     
+
         <EditText
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="8"
-            android:focusable="true"
             android:layout_marginLeft="2dp"
-            android:hint="메시지를 입력하세요."
-            android:background="@null" />
+            android:layout_weight="8"
+            android:background="@null"
+            android:focusable="true"
+            android:hint="메시지를 입력하세요." />
+
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:text="전송"
             android:background="#d0d0d0"
-            android:paddingTop="0dp" />
+            android:paddingTop="0dp"
+            android:text="전송" />
     </LinearLayout>
 
 </LinearLayout>

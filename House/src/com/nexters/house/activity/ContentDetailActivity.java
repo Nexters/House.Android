@@ -24,25 +24,25 @@ public class ContentDetailActivity extends SherlockFragmentActivity {
 	private ReplyAdapter mReplyAdapter;
 	private ImageView ivImage;
 
-	
+
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		//requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setWindowAnimations(R.anim.hide);
 		setContentView(R.layout.content_detail_page);
-		
+
 		initActionBar();
 		initResources();
 		setListViewHeightBasedOnChildren(lvContent);
 
 		overridePendingTransition(R.anim.start_enter, R.anim.start_exit);
 	}
-	
+
 	@Override
 	public void finish() {
 		super.finish();
-		this.overridePendingTransition(R.anim.end_enter, R.anim.end_exit);}
-		
+		this.overridePendingTransition(R.anim.end_enter, R.anim.end_exit);
+	}
+
 	@SuppressLint("InflateParams")
 	private void initResources() {
 
@@ -76,7 +76,7 @@ public class ContentDetailActivity extends SherlockFragmentActivity {
 		}
 
 	}
-	
+
 	private void initActionBar() {
 		getSupportActionBar().setDisplayShowTitleEnabled(false);
 		getSupportActionBar().setDisplayShowHomeEnabled(false);

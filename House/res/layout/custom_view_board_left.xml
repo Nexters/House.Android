@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="#EFEFEF"
     android:orientation="horizontal"
-    android:padding="20dp" >
+    android:padding="10dp" >
 
     <LinearLayout
         android:layout_width="0dp"
@@ -31,6 +31,7 @@
             android:layout_marginTop="5dp"
             android:gravity="center"
             android:text="UserName"
+            android:textColor="@color/house_main_text_color"
             android:textSize="13sp" />
 
         <TextView
@@ -41,6 +42,7 @@
             android:layout_marginTop="5dp"
             android:gravity="center"
             android:text="50분전"
+            android:textColor="@color/house_main_text_color"
             android:textSize="11sp" />
     </LinearLayout>
 
@@ -67,6 +69,8 @@
                 android:id="@+id/board_category"
                 android:layout_width="wrap_content"
                 android:layout_height="15dp"
+                android:gravity="center"
+                android:layout_marginRight="10dp"
                 android:text="카테고리" />
 
             <ImageView
@@ -99,6 +103,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="하우스 게시판 제목이 오는 자리. "
+            android:textColor="@color/house_main_text_color"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -106,8 +111,9 @@
             android:id="@+id/board_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/house_main_text_color"
             android:text="게시판 컨텐츠가 보여질 부분입니다. "
-            android:textSize="13sp" />
+            android:textSize="14sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
