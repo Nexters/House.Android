@@ -64,7 +64,7 @@ public class ReplyAdapter extends BaseAdapter{
 			holder = (Holder) convertView.getTag();
 		}
 
-		holder.userProfileImage.setImageResource(R.drawable.soyoon);
+		holder.userProfileImage.setImageResource(R.drawable.user_profile_image);
 
 
 		return convertView;

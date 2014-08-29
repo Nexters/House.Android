@@ -130,11 +130,14 @@ public class MainActivity extends SherlockFragmentActivity  implements OnClickLi
 			if(isVisible){
 				isVisible = false;
 				mBtnWrite.setAnimation(hide);
+				mBtnWrite.setClickable(false);
+
 			}
 		}else{
 			if(!isVisible){
 				isVisible = true;
 				mBtnWrite.setAnimation(show);
+				mBtnWrite.setClickable(true);
 			}
 			
 		}

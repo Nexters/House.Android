@@ -20,9 +20,9 @@
             android:id="@+id/icon_down"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginRight="10dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
+            android:layout_marginRight="10dp"
             android:padding="10dp"
             android:src="@drawable/down_icon" />
 
@@ -30,9 +30,9 @@
             android:id="@+id/icon_edit"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginTop="25dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
+            android:layout_marginTop="25dp"
             android:src="@drawable/icon_edit"
             android:visibility="invisible" />
 
@@ -40,9 +40,9 @@
             android:id="@+id/icon_delete"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginTop="5dp"
             android:layout_alignParentRight="true"
             android:layout_below="@id/icon_edit"
+            android:layout_marginTop="5dp"
             android:src="@drawable/icon_delete"
             android:visibility="invisible" />
     </RelativeLayout>
@@ -62,7 +62,7 @@
             android:layout_width="33dp"
             android:layout_height="33dp"
             android:layout_margin="1dp"
-            android:src="@drawable/soyoon" />
+            android:src="@drawable/user_profile_image" />
 
         <TextView
             android:id="@+id/house_id"
