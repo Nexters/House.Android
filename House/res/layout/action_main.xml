@@ -3,7 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#8bd0c0">
+    android:background="@color/house_main_mint_color">
     <TextView
         android:layout_height="match_parent"
         android:layout_width="wrap_content"
@@ -13,8 +13,8 @@
         android:textColor="#FFFFFF"
         android:textSize="18sp" />
     <ImageView 
-        android:layout_width="26dp"
-        android:layout_height="26dp"
+        android:layout_width="23dp"
+        android:layout_height="23dp"
         android:layout_margin="10dp"
         android:layout_alignParentRight="true"
         android:src="@drawable/icon_bell"/>

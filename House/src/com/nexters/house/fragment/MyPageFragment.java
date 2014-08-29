@@ -21,6 +21,7 @@ import com.nexters.house.adapter.*;
 import com.nexters.house.core.*;
 import com.nexters.house.thread.*;
 import com.nexters.house.utils.*;
+import com.nexters.house.view.*;
 
 
 public class MyPageFragment extends Fragment{
@@ -33,7 +34,7 @@ public class MyPageFragment extends Fragment{
 	private ProfilePictureView mFacebookProfile;
 
 	private ImageView mBtnSetting; 
-	private GridView mGridview;
+	private ExpandableHeightGridView mGridview;
 
 	private Activity mActivity;
 	private View mView;
@@ -66,7 +67,8 @@ public class MyPageFragment extends Fragment{
 		mHouseProfile = (ImageView) mView.findViewById(R.id.house_profile);
 		mFacebookProfile = (ProfilePictureView) mView.findViewById(R.id.facebook_profile);
 
-		mGridview = (GridView) mView.findViewById(R.id.gv_mypage);
+		mGridview = (ExpandableHeightGridView) mView.findViewById(R.id.gv_mypage);
+		mGridview.setExpanded(true);
 		mBtnSetting = (ImageView) mView.findViewById(R.id.btn_setting);
 
 

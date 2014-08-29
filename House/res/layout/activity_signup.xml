@@ -228,7 +228,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="600"
-            android:background="#8bd0c0"
+            android:background="@color/house_main_mint_color"
             android:gravity="center_horizontal|center_vertical"
             android:text="Sign Up"
             android:textColor="#FFFFFF"
