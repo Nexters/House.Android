@@ -20,8 +20,6 @@ public class InteriorAdapter extends BaseAdapter {
 	private Context mContext;
 	private MainActivity mMainActivity;
 	
-	public static final int REQUEST_CONTENT_DETAIL_VIEW = 0;
-	private final String TAG = "MainListAdapter";	
 	private ArrayList<InteriorEntity> mInteriorItemArrayList;
 	private LayoutInflater mLayoutInflater;
 	private int resource;
@@ -52,7 +50,6 @@ public class InteriorAdapter extends BaseAdapter {
 		return 0;
 	}
 
-	@SuppressWarnings("static-access")
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 
@@ -65,9 +62,11 @@ public class InteriorAdapter extends BaseAdapter {
 
 			// find resource
 			holder.position = position;
+			
 			holder.houseId = (TextView) convertView.findViewById(R.id.house_id);
 			holder.interiorContent = (TextView) convertView.findViewById(R.id.interior_content);
-			
+			holder.rlContents = (RelativeLayout) convertView.findViewById(R.id.rl_interior_custom_view);
+			holder.slider = (SliderLayout) convertView.findViewById(R.id.slider);
 			holder.btnDown = (ImageView) convertView.findViewById(R.id.icon_down);
 			holder.btnEdit = (ImageView) convertView.findViewById(R.id.icon_edit);
 			holder.btnDelete = (ImageView) convertView.findViewById(R.id.icon_delete);
@@ -104,15 +103,23 @@ public class InteriorAdapter extends BaseAdapter {
 							clicked = false;
 							
 							btnEdit.startAnimation(hideUp);
-							btnDelete.startAnimation(hideUp);							
+							btnDelete.startAnimation(hideUp);					
 						}
 						
 						//Log.d("Click Click", "down onClick : " + showDown + " : ");
 						
 						break;
-					case R.id.interior_content :
-						mMainActivity.changeFragment(MainActivity.FRAGMENT_DETAIL_INTERIOR);
+					case R.id.rl_interior_custom_view :
+						//mMainActivity.changeFragment(MainActivity.FRAGMENT_DETAIL_INTERIOR);
+						Intent intent1=new Intent(mContext,ContentDetailActivity.class);
+						intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						mContext.startActivity(intent1);
+						
 						break;
+						
+//					case R.id.slider :
+//						mMainActivity.changeFragment(MainActivity.FRAGMENT_DETAIL_INTERIOR);
+//						break;
 						
 					case R.id.icon_edit:
 						
@@ -146,10 +153,11 @@ public class InteriorAdapter extends BaseAdapter {
 				}
 			};
 			
-			holder.interiorContent.setOnClickListener(convertOnClickListener);
 			holder.btnDown.setOnClickListener(convertOnClickListener);
 			holder.btnEdit.setOnClickListener(convertOnClickListener);
 			holder.btnDelete.setOnClickListener(convertOnClickListener);
+			holder.rlContents.setOnClickListener(convertOnClickListener);
+			holder.slider.setOnClickListener(convertOnClickListener);
 			convertView.setTag(holder);
 			
 			SliderLayout slider = (SliderLayout) convertView.findViewById(R.id.slider);
@@ -190,9 +198,11 @@ public class InteriorAdapter extends BaseAdapter {
 		int position;
 		ImageView houseProfile;
 		LinearLayout tvContents;
+		RelativeLayout rlContents;
 		TextView houseId, interiorContent, interiorCategory;
 		TextView interiorLikes, interiorReplies;
 		ImageView btnDown, btnEdit, btnDelete;
+		SliderLayout slider;
 	}
 	
 	@SuppressWarnings("serial")

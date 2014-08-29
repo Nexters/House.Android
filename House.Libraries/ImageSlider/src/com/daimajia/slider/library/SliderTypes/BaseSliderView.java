@@ -50,7 +50,7 @@ public abstract class BaseSliderView {
     /**
      * Scale type of the image.
      */
-    private ScaleType mScaleType = ScaleType.Fit;
+    private ScaleType mScaleType = ScaleType.CenterCrop;
 
     public enum ScaleType{
         CenterCrop, CenterInside, Fit, FitCenterCrop

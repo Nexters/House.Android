@@ -23,7 +23,7 @@ public class MainActivity extends SherlockFragmentActivity  implements OnClickLi
 	public final static int FRAGMENT_INTERIOR = 0;
 	public final static int FRAGMENT_BOARD = 1;
 	public final static int FRAGMENT_MYPAGE = 2;
-	public final static int FRAGMENT_DETAIL_INTERIOR = 3;
+	//public final static int FRAGMENT_DETAIL_INTERIOR = 3;
 	
 	private Button mBtnInterior;
 	private Button mBtnBoard;
@@ -89,8 +89,8 @@ public class MainActivity extends SherlockFragmentActivity  implements OnClickLi
 		else if(diffLocation < 0)
 			fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
 		
-		if(mCurrentFragmentIndex == FRAGMENT_DETAIL_INTERIOR)
-			fragmentTransaction.addToBackStack(null);
+//		if(mCurrentFragmentIndex == FRAGMENT_DETAIL_INTERIOR)
+//			fragmentTransaction.addToBackStack(null);
 		
 		fragmentTransaction.replace(R.id.ll_fragment, newFragment);
 		fragmentTransaction.commit();
@@ -109,9 +109,9 @@ public class MainActivity extends SherlockFragmentActivity  implements OnClickLi
 		case FRAGMENT_MYPAGE:
 			newFragment = new MyPageFragment();
 			break;
-		case FRAGMENT_DETAIL_INTERIOR :
-			newFragment = new ContentDetailFragment();
-			break;
+//		case FRAGMENT_DETAIL_INTERIOR :
+//			newFragment = new ContentDetailFragment();
+//			break;
 		default:
 			Log.d(TAG, "Unhandle case");
 			break;
@@ -149,7 +149,7 @@ public class MainActivity extends SherlockFragmentActivity  implements OnClickLi
 		mLineBoard.setBackgroundColor(Color.parseColor("#FFFFFF"));
 		mLineMypage.setBackgroundColor(Color.parseColor("#FFFFFF"));
 		
-		if(mCurrentFragmentIndex == FRAGMENT_INTERIOR || mCurrentFragmentIndex == FRAGMENT_DETAIL_INTERIOR) {
+		if(mCurrentFragmentIndex == FRAGMENT_INTERIOR ) {
 			mBtnInterior.setTextColor(Color.parseColor("#8DCEC0"));
 			mLineInterior.setBackgroundColor(Color.parseColor("#8DCEC0"));	
 		}else if(mCurrentFragmentIndex == FRAGMENT_BOARD) {
@@ -165,9 +165,9 @@ public class MainActivity extends SherlockFragmentActivity  implements OnClickLi
 	public void onBackPressed() {
 		super.onBackPressed();
 		
-		if(mCurrentFragmentIndex == FRAGMENT_DETAIL_INTERIOR){
-			changeFragment(FRAGMENT_INTERIOR);
-		} 
+//		if(mCurrentFragmentIndex == FRAGMENT_DETAIL_INTERIOR){
+//			changeFragment(FRAGMENT_INTERIOR);
+//		} 
 	}
 
 }
