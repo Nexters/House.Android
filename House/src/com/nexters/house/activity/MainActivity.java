@@ -109,7 +109,7 @@ public class MainActivity extends SherlockFragmentActivity  implements OnClickLi
 			newFragment = new InteriorFragment(this);
 			break;
 		case FRAGMENT_BOARD:
-			newFragment = new BoardFragment();
+			newFragment = new BoardFragment(this);
 			break;
 		case FRAGMENT_MYPAGE:
 			

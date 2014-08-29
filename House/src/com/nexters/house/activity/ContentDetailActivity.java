@@ -3,16 +3,16 @@ package com.nexters.house.activity;
 import java.util.*;
 
 import android.annotation.*;
-import android.app.*;
 import android.os.*;
 import android.view.*;
 import android.widget.*;
 
+import com.actionbarsherlock.app.*;
 import com.nexters.house.*;
 import com.nexters.house.adapter.*;
 import com.nexters.house.entity.*;
 
-public class ContentDetailActivity extends Activity {
+public class ContentDetailActivity extends SherlockFragmentActivity {
 
 	private final String TAG = "ContentDetailActivity";
 
@@ -30,7 +30,7 @@ public class ContentDetailActivity extends Activity {
 		//requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.content_detail_page);
 		
-		
+		initActionBar();
 		initResources();
 		setListViewHeightBasedOnChildren(lvContent);
 
@@ -68,6 +68,14 @@ public class ContentDetailActivity extends Activity {
 
 		}
 
+	}
+	
+	private void initActionBar() {
+		getSupportActionBar().setDisplayShowTitleEnabled(false);
+		getSupportActionBar().setDisplayShowHomeEnabled(false);
+		getSupportActionBar().setDisplayShowCustomEnabled(true);
+
+		getSupportActionBar().setCustomView(R.layout.action_main);
 	}
 
 	// 스크롤뷰안에 리스트뷰 스크롤제대로 되도록
