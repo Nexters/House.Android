@@ -33,8 +33,8 @@ public class BoardAdapter extends BaseAdapter {
 		this.mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.resource = resource;
 	}
-	
-	
+
+
 	@Override
 	public int getCount() {
 		return mBoardItemArrayList.size();
@@ -50,7 +50,7 @@ public class BoardAdapter extends BaseAdapter {
 		return 0;
 	}
 
-	
+
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 
@@ -59,7 +59,7 @@ public class BoardAdapter extends BaseAdapter {
 
 		if (convertView == null || holder.position != position) {
 			final View createView;
-			
+
 			if (position % 2 == 0) {
 				if (convertView == null) {
 					convertView = mLayoutInflater.inflate(
@@ -71,16 +71,16 @@ public class BoardAdapter extends BaseAdapter {
 							R.layout.custom_view_board_right, parent, false);
 				}
 			}
-			
+
 			createView = convertView;
 			//createView = convertView = mLayoutInflater.inflate(resource, null);
 
 			// find resource
 			holder.position = position;
-			
+
 			holder.houseId = (TextView) convertView.findViewById(R.id.tv_house_id);
-			
-			
+
+
 			holder.houseProfile = (ImageView) convertView.findViewById(R.id.house_profile);
 			holder.boardCreatedTime = (TextView) convertView.findViewById(R.id.created_time);
 			holder.boardCategory = (TextView) convertView.findViewById(R.id.board_category);
@@ -89,10 +89,32 @@ public class BoardAdapter extends BaseAdapter {
 			holder.boardLikes = (TextView)convertView.findViewById(R.id.board_likes_cnt);
 			holder.boardReplies = (TextView)convertView.findViewById(R.id.board_reply_cnt);
 			
+			holder.chatBackground = (LinearLayout)convertView.findViewById(R.id.chat_background);
 			
+			
+			// set click listener
+			View.OnClickListener convertOnClickListener = new View.OnClickListener() {
+				Boolean clicked = false;
+				@Override
+				public void onClick(View v) {
+					View rootView = createView;
+
+					switch(v.getId()){
+
+					case R.id.chat_background:
+
+						Intent intent=new Intent(mContext,ContentDetailActivity.class);
+						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						mContext.startActivity(intent);
+						break;
+					}
+				}
+			};
+			
+			holder.chatBackground.setOnClickListener(convertOnClickListener);
 			
 			convertView.setTag(holder);
-			
+
 		} else {
 			holder = (Holder) convertView.getTag();
 		}
@@ -105,17 +127,17 @@ public class BoardAdapter extends BaseAdapter {
 		List<String> previewImage = mBoardItemArrayList.get(position).previewImageUrls;
 		int nLike = mBoardItemArrayList.get(position).like;
 		int nReply = mBoardItemArrayList.get(position).reply;
-		
-		
+
+
 		holder.houseId.setText(id);
 		holder.boardTitle.setText(title);
 		holder.boardCategory.setText(category);
 		holder.boardContent.setText(content);
-		
+
 		//이미지뷰에 url로 불러오는거 정리하기
 		holder.boardLikes.setText(Integer.toString(nLike));
 		holder.boardLikes.setText(Integer.toString(nReply));
-		
+
 		return convertView;
 	}
 
@@ -124,23 +146,24 @@ public class BoardAdapter extends BaseAdapter {
 		ImageView houseProfile, previewImage1, previewImage2, previewImage3;
 		TextView houseId, boardContent, boardCategory, boardCreatedTime, boardTitle;
 		TextView boardLikes, boardReplies;
+		LinearLayout chatBackground;
 	}
-	
+
 	public void add(){
 		BoardEntity b = new BoardEntity();
-		
+
 		b.id = "newId";
-		
+
 		b.category = "new Q&A";
 		b.createdTime = "20분전";
 		b.title = "우리 완성할 수 있을까?";
 		b.content = "넥스터즈 인유어하우스팀에서 개발중인 하우스 어플리케이션입니다. 누르면 걍 디테일컨텐츠뷰로 가면될듯";
-		
+
 		b.like = 1;
 		b.reply = 1;
-		
+
 		mBoardItemArrayList.add(b);
 	}	
-	
-	
+
+
 }

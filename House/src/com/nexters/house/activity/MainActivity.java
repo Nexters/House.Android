@@ -24,7 +24,7 @@ public class MainActivity extends SherlockFragmentActivity  implements OnClickLi
 	public final static int FRAGMENT_INTERIOR = 0;
 	public final static int FRAGMENT_BOARD = 1;
 	public final static int FRAGMENT_MYPAGE = 2;
-	//public final static int FRAGMENT_DETAIL_INTERIOR = 3;
+
 	private Boolean isVisible = true;
 	private Button mBtnInterior;
 	private Button mBtnBoard;
@@ -199,15 +199,6 @@ public class MainActivity extends SherlockFragmentActivity  implements OnClickLi
 			mBtnMypage.setTextColor(Color.parseColor("#8DCEC0"));
 			mLineMypage.setBackgroundColor(Color.parseColor("#8DCEC0"));
 		}
-	}
-
-	@Override
-	public void onBackPressed() {
-		super.onBackPressed();
-
-		//		if(mCurrentFragmentIndex == FRAGMENT_DETAIL_INTERIOR){
-		//			changeFragment(FRAGMENT_INTERIOR);
-		//		} 
 	}
 
 }
