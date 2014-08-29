@@ -1,118 +1,123 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:facebook="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3" >
-
-        <ImageView
-            android:id="@+id/house_profile"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/user_profile_background"
-            android:src="@drawable/user_profile_image" />
-
-        <TextView
-            android:id="@+id/house_profile_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/house_profile"
-            android:layout_centerHorizontal="true"
-            android:text="사용자닉네임"
-            android:textColor="@color/white"
-            android:textSize="13sp" />
-
-        <com.facebook.widget.ProfilePictureView
-            android:id="@+id/facebook_profile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="10dp"
-            android:gravity="center_horizontal"
-            android:visibility="gone"
-            facebook:preset_size="normal" />
-
-        <ImageView
-            android:id="@+id/btn_setting"
-            android:layout_width="26dp"
-            android:layout_height="26dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_margin="12dp"
-            android:src="@drawable/icon_settings" />
-    </RelativeLayout>
+    android:fillViewport="true" >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:background="#E9E9E9"
-        android:orientation="horizontal" >
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="1dp"
-            android:layout_weight="1"
-            android:background="#FFFFFF"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp" >
 
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginLeft="30dp"
-                android:src="@drawable/icon_mypage_upload" />
+                android:id="@+id/house_profile"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/user_profile_background"
+                android:src="@drawable/user_profile_image" />
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="내 업로드 보기"
-                android:textColor="#030303"
+                android:id="@+id/house_profile_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/house_profile"
+                android:layout_centerHorizontal="true"
+                android:text="사용자닉네임"
+                android:textColor="@color/white"
                 android:textSize="13sp" />
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="1dp"
-            android:layout_weight="1"
-            android:background="#FFFFFF"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
+            <com.facebook.widget.ProfilePictureView
+                android:id="@+id/facebook_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_horizontal"
+                android:visibility="gone"
+                facebook:preset_size="normal" />
 
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginLeft="40dp"
-                android:src="@drawable/icon_mypage_scrap" />
+                android:id="@+id/btn_setting"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_margin="12dp"
+                android:src="@drawable/icon_settings" />
+        </RelativeLayout>
 
-            <TextView
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="#E9E9E9"
+            android:orientation="horizontal" >
+
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
+                android:layout_margin="1dp"
                 android:layout_weight="1"
+                android:background="#FFFFFF"
                 android:gravity="center_vertical"
-                android:text="스크랩 보기"
-                android:textColor="#030303"
-                android:textSize="13sp" />
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="30dp"
+                    android:src="@drawable/icon_mypage_upload" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="내 업로드 보기"
+                    android:textColor="#030303"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="1dp"
+                android:layout_weight="1"
+                android:background="#FFFFFF"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="40dp"
+                    android:src="@drawable/icon_mypage_scrap" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="스크랩 보기"
+                    android:textColor="#030303"
+                    android:textSize="13sp" />
+            </LinearLayout>
         </LinearLayout>
+
+        <com.nexters.house.view.ExpandableHeightGridView
+            android:id="@+id/gv_mypage"
+            android:layout_width="match_parent"
+            android:layout_height="482dp"
+            android:gravity="center"
+            android:numColumns="3"
+            android:stretchMode="columnWidth" />
     </LinearLayout>
 
-    <GridView
-        android:id="@+id/gv_mypage"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="4"
-        android:numColumns="3"
-        android:stretchMode="columnWidth" />
-
-</LinearLayout>
+</ScrollView>
