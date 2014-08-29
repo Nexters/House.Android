@@ -5,6 +5,7 @@ import java.util.*;
 import android.app.*;
 import android.content.*;
 import android.view.*;
+import android.view.View.OnClickListener;
 import android.view.animation.*;
 import android.widget.*;
 
@@ -25,6 +26,8 @@ public class InteriorAdapter extends BaseAdapter {
 	private int resource;
 	private CommonUtils mUtil;
 
+	
+	 
 
 	public InteriorAdapter(Context context, ArrayList<InteriorEntity> mInteriorItemArrayList, int resource, MainActivity mainActivity) {
 		mMainActivity = mainActivity;
@@ -129,25 +132,9 @@ public class InteriorAdapter extends BaseAdapter {
 						break;
 						
 					case R.id.icon_delete:						
-						/*AlertDialog.Builder alt_bld = new AlertDialog.Builder(mContext);
-					    alt_bld.setMessage("삭제하시겠습니까?").setCancelable(
-					        false).setPositiveButton("예",
-					        new DialogInterface.OnClickListener() {
-					        public void onClick(DialogInterface dialog, int id) {
-					        	
-					        }
-					        }).setNegativeButton("아니요",
-					        new DialogInterface.OnClickListener() {
-				        public void onClick(DialogInterface dialog, int id) {
-					            // Action for 'NO' Button
-					            dialog.cancel();
-					        }
-					        });
-					    AlertDialog alert = alt_bld.create();
-					    // Title for AlertDialog
-
-					    alert.show();*/
-					
+				
+						mMainActivity.showDialog(3378);
+						
 						break;
 					}
 				}
@@ -160,6 +147,7 @@ public class InteriorAdapter extends BaseAdapter {
 			convertView.setTag(holder);
 			
 			SliderLayout slider = (SliderLayout) convertView.findViewById(R.id.slider);
+			
 			List<String> image_urls = mInteriorItemArrayList.get(position).image_urls;
 			
 			for (String url : image_urls) {
@@ -221,6 +209,9 @@ public class InteriorAdapter extends BaseAdapter {
 		e.reply = 1;
 		
 		mInteriorItemArrayList.add(e);
+	}
+	public void clickedImage(View v){
+		Toast.makeText(mContext, "클릭", Toast.LENGTH_SHORT).show();
 	}
 	
 }

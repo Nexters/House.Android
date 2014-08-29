@@ -38,7 +38,7 @@
             android:id="@+id/txt_cameraRoll"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:layout_marginLeft="65dp"
+            android:layout_marginLeft="75dp"
             android:layout_marginRight="75dp"
             android:gravity="center"
             android:text="카메라롤"

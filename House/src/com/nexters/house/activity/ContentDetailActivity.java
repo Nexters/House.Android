@@ -24,6 +24,11 @@ public class ContentDetailActivity extends SherlockFragmentActivity {
 	private ReplyAdapter mReplyAdapter;
 	private ImageView ivImage;
 
+	private TextView tvLikeCnt;
+	private TextView tvReplyCnt;
+	private EditText etReply;
+	private ToggleButton btnLike;
+	private ToggleButton btnScrap;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -34,6 +39,7 @@ public class ContentDetailActivity extends SherlockFragmentActivity {
 		initResources();
 		setListViewHeightBasedOnChildren(lvContent);
 
+		setListViewHeightBasedOnChildren(lvReply);
 		overridePendingTransition(R.anim.start_enter, R.anim.start_exit);
 	}
 
@@ -53,11 +59,20 @@ public class ContentDetailActivity extends SherlockFragmentActivity {
 		mReplyArrayList = new ArrayList<ReplyEntity>();
 
 		ivImage = (ImageView) findViewById(R.id.image_row);
+		
+		tvLikeCnt=(TextView)findViewById(R.id.tv_cnt_likes);
+		tvReplyCnt=(TextView)findViewById(R.id.tv_cnt_reply);
 
+		btnLike=(ToggleButton)findViewById(R.id.btn_like);
+		btnScrap=(ToggleButton)findViewById(R.id.btn_scrap);
+		
+		etReply=(EditText)findViewById(R.id.edittxt_reply);
+		
 		mMainListAdapter = new ContentDetailAdapter(this, mImageArrayList, R.layout.image_row);
 		mReplyAdapter = new ReplyAdapter(this,mReplyArrayList, R.layout.reply);
 
 		lvContent.setAdapter(mMainListAdapter);
+		//15를 사진 갯수대로 수정하여야.
 		for (int itemCount = 0; itemCount < 15; itemCount++) {
 			ContentEntity mExamEntity = new ContentEntity();
 
@@ -68,7 +83,8 @@ public class ContentDetailActivity extends SherlockFragmentActivity {
 		mMainListAdapter.notifyDataSetChanged();
 
 		lvReply.setAdapter(mReplyAdapter);
-		for (int itemCount = 0; itemCount < 20; itemCount++) {
+		//20을 댓글 갯수로 바꾸어야
+		for (int itemCount = 0; itemCount < 3; itemCount++) {
 			ReplyEntity mReplyEntity = new ReplyEntity();
 
 			mReplyArrayList.add(mReplyEntity);
@@ -105,5 +121,31 @@ public class ContentDetailActivity extends SherlockFragmentActivity {
 				+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
 		listView.setLayoutParams(params);
 		listView.requestLayout();
+	}
+	public void likeClicked(View v){ //like버튼 눌렀을때 cnt증가
+		
+		int before=Integer.parseInt((String) tvLikeCnt.getText());
+		if(btnLike.isChecked())
+			tvLikeCnt.setText(Integer.toString(before+1));
+		else
+			tvLikeCnt.setText(Integer.toString(before-1));
+	}
+	public void sendClicked(View v){ //댓글 전송버튼 눌렀을때 cnt 증가 및 댓글리스트 하나더 생성
+	
+		if(etReply.length()>0){ 
+			int before=Integer.parseInt((String) tvReplyCnt.getText());
+			tvReplyCnt.setText(Integer.toString(before+1));
+		
+			ReplyEntity mReplyEntity = new ReplyEntity();
+			mReplyArrayList.add(mReplyEntity);
+			mReplyAdapter.notifyDataSetChanged();
+			setListViewHeightBasedOnChildren(lvReply);
+		}
+		else
+			Toast.makeText(this, "1자 이상 입력해주세요.", Toast.LENGTH_SHORT).show();
+
+	}
+	public void scrapClicked(View v){
+		//스크랩 버튼 눌렀을때
 	}
 }

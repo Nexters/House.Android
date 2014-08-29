@@ -97,7 +97,7 @@
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin" >
 
-                <Button
+                <ToggleButton
                     android:id="@+id/btn_like"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -108,9 +108,13 @@
                     android:drawablePadding="5dp"
                     android:gravity="left"
                     android:paddingLeft="40dp"
-                    android:text="좋아요" />
+                    android:paddingTop="7dp"
+                    android:textOn="좋아요"
+                    android:textOff="좋아요"
+                    android:onClick="likeClicked" />
 
-                <Button
+                
+                <ToggleButton
                     android:id="@+id/btn_scrap"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -120,7 +124,10 @@
                     android:drawablePadding="5dp"
                     android:gravity="left"
                     android:paddingLeft="40dp"
-                    android:text="스크랩" />
+                    android:paddingTop="7dp"
+                    android:textOn="스크랩"
+                    android:textOff="스크랩"
+                    android:onClick="scrapClicked" />
             </LinearLayout>
 
             <LinearLayout
@@ -173,14 +180,17 @@
                 android:layout_marginBottom="5dp"
                 android:background="#d0d0d0" />
 
-            <ListView
+              <ListView
                 android:id="@+id/lv_reply"
                 android:layout_width="match_parent"
-                android:layout_height="700dp" />
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+            
+           
         </LinearLayout>
     </ScrollView>
-
-    <ImageView
+   
+        <ImageView
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#d0d0d0" />
@@ -192,6 +202,7 @@
         android:orientation="horizontal" >
 
         <EditText
+            android:id="@+id/edittxt_reply"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="2dp"
@@ -206,7 +217,8 @@
             android:layout_weight="2"
             android:background="#d0d0d0"
             android:paddingTop="0dp"
-            android:text="전송" />
+            android:text="전송"
+            android:onClick="sendClicked" />
     </LinearLayout>
 
 </LinearLayout>

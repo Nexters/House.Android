@@ -20,7 +20,7 @@
             android:layout_gravity="left"
             android:background="#000000"
             android:layout_marginLeft="5dp"
-            android:layout_marginRight="205dp"
+            android:layout_marginRight="214dp"
             android:text="이전"
             android:textColor="#FFFFFF"
             android:textSize="15sp"

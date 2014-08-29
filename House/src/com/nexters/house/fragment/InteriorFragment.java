@@ -24,7 +24,7 @@ import com.nexters.house.entity.*;
 public class InteriorFragment extends Fragment implements OnRefreshListener {
 
 	private final String TAG = "InteriorFragment";
-
+	
 	private PullToRefreshLayout mPullToRefreshLayout;
 
 	private ArrayList<InteriorEntity> mInteriorItemArrayList;
@@ -210,5 +210,8 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 			}
 		}.execute();
 	}
+
+
+
 
 }

@@ -1,5 +1,7 @@
 package com.nexters.house.activity;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.*;
 import android.content.res.*;
 import android.graphics.*;
@@ -25,6 +27,7 @@ public class MainActivity extends SherlockFragmentActivity  implements OnClickLi
 	public final static int FRAGMENT_BOARD = 1;
 	public final static int FRAGMENT_MYPAGE = 2;
 
+	public static final int ADD_TAG_DIALOG=3378;
 	private Boolean isVisible = true;
 	private Button mBtnInterior;
 	private Button mBtnBoard;
@@ -199,6 +202,32 @@ public class MainActivity extends SherlockFragmentActivity  implements OnClickLi
 			mBtnMypage.setTextColor(Color.parseColor("#8DCEC0"));
 			mLineMypage.setBackgroundColor(Color.parseColor("#8DCEC0"));
 		}
+	}
+	public Dialog onCreateDialog(int id) {
+	    AlertDialog dialog = null;
+	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    switch (id) {
+	    case ADD_TAG_DIALOG:
+	        builder.setMessage("삭제하시겠습니까?").setCancelable(
+	                false).setPositiveButton("예",
+	                new DialogInterface.OnClickListener() {
+	                    public void onClick(DialogInterface dialog, int id) {
+
+	                    }
+	                }).setNegativeButton("아니요",
+	                new DialogInterface.OnClickListener() {
+	                    public void onClick(DialogInterface dialog, int id) {
+	                        dialog.cancel();
+	                    }
+	                });
+
+	        dialog = builder.create();
+	        break;
+	    default:
+	        dialog = null;
+	    }
+	    dialog.setOwnerActivity(this);
+	    return dialog;
 	}
 
 }
