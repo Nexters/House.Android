@@ -41,7 +41,7 @@
                     android:layout_weight="1"
                     android:background="@color/white"
                     android:text="인테리어"
-                    android:textSize="14sp" />
+                    android:textSize="13sp" />
 
                 <View
                     android:id="@+id/header_line_interior"
@@ -66,7 +66,7 @@
                     android:background="@color/white"
                     android:gravity="center"
                     android:text="수다톡"
-                    android:textSize="14sp" />
+                    android:textSize="13sp" />
 
                 <View
                     android:id="@+id/header_line_board"
@@ -91,7 +91,7 @@
                     android:background="@color/white"
                     android:gravity="center"
                     android:text="마이페이지"
-                    android:textSize="14sp" />
+                    android:textSize="13sp" />
 
                 <View
                     android:id="@+id/header_line_mypage"

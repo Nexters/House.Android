@@ -190,14 +190,14 @@ public class MainActivity extends SherlockFragmentActivity  implements OnClickLi
 		mLineMypage.setBackgroundColor(Color.parseColor("#FFFFFF"));
 
 		if(mCurrentFragmentIndex == FRAGMENT_INTERIOR ) {
-			mBtnInterior.setTextColor(Color.parseColor("#8DCEC0"));
-			mLineInterior.setBackgroundColor(Color.parseColor("#8DCEC0"));	
+			mBtnInterior.setTextColor(Color.parseColor("#008996"));
+			mLineInterior.setBackgroundColor(Color.parseColor("#008996"));	
 		}else if(mCurrentFragmentIndex == FRAGMENT_BOARD) {
-			mBtnBoard.setTextColor(Color.parseColor("#8DCEC0"));
-			mLineBoard.setBackgroundColor(Color.parseColor("#8DCEC0"));
+			mBtnBoard.setTextColor(Color.parseColor("#008996"));
+			mLineBoard.setBackgroundColor(Color.parseColor("#008996"));
 		}else if(mCurrentFragmentIndex == FRAGMENT_MYPAGE){
-			mBtnMypage.setTextColor(Color.parseColor("#8DCEC0"));
-			mLineMypage.setBackgroundColor(Color.parseColor("#8DCEC0"));
+			mBtnMypage.setTextColor(Color.parseColor("#008996"));
+			mLineMypage.setBackgroundColor(Color.parseColor("#008996"));
 		}
 	}
 

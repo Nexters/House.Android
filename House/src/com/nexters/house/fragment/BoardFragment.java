@@ -212,7 +212,7 @@ public class BoardFragment extends Fragment implements OnRefreshListener{
 				b.category = "새로고침";
 				b.createdTime = "방금";
 				b.title = "새로고쳐졌당 :) ";
-				b.content = "얼른해서 완성합시다";
+				b.content = "얼른해서 완성합시다. 이거 화면 늘어나는거 어디까지되는지 테스트도해야되는데. 글자 제한을 몇으로 해야될지 그리고 화면은 얼마나 늘어나게될지 한번 봐봅시다. 인유어하우스 화이팅 마감이 얼마 남지 않았음.";
 				
 				b.like = 1;
 				b.reply = 1;
