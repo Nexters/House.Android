@@ -1,97 +1,112 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    android:orientation="vertical"
     tools:context="com.nexters.house.activity.MainActivity" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:orientation="horizontal" >
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="#E9E9E9"
-            android:orientation="vertical"
-            android:padding="1dp" >
-
-            <Button
-                android:id="@+id/btn_interior"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@color/white"
-				android:textSize="14sp"
-                android:text="인테리어" />
-
-            <View
-                android:id="@+id/header_line_interior"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:background="@color/white" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="#E9E9E9"
-            android:orientation="vertical"
-            android:padding="1dp" >
-
-            <Button
-                android:id="@+id/btn_board"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@color/white"
-                android:gravity="center"
-                android:textSize="14sp"
-                android:text="수다톡" />
-
-            <View
-                android:id="@+id/header_line_board"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:background="@color/white" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="#E9E9E9"
-            android:orientation="vertical"
-            android:padding="1dp" >
-
-            <Button
-                android:id="@+id/btn_mypage"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@color/white"
-                android:textSize="14sp"
-                android:gravity="center"
-                android:text="마이페이지" />
-
-            <View
-                android:id="@+id/header_line_mypage"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:background="@color/white" />
-        </LinearLayout>
-    </LinearLayout>
+    <ImageView
+        android:id="@+id/btn_write"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="50dp"
+        android:layout_marginRight="30dp"
+        android:src="@drawable/btn_effect_write" />
 
     <LinearLayout
-        android:id="@+id/ll_fragment"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
         android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#E9E9E9"
+                android:orientation="vertical"
+                android:padding="1dp" >
+
+                <Button
+                    android:id="@+id/btn_interior"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:text="인테리어"
+                    android:textSize="14sp" />
+
+                <View
+                    android:id="@+id/header_line_interior"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:background="@color/white" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#E9E9E9"
+                android:orientation="vertical"
+                android:padding="1dp" >
+
+                <Button
+                    android:id="@+id/btn_board"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:text="수다톡"
+                    android:textSize="14sp" />
+
+                <View
+                    android:id="@+id/header_line_board"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:background="@color/white" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#E9E9E9"
+                android:orientation="vertical"
+                android:padding="1dp" >
+
+                <Button
+                    android:id="@+id/btn_mypage"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:text="마이페이지"
+                    android:textSize="14sp" />
+
+                <View
+                    android:id="@+id/header_line_mypage"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:background="@color/white" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/ll_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" >
+        </RelativeLayout>
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

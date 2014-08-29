@@ -14,7 +14,6 @@ import com.nexters.house.adapter.*;
 
 public class BoardFragment extends Fragment {
 	ListView mBoardList;
-	ImageView mBtnWrite;
 	View mView;
 	
 	@Override
@@ -22,25 +21,12 @@ public class BoardFragment extends Fragment {
 		mView = inflater.inflate(R.layout.fragment_board, container, false);
 
 		initResource();
-		initEvent();
 		return mView;
 	}
 	
 	public void initResource(){
 		mBoardList = (ListView) mView.findViewById(R.id.board_list);
 		
-		mBtnWrite = (ImageView)mView.findViewById(R.id.btn_write);
-	    mBtnWrite.bringToFront();
-	}
-	
-	public void initEvent(){
-		mBtnWrite.setOnClickListener(new Button.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent=new Intent(getActivity(),TalkWriteActivity.class);
-			 	startActivity(intent);
-			}
-		});
 	}
 
 	@Override

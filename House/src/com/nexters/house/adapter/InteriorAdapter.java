@@ -157,7 +157,6 @@ public class InteriorAdapter extends BaseAdapter {
 			holder.btnEdit.setOnClickListener(convertOnClickListener);
 			holder.btnDelete.setOnClickListener(convertOnClickListener);
 			holder.rlContents.setOnClickListener(convertOnClickListener);
-			holder.slider.setOnClickListener(convertOnClickListener);
 			convertView.setTag(holder);
 			
 			SliderLayout slider = (SliderLayout) convertView.findViewById(R.id.slider);

@@ -30,7 +30,6 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 	private ArrayList<InteriorEntity> mInteriorItemArrayList;
 	private ListView lv_main;
 	private InteriorAdapter mListAdapter;
-	private ImageView btn_write;
 	private ImageView btnDown;
 	private Boolean loading = true;
 	private TextView tvContent;
@@ -65,10 +64,6 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 		.listener(this)
 		.setup(mPullToRefreshLayout);
 
-		btn_write=(ImageView)v.findViewById(R.id.btn_write);
-		btn_write.bringToFront();
-
-
 		mPullToRefreshLayout = (PullToRefreshLayout)v.findViewById(R.id.ptr_layout);
 		lv_main = (ListView) v.findViewById(R.id.lv_interior_view);
 		mInteriorItemArrayList = new ArrayList<InteriorEntity>();
@@ -91,7 +86,6 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 	}
 
 	private void initEvents(){
-		btn_write.setOnClickListener(clickListener);
 		lv_main.setOnScrollListener(scrollListener);
 
 
@@ -154,20 +148,6 @@ public class InteriorFragment extends Fragment implements OnRefreshListener {
 		}
 	};
 
-	private View.OnClickListener clickListener = new View.OnClickListener() {
-		@Override
-		public void onClick(View v) {
-
-			Log.d("Click View Id","Soyoon = " + Integer.toString(v.getId()));
-			switch(v.getId()){
-			case R.id.btn_write:
-				Intent intent=new Intent(getActivity(),InteriorWriteActivity.class);
-				startActivity(intent);
-				break;
-
-			}
-		}
-	};
 
 	private OnScrollListener scrollListener = new OnScrollListener() {
 

@@ -8,6 +8,7 @@ import android.support.v4.app.*;
 import android.util.*;
 import android.view.*;
 import android.view.View.OnClickListener;
+import android.view.animation.*;
 import android.widget.*;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -24,10 +25,11 @@ public class MainActivity extends SherlockFragmentActivity  implements OnClickLi
 	public final static int FRAGMENT_BOARD = 1;
 	public final static int FRAGMENT_MYPAGE = 2;
 	//public final static int FRAGMENT_DETAIL_INTERIOR = 3;
-	
+	private Boolean isVisible = true;
 	private Button mBtnInterior;
 	private Button mBtnBoard;
 	private Button mBtnMypage;
+	private ImageView mBtnWrite;
 	private View mLineInterior;
 	private View mLineBoard;
 	private View mLineMypage;
@@ -37,14 +39,14 @@ public class MainActivity extends SherlockFragmentActivity  implements OnClickLi
 		super.onCreate(savedInstanceState);
 		//requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
-		
+
 		boolean logout = getIntent().getBooleanExtra("logout", false);
 		if (logout) {
 			startActivity(new Intent(this, StartActivity.class));
 			finish();
 			return;
 		}
-		
+
 		initActionBar();
 		initResources();
 		initEvent();
@@ -60,38 +62,41 @@ public class MainActivity extends SherlockFragmentActivity  implements OnClickLi
 		mLineBoard = (View) findViewById(R.id.header_line_board);
 		mLineMypage = (View) findViewById(R.id.header_line_mypage);
 
+		mBtnWrite = (ImageView) findViewById(R.id.btn_write);
+		mBtnWrite.bringToFront();
+
 	}
 
 	private void initEvent(){
 		mBtnInterior.setOnClickListener(this);
 		mBtnBoard.setOnClickListener(this);
 		mBtnMypage.setOnClickListener(this);
+		mBtnWrite.setOnClickListener(this);
 	}
-	
-    private void initActionBar() {
-    	getSupportActionBar().setDisplayShowTitleEnabled(false);
-    	getSupportActionBar().setDisplayShowHomeEnabled(false);
-    	getSupportActionBar().setDisplayShowCustomEnabled(true);
 
-    	getSupportActionBar().setCustomView(R.layout.action_main);
-    }
+	private void initActionBar() {
+		getSupportActionBar().setDisplayShowTitleEnabled(false);
+		getSupportActionBar().setDisplayShowHomeEnabled(false);
+		getSupportActionBar().setDisplayShowCustomEnabled(true);
+
+		getSupportActionBar().setCustomView(R.layout.action_main);
+	}
 
 	public void fragmentReplace() {
 		Fragment newFragment = null;
 		newFragment = getFragment(mCurrentFragmentIndex);
-
 		FragmentManager manager = getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = manager.beginTransaction();
-		
+
 		int diffLocation = mPrevFragmentIndex - mCurrentFragmentIndex;
 		if(diffLocation > 0)
 			fragmentTransaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right);
 		else if(diffLocation < 0)
 			fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
-		
-//		if(mCurrentFragmentIndex == FRAGMENT_DETAIL_INTERIOR)
-//			fragmentTransaction.addToBackStack(null);
-		
+
+		//		if(mCurrentFragmentIndex == FRAGMENT_DETAIL_INTERIOR)
+		//			fragmentTransaction.addToBackStack(null);
+
 		fragmentTransaction.replace(R.id.ll_fragment, newFragment);
 		fragmentTransaction.commit();
 	}
@@ -107,16 +112,33 @@ public class MainActivity extends SherlockFragmentActivity  implements OnClickLi
 			newFragment = new BoardFragment();
 			break;
 		case FRAGMENT_MYPAGE:
+			
 			newFragment = new MyPageFragment();
 			break;
-//		case FRAGMENT_DETAIL_INTERIOR :
-//			newFragment = new ContentDetailFragment();
-//			break;
 		default:
 			Log.d(TAG, "Unhandle case");
 			break;
 		}
 		return newFragment;
+	}
+
+	public void setWriteButtonVisibility(int idx){
+		
+		Animation hide = AnimationUtils.loadAnimation(this, R.anim.hide);
+		Animation show = AnimationUtils.loadAnimation(this, R.anim.show);
+		if (idx == FRAGMENT_MYPAGE) {
+			if(isVisible){
+				isVisible = false;
+				mBtnWrite.setAnimation(hide);
+			}
+		}else{
+			if(!isVisible){
+				isVisible = true;
+				mBtnWrite.setAnimation(show);
+			}
+			
+		}
+		
 	}
 	
 	public void setCurrentFragmentIndex(int mCurrentFragmentIndex) {
@@ -126,21 +148,36 @@ public class MainActivity extends SherlockFragmentActivity  implements OnClickLi
 
 	@Override
 	public void onClick(View v) {
-		if(v.getId() == R.id.btn_interior) {
+		switch(v.getId()){
+		case R.id.btn_interior:
 			changeFragment(FRAGMENT_INTERIOR);
-		} else if(v.getId() == R.id.btn_board) {
+			break;
+		case R.id.btn_board:
 			changeFragment(FRAGMENT_BOARD);
-		} else if(v.getId() == R.id.btn_mypage) {
+			break;
+		case R.id.btn_mypage:
 			changeFragment(FRAGMENT_MYPAGE);
-		} 
+			break;
+		case R.id.btn_write:
+			if(this.mCurrentFragmentIndex == FRAGMENT_INTERIOR){
+				Intent intent=new Intent(this,InteriorWriteActivity.class);
+				startActivity(intent);
+			}else if(this.mCurrentFragmentIndex == FRAGMENT_BOARD){
+				Intent intent=new Intent(this,TalkWriteActivity.class);
+				startActivity(intent);
+			}
+			break;
+
+		}
 	}
 
 	public void changeFragment(int currentFragmentIndex){
 		setCurrentFragmentIndex(currentFragmentIndex);
 		setButtonResource(mCurrentFragmentIndex);
+		setWriteButtonVisibility(currentFragmentIndex);
 		fragmentReplace();
 	}
-	
+
 	public void setButtonResource(int currentFragmentIndex){
 		mBtnBoard.setTextColor(Color.parseColor("#959595"));
 		mBtnMypage.setTextColor(Color.parseColor("#959595"));
@@ -148,7 +185,7 @@ public class MainActivity extends SherlockFragmentActivity  implements OnClickLi
 		mLineInterior.setBackgroundColor(Color.parseColor("#FFFFFF"));
 		mLineBoard.setBackgroundColor(Color.parseColor("#FFFFFF"));
 		mLineMypage.setBackgroundColor(Color.parseColor("#FFFFFF"));
-		
+
 		if(mCurrentFragmentIndex == FRAGMENT_INTERIOR ) {
 			mBtnInterior.setTextColor(Color.parseColor("#8DCEC0"));
 			mLineInterior.setBackgroundColor(Color.parseColor("#8DCEC0"));	
@@ -160,14 +197,14 @@ public class MainActivity extends SherlockFragmentActivity  implements OnClickLi
 			mLineMypage.setBackgroundColor(Color.parseColor("#8DCEC0"));
 		}
 	}
-	
+
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
-		
-//		if(mCurrentFragmentIndex == FRAGMENT_DETAIL_INTERIOR){
-//			changeFragment(FRAGMENT_INTERIOR);
-//		} 
+
+		//		if(mCurrentFragmentIndex == FRAGMENT_DETAIL_INTERIOR){
+		//			changeFragment(FRAGMENT_INTERIOR);
+		//		} 
 	}
 
 }
