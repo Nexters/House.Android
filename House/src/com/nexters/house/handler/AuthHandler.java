@@ -2,12 +2,9 @@ package com.nexters.house.handler;
 
 import java.util.HashMap;
 
-import android.content.Intent;
-
 import com.nexters.house.activity.AbstractAsyncActivity;
-import com.nexters.house.activity.MainActivity;
 import com.nexters.house.core.SessionManager;
-import com.nexters.house.entity.APICode.CM0001;
+import com.nexters.house.entity.reqcode.CM0001;
 import com.nexters.house.utils.JacksonUtils;
 
 public class AuthHandler<T> extends AbstractHandler<T> {

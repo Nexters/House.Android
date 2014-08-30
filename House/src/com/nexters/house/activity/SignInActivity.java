@@ -1,9 +1,5 @@
 package com.nexters.house.activity;
 
-import java.util.HashMap;
-
-import org.springframework.http.MediaType;
-
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -15,10 +11,6 @@ import android.widget.EditText;
 
 import com.nexters.house.R;
 import com.nexters.house.core.SessionManager;
-import com.nexters.house.entity.APICode.CM0001;
-import com.nexters.house.handler.AuthHandler;
-import com.nexters.house.thread.PostMessageTask;
-import com.nexters.house.utils.JacksonUtils;
 
 public class SignInActivity extends AbstractAsyncActivity implements View.OnClickListener {
     private EditText mHsEmail;
