@@ -4,6 +4,7 @@
     android:orientation="vertical" >
 
     <ScrollView
+        android:id="@+id/sv_content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" >
@@ -103,7 +104,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginRight="1dp"
                     android:layout_weight="1"
-                    android:background="#d0d0d0"
+                    android:background="@drawable/btn_effect_bg_color_white"
                     android:drawableLeft="@drawable/icon_heart"
                     android:drawablePadding="5dp"
                     android:gravity="left"
@@ -119,7 +120,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="#d0d0d0"
+                    android:background="@drawable/btn_effect_bg_color_white"
                     android:drawableLeft="@drawable/icon_comment"
                     android:drawablePadding="5dp"
                     android:gravity="left"
@@ -189,11 +190,6 @@
            
         </LinearLayout>
     </ScrollView>
-   
-        <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#d0d0d0" />
 
     <LinearLayout
         android:id="@+id/ll_bottom"
@@ -215,8 +211,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:background="#d0d0d0"
-            android:paddingTop="0dp"
+            android:background="@drawable/btn_effect_bg_color_white"
             android:text="전송"
             android:onClick="sendClicked" />
     </LinearLayout>

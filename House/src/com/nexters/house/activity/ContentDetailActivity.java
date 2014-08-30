@@ -3,8 +3,10 @@ package com.nexters.house.activity;
 import java.util.*;
 
 import android.annotation.*;
+import android.content.*;
 import android.os.*;
 import android.view.*;
+import android.view.inputmethod.*;
 import android.widget.*;
 
 import com.actionbarsherlock.app.*;
@@ -29,6 +31,7 @@ public class ContentDetailActivity extends SherlockFragmentActivity {
 	private EditText etReply;
 	private ToggleButton btnLike;
 	private ToggleButton btnScrap;
+	private ScrollView mScrollView;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -70,7 +73,9 @@ public class ContentDetailActivity extends SherlockFragmentActivity {
 		
 		mMainListAdapter = new ContentDetailAdapter(this, mImageArrayList, R.layout.image_row);
 		mReplyAdapter = new ReplyAdapter(this,mReplyArrayList, R.layout.reply);
-
+		
+		mScrollView = (ScrollView) findViewById(R.id.sv_content);
+		
 		lvContent.setAdapter(mMainListAdapter);
 		//15를 사진 갯수대로 수정하여야.
 		for (int itemCount = 0; itemCount < 15; itemCount++) {
@@ -137,9 +142,13 @@ public class ContentDetailActivity extends SherlockFragmentActivity {
 			tvReplyCnt.setText(Integer.toString(before+1));
 		
 			ReplyEntity mReplyEntity = new ReplyEntity();
-			mReplyArrayList.add(mReplyEntity);
+			mReplyArrayList.add(0,mReplyEntity);
 			mReplyAdapter.notifyDataSetChanged();
 			setListViewHeightBasedOnChildren(lvReply);
+			
+			InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE); 
+			
+			imm.hideSoftInputFromWindow(etReply.getWindowToken(), 0); 
 		}
 		else
 			Toast.makeText(this, "1자 이상 입력해주세요.", Toast.LENGTH_SHORT).show();
