@@ -1,5 +1,4 @@
 package com.nexters.house.entity.reqcode;
-
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -7,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CM0001 implements Serializable {
     public String usrId;
+
     public String usrPw;
     public String regNo;
     public String custName;

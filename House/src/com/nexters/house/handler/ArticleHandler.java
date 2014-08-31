@@ -11,59 +11,62 @@ public class ArticleHandler<T> extends AbstractHandler<T> {
 	public final static int LIST_SUDATALK = 3;
 	public final static int READ_INTERIOR = 4;
 	public final static int READ_SUDATALK = 5;
+	public final static int LIKE_CNT = 6;
+	public final static int REPLY_CNT = 7;
+	public final static int LIST_REPLY = 8;
+	public final static int READ_REPLY = 9;
+	public final static int WRITE_REPLY = 10;
+
 	private Handler mHandler = null;
-	
+
 	public ArticleHandler(AbstractAsyncActivity abstractAsyncActivity,
 			String tranCd) {
 		super(abstractAsyncActivity, tranCd);
 	}
 
-	public ArticleHandler(AbstractAsyncFragmentActivity abstractAsyncFragmentActivity, String tranCd) {
+	public ArticleHandler(
+			AbstractAsyncFragmentActivity abstractAsyncFragmentActivity,
+			String tranCd) {
 		super(abstractAsyncFragmentActivity, tranCd);
 	}
-	
-	public void setHandler(Handler handler){
+
+	public void setHandler(Handler handler) {
 		mHandler = handler;
 	}
-	
+
 	@Override
 	public void handle(int method) {
-		switch(method){
-		case WRITE_INTERIOR :
-		case WRITE_SUDATALK :
+		switch (method) {
+		case WRITE_INTERIOR:
+		case WRITE_SUDATALK:
 			writeArticle(method);
 			break;
-		case LIST_INTERIOR :
-		case LIST_SUDATALK :
-			listArticle(method);
+		default:
+			processHandler();
 			break;
 		}
 	}
-	
-	public void listArticle(int type){
-		if(LIST_INTERIOR == type){
-			mHandler.handle(resCode);
-		} else if(LIST_SUDATALK == type){
-			mHandler.handle(resCode);
-		}
+
+	public void processHandler() {
+		mHandler.handle(resCode);
 	}
-	
-	public void writeArticle(int type){
-		if(WRITE_INTERIOR == type){
-			CustomGalleryActivity.noCancel=0;
+
+	public void writeArticle(int type) {
+		if (WRITE_INTERIOR == type) {
+			CustomGalleryActivity.noCancel = 0;
 			mAbstractAsyncActivity.setResult(mAbstractAsyncActivity.RESULT_OK);
 			mAbstractAsyncActivity.finish();
 			mAbstractAsyncActivity.showResult("작성한 내용이 업로드됩니다.");
-		} else if(WRITE_SUDATALK == type){
-			
+		} else if (WRITE_SUDATALK == type) {
+
 		}
 	}
-	
+
 	@Override
 	public void showError() {
-		if(mAbstractAsyncActivity != null)
+		if (mAbstractAsyncActivity != null)
 			mAbstractAsyncActivity.showResult("Fail");
-		else if(mAbstractAsyncFragmentActivity != null)
+		else if (mAbstractAsyncFragmentActivity != null)
 			mAbstractAsyncFragmentActivity.showResult("Fail!!");
 	}
 }

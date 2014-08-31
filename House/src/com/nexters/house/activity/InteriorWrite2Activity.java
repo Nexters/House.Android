@@ -70,7 +70,7 @@ public class InteriorWrite2Activity extends AbstractAsyncActivity {
 	private Button previewOk;
 
 	PostMessageTask mArticleTask;
-	ArticleHandler<AP0006> mArticleHandler;
+	ArticleHandler<AP0006> mAP0006Handler;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +101,7 @@ public class InteriorWrite2Activity extends AbstractAsyncActivity {
 		mInteriorInfo.setText(savedInfo);
 		
 		// Post Aricle 
-    	mArticleHandler = new ArticleHandler<AP0006>(this, "AP0006");
+    	mAP0006Handler = new ArticleHandler<AP0006>(this, "AP0006");
 	}
 
 	private void initEvent(){
@@ -122,6 +122,13 @@ public class InteriorWrite2Activity extends AbstractAsyncActivity {
 		if(mArticleTask != null && !(mArticleTask.getStatus() == Status.FINISHED))
 			return ;
 		
+		AP0006 ap = returnAP0006();
+		mAP0006Handler.setOneTranData(ap);
+		mArticleTask = new PostMessageTask(this, mAP0006Handler, ArticleHandler.WRITE_INTERIOR);
+		mArticleTask.execute(MediaType.APPLICATION_JSON);
+	}
+
+	public AP0006 returnAP0006(){
 		AP0006 ap = new AP0006();
 		ap.setType(CodeType.INTERIOR_TYPE);
 		ap.setBrdId(SessionManager.getInstance(this).getUserDetails().get(SessionManager.KEY_EMAIL));
@@ -149,12 +156,9 @@ public class InteriorWrite2Activity extends AbstractAsyncActivity {
 			imgs.add(img);
 		}
 		ap.setBrdImg(imgs);
-		
-		mArticleHandler.setOneTranData(ap);
-		mArticleTask = new PostMessageTask(this, mArticleHandler, ArticleHandler.WRITE_INTERIOR);
-		mArticleTask.execute(MediaType.APPLICATION_JSON);
+		return ap;
 	}
-
+	
 	public void clickedCancel(View view){
 		onBackPressed();
 	}

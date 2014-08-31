@@ -1,5 +1,4 @@
 package com.nexters.house.entity.reqcode;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

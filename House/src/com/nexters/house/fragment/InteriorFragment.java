@@ -60,7 +60,7 @@ public class InteriorFragment extends Fragment {
 	
 	private PostMessageTask mArticleTask;
 	
-	private ArticleHandler<AP0001> mArticleHandler;
+	private ArticleHandler<AP0001> mAP0001Handler;
 	
 	private OnScrollListener mScrollListener;
 	
@@ -93,27 +93,7 @@ public class InteriorFragment extends Fragment {
 		lv_main.setAdapter(mListAdapter);
 		
 		// Post List
-    	mArticleHandler = new ArticleHandler<AP0001>(mMainActivity, "AP0001");
-    	AbstractHandler.Handler postHandler = new AbstractHandler.Handler() {
-			public void handle(APICode resCode) {
-				InteriorAdapter listAdapter = mListAdapter;
-				List<AP0001> apList = resCode.getTranData();
-				AP0001 ap0001 = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), AP0001.class);
-				
-				for(int i=0; i<ap0001.getResCnt(); i++){
-					AP0001Res res = ap0001.getRes().get(i);
-					
-					ArrayList<String> imgUrls = new ArrayList<String>();
-					for(int j=0; j<res.brdImg.size(); j++){
-						imgUrls.add(mMainActivity.getString(R.string.base_uri) + res.brdImg.get(j).brdOriginImg);
-					}
-					listAdapter.add(res.brdNo, res.brdId, new String(res.brdContents) + " - " + res.brdNo, imgUrls, res.brdLikeCnt, res.brdCommentCnt);
-				}
-				Log.d("resCnt", "resCnt : " + ap0001.getResCnt());
-				listAdapter.notifyDataSetChanged();
-			}
-		};
-		mArticleHandler.setHandler(postHandler);
+		processAP0001();
 		
 		// Scroll
 		mScrollListener = new OnScrollListener() {
@@ -132,23 +112,45 @@ public class InteriorFragment extends Fragment {
 				//is the bottom item visible & not loading more already ? Load more !
 				if(isState && (lastInScreen == totalItemCount) && (mArticleTask.getStatus() == Status.FINISHED)){
 					if(mInteriorItemArrayList.size() > 0)
-						getInteriors(mInteriorItemArrayList.get(mInteriorItemArrayList.size() - 1).no);
+						addInteriorList(mInteriorItemArrayList.get(mInteriorItemArrayList.size() - 1).no);
 					else 
-						getInteriors(0);
+						addInteriorList(0);
 					isState = false;
 				}
 			}
 		};
-		
 		// init List
-		getInteriors(0);
+		addInteriorList(0);
 	}
 
 	private void initEvents(){
 		lv_main.setOnScrollListener(mScrollListener);
 	}
 	
-	public void getInteriors(long interiorNo){
+	public void processAP0001(){
+    	mAP0001Handler = new ArticleHandler<AP0001>(mMainActivity, "AP0001");
+    	AbstractHandler.Handler handler = new AbstractHandler.Handler() {
+			public void handle(APICode resCode) {
+				InteriorAdapter listAdapter = mListAdapter;
+				List<AP0001> apList = resCode.getTranData();
+				AP0001 ap = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), AP0001.class);
+				
+				for(int i=0; i<ap.getResCnt(); i++){
+					AP0001Res res = ap.getRes().get(i);
+					
+					ArrayList<String> imgUrls = new ArrayList<String>();
+					for(int j=0; j<res.brdImg.size(); j++)
+						imgUrls.add(mMainActivity.getString(R.string.base_uri) + res.brdImg.get(j).brdOriginImg);
+					listAdapter.add(res.brdNo, res.brdId, new String(res.brdContents) + " - " + res.brdNo, imgUrls, res.brdLikeCnt, res.brdCommentCnt);
+				}
+				Log.d("resCnt", "resCnt : " + ap.getResCnt());
+				listAdapter.notifyDataSetChanged();
+			}
+		};
+		mAP0001Handler.setHandler(handler);
+	}
+	
+	public void addInteriorList(long interiorNo){
 		if(mArticleTask != null && !(mArticleTask.getStatus() == Status.FINISHED))
 			return ;
 		Log.d("interiorNo", "interiorNo = " + interiorNo);
@@ -159,8 +161,8 @@ public class InteriorFragment extends Fragment {
 		ap.setReqPoCnt(3);
 		ap.setReqPoNo(interiorNo);
 		
-		mArticleHandler.setOneTranData(ap);
-		mArticleTask = new PostMessageTask(mMainActivity, mArticleHandler, ArticleHandler.LIST_INTERIOR);
+		mAP0001Handler.setOneTranData(ap);
+		mArticleTask = new PostMessageTask(mMainActivity, mAP0001Handler, ArticleHandler.LIST_INTERIOR);
 		mArticleTask.setShowLoadingProgressDialog(false);
 		mArticleTask.execute(MediaType.APPLICATION_JSON);
 	}
@@ -175,14 +177,14 @@ public class InteriorFragment extends Fragment {
 		e.badge = 1;
 		e.content = "인테리어 입니다 ~~~~";
 		e.id = "newId";
-		e.image_urls = new ArrayList<String>(){{
+		e.imageUrls = new ArrayList<String>(){{
 			add("https://fbcdn-sphotos-a-a.akamaihd.net/hphotos-ak-xfp1/v/t1.0-9/10402950_570244953084785_2207844659246242948_n.jpg?oh=b19d78a504af3a54501e629f0383da87&oe=5448A4C6&__gda__=1413348687_974d19e8b5ddcf217cb99b77b0186685");
 			add("https://fbcdn-sphotos-g-a.akamaihd.net/hphotos-ak-xfa1/t1.0-9/10487348_570244969751450_1480175892860352468_n.jpg");
 			add("https://fbcdn-sphotos-f-a.akamaihd.net/hphotos-ak-xpa1/t1.0-9/1546376_570244983084782_3616217572638065925_n.jpg");
 			add("https://fbcdn-sphotos-d-a.akamaihd.net/hphotos-ak-xpf1/t1.0-9/10487342_570244993084781_3890212537564580615_n.jpg");
 			add("https://fbcdn-sphotos-b-a.akamaihd.net/hphotos-ak-xpa1/v/t1.0-9/10524374_570245013084779_7454008372005256632_n.jpg?oh=4761db9f33b72709585016c2649c747e&oe=5434C617&__gda__=1413811119_55884851b246ddb301725a0a78cacc84");
 			}};; 
-		e.reply = 1;
+		e.comment = 1;
 		e.like = 2;
 		return e;
 	}

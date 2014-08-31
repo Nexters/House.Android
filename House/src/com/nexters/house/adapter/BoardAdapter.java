@@ -82,7 +82,7 @@ public class BoardAdapter extends BaseAdapter {
 
 
 			holder.houseProfile = (ImageView) convertView.findViewById(R.id.house_profile);
-			holder.boardCreatedTime = (TextView) convertView.findViewById(R.id.created_time);
+//			holder.boardCreatedTime = (TextView) convertView.findViewById(R.id.);
 			holder.boardCategory = (TextView) convertView.findViewById(R.id.board_category);
 			holder.boardTitle = (TextView)convertView.findViewById(R.id.board_title);
 			holder.boardContent = (TextView) convertView.findViewById(R.id.board_content);

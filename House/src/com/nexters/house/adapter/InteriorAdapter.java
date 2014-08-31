@@ -77,8 +77,8 @@ public class InteriorAdapter extends BaseAdapter {
 			String id = mInteriorItemArrayList.get(position).id;
 			String content = mInteriorItemArrayList.get(position).content;
 			int nLike = mInteriorItemArrayList.get(position).like;
-			int nReply = mInteriorItemArrayList.get(position).reply;
-			List<String> imageUrls = mInteriorItemArrayList.get(position).image_urls;
+			int nReply = mInteriorItemArrayList.get(position).comment;
+			List<String> imageUrls = mInteriorItemArrayList.get(position).imageUrls;
 			
 			// find resource
 			holder.position = position;
@@ -202,9 +202,9 @@ public class InteriorAdapter extends BaseAdapter {
 		Log.d("content :", "content : " + content);
 		e.content = content;
 		e.id = usrId;
-		e.image_urls = imgUrls; 
+		e.imageUrls = imgUrls; 
 
-		e.reply = commentCnt;
+		e.comment = commentCnt;
 		e.like = likeCnt;
 		
 		mInteriorItemArrayList.add(e);

@@ -18,8 +18,10 @@ public class AP0003 implements Serializable {
 	private byte[] brdContents;
 	private String brdTag;
 	private String brdCreated;
+	private String brdCateNm;
 	private int brdCate;
 	private int brdLikeCnt;
+	private int brdScrapCnt;
 	private List<String> brdImg;
 	
 	private int brdCommentCnt;
@@ -63,6 +65,10 @@ public class AP0003 implements Serializable {
 		return brdTag;
 	}
 	@JsonIgnore
+	public String getBrdCateNm() {
+		return brdCateNm;
+	}
+	@JsonIgnore
 	public int getBrdCate() {
 		return brdCate;
 	}
@@ -77,6 +83,10 @@ public class AP0003 implements Serializable {
 	@JsonIgnore
 	public List<String> getBrdImg() {
 		return brdImg;
+	}
+	@JsonIgnore
+	public int getBrdScrapCnt() {
+		return brdScrapCnt;
 	}
 	@JsonIgnore
 	public int getBrdCommentCnt() {
@@ -123,6 +133,10 @@ public class AP0003 implements Serializable {
 	public void setBrdTag(String brdTag) {
 		this.brdTag = brdTag;
 	}
+	@JsonProperty("_brd_cate_nm")
+	public void setBrdCateNm(String brdCateNm) {
+		this.brdCateNm = brdCateNm;
+	}
 	@JsonProperty("_brd_cate")
 	public void setBrdCate(int brdCate) {
 		this.brdCate = brdCate;
@@ -138,6 +152,10 @@ public class AP0003 implements Serializable {
 	@JsonProperty("_brd_img")
 	public void setBrdImg(List<String> brdImg) {
 		this.brdImg = brdImg;
+	}
+	@JsonProperty("_brd_scrap_cnt")
+	public void setBrdScrapCnt(int brdScrapCnt) {
+		this.brdScrapCnt = brdScrapCnt;
 	}
 	@JsonProperty("_brd_comment_cnt")
 	public void setBrdCommentCnt(int brdCommentCnt) {
