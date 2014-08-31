@@ -8,6 +8,6 @@
         android:id="@+id/image_row"
         android:layout_width="400dp"
         android:layout_height="300dp"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/samplehouse2" />
 
 </LinearLayout>

@@ -78,9 +78,8 @@ public class ContentDetailActivity extends SherlockFragmentActivity {
 		
 		lvContent.setAdapter(mMainListAdapter);
 		//15를 사진 갯수대로 수정하여야.
-		for (int itemCount = 0; itemCount < 15; itemCount++) {
+		for (int itemCount = 0; itemCount < 7; itemCount++) {
 			ContentEntity mExamEntity = new ContentEntity();
-
 			mImageArrayList.add(mExamEntity);
 
 		}

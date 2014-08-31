@@ -101,12 +101,16 @@ public class InteriorAdapter extends BaseAdapter {
 							
 							btnEdit.startAnimation(showDown);
 							btnDelete.startAnimation(showDown);
+							btnEdit.setClickable(true);
+							btnDelete.setClickable(true);
 							
 						}else{
 							clicked = false;
 							
 							btnEdit.startAnimation(hideUp);
-							btnDelete.startAnimation(hideUp);					
+							btnDelete.startAnimation(hideUp);	
+							btnEdit.setClickable(false);
+							btnDelete.setClickable(false);
 						}
 						
 						//Log.d("Click Click", "down onClick : " + showDown + " : ");
