@@ -12,7 +12,7 @@ public class ArticleHandler<T> extends AbstractHandler<T> {
 	public final static int READ_INTERIOR = 4;
 	public final static int READ_SUDATALK = 5;
 	public final static int LIKE_CNT = 6;
-	public final static int REPLY_CNT = 7;
+	public final static int SCRAP_CNT = 7;
 	public final static int LIST_REPLY = 8;
 	public final static int READ_REPLY = 9;
 	public final static int WRITE_REPLY = 10;

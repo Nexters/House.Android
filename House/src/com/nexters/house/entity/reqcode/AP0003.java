@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class AP0003 implements Serializable {
 	private int type;
 	private long reqPoNo;
+	private String usrId;
 	
 	private long brdNo;
 	private String brdNm;
@@ -20,13 +21,15 @@ public class AP0003 implements Serializable {
 	private String brdCreated;
 	private String brdCateNm;
 	private int brdCate;
+	private int brdLikeState;
+	private int brdScrapState;
 	private int brdLikeCnt;
 	private int brdScrapCnt;
 	private List<String> brdImg;
 	
 	private int brdCommentCnt;
 	private List<AP0003Comment> brdComment;
-	
+
 	@JsonProperty("_type")
 	public int getType() {
 		return type;
@@ -95,6 +98,18 @@ public class AP0003 implements Serializable {
 	@JsonIgnore
 	public List<AP0003Comment> getBrdComment() {
 		return brdComment;
+	}
+	@JsonProperty("_usr_id")
+	public String getUsrId() {
+		return usrId;
+	}
+	@JsonIgnore
+	public int getBrdLikeState() {
+		return brdLikeState;
+	}
+	@JsonIgnore
+	public int getBrdScrapState() {
+		return brdScrapState;
 	}
 	
 	@JsonIgnore
@@ -165,7 +180,19 @@ public class AP0003 implements Serializable {
 	public void setBrdComment(List<AP0003Comment> brdComment) {
 		this.brdComment = brdComment;
 	}
-
+	@JsonIgnore
+	public void setUsrId(String usrId) {
+		this.usrId = usrId;
+	}
+	@JsonProperty("_brd_like_state")
+	public void setBrdLikeState(int brdLikeState) {
+		this.brdLikeState = brdLikeState;
+	}
+	@JsonProperty("_brd_scrap_state")
+	public void setBrdScrapState(int brdScrapState) {
+		this.brdScrapState = brdScrapState;
+	}
+	
 	public static class AP0003Comment {
 		@JsonProperty("_brd_comment_no")
 		public long brdCommentNo;

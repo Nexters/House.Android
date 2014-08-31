@@ -27,6 +27,7 @@ import android.widget.ToggleButton;
 import com.nexters.house.R;
 import com.nexters.house.adapter.ContentImageAdapter;
 import com.nexters.house.adapter.ReplyAdapter;
+import com.nexters.house.core.SessionManager;
 import com.nexters.house.entity.APICode;
 import com.nexters.house.entity.CodeType;
 import com.nexters.house.entity.ReplyEntity;
@@ -56,6 +57,7 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 	private ToggleButton mBtnScrap;
 
 	private TextView mLikeCnt;
+	private TextView mScrapCnt;
 	private TextView mReplyCnt;
 	// Replay
 	private EditText mEditReply;
@@ -65,7 +67,7 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 
 	private ScrollView mScrollView;
 
-	private PostMessageTask mArticleTask;
+	private PostMessageTask mPostTask;
 	private ArticleHandler<AP0003> mAP0003Handler;
 	private ArticleHandler<AP0004> mAP0004Handler;
 	private ArticleHandler<AP0005> mAP0005Handler;
@@ -77,7 +79,8 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 
 	// Article No
 	private long brdNo;
-
+	private int brdType;
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -85,7 +88,8 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 
 		initActionBar();
 		initResources();
-
+		initEvent();
+		
 		setListViewHeightBasedOnChildren(mContentImage);
 		setListViewHeightBasedOnChildren(mReplyContent);
 		overridePendingTransition(R.anim.start_enter, R.anim.start_exit);
@@ -100,7 +104,8 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 	@SuppressLint("InflateParams")
 	private void initResources() {
 		brdNo = getIntent().getLongExtra("brdNo", 0);
-
+		brdType = getIntent().getIntExtra("brdType", CodeType.INTERIOR_TYPE);
+		
 		mImageArrayList = new ArrayList<String>();
 		mReplyArrayList = new ArrayList<ReplyEntity>();
 
@@ -117,6 +122,7 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 
 		// like reply
 		mLikeCnt = (TextView) findViewById(R.id.tv_cnt_likes);
+		mScrapCnt = (TextView) findViewById(R.id.tv_cnt_scrap);
 		mReplyCnt = (TextView) findViewById(R.id.tv_cnt_reply);
 
 		mBtnLike = (ToggleButton) findViewById(R.id.btn_like);
@@ -169,10 +175,13 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 				for (int i = 0; i < imgs.size(); i++)
 					mImageArrayList.add(getApplicationContext().getString(R.string.base_uri) + imgs.get(i));
 				mLikeCnt.setText("" + ap.getBrdLikeCnt());
+				mScrapCnt.setText("" + ap.getBrdScrapCnt());
 				mReplyCnt.setText("" + ap.getBrdCommentCnt());
+				mBtnLike.setChecked((ap.getBrdLikeState() == 1)? true : false);
+				mBtnScrap.setChecked((ap.getBrdScrapState() == 1)? true : false);
 				
 				mImageAdapter.notifyDataSetChanged();
-				ContentImageAdapter.setListViewHeightBasedOnChildren(mContentImage);
+				setListViewHeightBasedOnChildren(mContentImage);
 			}
 		};
 		mAP0003Handler.setHandler(handler);
@@ -184,42 +193,74 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 			public void handle(APICode resCode) {
 				AP0004 ap = JacksonUtils.hashMapToObject((HashMap) resCode
 						.getTranData().get(0), AP0004.class);
-
-				mLikeCnt.setText(ap.getLikeCnt());
-				
+				mLikeCnt.setText("" + ap.getLikeCnt());
 			}
 		};
 		mAP0004Handler.setHandler(handler);
-		
-		int before = Integer.parseInt((String) mLikeCnt.getText());
-		if (mBtnLike.isChecked())
-			mLikeCnt.setText(Integer.toString(before + 1));
-		else
-			mLikeCnt.setText(Integer.toString(before - 1));
 	}
 
 	public void processAP0005() {
-
+		mAP0005Handler = new ArticleHandler<AP0005>(this, "AP0005");
+		AbstractHandler.Handler handler = new AbstractHandler.Handler() {
+			public void handle(APICode resCode) {
+				AP0005 ap = JacksonUtils.hashMapToObject((HashMap) resCode
+						.getTranData().get(0), AP0005.class);
+				mScrapCnt.setText("" + ap.getScrapCnt());
+			}
+		};
+		mAP0005Handler.setHandler(handler);
 	}
 
 	public void processAP0008() {
 
 	}
 
-	public void setContent(long brdNo) {
-		if (mArticleTask != null
-				&& !(mArticleTask.getStatus() == Status.FINISHED))
+	public void toggleLikeCnt(){
+		if (mPostTask != null
+				&& !(mPostTask.getStatus() == Status.FINISHED))
 			return;
-		Log.d("brdNo", "brdNo = " + brdNo);
-		AP0003 ap = new AP0003();
-		ap.setType(CodeType.INTERIOR_TYPE);
-		ap.setReqPoNo(brdNo);
+		AP0004 ap = new AP0004();
+		ap.setType(brdType);
+		ap.setBrdNo(brdNo);
+		ap.setUsrId(SessionManager.getInstance(this).getUserDetails().get(SessionManager.KEY_EMAIL));
 
+		mAP0004Handler.setOneTranData(ap);
+		mPostTask = new PostMessageTask(this, mAP0004Handler,
+				ArticleHandler.LIKE_CNT);
+		mPostTask.setShowLoadingProgressDialog(true);
+		mPostTask.execute(MediaType.APPLICATION_JSON);
+	}
+	
+	public void toggleScrapCnt(){
+		if (mPostTask != null
+				&& !(mPostTask.getStatus() == Status.FINISHED))
+			return;
+		AP0005 ap = new AP0005();
+		ap.setType(brdType);
+		ap.setBrdNo(brdNo);
+		ap.setUsrId(SessionManager.getInstance(this).getUserDetails().get(SessionManager.KEY_EMAIL));
+
+		mAP0005Handler.setOneTranData(ap);
+		mPostTask = new PostMessageTask(this, mAP0005Handler,
+				ArticleHandler.SCRAP_CNT);
+		mPostTask.setShowLoadingProgressDialog(true);
+		mPostTask.execute(MediaType.APPLICATION_JSON);
+	}
+	
+	public void setContent(long brdNo) {
+		if (mPostTask != null
+				&& !(mPostTask.getStatus() == Status.FINISHED))
+			return;
+		AP0003 ap = new AP0003();
+		ap.setType(brdType);
+		ap.setReqPoNo(brdNo);
+		ap.setUsrId(SessionManager.getInstance(this).getUserDetails().get(SessionManager.KEY_EMAIL));
+		
 		mAP0003Handler.setOneTranData(ap);
-		mArticleTask = new PostMessageTask(this, mAP0003Handler,
+		mPostTask = new PostMessageTask(this, mAP0003Handler,
 				ArticleHandler.LIST_INTERIOR);
-		mArticleTask.setShowLoadingProgressDialog(false);
-		mArticleTask.execute(MediaType.APPLICATION_JSON);
+		mPostTask.setShowLoadingProgressDialog(false);
+		mPostTask.execute(MediaType.APPLICATION_JSON);
 	}
 
 	private void initActionBar() {
@@ -231,7 +272,7 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 	}
 
 	// 스크롤뷰안에 리스트뷰 스크롤제대로 되도록
-	public static void setListViewHeightBasedOnChildren(ListView listView) {
+	public void setListViewHeightBasedOnChildren(ListView listView) {
 		ListAdapter listAdapter = listView.getAdapter();
 		if (listAdapter == null)
 			return;
@@ -271,13 +312,13 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.btn_like:
-			
+			toggleLikeCnt();
 			break;
 		case R.id.btn_scrap:
-
+			toggleScrapCnt();
 			break;
 		case R.id.btn_send_reply:
-
+			
 			break;
 		}
 	}
