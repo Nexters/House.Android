@@ -11,6 +11,8 @@ public class InteriorEntity {
 	public String content;
 	public String tag;
 	public String category;
+	public String created;
+	public String modified;
 	public int like;
 	public int comment;
 	public int badge;

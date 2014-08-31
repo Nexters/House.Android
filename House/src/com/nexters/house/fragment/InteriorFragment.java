@@ -1,28 +1,16 @@
 package com.nexters.house.fragment;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.springframework.http.MediaType;
 
-import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
-import uk.co.senab.actionbarpulltorefresh.library.Options;
-import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
-import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Path.Direction;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.os.AsyncTask.Status;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Layout.Directions;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,23 +24,21 @@ import android.widget.TextView;
 import com.nexters.house.R;
 import com.nexters.house.activity.MainActivity;
 import com.nexters.house.adapter.InteriorAdapter;
+import com.nexters.house.core.SessionManager;
 import com.nexters.house.entity.APICode;
 import com.nexters.house.entity.CodeType;
 import com.nexters.house.entity.InteriorEntity;
 import com.nexters.house.entity.reqcode.AP0001;
-import com.nexters.house.entity.reqcode.CM0001;
 import com.nexters.house.entity.reqcode.AP0001.AP0001Res;
+import com.nexters.house.entity.reqcode.AP0007;
 import com.nexters.house.handler.AbstractHandler;
 import com.nexters.house.handler.ArticleHandler;
 import com.nexters.house.thread.PostMessageTask;
 import com.nexters.house.utils.JacksonUtils;
 
 public class InteriorFragment extends Fragment {
-
-	private final String TAG = "InteriorFragment";
-	
 	private ArrayList<InteriorEntity> mInteriorItemArrayList;
-	private ListView lv_main;
+	private ListView mLvMain;
 	private InteriorAdapter mListAdapter;
 	private ImageView btnDown;
 	private TextView tvContent;
@@ -61,6 +47,7 @@ public class InteriorFragment extends Fragment {
 	private PostMessageTask mArticleTask;
 	
 	private ArticleHandler<AP0001> mAP0001Handler;
+	private ArticleHandler<AP0007> mAP0007Handler;
 	
 	private OnScrollListener mScrollListener;
 	
@@ -79,21 +66,26 @@ public class InteriorFragment extends Fragment {
 
 	@SuppressLint("InflateParams")
 	private void initResources(View v){
-		lv_main = (ListView) v.findViewById(R.id.lv_interior_view);
+		mLvMain = (ListView) v.findViewById(R.id.lv_interior_view);
 		mInteriorItemArrayList = new ArrayList<InteriorEntity>();
+		
+		mAP0001Handler = new ArticleHandler<AP0001>(mMainActivity, "AP0001");
+		mAP0007Handler = new ArticleHandler<AP0007>(mMainActivity, "AP0007");
 		
 		View footerView = ((LayoutInflater)getActivity().
 				getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.listfooter, null, false);
 
 		mListAdapter = new InteriorAdapter(getActivity().
 				getApplicationContext(), mInteriorItemArrayList, R.layout.custom_view_interior, mMainActivity);
-
+		mListAdapter.setHandler(mAP0007Handler);
+		
 		//footerview를  listview 제일 하단에 붙임 
-		lv_main.addFooterView(footerView);
-		lv_main.setAdapter(mListAdapter);
+		mLvMain.addFooterView(footerView);
+		mLvMain.setAdapter(mListAdapter);
 		
 		// Post List
 		processAP0001();
+		processAP0007();
 		
 		// Scroll
 		mScrollListener = new OnScrollListener() {
@@ -106,7 +98,7 @@ public class InteriorFragment extends Fragment {
 			@Override
 			public synchronized void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
-				//what is the bottom iten that is visible
+				//what is the bottom item that is visible
 				int lastInScreen = firstVisibleItem + visibleItemCount;				
 
 				//is the bottom item visible & not loading more already ? Load more !
@@ -119,16 +111,21 @@ public class InteriorFragment extends Fragment {
 				}
 			}
 		};
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
 		// init List
+		mListAdapter.clear();
 		addInteriorList(0);
 	}
 
 	private void initEvents(){
-		lv_main.setOnScrollListener(mScrollListener);
+		mLvMain.setOnScrollListener(mScrollListener);
 	}
 	
 	public void processAP0001(){
-    	mAP0001Handler = new ArticleHandler<AP0001>(mMainActivity, "AP0001");
     	AbstractHandler.Handler handler = new AbstractHandler.Handler() {
 			public void handle(APICode resCode) {
 				InteriorAdapter listAdapter = mListAdapter;
@@ -143,17 +140,29 @@ public class InteriorFragment extends Fragment {
 						imgUrls.add(mMainActivity.getString(R.string.base_uri) + res.brdImg.get(j).brdOriginImg);
 					listAdapter.add(res.brdNo, res.brdId, new String(res.brdContents) + " - " + res.brdNo, imgUrls, res.brdLikeCnt, res.brdCommentCnt);
 				}
-				Log.d("resCnt", "resCnt : " + ap.getResCnt());
+//				Log.d("resCnt", "resCnt : " + ap.getResCnt());
 				listAdapter.notifyDataSetChanged();
 			}
 		};
 		mAP0001Handler.setHandler(handler);
 	}
 	
+	public void processAP0007(){
+    	AbstractHandler.Handler handler = new AbstractHandler.Handler() {
+			public void handle(APICode resCode) {
+				AP0007 ap = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), AP0007.class);
+				
+				mListAdapter.clear();
+				addInteriorList(0);
+			}
+		};
+		mAP0007Handler.setHandler(handler);
+	}
+	
 	public void addInteriorList(long interiorNo){
 		if(mArticleTask != null && !(mArticleTask.getStatus() == Status.FINISHED))
 			return ;
-		Log.d("interiorNo", "interiorNo = " + interiorNo);
+//		Log.d("interiorNo", "interiorNo = " + interiorNo);
 		AP0001 ap = new AP0001();
 		ap.setType(CodeType.INTERIOR_TYPE);
 		ap.setOrderType("new");
@@ -165,11 +174,6 @@ public class InteriorFragment extends Fragment {
 		mArticleTask = new PostMessageTask(mMainActivity, mAP0001Handler, ArticleHandler.LIST_INTERIOR);
 		mArticleTask.setShowLoadingProgressDialog(false);
 		mArticleTask.execute(MediaType.APPLICATION_JSON);
-	}
-	
-	@Override
-	public void onResume() {
-		super.onResume();
 	}
 
 	public InteriorEntity mockEntity(){

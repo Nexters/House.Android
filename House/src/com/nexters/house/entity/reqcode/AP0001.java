@@ -111,6 +111,10 @@ public class AP0001 implements Serializable {
 		public String brdCateNm;
 		@JsonProperty("_brd_cate")
 		public int brdCate;
+		@JsonProperty("_brd_modified")
+		public String brdModified;
+		@JsonProperty("_brd_created")
+		public String brdCreated;
 		@JsonProperty("_brd_like_cnt")
 		public int brdLikeCnt;
 		@JsonProperty("_brd_comment_cnt")

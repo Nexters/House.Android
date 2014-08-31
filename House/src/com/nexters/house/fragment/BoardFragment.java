@@ -2,12 +2,15 @@ package com.nexters.house.fragment;
 
 import java.util.*;
 
+import org.springframework.http.MediaType;
+
 import uk.co.senab.actionbarpulltorefresh.library.*;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.*;
 import android.annotation.*;
 import android.app.*;
 import android.content.*;
 import android.os.*;
+import android.os.AsyncTask.Status;
 import android.support.v4.app.Fragment;
 import android.view.*;
 import android.widget.*;
@@ -17,20 +20,28 @@ import com.nexters.house.R;
 import com.nexters.house.activity.*;
 import com.nexters.house.adapter.*;
 import com.nexters.house.entity.*;
+import com.nexters.house.entity.reqcode.AP0001;
+import com.nexters.house.entity.reqcode.AP0007;
+import com.nexters.house.entity.reqcode.AP0001.AP0001Res;
+import com.nexters.house.handler.AbstractHandler;
+import com.nexters.house.handler.ArticleHandler;
+import com.nexters.house.thread.PostMessageTask;
+import com.nexters.house.utils.JacksonUtils;
 
-public class BoardFragment extends Fragment implements OnRefreshListener{
-	ListView mBoardList;
-	View mView;
-	
-	private PullToRefreshLayout mPullToRefreshLayout;
-
+public class BoardFragment extends Fragment {
 	private ArrayList<BoardEntity> mBoardItemArrayList;
-	private ListView lvMain;
+	private ListView mLvMain;
 	private BoardAdapter mListAdapter;
-	
-	private Boolean loading = true;
+
 	private MainActivity mMainActivity;
-	
+
+	private PostMessageTask mArticleTask;
+
+	private ArticleHandler<AP0001> mAP0001Handler;
+	private ArticleHandler<AP0007> mAP0007Handler;
+
+	private OnScrollListener mScrollListener;
+
 	public BoardFragment(MainActivity mainActivity) {
 		this.mMainActivity = mainActivity;
 	}
@@ -39,6 +50,7 @@ public class BoardFragment extends Fragment implements OnRefreshListener{
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -46,183 +58,125 @@ public class BoardFragment extends Fragment implements OnRefreshListener{
 		View v = inflater.inflate(R.layout.fragment_board, container, false);
 		initResources(v);
 		initEvents();
-
 		return v;
 	}
-	
+
 	@SuppressLint("InflateParams")
-	private void initResources(View v){
-
-		mPullToRefreshLayout = (PullToRefreshLayout)v.findViewById(R.id.ptr_layout);
-		ActionBarPullToRefresh.from(getActivity()).allChildrenArePullable().listener(this).setup(mPullToRefreshLayout);
-
-		lvMain = (ListView) v.findViewById(R.id.board_list);
+	private void initResources(View v) {
+		mLvMain = (ListView) v.findViewById(R.id.lv_board_view);
 		mBoardItemArrayList = new ArrayList<BoardEntity>();
 
-		View footerView = ((LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.listfooter, null, false);
+		mAP0001Handler = new ArticleHandler<AP0001>(mMainActivity, "AP0001");
+		mAP0007Handler = new ArticleHandler<AP0007>(mMainActivity, "AP0007");
+		
+		View footerView = ((LayoutInflater) getActivity().getSystemService(
+				Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.listfooter,
+				null, false);
 
-		mListAdapter = new BoardAdapter(getActivity().getApplicationContext(), mBoardItemArrayList, R.layout.custom_view_board_left, mMainActivity);
+		mListAdapter = new BoardAdapter(mMainActivity,
+				mBoardItemArrayList, mMainActivity);
 
-		//footerview를  listview 제일 하단에 붙임 
-		lvMain.addFooterView(footerView);
-		lvMain.setAdapter(mListAdapter);
+		// footerview를 listview 제일 하단에 붙임
+		mLvMain.addFooterView(footerView);
+		mLvMain.setAdapter(mListAdapter);
 
-		//Load the first 5 items
-		Thread thread =  new Thread(null, loadListItems);
-		thread.start();
+		// Post List
+		processAP0001();
+		processAP0007();
+		
+		// Scroll
+		mScrollListener = new OnScrollListener() {
+			boolean isState;
 
-
-	}
-
-//	@Override
-//	public void onActivityCreated(Bundle savedInstanceState) {
-//		super.onActivityCreated(savedInstanceState);
-//
-//		ArrayList<String> arrayList = new ArrayList<String>();
-//		arrayList.add("content1");
-//		arrayList.add("content2");
-//		arrayList.add("content3");
-//		arrayList.add("content4");
-//		arrayList.add("content5");
-//		arrayList.add("content6");
-//		arrayList.add("content7");
-//		arrayList.add("content8");
-//		arrayList.add("content9");
-//		arrayList.add("content10");
-//
-//		BoardAdapter boardAdapter = new BoardAdapter(getActivity(), arrayList);
-//
-//		mBoardList.setAdapter(boardAdapter);
-//	}
-	
-	
-	private void initEvents(){
-		lvMain.setOnScrollListener(scrollListener);
-
-
-	}
-
-	private Runnable loadListItems = new Runnable(){
-		@Override
-		public void run(){
-			loading = true;
-
-			mHandler.sendEmptyMessage(0);
-
-		}
-	};
-
-	private Runnable loadMoreListItems = new Runnable() {			
-		@Override
-		public void run() {
-			loading = true;
-
-			mHandler.sendEmptyMessage(1);
-
-		}
-	};	
-
-	private Runnable refreshListItem = new Runnable(){
-		@Override
-		public void run(){
-			mHandler.sendEmptyMessage(2);
-		}
-	};
-
-	Handler mHandler = new Handler(){
-		public void handleMessage(Message msg){
-			switch(msg.what){
-			case 0:
-				//처음 로딩할때 몇개로딩할지 여기서 결정하고 보여주는거.
-				for(int i=0;i<5 ;i++){
-					mListAdapter.add();
-				}
-				mListAdapter.notifyDataSetChanged();
-				//Done loading more.
-				loading = false;
-				break;
-			case 1:
-				//스크롤해서 리스트3개씩 추가해주는부분 
-				for (int i = 0; i < 3; i++) {		
-					mListAdapter.add();	
-				}
-				mListAdapter.notifyDataSetChanged();
-				loading = false;
-				break;
-			case 2:
-
-				break;
-			case 3:
-
-				break;
-			}
-		}
-	};
-
-
-	private OnScrollListener scrollListener = new OnScrollListener() {
-
-		@Override
-		public void onScrollStateChanged(AbsListView view, int scrollState) {
-			// TODO Auto-generated method stub
-		}
-
-		@Override
-		public void onScroll(AbsListView view, int firstVisibleItem,
-				int visibleItemCount, int totalItemCount) {
-			// TODO Auto-generated method stub
-			//what is the bottom iten that is visible
-			int lastInScreen = firstVisibleItem + visibleItemCount;				
-
-			//is the bottom item visible & not loading more already ? Load more !
-			if((lastInScreen == totalItemCount) && !(loading)){
-
-				Thread thread =  new Thread(null, loadMoreListItems);
-				thread.start();
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				isState = true;
 			}
 
-		}
-	};
+			@Override
+			public synchronized void onScroll(AbsListView view,
+					int firstVisibleItem, int visibleItemCount,
+					int totalItemCount) {
+				// what is the bottom item that is visible
+				int lastInScreen = firstVisibleItem + visibleItemCount;
+
+				// is the bottom item visible & not loading more already ? Load
+				// more !
+				if (isState && (lastInScreen == totalItemCount)
+						&& (mArticleTask.getStatus() == Status.FINISHED)) {
+					if (mBoardItemArrayList.size() > 0)
+						addSudatalkList(mBoardItemArrayList
+								.get(mBoardItemArrayList.size() - 1).no);
+					else
+						addSudatalkList(0);
+					isState = false;
+				}
+			}
+		};
+
+	}
 
 	@Override
-	public void onRefreshStarted(View view) {
-		/**
-		 * Simulate Refresh with 4 seconds sleep
-		 */
-		new AsyncTask<Void, Void, Void>() {
-
-			@Override
-			protected Void doInBackground(Void... params) {
-				try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				return null;
-			}
-
-	
-			@Override
-			protected void onPostExecute(Void result) {
-				super.onPostExecute(result);
-				BoardEntity b = new BoardEntity();
-				
-				b.id = "Refresh!!";
-				
-				b.category = "새로고침";
-				b.createdTime = "방금";
-				b.title = "새로고쳐졌당 :) ";
-				b.content = "얼른해서 완성합시다. 이거 화면 늘어나는거 어디까지되는지 테스트도해야되는데. 글자 제한을 몇으로 해야될지 그리고 화면은 얼마나 늘어나게될지 한번 봐봅시다. 인유어하우스 화이팅 마감이 얼마 남지 않았음.";
-				
-				b.like = 1;
-				b.reply = 1;
-				
-				mBoardItemArrayList.add(0,b);
-				mListAdapter.notifyDataSetChanged();
-				// Notify PullToRefreshLayout that the refresh has finished
-				mPullToRefreshLayout.setRefreshComplete();
-			}
-		}.execute();
+	public void onResume() {
+		super.onResume();
+		// init List
+		mListAdapter.clear();
+		addSudatalkList(0);
 	}
-
+	
+	
+	private void initEvents() {
+		mLvMain.setOnScrollListener(mScrollListener);
+	}
+	
+	public void processAP0001(){
+    	AbstractHandler.Handler handler = new AbstractHandler.Handler() {
+			public void handle(APICode resCode) {
+				BoardAdapter listAdapter = mListAdapter;
+				List<AP0001> apList = resCode.getTranData();
+				AP0001 ap = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), AP0001.class);
+				
+				for(int i=0; i<ap.getResCnt(); i++){
+					AP0001Res res = ap.getRes().get(i);
+					
+					ArrayList<String> imgUrls = new ArrayList<String>();
+					for(int j=0; j<res.brdImg.size(); j++)
+						imgUrls.add(mMainActivity.getString(R.string.base_uri) + res.brdImg.get(j).brdOriginImg);
+					listAdapter.add(res.brdNo, res.brdId, new String(res.brdContents) + " - " + res.brdNo, imgUrls, res.brdLikeCnt, res.brdCommentCnt);
+				}
+//				Log.d("resCnt", "resCnt : " + ap.getResCnt());
+				listAdapter.notifyDataSetChanged();
+			}
+		};
+		mAP0001Handler.setHandler(handler);
+	}
+	
+	public void processAP0007(){
+    	AbstractHandler.Handler handler = new AbstractHandler.Handler() {
+			public void handle(APICode resCode) {
+				AP0007 ap = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), AP0007.class);
+				
+				mListAdapter.clear();
+				addSudatalkList(0);
+			}
+		};
+		mAP0007Handler.setHandler(handler);
+	}
+	
+	public void addSudatalkList(long talkNo){
+		if(mArticleTask != null && !(mArticleTask.getStatus() == Status.FINISHED))
+			return ;
+//		Log.d("interiorNo", "interiorNo = " + interiorNo);
+		AP0001 ap = new AP0001();
+		ap.setType(CodeType.INTERIOR_TYPE);
+		ap.setOrderType("new");
+		ap.setReqPo(0);
+		ap.setReqPoCnt(3);
+		ap.setReqPoNo(talkNo);
+		
+		mAP0001Handler.setOneTranData(ap);
+		mArticleTask = new PostMessageTask(mMainActivity, mAP0001Handler, ArticleHandler.LIST_INTERIOR);
+		mArticleTask.setShowLoadingProgressDialog(false);
+		mArticleTask.execute(MediaType.APPLICATION_JSON);
+	}
 }
