@@ -8,4 +8,5 @@ public class ReplyEntity {
 	public String profileImg;
 	public String name;
 	public String content;
+	public String created;
 }

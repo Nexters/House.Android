@@ -18,6 +18,7 @@ public class AP0003 implements Serializable {
 	private String brdSubject;
 	private byte[] brdContents;
 	private String brdTag;
+	private String brdModified;
 	private String brdCreated;
 	private String brdCateNm;
 	private int brdCate;
@@ -29,6 +30,8 @@ public class AP0003 implements Serializable {
 	
 	private int brdCommentCnt;
 	private List<AP0003Comment> brdComment;
+
+	
 
 	@JsonProperty("_type")
 	public int getType() {
@@ -111,6 +114,11 @@ public class AP0003 implements Serializable {
 	public int getBrdScrapState() {
 		return brdScrapState;
 	}
+	@JsonIgnore
+	public String getBrdModified() {
+		return brdModified;
+	}
+	
 	
 	@JsonIgnore
 	public void setType(int type) {
@@ -192,10 +200,16 @@ public class AP0003 implements Serializable {
 	public void setBrdScrapState(int brdScrapState) {
 		this.brdScrapState = brdScrapState;
 	}
+	@JsonProperty("_brd_modified")
+	public void setBrdModified(String brdModified) {
+		this.brdModified = brdModified;
+	}
 	
 	public static class AP0003Comment {
 		@JsonProperty("_brd_comment_no")
 		public long brdCommentNo;
+		@JsonProperty("_brd_comment_created")
+		public String brdCommentCreated;
 		@JsonProperty("_brd_comment_nm")
 		public String brdCommentNm;
 		@JsonProperty("brd_comment_id")

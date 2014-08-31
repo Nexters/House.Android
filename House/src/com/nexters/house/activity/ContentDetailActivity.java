@@ -35,6 +35,7 @@ import com.nexters.house.entity.reqcode.AP0003;
 import com.nexters.house.entity.reqcode.AP0004;
 import com.nexters.house.entity.reqcode.AP0005;
 import com.nexters.house.entity.reqcode.AP0008;
+import com.nexters.house.entity.reqcode.AP0003.AP0003Comment;
 import com.nexters.house.handler.AbstractHandler;
 import com.nexters.house.handler.ArticleHandler;
 import com.nexters.house.thread.PostMessageTask;
@@ -69,6 +70,7 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 
 	private PostMessageTask mPostTask;
 	private ArticleHandler<AP0003> mAP0003Handler;
+	private ArticleHandler<AP0003> mAP0003CommentHandler;
 	private ArticleHandler<AP0004> mAP0004Handler;
 	private ArticleHandler<AP0005> mAP0005Handler;
 	private ArticleHandler<AP0008> mAP0008Handler;
@@ -93,12 +95,6 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 		setListViewHeightBasedOnChildren(mContentImage);
 		setListViewHeightBasedOnChildren(mReplyContent);
 		overridePendingTransition(R.anim.start_enter, R.anim.start_exit);
-	}
-
-	@Override
-	public void finish() {
-		super.finish();
-		overridePendingTransition(R.anim.end_enter, R.anim.end_exit);
 	}
 
 	@SuppressLint("InflateParams")
@@ -140,17 +136,13 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 		mScrollView = (ScrollView) findViewById(R.id.sv_content);
 
 		processAP0003();
+		processAP0003Comment();
 		processAP0004();
 		processAP0005();
 		processAP0008();
 		
-		// 20을 댓글 갯수로 바꾸어야
-		for (int itemCount = 0; itemCount < 3; itemCount++) {
-			ReplyEntity mReplyEntity = new ReplyEntity();
-			mReplyArrayList.add(mReplyEntity);
-		}
 		// init
-		setContent(brdNo);
+		setContents(brdNo);
 	}
 
 	public void initEvent() {
@@ -170,23 +162,64 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 				mProfileName.setText(ap.getBrdNm());
 				mCreated.setText(ap.getBrdCreated());
 				mContent.setText(new String(ap.getBrdContents()));
+				
 				List<String> imgs = ap.getBrdImg();
-
 				for (int i = 0; i < imgs.size(); i++)
 					mImageArrayList.add(getApplicationContext().getString(R.string.base_uri) + imgs.get(i));
+
+				List<AP0003Comment> comments = ap.getBrdComment();
+				for (int i = 0; i < comments.size(); i++){
+					ReplyEntity reply = new ReplyEntity();
+					reply.no = comments.get(i).brdCommentNo;
+					reply.id = comments.get(i).brdCommentId;
+					reply.profileImg = comments.get(i).brdCommentProfileImg;
+					reply.name = comments.get(i).brdCommentNm;
+					reply.content = new String(comments.get(i).brdCommentContents);
+					reply.created = comments.get(i).brdCommentCreated;
+					mReplyArrayList.add(reply);
+				}
 				mLikeCnt.setText("" + ap.getBrdLikeCnt());
 				mScrapCnt.setText("" + ap.getBrdScrapCnt());
 				mReplyCnt.setText("" + ap.getBrdCommentCnt());
 				mBtnLike.setChecked((ap.getBrdLikeState() == 1)? true : false);
 				mBtnScrap.setChecked((ap.getBrdScrapState() == 1)? true : false);
 				
+				mReplyAdapter.notifyDataSetChanged();
 				mImageAdapter.notifyDataSetChanged();
 				setListViewHeightBasedOnChildren(mContentImage);
+				setListViewHeightBasedOnChildren(mReplyContent);
 			}
 		};
 		mAP0003Handler.setHandler(handler);
 	}
-
+	
+	public void processAP0003Comment() {
+		mAP0003CommentHandler = new ArticleHandler<AP0003>(this, "AP0003");
+		AbstractHandler.Handler handler = new AbstractHandler.Handler() {
+			public void handle(APICode resCode) {
+				AP0003 ap = JacksonUtils.hashMapToObject((HashMap) resCode
+						.getTranData().get(0), AP0003.class);
+				
+				List<AP0003Comment> comments = ap.getBrdComment();
+				mReplyArrayList.clear();
+				for (int i = 0; i < comments.size(); i++){
+					ReplyEntity reply = new ReplyEntity();
+					reply.no = comments.get(i).brdCommentNo;
+					reply.id = comments.get(i).brdCommentId;
+					reply.profileImg = comments.get(i).brdCommentProfileImg;
+					reply.name = comments.get(i).brdCommentNm;
+					reply.content = new String(comments.get(i).brdCommentContents);
+					reply.created = comments.get(i).brdCommentCreated;
+					mReplyArrayList.add(reply);
+				}
+				mReplyCnt.setText("" + ap.getBrdCommentCnt());
+				mReplyAdapter.notifyDataSetChanged();
+				setListViewHeightBasedOnChildren(mReplyContent);
+			}
+		};
+		mAP0003CommentHandler.setHandler(handler);
+	}
+	
 	public void processAP0004() {
 		mAP0004Handler = new ArticleHandler<AP0004>(this, "AP0004");
 		AbstractHandler.Handler handler = new AbstractHandler.Handler() {
@@ -210,11 +243,36 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 		};
 		mAP0005Handler.setHandler(handler);
 	}
-
+	
 	public void processAP0008() {
-
+		mAP0008Handler = new ArticleHandler<AP0008>(this, "AP0008");
+		AbstractHandler.Handler handler = new AbstractHandler.Handler() {
+			public void handle(APICode resCode) {
+				AP0008 ap = JacksonUtils.hashMapToObject((HashMap) resCode
+						.getTranData().get(0), AP0008.class);
+				listComment();
+			}
+		};
+		mAP0008Handler.setHandler(handler);
 	}
 
+	public void writeComment(){
+		if (mPostTask != null
+				&& !(mPostTask.getStatus() == Status.FINISHED))
+			return;
+		AP0008 ap = new AP0008();
+		ap.setType(brdType);
+		ap.setReqPoNo(brdNo);
+		ap.setCommentId(SessionManager.getInstance(this).getUserDetails().get(SessionManager.KEY_EMAIL));
+		ap.setCommentContents(mEditReply.getText().toString().getBytes());
+		
+		mAP0008Handler.setOneTranData(ap);
+		mPostTask = new PostMessageTask(this, mAP0008Handler,
+				ArticleHandler.WRITE_REPLY);
+		mPostTask.setShowLoadingProgressDialog(true);
+		mPostTask.execute(MediaType.APPLICATION_JSON);
+	}
+	
 	public void toggleLikeCnt(){
 		if (mPostTask != null
 				&& !(mPostTask.getStatus() == Status.FINISHED))
@@ -247,7 +305,7 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 		mPostTask.execute(MediaType.APPLICATION_JSON);
 	}
 	
-	public void setContent(long brdNo) {
+	public void setContents(long brdNo) {
 		if (mPostTask != null
 				&& !(mPostTask.getStatus() == Status.FINISHED))
 			return;
@@ -262,7 +320,58 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 		mPostTask.setShowLoadingProgressDialog(false);
 		mPostTask.execute(MediaType.APPLICATION_JSON);
 	}
+	
+	public void listComment(){
+		AP0003 ap = new AP0003();
+		ap.setType(brdType);
+		ap.setReqPoNo(brdNo);
+		ap.setUsrId(SessionManager.getInstance(this).getUserDetails().get(SessionManager.KEY_EMAIL));
+		
+		mAP0003CommentHandler.setOneTranData(ap);
+		mPostTask = new PostMessageTask(this, mAP0003CommentHandler,
+				ArticleHandler.LIST_INTERIOR);
+		mPostTask.setShowLoadingProgressDialog(false);
+		mPostTask.execute(MediaType.APPLICATION_JSON);
+	}
+	
+	public void sendClicked(View v) { // 댓글 전송버튼 눌렀을때 cnt 증가 및 댓글리스트 하나더 생성
+		if (mEditReply.length() > 0) {
+			int before = Integer.parseInt((String) mReplyCnt.getText());
+			mReplyCnt.setText(Integer.toString(before + 1));
 
+			ReplyEntity mReplyEntity = new ReplyEntity();
+			mReplyArrayList.add(0, mReplyEntity);
+			mReplyAdapter.notifyDataSetChanged();
+			setListViewHeightBasedOnChildren(mReplyContent);
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
+			imm.hideSoftInputFromWindow(mEditReply.getWindowToken(), 0);
+			
+		} else
+			Toast.makeText(this, "1자 이상 입력해주세요.", Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.btn_like:
+			toggleLikeCnt();
+			break;
+		case R.id.btn_scrap:
+			toggleScrapCnt();
+			break;
+		case R.id.btn_send_reply:
+			writeComment();
+			break;
+		}
+	}
+	
+	@Override
+	public void finish() {
+		super.finish();
+		overridePendingTransition(R.anim.end_enter, R.anim.end_exit);
+	}
+	
 	private void initActionBar() {
 		getSupportActionBar().setDisplayShowTitleEnabled(false);
 		getSupportActionBar().setDisplayShowHomeEnabled(false);
@@ -270,7 +379,7 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 
 		getSupportActionBar().setCustomView(R.layout.action_main);
 	}
-
+	
 	// 스크롤뷰안에 리스트뷰 스크롤제대로 되도록
 	public void setListViewHeightBasedOnChildren(ListView listView) {
 		ListAdapter listAdapter = listView.getAdapter();
@@ -290,40 +399,4 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 		listView.setLayoutParams(params);
 		listView.requestLayout();
 	}
-
-	public void sendClicked(View v) { // 댓글 전송버튼 눌렀을때 cnt 증가 및 댓글리스트 하나더 생성
-		if (mEditReply.length() > 0) {
-			int before = Integer.parseInt((String) mReplyCnt.getText());
-			mReplyCnt.setText(Integer.toString(before + 1));
-
-			ReplyEntity mReplyEntity = new ReplyEntity();
-			mReplyArrayList.add(0, mReplyEntity);
-			mReplyAdapter.notifyDataSetChanged();
-			setListViewHeightBasedOnChildren(mReplyContent);
-
-			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-
-			imm.hideSoftInputFromWindow(mEditReply.getWindowToken(), 0);
-		} else
-			Toast.makeText(this, "1자 이상 입력해주세요.", Toast.LENGTH_SHORT).show();
-	}
-
-	@Override
-	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.btn_like:
-			toggleLikeCnt();
-			break;
-		case R.id.btn_scrap:
-			toggleScrapCnt();
-			break;
-		case R.id.btn_send_reply:
-			
-			break;
-		}
-	}
-	
-	
-	
-	
 }
