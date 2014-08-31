@@ -57,7 +57,7 @@ public class BoardFragment extends Fragment {
 
 		View v = inflater.inflate(R.layout.fragment_board, container, false);
 		initResources(v);
-		initEvents();
+//		initEvents();
 		return v;
 	}
 
@@ -113,15 +113,17 @@ public class BoardFragment extends Fragment {
 				}
 			}
 		};
-
+		for(int i=0; i<4; i++){
+			mListAdapter.add();
+		}
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
 		// init List
-		mListAdapter.clear();
-		addSudatalkList(0);
+//		mListAdapter.clear();
+//		addSudatalkList(0);
 	}
 	
 	
@@ -178,5 +180,22 @@ public class BoardFragment extends Fragment {
 		mArticleTask = new PostMessageTask(mMainActivity, mAP0001Handler, ArticleHandler.LIST_INTERIOR);
 		mArticleTask.setShowLoadingProgressDialog(false);
 		mArticleTask.execute(MediaType.APPLICATION_JSON);
+	}
+	
+	public BoardEntity mockEntity(){
+		BoardEntity e = new BoardEntity();
+		e.badge = 1;
+		e.content = "인테리어 입니다 ~~~~";
+		e.id = "newId";
+		e.imageUrls = new ArrayList<String>(){{
+			add("https://fbcdn-sphotos-a-a.akamaihd.net/hphotos-ak-xfp1/v/t1.0-9/10402950_570244953084785_2207844659246242948_n.jpg?oh=b19d78a504af3a54501e629f0383da87&oe=5448A4C6&__gda__=1413348687_974d19e8b5ddcf217cb99b77b0186685");
+			add("https://fbcdn-sphotos-g-a.akamaihd.net/hphotos-ak-xfa1/t1.0-9/10487348_570244969751450_1480175892860352468_n.jpg");
+			add("https://fbcdn-sphotos-f-a.akamaihd.net/hphotos-ak-xpa1/t1.0-9/1546376_570244983084782_3616217572638065925_n.jpg");
+			add("https://fbcdn-sphotos-d-a.akamaihd.net/hphotos-ak-xpf1/t1.0-9/10487342_570244993084781_3890212537564580615_n.jpg");
+			add("https://fbcdn-sphotos-b-a.akamaihd.net/hphotos-ak-xpa1/v/t1.0-9/10524374_570245013084779_7454008372005256632_n.jpg?oh=4761db9f33b72709585016c2649c747e&oe=5434C617&__gda__=1413811119_55884851b246ddb301725a0a78cacc84");
+			}};; 
+		e.comment = 1;
+		e.like = 2;
+		return e;
 	}
 }
