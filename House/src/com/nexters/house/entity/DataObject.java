@@ -1,7 +1,6 @@
 package com.nexters.house.entity;
 
 public class DataObject {
-	
 	private int color;
 	private String name;
 	
@@ -28,5 +27,4 @@ public class DataObject {
 	public void setName(String name) {
 		this.name = name;
 	}
-
 }

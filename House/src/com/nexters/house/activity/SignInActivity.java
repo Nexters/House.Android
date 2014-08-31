@@ -1,5 +1,7 @@
 package com.nexters.house.activity;
 
+import org.springframework.http.MediaType;
+
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -11,6 +13,9 @@ import android.widget.EditText;
 
 import com.nexters.house.R;
 import com.nexters.house.core.SessionManager;
+import com.nexters.house.entity.reqcode.CM0001;
+import com.nexters.house.handler.AuthHandler;
+import com.nexters.house.thread.PostMessageTask;
 
 public class SignInActivity extends AbstractAsyncActivity implements View.OnClickListener {
     private EditText mHsEmail;
@@ -80,8 +85,8 @@ public class SignInActivity extends AbstractAsyncActivity implements View.OnClic
     }
     
     private void executeSignIn() {
-    	testLogin();
-    	/* CM0001 cm = new CM0001();
+//    	testLogin();
+    	CM0001 cm = new CM0001();
     	cm.setUsrId(mHsEmail.getText().toString());
     	cm.setUsrPw(mHsPassword.getText().toString());
 
@@ -90,6 +95,6 @@ public class SignInActivity extends AbstractAsyncActivity implements View.OnClic
     	authHandler.addTranData(cm);
     	
     	PostMessageTask signInTask = new PostMessageTask(this, authHandler, AuthHandler.LOGIN_METHOD);
-    	signInTask.execute(MediaType.APPLICATION_JSON); */
+    	signInTask.execute(MediaType.APPLICATION_JSON); 
     }
 }

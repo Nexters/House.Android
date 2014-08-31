@@ -104,7 +104,7 @@ public class AP0001 implements Serializable {
 		@JsonProperty("_brd_subject")
 		public String brdSubject;
 		@JsonProperty("_brd_contents")
-		public String brdContents;
+		public byte[] brdContents;
 		@JsonProperty("_brd_tag")
 		public String brdTag;
 		@JsonProperty("_brd_cate")
