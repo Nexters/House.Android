@@ -36,8 +36,7 @@ public class ContentImageAdapter extends BaseAdapter {
 
 		if (convertView != null)
 			holder = (Holder) convertView.getTag();
-		if (convertView == null
-				|| (holder != null && holder.position != position)) {
+		if (convertView == null	|| holder.position != position) {
 			convertView = mLayoutInflater.inflate(resource, null);
 			holder = new Holder();
 
