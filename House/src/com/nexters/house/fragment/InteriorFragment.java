@@ -37,9 +37,6 @@ import com.nexters.house.thread.PostMessageTask;
 import com.nexters.house.utils.JacksonUtils;
 
 public class InteriorFragment extends Fragment {
-
-	private final String TAG = "InteriorFragment";
-	
 	private ArrayList<InteriorEntity> mInteriorItemArrayList;
 	private ListView mLvMain;
 	private InteriorAdapter mListAdapter;
@@ -101,7 +98,7 @@ public class InteriorFragment extends Fragment {
 			@Override
 			public synchronized void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
-				//what is the bottom iten that is visible
+				//what is the bottom item that is visible
 				int lastInScreen = firstVisibleItem + visibleItemCount;				
 
 				//is the bottom item visible & not loading more already ? Load more !
@@ -114,7 +111,13 @@ public class InteriorFragment extends Fragment {
 				}
 			}
 		};
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
 		// init List
+		mListAdapter.clear();
 		addInteriorList(0);
 	}
 
@@ -171,11 +174,6 @@ public class InteriorFragment extends Fragment {
 		mArticleTask = new PostMessageTask(mMainActivity, mAP0001Handler, ArticleHandler.LIST_INTERIOR);
 		mArticleTask.setShowLoadingProgressDialog(false);
 		mArticleTask.execute(MediaType.APPLICATION_JSON);
-	}
-	
-	@Override
-	public void onResume() {
-		super.onResume();
 	}
 
 	public InteriorEntity mockEntity(){

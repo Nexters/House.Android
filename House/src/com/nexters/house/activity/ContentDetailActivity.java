@@ -222,6 +222,7 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 				}
 				mReplyCnt.setText("" + ap.getBrdCommentCnt());
 				mReplyAdapter.notifyDataSetChanged();
+				// TODO
 				mReplyContent.invalidateViews();
 				mReplyContent.refreshDrawableState();
 				setListViewHeightBasedOnChildren(mReplyContent);

@@ -3,13 +3,18 @@ package com.nexters.house.entity;
 import java.util.List;
 
 public class BoardEntity {
+	public long no;
 	public String id;
-	public String profileImageUrl;
-	public String category;
-	public String createdTime;
-	public String title;
+	public String name;
+	public String profileImg;
+	public String subject;
 	public String content;
-	public List<String> previewImageUrls;
+	public String tag;
+	public String category;
+	public String created;
+	public String modified;
 	public int like;
-	public int reply;
+	public int comment;
+	public int badge;
+	public List<String> imageUrls;
 }
