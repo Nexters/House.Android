@@ -83,13 +83,14 @@
         android:orientation="vertical" >
 
         <com.daimajia.slider.library.SliderLayout
-            android:id="@+id/slider"
+            android:id="@+id/interior_slider"
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:layout_gravity="center"
             custom:auto_cycle="false"
             custom:pager_animation="Default"
             custom:pager_animation_span="1000"
+            android:clickable="true"
              />
 
         <TextView

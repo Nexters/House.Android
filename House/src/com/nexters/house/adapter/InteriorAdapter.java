@@ -26,6 +26,7 @@ import com.nexters.house.activity.EditActivity;
 import com.nexters.house.activity.MainActivity;
 import com.nexters.house.entity.InteriorEntity;
 import com.nexters.house.utils.CommonUtils;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 
 public class InteriorAdapter extends BaseAdapter {
 	private Context mContext;
@@ -71,13 +72,21 @@ public class InteriorAdapter extends BaseAdapter {
 			createView = convertView = mLayoutInflater.inflate(resource, null);
 			holder = new Holder();
 			
+			// get interior
+			final long no = mInteriorItemArrayList.get(position).no;
+			String id = mInteriorItemArrayList.get(position).id;
+			String content = mInteriorItemArrayList.get(position).content;
+			int nLike = mInteriorItemArrayList.get(position).like;
+			int nReply = mInteriorItemArrayList.get(position).reply;
+			List<String> imageUrls = mInteriorItemArrayList.get(position).image_urls;
+			
 			// find resource
 			holder.position = position;
 			
 			holder.houseId = (TextView) convertView.findViewById(R.id.house_id);
 			holder.interiorContent = (TextView) convertView.findViewById(R.id.interior_content);
 			holder.rlContents = (RelativeLayout) convertView.findViewById(R.id.rl_interior_custom_view);
-			holder.slider = (SliderLayout) convertView.findViewById(R.id.slider);
+			holder.slider = (SliderLayout) convertView.findViewById(R.id.interior_slider);
 			holder.btnDown = (ImageView) convertView.findViewById(R.id.icon_down);
 			holder.btnEdit = (ImageView) convertView.findViewById(R.id.icon_edit);
 			holder.btnDelete = (ImageView) convertView.findViewById(R.id.icon_delete);
@@ -86,7 +95,33 @@ public class InteriorAdapter extends BaseAdapter {
 			holder.interiorLikes = (TextView)convertView.findViewById(R.id.interior_likes_cnt);
 			holder.interiorReplies = (TextView)convertView.findViewById(R.id.interior_reply_cnt);
 			
-			// set click listener
+			// set
+			holder.houseId.setText(id + " = " + position);
+			holder.interiorContent.setText(content);
+			holder.interiorLikes.setText(Integer.toString(nLike));
+			holder.interiorReplies.setText(Integer.toString(nReply));
+
+			SliderLayout slider = (SliderLayout) convertView.findViewById(R.id.interior_slider);
+
+			for (String url : imageUrls) {
+				TextSliderView textSliderView = new TextSliderView(
+						convertView.getContext());
+				// initialize a SliderLayout
+				textSliderView.image(url);
+				textSliderView.setOnSliderClickListener(new BaseSliderView.OnSliderClickListener(){
+					@Override
+					public void onSliderClick(BaseSliderView slider) {
+						Intent intent = new Intent(mContext,ContentDetailActivity.class);
+						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						intent.putExtra("brdNo", no);
+						mContext.startActivity(intent);
+					}
+				});
+				// .setScaleType(BaseSliderView.ScaleType.Fit);
+				slider.addSlider(textSliderView);
+			}
+			
+			// set listener
 			View.OnClickListener convertOnClickListener = new View.OnClickListener() {
 				Boolean clicked = false;
 				@Override
@@ -97,6 +132,8 @@ public class InteriorAdapter extends BaseAdapter {
 					
 					ImageView btnEdit = (ImageView) rootView.findViewById(R.id.icon_edit);
 					ImageView btnDelete = (ImageView) rootView.findViewById(R.id.icon_delete);
+					
+					Intent intent = null;
 					
 					switch(v.getId()){
 					case R.id.icon_down :
@@ -117,15 +154,13 @@ public class InteriorAdapter extends BaseAdapter {
 						break;
 					case R.id.rl_interior_custom_view :
 						//mMainActivity.changeFragment(MainActivity.FRAGMENT_DETAIL_INTERIOR);
-						Intent intent1=new Intent(mContext,ContentDetailActivity.class);
-						intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-						mContext.startActivity(intent1);
+						intent = new Intent(mContext,ContentDetailActivity.class);
+						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						intent.putExtra("brdNo", no);
+						mContext.startActivity(intent);
 						break;
-//					case R.id.slider :
-//						mMainActivity.changeFragment(MainActivity.FRAGMENT_DETAIL_INTERIOR);
-//						break;
 					case R.id.icon_edit:
-						Intent intent=new Intent(mContext,EditActivity.class);
+						intent = new Intent(mContext,EditActivity.class);
 						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 						mContext.startActivity(intent);
 						break;
@@ -135,47 +170,20 @@ public class InteriorAdapter extends BaseAdapter {
 					}
 				}
 			};
-			
 			holder.btnDown.setOnClickListener(convertOnClickListener);
 			holder.btnEdit.setOnClickListener(convertOnClickListener);
 			holder.btnDelete.setOnClickListener(convertOnClickListener);
 			holder.rlContents.setOnClickListener(convertOnClickListener);
+			
 			convertView.setTag(holder);
-			
-			SliderLayout slider = (SliderLayout) convertView.findViewById(R.id.slider);
-			
-			List<String> image_urls = mInteriorItemArrayList.get(position).image_urls;
-			
-			for (String url : image_urls) {
-				TextSliderView textSliderView = new TextSliderView(
-						convertView.getContext());
-				// initialize a SliderLayout
-				textSliderView.image(url);
-				// .setScaleType(BaseSliderView.ScaleType.Fit);
-				slider.addSlider(textSliderView);
-			}
 			// 리스트뷰안의 아이템 높이 설정하는 메소드
 			//convertView.setMinimumHeight(minHeight);
-			
-			// 여기에서 게시물의 사용자 아이디/ 카테고리/ 내용/ 이미지를 넣어줄거임.
-			String id = mInteriorItemArrayList.get(position).id;
-			String content = mInteriorItemArrayList.get(position).content;
-			List<String> image = mInteriorItemArrayList.get(position).image_urls;
-			int nLike = mInteriorItemArrayList.get(position).like;
-			int nReply = mInteriorItemArrayList.get(position).reply;
-			
-			holder.houseId.setText(id + " = " + position);
-			holder.interiorContent.setText(content);
-			holder.interiorLikes.setText(Integer.toString(nLike));
-			holder.interiorReplies.setText(Integer.toString(nReply));
-		} /* else {
-			holder = (Holder) convertView.getTag();
-		} */
+		}
 		return convertView;
 	}
 
 	private class Holder {
-		int position = -1;
+		int position;
 		ImageView houseProfile;
 		LinearLayout tvContents;
 		RelativeLayout rlContents;
@@ -200,8 +208,5 @@ public class InteriorAdapter extends BaseAdapter {
 		e.like = likeCnt;
 		
 		mInteriorItemArrayList.add(e);
-	}
-	public void clickedImage(View v){
-		Toast.makeText(mContext, "클릭", Toast.LENGTH_SHORT).show();
 	}
 }

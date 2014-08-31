@@ -57,7 +57,7 @@ public class InteriorFragment extends Fragment {
 	private ImageView btnDown;
 	private TextView tvContent;
 	private MainActivity mMainActivity;
-
+	
 	private PostMessageTask mArticleTask;
 	
 	private ArticleHandler<AP0001> mArticleHandler;
@@ -81,7 +81,7 @@ public class InteriorFragment extends Fragment {
 	private void initResources(View v){
 		lv_main = (ListView) v.findViewById(R.id.lv_interior_view);
 		mInteriorItemArrayList = new ArrayList<InteriorEntity>();
-
+		
 		View footerView = ((LayoutInflater)getActivity().
 				getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.listfooter, null, false);
 
@@ -139,6 +139,9 @@ public class InteriorFragment extends Fragment {
 				}
 			}
 		};
+		
+		// init List
+		getInteriors(0);
 	}
 
 	private void initEvents(){
@@ -148,7 +151,7 @@ public class InteriorFragment extends Fragment {
 	public void getInteriors(long interiorNo){
 		if(mArticleTask != null && !(mArticleTask.getStatus() == Status.FINISHED))
 			return ;
-		
+		Log.d("interiorNo", "interiorNo = " + interiorNo);
 		AP0001 ap = new AP0001();
 		ap.setType(CodeType.INTERIOR_TYPE);
 		ap.setOrderType("new");
@@ -165,8 +168,6 @@ public class InteriorFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		// init List
-		getInteriors(0);
 	}
 
 	public InteriorEntity mockEntity(){
