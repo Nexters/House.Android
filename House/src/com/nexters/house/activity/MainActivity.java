@@ -18,7 +18,7 @@ import com.nexters.house.*;
 import com.nexters.house.fragment.*;
 import com.nexters.house.utils.*;
 
-public class MainActivity extends SherlockFragmentActivity  implements OnClickListener {
+public class MainActivity extends AbstractAsyncFragmentActivity implements OnClickListener {
 	final String TAG = "MainActivity";
 
 	public int mCurrentFragmentIndex;
@@ -49,7 +49,6 @@ public class MainActivity extends SherlockFragmentActivity  implements OnClickLi
 			finish();
 			return;
 		}
-
 		initActionBar();
 		initResources();
 		initEvent();
@@ -173,10 +172,9 @@ public class MainActivity extends SherlockFragmentActivity  implements OnClickLi
 				startActivity(intent);
 			}
 			break;
-
 		}
 	}
-
+	
 	public void changeFragment(int currentFragmentIndex){
 		setCurrentFragmentIndex(currentFragmentIndex);
 		setButtonResource(mCurrentFragmentIndex);

@@ -1,21 +1,32 @@
 package com.nexters.house.adapter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import android.app.*;
-import android.content.*;
-import android.view.*;
-import android.view.View.OnClickListener;
-import android.view.animation.*;
-import android.widget.*;
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.daimajia.slider.library.*;
-import com.daimajia.slider.library.SliderTypes.*;
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.nexters.house.R;
-import com.nexters.house.activity.*;
-import com.nexters.house.entity.*;
-import com.nexters.house.fragment.InteriorFragment;
-import com.nexters.house.utils.*;
+import com.nexters.house.activity.ContentDetailActivity;
+import com.nexters.house.activity.EditActivity;
+import com.nexters.house.activity.MainActivity;
+import com.nexters.house.entity.InteriorEntity;
+import com.nexters.house.utils.CommonUtils;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 
 public class InteriorAdapter extends BaseAdapter {
 	private Context mContext;
@@ -25,9 +36,6 @@ public class InteriorAdapter extends BaseAdapter {
 	private LayoutInflater mLayoutInflater;
 	private int resource;
 	private CommonUtils mUtil;
-
-	
-	 
 
 	public InteriorAdapter(Context context, ArrayList<InteriorEntity> mInteriorItemArrayList, int resource, MainActivity mainActivity) {
 		mMainActivity = mainActivity;
@@ -55,21 +63,30 @@ public class InteriorAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
-
-		Holder holder = new Holder();
-		//int minHeight = mUtil.dpToPx(mContext, 360);
-
-		if (convertView == null || holder.position != position) {
+		Holder holder = null;
+		
+		if(convertView != null)
+			holder = (Holder) convertView.getTag();
+		if (convertView == null || (holder != null && holder.position != position)) {
 			final View createView;
 			createView = convertView = mLayoutInflater.inflate(resource, null);
-
+			holder = new Holder();
+			
+			// get interior
+			final long no = mInteriorItemArrayList.get(position).no;
+			String id = mInteriorItemArrayList.get(position).id;
+			String content = mInteriorItemArrayList.get(position).content;
+			int nLike = mInteriorItemArrayList.get(position).like;
+			int nReply = mInteriorItemArrayList.get(position).comment;
+			List<String> imageUrls = mInteriorItemArrayList.get(position).imageUrls;
+			
 			// find resource
 			holder.position = position;
 			
 			holder.houseId = (TextView) convertView.findViewById(R.id.house_id);
 			holder.interiorContent = (TextView) convertView.findViewById(R.id.interior_content);
 			holder.rlContents = (RelativeLayout) convertView.findViewById(R.id.rl_interior_custom_view);
-			holder.slider = (SliderLayout) convertView.findViewById(R.id.slider);
+			holder.slider = (SliderLayout) convertView.findViewById(R.id.interior_slider);
 			holder.btnDown = (ImageView) convertView.findViewById(R.id.icon_down);
 			holder.btnEdit = (ImageView) convertView.findViewById(R.id.icon_edit);
 			holder.btnDelete = (ImageView) convertView.findViewById(R.id.icon_delete);
@@ -78,7 +95,33 @@ public class InteriorAdapter extends BaseAdapter {
 			holder.interiorLikes = (TextView)convertView.findViewById(R.id.interior_likes_cnt);
 			holder.interiorReplies = (TextView)convertView.findViewById(R.id.interior_reply_cnt);
 			
-			// set click listener
+			// set
+			holder.houseId.setText(id + " = " + position);
+			holder.interiorContent.setText(content);
+			holder.interiorLikes.setText(Integer.toString(nLike));
+			holder.interiorReplies.setText(Integer.toString(nReply));
+
+			SliderLayout slider = (SliderLayout) convertView.findViewById(R.id.interior_slider);
+
+			for (String url : imageUrls) {
+				TextSliderView textSliderView = new TextSliderView(
+						convertView.getContext());
+				// initialize a SliderLayout
+				textSliderView.image(url);
+				textSliderView.setOnSliderClickListener(new BaseSliderView.OnSliderClickListener(){
+					@Override
+					public void onSliderClick(BaseSliderView slider) {
+						Intent intent = new Intent(mContext,ContentDetailActivity.class);
+						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						intent.putExtra("brdNo", no);
+						mContext.startActivity(intent);
+					}
+				});
+				// .setScaleType(BaseSliderView.ScaleType.Fit);
+				slider.addSlider(textSliderView);
+			}
+			
+			// set listener
 			View.OnClickListener convertOnClickListener = new View.OnClickListener() {
 				Boolean clicked = false;
 				@Override
@@ -90,6 +133,8 @@ public class InteriorAdapter extends BaseAdapter {
 					ImageView btnEdit = (ImageView) rootView.findViewById(R.id.icon_edit);
 					ImageView btnDelete = (ImageView) rootView.findViewById(R.id.icon_delete);
 					
+					Intent intent = null;
+					
 					switch(v.getId()){
 					case R.id.icon_down :
 						//렐러티브레이아웃이 이미지 슬라이더에 가려져서 버튼들이 가려지게됨. 그래서 레이아웃을 맨 위로 올려줌!
@@ -98,90 +143,49 @@ public class InteriorAdapter extends BaseAdapter {
 
 						if(!clicked){
 							clicked = true;
-							
 							btnEdit.startAnimation(showDown);
 							btnDelete.startAnimation(showDown);
+							
 							btnEdit.setClickable(true);
 							btnDelete.setClickable(true);
 							
 						}else{
+
 							clicked = false;
-							
 							btnEdit.startAnimation(hideUp);
 							btnDelete.startAnimation(hideUp);	
 							btnEdit.setClickable(false);
 							btnDelete.setClickable(false);
 						}
-						
 						//Log.d("Click Click", "down onClick : " + showDown + " : ");
-						
 						break;
 					case R.id.rl_interior_custom_view :
 						//mMainActivity.changeFragment(MainActivity.FRAGMENT_DETAIL_INTERIOR);
-						Intent intent1=new Intent(mContext,ContentDetailActivity.class);
-						intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-						mContext.startActivity(intent1);
-						
+						intent = new Intent(mContext,ContentDetailActivity.class);
+						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						intent.putExtra("brdNo", no);
+						mContext.startActivity(intent);
 						break;
-						
-//					case R.id.slider :
-//						mMainActivity.changeFragment(MainActivity.FRAGMENT_DETAIL_INTERIOR);
-//						break;
-						
 					case R.id.icon_edit:
-						
-						Intent intent=new Intent(mContext,EditActivity.class);
+						intent = new Intent(mContext,EditActivity.class);
 						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 						mContext.startActivity(intent);
 						break;
-						
 					case R.id.icon_delete:						
-				
 						mMainActivity.showDialog(3378);
-						
 						break;
 					}
 				}
 			};
-			
 			holder.btnDown.setOnClickListener(convertOnClickListener);
 			holder.btnEdit.setOnClickListener(convertOnClickListener);
 			holder.btnDelete.setOnClickListener(convertOnClickListener);
 			holder.rlContents.setOnClickListener(convertOnClickListener);
+			
 			convertView.setTag(holder);
-			
-			SliderLayout slider = (SliderLayout) convertView.findViewById(R.id.slider);
-			
-			List<String> image_urls = mInteriorItemArrayList.get(position).image_urls;
-			
-			for (String url : image_urls) {
-				TextSliderView textSliderView = new TextSliderView(
-						convertView.getContext());
-				// initialize a SliderLayout
-				textSliderView.image(url);
-				// .setScaleType(BaseSliderView.ScaleType.Fit);
-				slider.addSlider(textSliderView);
-			}
 			// 리스트뷰안의 아이템 높이 설정하는 메소드
 			//convertView.setMinimumHeight(minHeight);
-			//Log.d(TAG, "minHeight"+minHeight);
-		} else {
-			holder = (Holder) convertView.getTag();
 		}
-
-		// 여기에서 게시물의 사용자 아이디/ 카테고리/ 내용/ 이미지를 넣어줄거임.
-		String id = mInteriorItemArrayList.get(position).id;
-		String content = mInteriorItemArrayList.get(position).content;
-		List<String> image = mInteriorItemArrayList.get(position).image_urls;
-		int nBadge = mInteriorItemArrayList.get(position).badge;
-		int nReply = mInteriorItemArrayList.get(position).reply;
-		
-		
-		holder.houseId.setText(id);
-		holder.interiorContent.setText(content);
-		holder.interiorLikes.setText(Integer.toString(nBadge));
-		holder.interiorReplies.setText(Integer.toString(nReply));
-		
 		return convertView;
 	}
 
@@ -197,25 +201,19 @@ public class InteriorAdapter extends BaseAdapter {
 	}
 	
 	@SuppressWarnings("serial")
-	public void add(){
+	public void add(long no, String usrId, String content, List<String> imgUrls, int likeCnt, int commentCnt){
 		InteriorEntity e = new InteriorEntity();
+		e.no = no;
 		e.badge = 1;
-		e.category = "new";
-		e.content = "넥스터즈 인유어하우스팀에서 개발중인 하우스 어플리케이션입니다. 누르면 걍 디테일컨텐츠뷰로 가면될듯";
-		e.id = "newId";
-		e.image_urls = new ArrayList<String>(){{
-			add("https://fbcdn-sphotos-a-a.akamaihd.net/hphotos-ak-xfp1/v/t1.0-9/10402950_570244953084785_2207844659246242948_n.jpg?oh=b19d78a504af3a54501e629f0383da87&oe=5448A4C6&__gda__=1413348687_974d19e8b5ddcf217cb99b77b0186685");
-			add("https://fbcdn-sphotos-g-a.akamaihd.net/hphotos-ak-xfa1/t1.0-9/10487348_570244969751450_1480175892860352468_n.jpg");
-			add("https://fbcdn-sphotos-f-a.akamaihd.net/hphotos-ak-xpa1/t1.0-9/1546376_570244983084782_3616217572638065925_n.jpg");
-			add("https://fbcdn-sphotos-d-a.akamaihd.net/hphotos-ak-xpf1/t1.0-9/10487342_570244993084781_3890212537564580615_n.jpg");
-			add("https://fbcdn-sphotos-b-a.akamaihd.net/hphotos-ak-xpa1/v/t1.0-9/10524374_570245013084779_7454008372005256632_n.jpg?oh=4761db9f33b72709585016c2649c747e&oe=5434C617&__gda__=1413811119_55884851b246ddb301725a0a78cacc84");
-			}};
-		e.reply = 1;
+//		e.category = "new";
+		Log.d("content :", "content : " + content);
+		e.content = content;
+		e.id = usrId;
+		e.imageUrls = imgUrls; 
+
+		e.comment = commentCnt;
+		e.like = likeCnt;
 		
 		mInteriorItemArrayList.add(e);
 	}
-	public void clickedImage(View v){
-		Toast.makeText(mContext, "클릭", Toast.LENGTH_SHORT).show();
-	}
-	
 }

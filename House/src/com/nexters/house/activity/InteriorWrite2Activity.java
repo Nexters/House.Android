@@ -1,21 +1,45 @@
 package com.nexters.house.activity;
 
-import java.util.*;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
-import android.app.*;
-import android.content.*;
-import android.os.*;
-import android.support.v4.view.*;
-import android.view.*;
-import android.widget.*;
+import org.springframework.http.MediaType;
 
-import com.jess.ui.*;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.AsyncTask.Status;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
+import android.widget.ViewSwitcher;
+
+import com.jess.ui.TwoWayGridView;
 import com.nexters.house.R;
-import com.nexters.house.adapter.*;
-import com.nexters.house.entity.*;
-import com.nostra13.universalimageloader.core.*;
+import com.nexters.house.adapter.GalleryAdapter;
+import com.nexters.house.adapter.HorzGridViewAdapter;
+import com.nexters.house.adapter.PagerAdapterClass;
+import com.nexters.house.core.SessionManager;
+import com.nexters.house.entity.Action;
+import com.nexters.house.entity.CodeType;
+import com.nexters.house.entity.DataObject;
+import com.nexters.house.entity.reqcode.AP0006;
+import com.nexters.house.entity.reqcode.AP0006.AP0006Img;
+import com.nexters.house.handler.ArticleHandler;
+import com.nexters.house.thread.PostMessageTask;
+import com.nexters.house.utils.ImageManagingHelper;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
-public class InteriorWrite2Activity extends Activity {
+public class InteriorWrite2Activity extends AbstractAsyncActivity {
 	public final static int COLUMN_PORT = 0;
 	public final static int COLUMN_LAND = 1;
 	public static int column_selected;
@@ -29,7 +53,6 @@ public class InteriorWrite2Activity extends Activity {
 	private static String savedInfo = "";
 	
 	private Context mContext;
-	public static Activity fa;
 	private EditText mInteriorContent;
 	private EditText mInteriorInfo;
 
@@ -46,14 +69,16 @@ public class InteriorWrite2Activity extends Activity {
 	private Button btnGalleryPickMul;
 	private Button previewOk;
 
+	PostMessageTask mArticleTask;
+	ArticleHandler<AP0006> mAP0006Handler;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_interior_write2);
 		savedContent="";
 		savedInfo="";
-		fa=this;
-		//처음에 포커스 없애기
+		// 처음에 포커스 없애기
 		this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		initResource();
 		initEvent();
@@ -74,6 +99,9 @@ public class InteriorWrite2Activity extends Activity {
 		
 		mInteriorContent.setText(savedContent);
 		mInteriorInfo.setText(savedInfo);
+		
+		// Post Aricle 
+    	mAP0006Handler = new ArticleHandler<AP0006>(this, "AP0006");
 	}
 
 	private void initEvent(){
@@ -90,36 +118,51 @@ public class InteriorWrite2Activity extends Activity {
 		});
 	}
 	
-/*	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.interior_write2, menu);
-		return true;
-	}
-
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-	    // Handle presses on the action bar items
-	    switch (item.getItemId()) {
-	        case R.id.complete:
-	            completeWrite();
-	            return true;
-	        default:
-	            return super.onOptionsItemSelected(item);
-	    }
-	}*/
 	public void completeWrite(View view) {
-		fa=null;
-		CustomGalleryActivity.noCancel=0;
-		setResult(RESULT_OK);
-		finish();
-		Toast.makeText(this, "작성한 내용이 업로드됩니다.", Toast.LENGTH_SHORT).show();
+		if(mArticleTask != null && !(mArticleTask.getStatus() == Status.FINISHED))
+			return ;
+		
+		AP0006 ap = returnAP0006();
+		mAP0006Handler.setOneTranData(ap);
+		mArticleTask = new PostMessageTask(this, mAP0006Handler, ArticleHandler.WRITE_INTERIOR);
+		mArticleTask.execute(MediaType.APPLICATION_JSON);
 	}
 
+	public AP0006 returnAP0006(){
+		AP0006 ap = new AP0006();
+		ap.setType(CodeType.INTERIOR_TYPE);
+		ap.setBrdId(SessionManager.getInstance(this).getUserDetails().get(SessionManager.KEY_EMAIL));
+		ap.setBrdSubject("");
+		ap.setBrdContents(mInteriorContent.getText().toString().getBytes());
+		ap.setBrdTag(mInteriorInfo.getText().toString());
+		
+		List<DataObject> dataObjects = generateGridViewObjects();
+		ArrayList<AP0006Img> imgs = new ArrayList<AP0006Img>();
+		
+		for(DataObject dataObject : dataObjects){
+			AP0006Img img = new AP0006Img();
+			String path = dataObject.getName();
+			String name = path.substring(path.lastIndexOf('/') + 1);
+			String type = path.substring(path.lastIndexOf('.') + 1);
+			File file = new File(path);
+			byte[] contents = ImageManagingHelper.getImageToBytes(file);
+			long size = file.length();
+			
+			img.imgNm = img.imgOriginNm = name;
+			img.imgSize = size; 
+			img.imgType = type;
+			img.imgContent = contents;
+//			Log.d("dataObject", "dataObject : " + contents.length + " - " + size);
+			imgs.add(img);
+		}
+		ap.setBrdImg(imgs);
+		return ap;
+	}
+	
 	public void clickedCancel(View view){
 		onBackPressed();
 	}
+	
 	@Override
 	public void onBackPressed(){
 		 AlertDialog.Builder alt_bld = new AlertDialog.Builder(this);
@@ -127,7 +170,6 @@ public class InteriorWrite2Activity extends Activity {
 		        false).setPositiveButton("예",
 		        new DialogInterface.OnClickListener() {
 		        public void onClick(DialogInterface dialog, int id) {
-		        	fa=null;
 		        	CustomGalleryActivity.noCancel=0;
 		            finish();
 		        }
@@ -142,15 +184,12 @@ public class InteriorWrite2Activity extends Activity {
 		    // Title for AlertDialog
 
 		    alert.show();
-
 	}
 
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-
-
 	}
 	
 	@Override
@@ -158,7 +197,6 @@ public class InteriorWrite2Activity extends Activity {
 		super.onResume();
 		refreshHorzGrid();
 	}
-
 
 	public void refreshHorzGrid(){
 		// 이미지 하나도 선택 안할 경우 null 아닐 경우 그 밖

@@ -173,9 +173,6 @@ public class InteriorWriteActivity extends Activity {
 		finish();
 		faIn=null;
 		Intent intent = new Intent(this, InteriorWrite2Activity.class);
-		
-		
-		
 		/*
 		 * pageradapter.notifyDataSetChanged(); String allInfo = ""; for(int
 		 * j=0;j<pageradapter.InfoList.size();j++){ //스트링 합치기

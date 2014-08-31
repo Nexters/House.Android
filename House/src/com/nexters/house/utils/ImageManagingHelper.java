@@ -1,13 +1,28 @@
 package com.nexters.house.utils;
 
-import android.graphics.*;
-import android.view.*;
-import android.view.animation.*;
-import android.widget.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URL;
 
-import com.nexters.house.*;
-import com.nostra13.universalimageloader.core.*;
-import com.nostra13.universalimageloader.core.assist.*;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.view.View;
+import android.view.animation.Animation;
+import android.widget.ImageView;
+
+import com.nexters.house.R;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
+import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
 public class ImageManagingHelper {
     public static void loadAndAttachCroppedImage(final ImageView iv, String url) {
@@ -59,5 +74,21 @@ public class ImageManagingHelper {
         canvas.drawBitmap(scaledBitmap, rect, rect, paint);
 
         return output;
+    }
+    
+    public static byte[] getImageToBytes(File file) {
+    	byte[] data = new byte[(int) file.length()];
+    	FileInputStream fis = null;
+		try {
+			fis = new FileInputStream(file);
+			fis.read(data);
+			fis.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+		}
+    	return data;
     }
 }

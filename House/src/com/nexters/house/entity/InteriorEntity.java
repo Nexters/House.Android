@@ -3,10 +3,16 @@ package com.nexters.house.entity;
 import java.util.List;
 
 public class InteriorEntity {
+	public long no;
 	public String id;
-	public String category;
+	public String name;
+	public String profileImg;
+	public String subject;
 	public String content;
-	public List<String> image_urls;
+	public String tag;
+	public String category;
+	public int like;
+	public int comment;
 	public int badge;
-	public int reply;
+	public List<String> imageUrls;
 }

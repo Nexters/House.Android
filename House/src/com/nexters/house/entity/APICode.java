@@ -34,15 +34,15 @@ public  class APICode  < T > implements Serializable {
 	public void setTranData(List<T> tranData) {
 		this.tranData = tranData;
 	}
-	@JsonIgnore
+	@JsonProperty("_error_cd")
 	public void setErrorCd(String errorCd) {
 		this.errorCd = errorCd;
 	}
-	@JsonIgnore
+	@JsonProperty("_error_msg")
 	public void setErrorMsg(String errorMsg) {
 		this.errorMsg = errorMsg;
 	}
-	@JsonIgnore
+	@JsonProperty("_error_action")
 	public void setErrorAction(int errorAction) {
 		this.errorAction = errorAction;
 	}

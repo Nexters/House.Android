@@ -10,41 +10,60 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.http.converter.xml.SimpleXmlHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.nexters.house.R;
 import com.nexters.house.activity.AbstractAsyncActivity;
+import com.nexters.house.activity.AbstractAsyncFragmentActivity;
+import com.nexters.house.activity.AsyncActivity;
 import com.nexters.house.core.SessionManager;
 import com.nexters.house.entity.APICode;
 import com.nexters.house.handler.AbstractHandler;
-import com.nexters.house.utils.JacksonUtils;
 
 // ***************************************
 // Private classes
 // ***************************************
 public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
-	public static int POST_SUCCESS = 1;
-	public static int POST_FAIL = 0;
+	public static final int POST_SUCCESS = 1;
+	public static final int POST_FAIL = 0;
 	
-	private AbstractAsyncActivity mAbstractAsyncActivity;
+	private AsyncActivity mAbstractAsyncActivity;
     private AbstractHandler mAbstractHandler;
     private int mHandlerType;
+    private Context mContext;
+    private boolean isShowLoadingProgressDialog;
+    
+    public PostMessageTask(AbstractAsyncFragmentActivity abstractAsyncFragmentActivity, AbstractHandler abstractHandler, int handlerType) {
+    	mAbstractAsyncActivity = abstractAsyncFragmentActivity;
+    	mContext = abstractAsyncFragmentActivity.getApplicationContext();
+    	mAbstractHandler = abstractHandler;
+    	mHandlerType = handlerType;
+    	isShowLoadingProgressDialog = true;
+    }
     
     public PostMessageTask(AbstractAsyncActivity abstractAsyncActivity, AbstractHandler abstractHandler, int handlerType) {
     	mAbstractAsyncActivity = abstractAsyncActivity;
+    	mContext = abstractAsyncActivity.getApplicationContext();
     	mAbstractHandler = abstractHandler;
     	mHandlerType = handlerType;
+    	isShowLoadingProgressDialog = true;
+    }
+    
+    public void setShowLoadingProgressDialog(boolean isShow){
+    	isShowLoadingProgressDialog = isShow;
     }
     
     @Override
     protected void onPreExecute() {
-    	mAbstractAsyncActivity.showLoadingProgressDialog();
+    	if(isShowLoadingProgressDialog)
+    		mAbstractAsyncActivity.showLoadingProgressDialog();
+//    	Log.d("PostMessageTask", "PostMessageTask : " + JacksonUtils.objectToJson(mAbstractHandler.getReqCode()));
     }
 
     @Override
     protected Integer doInBackground(MediaType... params) {
-    	 
         try {
             if (params.length <= 0) {
                 return null;
@@ -52,13 +71,13 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
             MediaType mediaType = params[0];
 
             // The URL for making the POST request
-             final String url = mAbstractAsyncActivity.getString(R.string.base_uri) + "/house/{code}.app?token={token}";
+             final String url = mContext.getString(R.string.base_uri) + "/house/{code}.app?token={token}";
 //            final String url = mAbstractAsyncActivity.getString(R.string.base_uri) + "/house/CM0002.app";
             
             HttpHeaders requestHeaders = new HttpHeaders();
             	
             // Set Token	
-            String token = SessionManager.getInstance(mAbstractAsyncActivity.getApplicationContext()).getUserDetails().get(SessionManager.KEY_TOKEN);
+            String token = SessionManager.getInstance(mContext).getUserDetails().get(SessionManager.KEY_TOKEN);
             
             // Sending a JSON or XML object i.e. "application/json" or "application/xml"
             requestHeaders.setContentType(mediaType);
@@ -94,7 +113,8 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
 
     @Override
     protected void onPostExecute(Integer result) {
-    	mAbstractAsyncActivity.dismissProgressDialog();
+    	if(isShowLoadingProgressDialog)
+    		mAbstractAsyncActivity.dismissProgressDialog();
         
     	if(POST_SUCCESS == result)
     		mAbstractHandler.handle(mHandlerType);

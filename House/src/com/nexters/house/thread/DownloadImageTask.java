@@ -27,7 +27,6 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         }
         return mIcon11;
     }
-
     protected void onPostExecute(Bitmap result) {
     	if(result != null)
     		bmImage.setImageBitmap(result);

@@ -44,7 +44,6 @@ public class AuthHandler<T> extends AbstractHandler<T> {
 			CM0001 cm = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), CM0001.class);
 			sessionManager.createLoginSession(SessionManager.HOUSE, cm.getCustName(), cm.getUsrId(), cm.getToken(), null, isAuto);
 		}
-		
 		if(sessionManager.isLoggedIn()){
 			mAbstractAsyncActivity.finish();
 		} else 
