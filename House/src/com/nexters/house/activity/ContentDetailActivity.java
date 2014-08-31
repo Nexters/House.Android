@@ -7,13 +7,11 @@ import java.util.List;
 import org.springframework.http.MediaType;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -21,7 +19,6 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.nexters.house.R;
@@ -32,10 +29,11 @@ import com.nexters.house.entity.APICode;
 import com.nexters.house.entity.CodeType;
 import com.nexters.house.entity.ReplyEntity;
 import com.nexters.house.entity.reqcode.AP0003;
+import com.nexters.house.entity.reqcode.AP0003.AP0003Comment;
 import com.nexters.house.entity.reqcode.AP0004;
 import com.nexters.house.entity.reqcode.AP0005;
 import com.nexters.house.entity.reqcode.AP0008;
-import com.nexters.house.entity.reqcode.AP0003.AP0003Comment;
+import com.nexters.house.entity.reqcode.AP0009;
 import com.nexters.house.handler.AbstractHandler;
 import com.nexters.house.handler.ArticleHandler;
 import com.nexters.house.thread.PostMessageTask;
@@ -74,6 +72,7 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 	private ArticleHandler<AP0004> mAP0004Handler;
 	private ArticleHandler<AP0005> mAP0005Handler;
 	private ArticleHandler<AP0008> mAP0008Handler;
+	private ArticleHandler<AP0009> mAP0009Handler;
 	
 	// List
 	private ArrayList<String> mImageArrayList;
@@ -82,6 +81,7 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 	// Article No
 	private long brdNo;
 	private int brdType;
+	private String usrId;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -101,6 +101,14 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 	private void initResources() {
 		brdNo = getIntent().getLongExtra("brdNo", 0);
 		brdType = getIntent().getIntExtra("brdType", CodeType.INTERIOR_TYPE);
+		usrId = SessionManager.getInstance(this).getUserDetails().get(SessionManager.KEY_EMAIL);
+		
+		mAP0003Handler = new ArticleHandler<AP0003>(this, "AP0003");
+		mAP0003CommentHandler = new ArticleHandler<AP0003>(this, "AP0003");
+		mAP0004Handler = new ArticleHandler<AP0004>(this, "AP0004");
+		mAP0005Handler = new ArticleHandler<AP0005>(this, "AP0005");
+		mAP0008Handler = new ArticleHandler<AP0008>(this, "AP0008");
+		mAP0009Handler = new ArticleHandler<AP0009>(this, "AP0009");
 		
 		mImageArrayList = new ArrayList<String>();
 		mReplyArrayList = new ArrayList<ReplyEntity>();
@@ -130,7 +138,8 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 		mEditReply = (EditText) findViewById(R.id.edittxt_reply);
 		mBtnSendReply = (Button) findViewById(R.id.btn_send_reply);
 
-		mReplyAdapter = new ReplyAdapter(this, mReplyArrayList, R.layout.reply);
+		mReplyAdapter = new ReplyAdapter(this, mReplyArrayList, R.layout.reply, brdType);
+		mReplyAdapter.setHandler(mAP0009Handler);
 		mReplyContent.setAdapter(mReplyAdapter);
 
 		mScrollView = (ScrollView) findViewById(R.id.sv_content);
@@ -140,6 +149,7 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 		processAP0004();
 		processAP0005();
 		processAP0008();
+		processAP0009();
 		
 		// init
 		setContents(brdNo);
@@ -152,7 +162,6 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 	}
 
 	public void processAP0003() {
-		mAP0003Handler = new ArticleHandler<AP0003>(this, "AP0003");
 		AbstractHandler.Handler handler = new AbstractHandler.Handler() {
 			public void handle(APICode resCode) {
 				AP0003 ap = JacksonUtils.hashMapToObject((HashMap) resCode
@@ -194,12 +203,11 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 	}
 	
 	public void processAP0003Comment() {
-		mAP0003CommentHandler = new ArticleHandler<AP0003>(this, "AP0003");
 		AbstractHandler.Handler handler = new AbstractHandler.Handler() {
 			public void handle(APICode resCode) {
 				AP0003 ap = JacksonUtils.hashMapToObject((HashMap) resCode
 						.getTranData().get(0), AP0003.class);
-				
+				Log.d("AP0003Comment", "AP0003Comment : ");
 				List<AP0003Comment> comments = ap.getBrdComment();
 				mReplyArrayList.clear();
 				for (int i = 0; i < comments.size(); i++){
@@ -214,6 +222,8 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 				}
 				mReplyCnt.setText("" + ap.getBrdCommentCnt());
 				mReplyAdapter.notifyDataSetChanged();
+				mReplyContent.invalidateViews();
+				mReplyContent.refreshDrawableState();
 				setListViewHeightBasedOnChildren(mReplyContent);
 			}
 		};
@@ -221,7 +231,6 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 	}
 	
 	public void processAP0004() {
-		mAP0004Handler = new ArticleHandler<AP0004>(this, "AP0004");
 		AbstractHandler.Handler handler = new AbstractHandler.Handler() {
 			public void handle(APICode resCode) {
 				AP0004 ap = JacksonUtils.hashMapToObject((HashMap) resCode
@@ -233,7 +242,6 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 	}
 
 	public void processAP0005() {
-		mAP0005Handler = new ArticleHandler<AP0005>(this, "AP0005");
 		AbstractHandler.Handler handler = new AbstractHandler.Handler() {
 			public void handle(APICode resCode) {
 				AP0005 ap = JacksonUtils.hashMapToObject((HashMap) resCode
@@ -245,17 +253,23 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 	}
 	
 	public void processAP0008() {
-		mAP0008Handler = new ArticleHandler<AP0008>(this, "AP0008");
 		AbstractHandler.Handler handler = new AbstractHandler.Handler() {
 			public void handle(APICode resCode) {
-				AP0008 ap = JacksonUtils.hashMapToObject((HashMap) resCode
-						.getTranData().get(0), AP0008.class);
 				listComment();
 			}
 		};
 		mAP0008Handler.setHandler(handler);
 	}
 
+	public void processAP0009(){
+		AbstractHandler.Handler handler = new AbstractHandler.Handler() {
+			public void handle(APICode resCode) {
+				listComment();
+			}
+		};
+		mAP0009Handler.setHandler(handler);
+	}
+	
 	public void writeComment(){
 		if (mPostTask != null
 				&& !(mPostTask.getStatus() == Status.FINISHED))
@@ -263,7 +277,7 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 		AP0008 ap = new AP0008();
 		ap.setType(brdType);
 		ap.setReqPoNo(brdNo);
-		ap.setCommentId(SessionManager.getInstance(this).getUserDetails().get(SessionManager.KEY_EMAIL));
+		ap.setCommentId(usrId);
 		ap.setCommentContents(mEditReply.getText().toString().getBytes());
 		
 		mAP0008Handler.setOneTranData(ap);
@@ -280,7 +294,7 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 		AP0004 ap = new AP0004();
 		ap.setType(brdType);
 		ap.setBrdNo(brdNo);
-		ap.setUsrId(SessionManager.getInstance(this).getUserDetails().get(SessionManager.KEY_EMAIL));
+		ap.setUsrId(usrId);
 
 		mAP0004Handler.setOneTranData(ap);
 		mPostTask = new PostMessageTask(this, mAP0004Handler,
@@ -296,7 +310,7 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 		AP0005 ap = new AP0005();
 		ap.setType(brdType);
 		ap.setBrdNo(brdNo);
-		ap.setUsrId(SessionManager.getInstance(this).getUserDetails().get(SessionManager.KEY_EMAIL));
+		ap.setUsrId(usrId);
 
 		mAP0005Handler.setOneTranData(ap);
 		mPostTask = new PostMessageTask(this, mAP0005Handler,
@@ -312,7 +326,7 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 		AP0003 ap = new AP0003();
 		ap.setType(brdType);
 		ap.setReqPoNo(brdNo);
-		ap.setUsrId(SessionManager.getInstance(this).getUserDetails().get(SessionManager.KEY_EMAIL));
+		ap.setUsrId(usrId);
 		
 		mAP0003Handler.setOneTranData(ap);
 		mPostTask = new PostMessageTask(this, mAP0003Handler,
@@ -325,32 +339,15 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 		AP0003 ap = new AP0003();
 		ap.setType(brdType);
 		ap.setReqPoNo(brdNo);
-		ap.setUsrId(SessionManager.getInstance(this).getUserDetails().get(SessionManager.KEY_EMAIL));
+		ap.setUsrId(usrId);
 		
 		mAP0003CommentHandler.setOneTranData(ap);
 		mPostTask = new PostMessageTask(this, mAP0003CommentHandler,
-				ArticleHandler.LIST_INTERIOR);
+				ArticleHandler.LIST_REPLY);
 		mPostTask.setShowLoadingProgressDialog(false);
 		mPostTask.execute(MediaType.APPLICATION_JSON);
 	}
 	
-	public void sendClicked(View v) { // 댓글 전송버튼 눌렀을때 cnt 증가 및 댓글리스트 하나더 생성
-		if (mEditReply.length() > 0) {
-			int before = Integer.parseInt((String) mReplyCnt.getText());
-			mReplyCnt.setText(Integer.toString(before + 1));
-
-			ReplyEntity mReplyEntity = new ReplyEntity();
-			mReplyArrayList.add(0, mReplyEntity);
-			mReplyAdapter.notifyDataSetChanged();
-			setListViewHeightBasedOnChildren(mReplyContent);
-			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-
-			imm.hideSoftInputFromWindow(mEditReply.getWindowToken(), 0);
-			
-		} else
-			Toast.makeText(this, "1자 이상 입력해주세요.", Toast.LENGTH_SHORT).show();
-	}
-
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
