@@ -4,6 +4,7 @@
     android:orientation="vertical" >
 
     <ScrollView
+        android:id="@+id/sv_content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" >
@@ -39,7 +40,7 @@
                     android:text="DetailContent" />
 
                 <TextView
-                    android:id="@+id/created_time"
+                    android:id="@+id/tv_created"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -53,17 +54,6 @@
                 android:id="@+id/lv_interior_image"
                 android:layout_width="match_parent"
                 android:layout_height="700dp" />
-
-            <TextView
-                android:id="@+id/txtDetail_interiorStory"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:gravity="center"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:text="하우스 디테일뷰 컨텐츠 하우스 디테일뷰 컨텐츠하우스 디테일뷰 컨텐츠하우스 디테일뷰 컨텐츠하우스 디테일뷰 컨텐츠하우스 디테일뷰 컨텐츠 "
-                android:textSize="15sp" />
 
             <ImageView
                 android:layout_width="fill_parent"
@@ -81,7 +71,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/txtDetail_interiorInfo"
+                android:id="@+id/tv_content"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -103,31 +93,28 @@
                     android:layout_height="match_parent"
                     android:layout_marginRight="1dp"
                     android:layout_weight="1"
-                    android:background="#d0d0d0"
+                    android:background="@drawable/btn_effect_bg_color_white"
                     android:drawableLeft="@drawable/icon_heart"
                     android:drawablePadding="5dp"
                     android:gravity="left"
                     android:paddingLeft="40dp"
                     android:paddingTop="7dp"
-                    android:textOn="좋아요"
                     android:textOff="좋아요"
-                    android:onClick="likeClicked" />
+                    android:textOn="좋아요 취소" />
 
-                
                 <ToggleButton
                     android:id="@+id/btn_scrap"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="#d0d0d0"
+                    android:background="@drawable/btn_effect_bg_color_white"
                     android:drawableLeft="@drawable/icon_comment"
                     android:drawablePadding="5dp"
                     android:gravity="left"
                     android:paddingLeft="40dp"
                     android:paddingTop="7dp"
-                    android:textOn="스크랩"
                     android:textOff="스크랩"
-                    android:onClick="scrapClicked" />
+                    android:textOn="스크랩 취소" />
             </LinearLayout>
 
             <LinearLayout
@@ -156,7 +143,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginRight="2dp"
-                    android:text="개  댓글"
+                    android:text="개  스크랩"
+                    android:textColor="#d0d0d0" />
+
+                <TextView
+                    android:id="@+id/tv_cnt_scrap"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="1dp"
+                    android:text="800"
+                    android:textColor="#d0d0d0" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="개 댓글 "
                     android:textColor="#d0d0d0" />
 
                 <TextView
@@ -170,7 +171,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="개"
+                    android:text="개 댓글 "
                     android:textColor="#d0d0d0" />
             </LinearLayout>
 
@@ -180,20 +181,13 @@
                 android:layout_marginBottom="5dp"
                 android:background="#d0d0d0" />
 
-              <ListView
+            <ListView
                 android:id="@+id/lv_reply"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1" />
-            
-           
         </LinearLayout>
     </ScrollView>
-   
-        <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#d0d0d0" />
 
     <LinearLayout
         android:id="@+id/ll_bottom"
@@ -212,13 +206,12 @@
             android:hint="메시지를 입력하세요." />
 
         <Button
+            android:id="@+id/btn_send_reply"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:background="#d0d0d0"
-            android:paddingTop="0dp"
-            android:text="전송"
-            android:onClick="sendClicked" />
+            android:background="@drawable/btn_effect_bg_color_white"
+            android:text="전송" />
     </LinearLayout>
 
 </LinearLayout>

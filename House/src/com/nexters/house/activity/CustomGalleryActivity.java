@@ -124,7 +124,6 @@ public class CustomGalleryActivity extends Activity {
 			public void run() {
 				Looper.prepare();
 				handler.post(new Runnable() {
-
 					@Override
 					public void run() {
 						adapter.addAll(getGalleryPhotos());
@@ -156,9 +155,7 @@ public class CustomGalleryActivity extends Activity {
 	View.OnClickListener mCancelClickListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
-		
 			onBackPressed();
-
 		}
 	};
 	AdapterView.OnItemClickListener mItemMulClickListener = new AdapterView.OnItemClickListener() {

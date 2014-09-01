@@ -34,7 +34,8 @@ public class IntroActivity extends Activity {
 	}
 	
 	private void endIntro() {
-		Intent intent = new Intent(this, StartActivity.class);
+	//	Intent intent = new Intent(this, StartActivity.class);
+		Intent intent=new Intent(this,MainActivity.class);
 		startActivity(intent);
 		finish();
 		// }

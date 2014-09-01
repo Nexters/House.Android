@@ -2,12 +2,9 @@ package com.nexters.house.handler;
 
 import java.util.HashMap;
 
-import android.content.Intent;
-
 import com.nexters.house.activity.AbstractAsyncActivity;
-import com.nexters.house.activity.MainActivity;
 import com.nexters.house.core.SessionManager;
-import com.nexters.house.entity.APICode.CM0001;
+import com.nexters.house.entity.reqcode.CM0001;
 import com.nexters.house.utils.JacksonUtils;
 
 public class AuthHandler<T> extends AbstractHandler<T> {
@@ -47,7 +44,6 @@ public class AuthHandler<T> extends AbstractHandler<T> {
 			CM0001 cm = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), CM0001.class);
 			sessionManager.createLoginSession(SessionManager.HOUSE, cm.getCustName(), cm.getUsrId(), cm.getToken(), null, isAuto);
 		}
-		
 		if(sessionManager.isLoggedIn()){
 			mAbstractAsyncActivity.finish();
 		} else 

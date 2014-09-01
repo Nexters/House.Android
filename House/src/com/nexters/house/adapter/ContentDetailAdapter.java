@@ -8,29 +8,36 @@ import android.view.*;
 import android.widget.*;
 
 import com.nexters.house.*;
+import com.nexters.house.activity.*;
 import com.nexters.house.entity.*;
+import com.nexters.house.utils.*;
 
 public class ContentDetailAdapter extends BaseAdapter{
 	final String TAG = "MainListAdapter";
 
 	private Context mContext;
-	private ArrayList<ContentEntity> mExamItemArrayList;
+	private MainActivity mMainActivity;
+	private ArrayList<ContentEntity> mContentItemArrayList;
 	private LayoutInflater mLayoutInflater;
 	int resource;
+	private CommonUtils mUtil;
+
 
 	public ContentDetailAdapter(Context context,
-			ArrayList<ContentEntity> mExamItemArrayList, int resource) {
+			ArrayList<ContentEntity> mContentItemArrayList, int resource) {
 		mContext = context;
-		this.mExamItemArrayList = mExamItemArrayList;
+		this.mContentItemArrayList = mContentItemArrayList;
 		this.mLayoutInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.resource = resource;
 	}
 
+	
+
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return mExamItemArrayList.size();
+		return mContentItemArrayList.size();
 	}
 
 	@Override
@@ -55,6 +62,10 @@ public class ContentDetailAdapter extends BaseAdapter{
 			// find resource
 			
 			holder.houseProfile = (ImageView) convertView.findViewById(R.id.house_profile);
+			holder.imageList = (ListView) convertView.findViewById(R.id.lv_interior_image);
+			holder.replyList = (ListView) convertView.findViewById(R.id.lv_reply);
+			
+			
 			convertView.setTag(holder);
 
 		} else {
@@ -85,6 +96,9 @@ public class ContentDetailAdapter extends BaseAdapter{
 
 	private class Holder {
 		ImageView houseProfile;
+		TextView houseId, category, content, nLike, nReply;
+		ListView imageList, replyList;
+		
 	}
 
 }

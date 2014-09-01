@@ -22,34 +22,15 @@ public class BoardAdapter extends BaseAdapter {
 	private MainActivity mMainActivity;
 	private ArrayList<BoardEntity> mBoardItemArrayList;
 	private LayoutInflater mLayoutInflater;
-	private int resource;
 	private CommonUtils mUtil;
 
-	public BoardAdapter(Context context, ArrayList<BoardEntity> mBoardItemArrayList, int resource, MainActivity mainActivity) {
+	public BoardAdapter(Context context, ArrayList<BoardEntity> mBoardItemArrayList, MainActivity mainActivity) {
 		mMainActivity = mainActivity;
 		mContext = context;
 		mUtil = new CommonUtils();
 		this.mBoardItemArrayList = mBoardItemArrayList;
 		this.mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		this.resource = resource;
 	}
-
-
-	@Override
-	public int getCount() {
-		return mBoardItemArrayList.size();
-	}
-
-	@Override
-	public Object getItem(int position) {
-		return null;
-	}
-
-	@Override
-	public long getItemId(int position) {
-		return 0;
-	}
-
 
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
@@ -60,29 +41,29 @@ public class BoardAdapter extends BaseAdapter {
 		if (convertView == null || holder.position != position) {
 			final View createView;
 
-			if (position % 2 == 0) {
-				if (convertView == null) {
-					convertView = mLayoutInflater.inflate(
-							R.layout.custom_view_board_left, parent, false);
-				}
-			} else {
-				if (convertView == null) {
-					convertView = mLayoutInflater.inflate(
-							R.layout.custom_view_board_right, parent, false);
-				}
-			}
-
-			createView = convertView;
-			//createView = convertView = mLayoutInflater.inflate(resource, null);
-
+			if (position % 2 == 0)
+				createView = convertView = mLayoutInflater.inflate(
+						R.layout.custom_view_board_left, parent, false);
+			else
+				createView = convertView = mLayoutInflater.inflate(
+						R.layout.custom_view_board_right, parent, false);
+			
+			// 여기에서 게시물의 사용자 아이디/ 카테고리/ 내용/ 이미지를 넣어줄거임.
+			String id = mBoardItemArrayList.get(position).id;
+			String title = mBoardItemArrayList.get(position).subject;
+			String category = mBoardItemArrayList.get(position).category;
+			String content = mBoardItemArrayList.get(position).content;
+			List<String> previewImage = mBoardItemArrayList.get(position).imageUrls;
+			int nLike = mBoardItemArrayList.get(position).like;
+			int nReply = mBoardItemArrayList.get(position).comment;
+			
 			// find resource
 			holder.position = position;
 
 			holder.houseId = (TextView) convertView.findViewById(R.id.tv_house_id);
 
-
 			holder.houseProfile = (ImageView) convertView.findViewById(R.id.house_profile);
-			holder.boardCreatedTime = (TextView) convertView.findViewById(R.id.created_time);
+//			holder.boardCreatedTime = (TextView) convertView.findViewById(R.id.);
 			holder.boardCategory = (TextView) convertView.findViewById(R.id.board_category);
 			holder.boardTitle = (TextView)convertView.findViewById(R.id.board_title);
 			holder.boardContent = (TextView) convertView.findViewById(R.id.board_content);
@@ -91,6 +72,16 @@ public class BoardAdapter extends BaseAdapter {
 			
 			holder.chatBackground = (LinearLayout)convertView.findViewById(R.id.chat_background);
 			
+			// set
+			holder.houseId.setText(id);
+			holder.boardTitle.setText(title);
+			holder.boardCategory.setText(category);
+			holder.boardContent.setText(content);
+
+			//이미지뷰에 url로 불러오는거 정리하기
+			holder.boardLikes.setText(Integer.toString(nLike));
+			holder.boardLikes.setText(Integer.toString(nReply));
+
 			
 			// set click listener
 			View.OnClickListener convertOnClickListener = new View.OnClickListener() {
@@ -112,32 +103,8 @@ public class BoardAdapter extends BaseAdapter {
 			};
 			
 			holder.chatBackground.setOnClickListener(convertOnClickListener);
-			
 			convertView.setTag(holder);
-
-		} else {
-			holder = (Holder) convertView.getTag();
-		}
-
-		// 여기에서 게시물의 사용자 아이디/ 카테고리/ 내용/ 이미지를 넣어줄거임.
-		String id = mBoardItemArrayList.get(position).id;
-		String title = mBoardItemArrayList.get(position).title;
-		String category = mBoardItemArrayList.get(position).category;
-		String content = mBoardItemArrayList.get(position).content;
-		List<String> previewImage = mBoardItemArrayList.get(position).previewImageUrls;
-		int nLike = mBoardItemArrayList.get(position).like;
-		int nReply = mBoardItemArrayList.get(position).reply;
-
-
-		holder.houseId.setText(id);
-		holder.boardTitle.setText(title);
-		holder.boardCategory.setText(category);
-		holder.boardContent.setText(content);
-
-		//이미지뷰에 url로 불러오는거 정리하기
-		holder.boardLikes.setText(Integer.toString(nLike));
-		holder.boardLikes.setText(Integer.toString(nReply));
-
+		} 
 		return convertView;
 	}
 
@@ -155,15 +122,48 @@ public class BoardAdapter extends BaseAdapter {
 		b.id = "newId";
 
 		b.category = "new Q&A";
-		b.createdTime = "20분전";
-		b.title = "우리 완성할 수 있을까?";
+		b.created = "20분전";
+		b.subject = "우리 완성할 수 있을까?";
 		b.content = "넥스터즈 인유어하우스팀에서 개발중인 하우스 어플리케이션입니다. 누르면 걍 디테일컨텐츠뷰로 가면될듯";
 
 		b.like = 1;
-		b.reply = 1;
+		b.comment = 1;
+
+		mBoardItemArrayList.add(b);
+	}
+
+
+	public void clear() {
+		mBoardItemArrayList.clear();
+	}
+
+	public void add(long brdNo, String brdId, String string,
+			ArrayList<String> imgUrls, int brdLikeCnt, int brdCommentCnt) {
+		BoardEntity b = new BoardEntity();
+
+		b.id = "newId";
+		b.category = "new Q&A";
+		b.created = "20분전";
+		b.subject = "우리 완성할 수 있을까?";
+		b.content = "넥스터즈 인유어하우스팀에서 개발중인 하우스 어플리케이션입니다. 누르면 걍 디테일컨텐츠뷰로 가면될듯";
+		b.like = 1;
+		b.comment = 1;
 
 		mBoardItemArrayList.add(b);
 	}	
+	
+	@Override
+	public int getCount() {
+		return mBoardItemArrayList.size();
+	}
 
+	@Override
+	public Object getItem(int position) {
+		return null;
+	}
 
+	@Override
+	public long getItemId(int position) {
+		return 0;
+	}
 }
