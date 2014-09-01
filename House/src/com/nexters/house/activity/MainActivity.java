@@ -125,7 +125,6 @@ public class MainActivity extends AbstractAsyncFragmentActivity implements OnCli
 	}
 
 	public void setWriteButtonVisibility(int idx){
-		
 		Animation hide = AnimationUtils.loadAnimation(this, R.anim.hide);
 		Animation show = AnimationUtils.loadAnimation(this, R.anim.show);
 		if (idx == FRAGMENT_MYPAGE) {
@@ -141,9 +140,7 @@ public class MainActivity extends AbstractAsyncFragmentActivity implements OnCli
 				mBtnWrite.setAnimation(show);
 				mBtnWrite.setClickable(true);
 			}
-			
 		}
-		
 	}
 	
 	public void setCurrentFragmentIndex(int mCurrentFragmentIndex) {

@@ -154,7 +154,6 @@ public class InteriorFragment extends Fragment {
     	AbstractHandler.Handler handler = new AbstractHandler.Handler() {
 			public void handle(APICode resCode) {
 				AP0007 ap = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), AP0007.class);
-				
 				mListAdapter.clear();
 				addInteriorList(0);
 			}
