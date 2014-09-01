@@ -135,7 +135,7 @@ public class GalleryAdapter extends BaseAdapter {
 				selectviewHolder.get(i).txtNumSelected.setVisibility(View.VISIBLE);
 				selectviewHolder.get(i).txtNumSelected.setText(Integer.toString(i+1));
 			}*/
-			notifyDataSetChanged(); //일단
+		//	notifyDataSetChanged(); //일단
 		
 			
 			if (selectCnt != 0)
