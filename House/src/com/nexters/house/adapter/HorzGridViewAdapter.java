@@ -100,7 +100,13 @@ public class HorzGridViewAdapter extends BaseAdapter{
 		}
 		//Set the data outside once the handler and view are instantiated
 		BitmapFactory.Options options = new BitmapFactory.Options();
-		options.inSampleSize=4;
+		
+		if(getRealHeight(thisData.getName())>2000 || getRealWidth(thisData.getName())>2000)
+			options.inSampleSize=15;
+		else
+			options.inSampleSize=2;
+	
+		options.inSampleSize=10;
 		Bitmap bmp=BitmapFactory.decodeFile(thisData.getName(),options);
 		handler.iv.setImageBitmap(bmp); //이미지 그려주기
 		
@@ -111,7 +117,18 @@ public class HorzGridViewAdapter extends BaseAdapter{
 //		Log.d("HorzGVAdapter","Position:"+position+",children:"+parent.getChildCount());
 		return convertView;
 	}
-	
+	private int getRealWidth(String fileName){
+		BitmapFactory.Options options = new BitmapFactory.Options(); 
+        options.inJustDecodeBounds = true; 
+        BitmapFactory.decodeFile(fileName, options); 
+        return options.outWidth; 
+	}
+	private int getRealHeight(String fileName){
+		BitmapFactory.Options options = new BitmapFactory.Options(); 
+        options.inJustDecodeBounds = true; 
+        BitmapFactory.decodeFile(fileName, options); 
+        return options.outHeight; 
+	}
 	private class ViewHandler{
 		ImageView iv;
 		TextView tv;
