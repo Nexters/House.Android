@@ -85,16 +85,16 @@ public class SignInActivity extends AbstractAsyncActivity implements View.OnClic
     }
     
     private void executeSignIn() {
-//    	testLogin();
-    	CM0001 cm = new CM0001();
-    	cm.setUsrId(mHsEmail.getText().toString());
-    	cm.setUsrPw(mHsPassword.getText().toString());
-
-    	AuthHandler<CM0001> authHandler = new AuthHandler<CM0001>(this, "CM0001");
-    	authHandler.setLoginAuto(mAutoLogin);
-    	authHandler.addTranData(cm);
-    	
-    	PostMessageTask signInTask = new PostMessageTask(this, authHandler, AuthHandler.LOGIN_METHOD);
-    	signInTask.execute(MediaType.APPLICATION_JSON); 
+    	testLogin();
+//    	CM0001 cm = new CM0001();
+//    	cm.setUsrId(mHsEmail.getText().toString());
+//    	cm.setUsrPw(mHsPassword.getText().toString());
+//
+//    	AuthHandler<CM0001> authHandler = new AuthHandler<CM0001>(this, "CM0001");
+//    	authHandler.setLoginAuto(mAutoLogin);
+//    	authHandler.addTranData(cm);
+//    	
+//    	PostMessageTask signInTask = new PostMessageTask(this, authHandler, AuthHandler.LOGIN_METHOD);
+//    	signInTask.execute(MediaType.APPLICATION_JSON); 
     }
 }
