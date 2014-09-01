@@ -1,5 +1,6 @@
 package com.nexters.house.adapter;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 import android.content.*;
@@ -16,7 +17,9 @@ public class GalleryAdapter extends BaseAdapter {
 	public static ArrayList<CustomGallery> customGalleries = new ArrayList<CustomGallery>();
 	public static ArrayList<CustomGallery> customGalleriesChecked = new ArrayList<CustomGallery>();
 	public static HashSet<String> customGalleriesSet = new HashSet<String>();
+
 	
+//	public static ArrayList<Integer> selectedPosition =new ArrayList<Integer>();
 	public static int selectCnt = 0;
 	public static boolean isShow = true;
 	public static ArrayList<CustomGallery> selectedGarlleries = null;
@@ -115,11 +118,25 @@ public class GalleryAdapter extends BaseAdapter {
 	}
 
 	public void changeSelection(View v, int position) {
-		if (customGalleries.get(position).isSeleted) {
+		if (customGalleries.get(position).isSeleted) {  //여기 버그..
 			customGalleries.get(position).isSeleted = false;
 			customGalleriesChecked.remove(customGalleries.get(position)); // 들어가있는거
+			
+			((ViewHolder) v.getTag()).txtNumSelected.setVisibility(View.GONE);
 		
 			
+		/*	int deleteIndex=selectviewHolder.indexOf((ViewHolder) v.getTag()); //지울 인덱스
+		
+	
+			
+			((ViewHolder) v.getTag()).txtNumSelected.setVisibility(View.GONE); //안보이게
+			selectviewHolder.remove(deleteIndex); //리스트에서 지워
+			for(int i=0;i<selectviewHolder.size();i++){
+				selectviewHolder.get(i).txtNumSelected.setVisibility(View.VISIBLE);
+				selectviewHolder.get(i).txtNumSelected.setText(Integer.toString(i+1));
+			}*/
+			notifyDataSetChanged(); //일단
+		
 			
 			if (selectCnt != 0)
 				selectCnt--; // 0이면 빼지마
@@ -128,15 +145,26 @@ public class GalleryAdapter extends BaseAdapter {
 				customGalleries.get(position).isSeleted = true;
 				selectCnt++;
 				customGalleriesChecked.add(customGalleries.get(position)); // 체크된거
-																// 넣기
-			/*	((ViewHolder) v.getTag()).txtNumSelected.setVisibility(View.VISIBLE);
-				((ViewHolder) v.getTag()).txtNumSelected.setText(Integer.toString(selectCnt));*/
+				
+			
+				
+				// 넣기
+				//글씨넣어
+				
+				((ViewHolder) v.getTag()).txtNumSelected.setVisibility(View.VISIBLE);
+				((ViewHolder) v.getTag()).txtNumSelected.setText(Integer.toString(selectCnt));
+				
+		
+			//	((ViewHolder) v.getTag()).txtNumSelected.setText(Integer.toString(selectCnt));
+				
+				
 			} else { // 15보다 크면
 				Toast.makeText(mContext, "15개까지만", Toast.LENGTH_LONG).show();
 			}
 		}
 		((ViewHolder) v.getTag()).imgQueueMultiSelected
 				.setSelected(customGalleries.get(position).isSeleted);
+		
 		
 	//	notifyDataSetChanged();
 		
@@ -163,7 +191,7 @@ public class GalleryAdapter extends BaseAdapter {
 			selectedGarlleries = customGalleries;
 		else
 			selectedGarlleries = customGalleriesChecked;
-
+		
 		if (convertView == null) {
 			convertView = mInfalter.inflate(R.layout.gallery_item, null);
 			holder = new ViewHolder();
@@ -206,7 +234,6 @@ public class GalleryAdapter extends BaseAdapter {
 				holder.imgQueueMultiSelected
 						.setBackgroundResource(R.drawable.checkbox1); // 이부분을
 			
-						
 				if(selectedGarlleries.get(position).isSeleted){
 					holder.txtNumSelected.setVisibility(View.VISIBLE);
 					int index=customGalleriesChecked.indexOf(selectedGarlleries.get(position));
@@ -215,14 +242,19 @@ public class GalleryAdapter extends BaseAdapter {
 				}
 				else
 					holder.txtNumSelected.setVisibility(View.GONE);
-			
-			
+						
+/*				if(selectedGarlleries.get(position).isSeleted){
+					holder.txtNumSelected.setVisibility(View.VISIBLE);
+			//		int index=customGalleriesChecked.indexOf(selectedGarlleries.get(position));
+					holder.txtNumSelected.setText(Integer.toString(selectCnt));
 					
+				}
+				else
+					holder.txtNumSelected.setVisibility(View.GONE);
 		//		holder.txtNumSelected.setText(Integer.toString(position));	// position에
 																		// 따라
 																		// 다른걸로!
-				
-			}
+*/			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -235,6 +267,8 @@ public class GalleryAdapter extends BaseAdapter {
 		ImageView imgQueue;
 		ImageView imgQueueMultiSelected;
 		TextView txtNumSelected;
+	
+		
 	}
 
 	public void clearCache() {
@@ -246,6 +280,7 @@ public class GalleryAdapter extends BaseAdapter {
 		customGalleries.clear();
 		customGalleriesSet.clear();
 		customGalleriesChecked.clear();
+	
 		selectCnt = 0;
 		// notifyDataSetChanged();
 	}

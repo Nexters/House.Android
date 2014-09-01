@@ -7,7 +7,7 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="45dp"
-        android:background="#8bd0c0"
+        android:background="@color/house_main_mint_color"
         android:orientation="horizontal" >
 
         <Button
@@ -16,7 +16,7 @@
             android:layout_height="fill_parent"
             android:layout_gravity="left"
             android:layout_marginLeft="5dp"
-            android:background="#8bd0c0"
+            android:background="@color/house_main_mint_color"
             android:onClick="clickedCancel"
             android:text="취소"
             android:textColor="#FFFFFF"
@@ -37,7 +37,7 @@
             android:id="@+id/btnOk_interior"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:background="#8bd0c0"
+            android:background="@color/house_main_mint_color"
             android:onClick="completeWrite"
             android:text="완료"
             android:textColor="#FFFFFF"

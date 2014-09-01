@@ -9,7 +9,7 @@
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="45dp"
-        android:background="#8bd0c0"
+        android:background="@color/house_main_mint_color"
         >
         <ViewSwitcher 
             android:id="@+id/switchCancel"
@@ -20,7 +20,7 @@
              android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_gravity="left"
-            android:background="#8bd0c0"
+            android:background="@color/house_main_mint_color"
             android:layout_marginLeft="5dp"
             android:text="취소"
             android:textColor="#FFFFFF"
@@ -29,7 +29,7 @@
              android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_gravity="left"
-            android:background="#8bd0c0"
+            android:background="@color/house_main_mint_color"
             android:layout_marginLeft="5dp"
             />
         </ViewSwitcher>
@@ -51,14 +51,12 @@
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             
-            android:background="#8bd0c0"
+            android:background="@color/house_main_mint_color"
             android:text="다음"
             android:textColor="#FFFFFF"
             android:textSize="15sp" />
     </LinearLayout>
   
-   
-
     <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="0dp"

@@ -37,6 +37,7 @@ public class ContentDetailActivity extends SherlockFragmentActivity {
 
 		initActionBar();
 		initResources();
+		
 		setListViewHeightBasedOnChildren(lvContent);
 
 		setListViewHeightBasedOnChildren(lvReply);
