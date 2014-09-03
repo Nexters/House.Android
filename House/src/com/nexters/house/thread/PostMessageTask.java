@@ -7,6 +7,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.converter.xml.SimpleXmlHttpMessageConverter;
@@ -37,7 +39,11 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
     private int mHandlerType;
     private Context mContext;
     private boolean isShowLoadingProgressDialog;
-    private AtomicBoolean isLoading;
+    private static AtomicBoolean isLoading;
+    
+    static {
+    	 System.setProperty("http.keepAlive", "false");
+    }
     
     public PostMessageTask(AbstractAsyncFragmentActivity abstractAsyncFragmentActivity, AbstractHandler abstractHandler, int handlerType) {
     	mAbstractAsyncActivity = abstractAsyncFragmentActivity;
@@ -85,7 +91,6 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
 //            final String url = mAbstractAsyncActivity.getString(R.string.base_uri) + "/house/CM0002.app";
             
             HttpHeaders requestHeaders = new HttpHeaders();
-            	
             // Set Token	
             String token = SessionManager.getInstance(mContext).getUserDetails().get(SessionManager.KEY_TOKEN);
             
@@ -97,7 +102,9 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
             HttpEntity<APICode> requestEntity = new HttpEntity<APICode>(mAbstractHandler.getReqCode(), requestHeaders);
             
             // Create a new RestTemplate instance
-            RestTemplate restTemplate = new RestTemplate();
+            RestTemplate restTemplate = new PostRestTemplate();
+            restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());  
+
             restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
             if (mediaType == MediaType.APPLICATION_JSON) {
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
@@ -133,5 +140,19 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
     	else if(POST_FAIL == result)
     		mAbstractHandler.showError();
     	else if(POST_IGNORE == result){}
+    }
+    
+    public class PostRestTemplate extends RestTemplate {
+        public PostRestTemplate() {
+            if (getRequestFactory() instanceof SimpleClientHttpRequestFactory) {
+                Log.d("HTTP", "HttpUrlConnection is used");
+                ((SimpleClientHttpRequestFactory) getRequestFactory()).setConnectTimeout(10 * 1000);
+                ((SimpleClientHttpRequestFactory) getRequestFactory()).setReadTimeout(10 * 1000);
+            } else if (getRequestFactory() instanceof HttpComponentsClientHttpRequestFactory) {
+                Log.d("HTTP", "HttpClient is used");
+                ((HttpComponentsClientHttpRequestFactory) getRequestFactory()).setReadTimeout(10 * 1000);
+                ((HttpComponentsClientHttpRequestFactory) getRequestFactory()).setConnectTimeout(10 * 1000);
+            }
+        }
     }
 }
