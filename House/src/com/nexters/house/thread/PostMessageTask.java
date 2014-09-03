@@ -1,5 +1,7 @@
 package com.nexters.house.thread;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -26,6 +28,7 @@ import com.nexters.house.handler.AbstractHandler;
 // Private classes
 // ***************************************
 public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
+	public static final int POST_IGNORE = 2;
 	public static final int POST_SUCCESS = 1;
 	public static final int POST_FAIL = 0;
 	
@@ -34,6 +37,7 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
     private int mHandlerType;
     private Context mContext;
     private boolean isShowLoadingProgressDialog;
+    private AtomicBoolean isLoading;
     
     public PostMessageTask(AbstractAsyncFragmentActivity abstractAsyncFragmentActivity, AbstractHandler abstractHandler, int handlerType) {
     	mAbstractAsyncActivity = abstractAsyncFragmentActivity;
@@ -41,6 +45,7 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
     	mAbstractHandler = abstractHandler;
     	mHandlerType = handlerType;
     	isShowLoadingProgressDialog = true;
+    	isLoading = new AtomicBoolean(false);
     }
     
     public PostMessageTask(AbstractAsyncActivity abstractAsyncActivity, AbstractHandler abstractHandler, int handlerType) {
@@ -49,6 +54,7 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
     	mAbstractHandler = abstractHandler;
     	mHandlerType = handlerType;
     	isShowLoadingProgressDialog = true;
+    	isLoading = new AtomicBoolean(false);
     }
     
     public void setShowLoadingProgressDialog(boolean isShow){
@@ -64,6 +70,10 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
 
     @Override
     protected Integer doInBackground(MediaType... params) {
+    	if(!isLoading.get())
+    		isLoading.set(true);
+    	else
+    		return POST_IGNORE;
         try {
             if (params.length <= 0) {
                 return null;
@@ -94,13 +104,13 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
             } else if (mediaType == MediaType.APPLICATION_XML) {
                 restTemplate.getMessageConverters().add(new SimpleXmlHttpMessageConverter());
             }
-
             // Make the network request, posting the message, expecting a String in response from the server
             ResponseEntity<APICode> response = null;
 //            Log.d("request : ", "request : " + JacksonUtils.objectToJson(mAbstractHandler.getReqCode() + " token : " + token));
         	response = restTemplate.exchange(url, HttpMethod.POST, requestEntity,
             		APICode.class, mAbstractHandler.getReqCode().getTranCd(), token);
 //            Log.d("response : ", "response : " + JacksonUtils.objectToJson(response.getBody()));
+        	Log.d("response : ", "response : " + response.getStatusCode().toString());
             mAbstractHandler.setResCode(response.getBody());
             // Return the response body to display to the user
             return POST_SUCCESS;
@@ -113,6 +123,8 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
 
     @Override
     protected void onPostExecute(Integer result) {
+    	isLoading.set(false);
+    	
     	if(isShowLoadingProgressDialog)
     		mAbstractAsyncActivity.dismissProgressDialog();
         
@@ -120,5 +132,6 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
     		mAbstractHandler.handle(mHandlerType);
     	else if(POST_FAIL == result)
     		mAbstractHandler.showError();
+    	else if(POST_IGNORE == result){}
     }
 }

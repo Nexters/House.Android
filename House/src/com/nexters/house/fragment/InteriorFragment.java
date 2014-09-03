@@ -60,7 +60,7 @@ public class InteriorFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_interior, container, false);
 		initResources(v);
-//		initEvents();
+		initEvents();
 		return v;
 	}
 
@@ -111,17 +111,14 @@ public class InteriorFragment extends Fragment {
 				}
 			}
 		};
-		for(int i=0; i<4; i++){
-			mListAdapter.add();
-		}
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
 		// init List
-//		mListAdapter.clear();
-//		addInteriorList(0);
+		mListAdapter.clear();
+		addInteriorList(0);
 	}
 
 	private void initEvents(){
