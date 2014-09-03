@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.internal.lv;
 import com.nexters.house.R;
 import com.nexters.house.activity.MainActivity;
 import com.nexters.house.adapter.InteriorAdapter;
@@ -60,7 +61,7 @@ public class InteriorFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_interior, container, false);
 		initResources(v);
-//		initEvents();
+		initEvents();
 		return v;
 	}
 
@@ -111,17 +112,14 @@ public class InteriorFragment extends Fragment {
 				}
 			}
 		};
-		for(int i=0; i<4; i++){
-			mListAdapter.add();
-		}
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
 		// init List
-//		mListAdapter.clear();
-//		addInteriorList(0);
+		mListAdapter.clear();
+		addInteriorList(0);
 	}
 
 	private void initEvents(){
@@ -154,7 +152,8 @@ public class InteriorFragment extends Fragment {
     	AbstractHandler.Handler handler = new AbstractHandler.Handler() {
 			public void handle(APICode resCode) {
 				AP0007 ap = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), AP0007.class);
-				
+				if(mLvMain.getSelectedItemPosition() > 0)
+					mLvMain.setSelection(mLvMain.getSelectedItemPosition() - 1);
 				mListAdapter.clear();
 				addInteriorList(0);
 			}

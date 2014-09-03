@@ -34,10 +34,8 @@ public class IntroActivity extends Activity {
 	}
 	
 	private void endIntro() {
-	//	Intent intent = new Intent(this, StartActivity.class); //서버 올려진 상태일때
-		Intent intent=new Intent(this,MainActivity.class); //서버 내려간 상태일때
+		Intent intent = new Intent(this, StartActivity.class); //서버 올려진 상태일때
 		startActivity(intent);
 		finish();
-		// }
 	}
 }
