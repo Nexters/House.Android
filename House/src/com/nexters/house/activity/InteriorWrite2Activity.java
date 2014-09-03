@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
+import android.graphics.Bitmap;
 
 import com.jess.ui.TwoWayGridView;
 import com.nexters.house.R;
@@ -37,7 +38,11 @@ import com.nexters.house.entity.reqcode.AP0006.AP0006Img;
 import com.nexters.house.handler.ArticleHandler;
 import com.nexters.house.thread.PostMessageTask;
 import com.nexters.house.utils.ImageManagingHelper;
+import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 public class InteriorWrite2Activity extends AbstractAsyncActivity {
 	public final static int COLUMN_PORT = 0;
@@ -69,6 +74,7 @@ public class InteriorWrite2Activity extends AbstractAsyncActivity {
 	private Button btnGalleryPickMul;
 	private Button previewOk;
 
+	
 	PostMessageTask mArticleTask;
 	ArticleHandler<AP0006> mAP0006Handler;
 	
@@ -80,10 +86,23 @@ public class InteriorWrite2Activity extends AbstractAsyncActivity {
 		savedInfo="";
 		// 처음에 포커스 없애기
 		this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+		initImageLoader();
 		initResource();
 		initEvent();
 	}
 
+	private void initImageLoader() {
+		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+				.cacheOnDisc().imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
+				.bitmapConfig(Bitmap.Config.RGB_565).build();
+		ImageLoaderConfiguration.Builder builder = new ImageLoaderConfiguration.Builder(
+				this).defaultDisplayImageOptions(defaultOptions).memoryCache(
+				new WeakMemoryCache());
+
+		ImageLoaderConfiguration config = builder.build();
+		mImageLoader = ImageLoader.getInstance();
+		mImageLoader.init(config);
+	}
 	private void initResource() {
 		// 입력한 정보 끌어오기
 		mInteriorInfo = (EditText) findViewById(R.id.interior_info); // 인테리어정보
@@ -94,7 +113,7 @@ public class InteriorWrite2Activity extends AbstractAsyncActivity {
 		
 		mContext = getApplicationContext();
 		List<DataObject> horzData = new ArrayList<DataObject>();
-		mHorzGridViewAdapter = new HorzGridViewAdapter(mContext, horzData, mInteriorGridView2);
+		mHorzGridViewAdapter = new HorzGridViewAdapter(mContext, horzData, mInteriorGridView2,mImageLoader);
 		mInteriorGridView2.setAdapter(mHorzGridViewAdapter);
 		
 		mInteriorContent.setText(savedContent);

@@ -19,6 +19,8 @@ import android.widget.LinearLayout;
 import com.nexters.house.R;
 import com.nexters.house.activity.*;
 import com.nexters.house.entity.CustomGallery;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
 public class PagerAdapterClass extends PagerAdapter {
 	private LayoutInflater mInflater;
@@ -30,12 +32,14 @@ public class PagerAdapterClass extends PagerAdapter {
 	private ViewPager mViewPagers;
 	private InteriorWriteActivity mInteriorWriteActivity;
 	private int currentPosition;
+	private ImageLoader mImageLoader;
 	
-	public PagerAdapterClass(Context context, ViewPager pager, InteriorWriteActivity interiorWriteActivity) {
+	public PagerAdapterClass(Context context, ViewPager pager, InteriorWriteActivity interiorWriteActivity,ImageLoader imageloader) {
 		super();
 		mInteriorWriteActivity = interiorWriteActivity;
 		this.mContext = context;
 		this.mViewPagers = pager;
+		this.mImageLoader=imageloader;
 		mInflater = LayoutInflater.from(context);
 		views = new ArrayList<View>();
 		pageNum = GalleryAdapter.customGalleriesChecked.size();
@@ -48,18 +52,16 @@ public class PagerAdapterClass extends PagerAdapter {
 			Button btn = (Button) v.findViewById(R.id.btn_delete);
 			ImageView singleImg=(ImageView)v.findViewById(R.id.singleImage);
 		
-			
-			BitmapFactory.Options options=new BitmapFactory.Options();
-			
-			if(getRealHeight(GalleryAdapter.customGalleriesChecked.get(i).sdcardPath)>2000 || getRealWidth(GalleryAdapter.customGalleriesChecked.get(i).sdcardPath)>2000)
-				options.inSampleSize=15;
-			else
-				options.inSampleSize=2;
-		
+			mImageLoader.displayImage("file://" + GalleryAdapter.customGalleriesChecked.get(i).sdcardPath,
 
-			Bitmap bmp=BitmapFactory.decodeFile(GalleryAdapter.customGalleriesChecked.get(i).sdcardPath,options);
+					singleImg, new SimpleImageLoadingListener() {
+						@Override
+						public void onLoadingStarted(String imageUri, View view) {
+							
+							super.onLoadingStarted(imageUri, view);
+						}
+					});
 			
-			singleImg.setImageBitmap(bmp);
 			
 			final int index = i;
 			btn.setOnClickListener(new View.OnClickListener() {
@@ -125,4 +127,9 @@ public class PagerAdapterClass extends PagerAdapter {
 	public boolean isViewFromObject(View pager, Object obj) {
 		return pager == obj;
 	}
+	public void clearCache() {
+		mImageLoader.clearDiscCache();
+		mImageLoader.clearMemoryCache();
+	}
+
 }
