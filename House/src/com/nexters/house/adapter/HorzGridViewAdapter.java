@@ -17,6 +17,8 @@ import com.jess.ui.TwoWayGridView;
 import com.nexters.house.*;
 import com.nexters.house.activity.*;
 import com.nexters.house.entity.DataObject;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
 public class HorzGridViewAdapter extends BaseAdapter{
 	
@@ -31,15 +33,16 @@ public class HorzGridViewAdapter extends BaseAdapter{
 	private int itemPadding;
 	private int columnWidth;
 	private int rowHeight;
-
+	private ImageLoader mImageLoader;
 	//Initialize the layout params
 	private ViewTreeObserver mViewTreeObserver;
 	
-	public HorzGridViewAdapter(Context context,List<DataObject> data,final TwoWayGridView horzGridView){
+	public HorzGridViewAdapter(Context context,List<DataObject> data,final TwoWayGridView horzGridView,ImageLoader imageloader){
 		childLayoutResourceId = R.layout.horz_gridview_child_layout;
 		this.mContext = context;
 		this.mHorzData = data;
 		this.mHorzGridView = horzGridView;
+		this.mImageLoader=imageloader;
 		
 		//Get dimensions from values folders; note that the value will change
 		//based on the device size but the dimension name will remain the same
@@ -99,16 +102,16 @@ public class HorzGridViewAdapter extends BaseAdapter{
 			handler = (ViewHandler) convertView.getTag();
 		}
 		//Set the data outside once the handler and view are instantiated
-		BitmapFactory.Options options = new BitmapFactory.Options();
-		
-		if(getRealHeight(thisData.getName())>2000 || getRealWidth(thisData.getName())>2000)
-			options.inSampleSize=15;
-		else
-			options.inSampleSize=2;
 	
-		options.inSampleSize=10;
-		Bitmap bmp=BitmapFactory.decodeFile(thisData.getName(),options);
-		handler.iv.setImageBitmap(bmp); //이미지 그려주기
+		mImageLoader.displayImage("file://" + thisData.getName(),
+
+				handler.iv, new SimpleImageLoadingListener() {
+					@Override
+					public void onLoadingStarted(String imageUri, View view) {
+						
+						super.onLoadingStarted(imageUri, view);
+					}
+				});
 		
 		FrameLayout.LayoutParams lp 
 			= new FrameLayout.LayoutParams(columnWidth, rowHeight);// convertView.getLayoutParams();
@@ -129,6 +132,7 @@ public class HorzGridViewAdapter extends BaseAdapter{
         BitmapFactory.decodeFile(fileName, options); 
         return options.outHeight; 
 	}
+	
 	private class ViewHandler{
 		ImageView iv;
 		TextView tv;

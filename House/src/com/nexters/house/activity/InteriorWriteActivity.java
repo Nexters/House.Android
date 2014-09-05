@@ -40,6 +40,7 @@ public class InteriorWriteActivity extends Activity {
 
 	private ImageView imgSinglePick;
 	private ImageLoader mImageLoader;
+	private ImageLoader mImageLoder_pager;
 
 	private LinearLayout mPageMark;
 
@@ -76,6 +77,9 @@ public class InteriorWriteActivity extends Activity {
 		ImageLoaderConfiguration config = builder.build();
 		mImageLoader = ImageLoader.getInstance();
 		mImageLoader.init(config);
+	
+		mImageLoder_pager=ImageLoader.getInstance();
+		mImageLoder_pager.init(config);
 	}
 
 	private void initResource() {
@@ -108,7 +112,7 @@ public class InteriorWriteActivity extends Activity {
 	public void refreshPager() {
 	
 		mPagerAdapterClass = new PagerAdapterClass(getApplicationContext(),
-				mPager, this);
+				mPager, this,mImageLoder_pager);
 		mPager.setAdapter(mPagerAdapterClass);
 		
 		mPageMark.removeAllViews(); // 다시 다 지워

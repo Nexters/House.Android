@@ -61,11 +61,12 @@ public class TalkWriteActivity extends Activity {
 
 	private GridView mGridGallery;
 	private ImageView mImgSinglePick;
-
+	
 	private ViewSwitcher mViewSwitcher;
 	private ImageLoader mImageLoader;
 
 	private Button btnGalleryPick;
+
 
 	private PostMessageTask mArticleTask;
 	private ArticleHandler<AP0006> mAP0006Handler;
@@ -95,7 +96,7 @@ public class TalkWriteActivity extends Activity {
 		mContext = getApplicationContext();
 		List<DataObject> horzData = new ArrayList<DataObject>();
 		mHorzGridViewAdapter = new HorzGridViewAdapter(mContext, horzData,
-				mTalkHorzGridView);
+				mTalkHorzGridView,mImageLoader);
 		mTalkHorzGridView.setAdapter(mHorzGridViewAdapter);
 		
 	}
