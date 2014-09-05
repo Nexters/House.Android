@@ -69,8 +69,8 @@ public class InteriorWrite2Activity extends AbstractAsyncActivity {
 	private Button btnGalleryPickMul;
 	private Button previewOk;
 
-	PostMessageTask mArticleTask;
-	ArticleHandler<AP0006> mAP0006Handler;
+	private PostMessageTask mArticleTask;
+	private ArticleHandler<AP0006> mAP0006Handler;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -119,50 +119,16 @@ public class InteriorWrite2Activity extends AbstractAsyncActivity {
 	}
 	
 	public void completeWrite(View view) {
-		if(mArticleTask != null && !(mArticleTask.getStatus() == Status.FINISHED))
-			return ;
-		
-		AP0006 ap = returnAP0006();
+		AP0006 ap = ArticleHandler.returnAP0006(this, CodeType.INTERIOR_TYPE, 0, "", mInteriorContent.getText().toString().getBytes(), mInteriorInfo.getText().toString(), generateGridViewObjects());
 		mAP0006Handler.setOneTranData(ap);
 		mArticleTask = new PostMessageTask(this, mAP0006Handler, ArticleHandler.WRITE_INTERIOR);
 		mArticleTask.execute(MediaType.APPLICATION_JSON);
 	}
 
-	public AP0006 returnAP0006(){
-		AP0006 ap = new AP0006();
-		ap.setType(CodeType.INTERIOR_TYPE);
-		ap.setBrdId(SessionManager.getInstance(this).getUserDetails().get(SessionManager.KEY_EMAIL));
-		ap.setBrdSubject("");
-		ap.setBrdContents(mInteriorContent.getText().toString().getBytes());
-		ap.setBrdTag(mInteriorInfo.getText().toString());
-		
-		List<DataObject> dataObjects = generateGridViewObjects();
-		ArrayList<AP0006Img> imgs = new ArrayList<AP0006Img>();
-		
-		for(DataObject dataObject : dataObjects){
-			AP0006Img img = new AP0006Img();
-			String path = dataObject.getName();
-			String name = path.substring(path.lastIndexOf('/') + 1);
-			String type = path.substring(path.lastIndexOf('.') + 1);
-			File file = new File(path);
-			byte[] contents = ImageManagingHelper.getImageToBytes(file);
-			long size = file.length();
-			
-			img.imgNm = img.imgOriginNm = name;
-			img.imgSize = size; 
-			img.imgType = type;
-			img.imgContent = contents;
-//			Log.d("dataObject", "dataObject : " + contents.length + " - " + size);
-			imgs.add(img);
-		}
-		ap.setBrdImg(imgs);
-		return ap;
-	}
-	
 	public void clickedCancel(View view){
 		onBackPressed();
 	}
-	
+
 	@Override
 	public void onBackPressed(){
 		 AlertDialog.Builder alt_bld = new AlertDialog.Builder(this);
@@ -182,10 +148,8 @@ public class InteriorWrite2Activity extends AbstractAsyncActivity {
 		        });
 		    AlertDialog alert = alt_bld.create();
 		    // Title for AlertDialog
-
 		    alert.show();
 	}
-
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {

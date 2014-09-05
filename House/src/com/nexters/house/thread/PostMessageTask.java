@@ -41,10 +41,6 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
     private boolean isShowLoadingProgressDialog;
     private static AtomicBoolean isLoading;
     
-    static {
-    	 System.setProperty("http.keepAlive", "false");
-    }
-    
     public PostMessageTask(AbstractAsyncFragmentActivity abstractAsyncFragmentActivity, AbstractHandler abstractHandler, int handlerType) {
     	mAbstractAsyncActivity = abstractAsyncFragmentActivity;
     	mContext = abstractAsyncFragmentActivity.getApplicationContext();
@@ -104,7 +100,7 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
             // Create a new RestTemplate instance
             RestTemplate restTemplate = new PostRestTemplate();
             restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());  
-
+            
             restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
             if (mediaType == MediaType.APPLICATION_JSON) {
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
@@ -145,11 +141,11 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
     public class PostRestTemplate extends RestTemplate {
         public PostRestTemplate() {
             if (getRequestFactory() instanceof SimpleClientHttpRequestFactory) {
-                Log.d("HTTP", "HttpUrlConnection is used");
+//                Log.d("HTTP", "HttpUrlConnection is used");
                 ((SimpleClientHttpRequestFactory) getRequestFactory()).setConnectTimeout(10 * 1000);
                 ((SimpleClientHttpRequestFactory) getRequestFactory()).setReadTimeout(10 * 1000);
             } else if (getRequestFactory() instanceof HttpComponentsClientHttpRequestFactory) {
-                Log.d("HTTP", "HttpClient is used");
+//                Log.d("HTTP", "HttpClient is used");
                 ((HttpComponentsClientHttpRequestFactory) getRequestFactory()).setReadTimeout(10 * 1000);
                 ((HttpComponentsClientHttpRequestFactory) getRequestFactory()).setConnectTimeout(10 * 1000);
             }

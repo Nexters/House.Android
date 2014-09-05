@@ -87,9 +87,6 @@ public class ReplyAdapter extends BaseAdapter{
 	}
 	
 	public void deleteReply(long replyNo){
-		if (mPostTask != null
-				&& !(mPostTask.getStatus() == Status.FINISHED))
-			return;
 		AP0009 ap = new AP0009();
 		ap.setType(brdType);
 		ap.setCommentNo(replyNo);

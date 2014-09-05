@@ -192,6 +192,8 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 				mLikeCnt.setText("" + ap.getBrdLikeCnt());
 				mScrapCnt.setText("" + ap.getBrdScrapCnt());
 				mReplyCnt.setText("" + ap.getBrdCommentCnt());
+				Log.d("ap.getBrdScrapState()", "ap.getBrdScrapState() : " + ap.getBrdScrapState());
+				
 				mBtnLike.setChecked((ap.getBrdLikeState() == 1)? true : false);
 				mBtnScrap.setChecked((ap.getBrdScrapState() == 1)? true : false);
 				
@@ -209,7 +211,7 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 			public void handle(APICode resCode) {
 				AP0003 ap = JacksonUtils.hashMapToObject((HashMap) resCode
 						.getTranData().get(0), AP0003.class);
-				Log.d("AP0003Comment", "AP0003Comment : ");
+//				Log.d("AP0003Comment", "AP0003Comment : ");
 				List<AP0003Comment> comments = ap.getBrdComment();
 				mReplyArrayList.clear();
 				for (int i = 0; i < comments.size(); i++){
@@ -223,10 +225,8 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 					mReplyArrayList.add(reply);
 				}
 				mReplyCnt.setText("" + ap.getBrdCommentCnt());
+				mEditReply.setText("");
 				mReplyAdapter.notifyDataSetChanged();
-				// TODO
-				mReplyContent.invalidateViews();
-				mReplyContent.refreshDrawableState();
 				setListViewHeightBasedOnChildren(mReplyContent);
 			}
 		};
@@ -274,9 +274,6 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 	}
 	
 	public void writeComment(){
-		if (mPostTask != null
-				&& !(mPostTask.getStatus() == Status.FINISHED))
-			return;
 		AP0008 ap = new AP0008();
 		ap.setType(brdType);
 		ap.setReqPoNo(brdNo);
@@ -291,9 +288,6 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 	}
 	
 	public void toggleLikeCnt(){
-		if (mPostTask != null
-				&& !(mPostTask.getStatus() == Status.FINISHED))
-			return;
 		AP0004 ap = new AP0004();
 		ap.setType(brdType);
 		ap.setBrdNo(brdNo);
@@ -307,9 +301,6 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 	}
 	
 	public void toggleScrapCnt(){
-		if (mPostTask != null
-				&& !(mPostTask.getStatus() == Status.FINISHED))
-			return;
 		AP0005 ap = new AP0005();
 		ap.setType(brdType);
 		ap.setBrdNo(brdNo);
@@ -323,9 +314,6 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 	}
 	
 	public void setContents(long brdNo) {
-		if (mPostTask != null
-				&& !(mPostTask.getStatus() == Status.FINISHED))
-			return;
 		AP0003 ap = new AP0003();
 		ap.setType(brdType);
 		ap.setReqPoNo(brdNo);

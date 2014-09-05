@@ -100,26 +100,30 @@ public class InteriorAdapter extends BaseAdapter {
 			// get interior
 			final long no = mInteriorItemArrayList.get(position).no;
 			String id = mInteriorItemArrayList.get(position).id;
+			String profileImg = mInteriorItemArrayList.get(position).profileImg;
+			String created = mInteriorItemArrayList.get(position).created;
 			String content = mInteriorItemArrayList.get(position).content;
+			List<String> imageUrls = mInteriorItemArrayList.get(position).imageUrls;
 			int nLike = mInteriorItemArrayList.get(position).like;
 			int nReply = mInteriorItemArrayList.get(position).comment;
-			List<String> imageUrls = mInteriorItemArrayList.get(position).imageUrls;
 			
 			// find resource
 			holder.position = position;
 			holder.refresh = refreshCnt;
 			holder.houseId = (TextView) convertView.findViewById(R.id.house_id);
+			holder.houseProfile = (ImageView) convertView.findViewById(R.id.house_profile);
+//			holder.created = (TextView) convertView.findViewById(R.id.)
 			holder.interiorContent = (TextView) convertView.findViewById(R.id.interior_content);
+			holder.interiorLikes = (TextView)convertView.findViewById(R.id.interior_likes_cnt);
+			holder.interiorReplies = (TextView)convertView.findViewById(R.id.interior_reply_cnt);
+			
 			holder.rlContents = (RelativeLayout) convertView.findViewById(R.id.rl_interior_custom_view);
 			holder.slider = (SliderLayout) convertView.findViewById(R.id.interior_slider);
 			holder.btnDown = (ImageView) convertView.findViewById(R.id.icon_down);
 			holder.btnEdit = (ImageView) convertView.findViewById(R.id.icon_edit);
 			holder.btnDelete = (ImageView) convertView.findViewById(R.id.icon_delete);
 			
-			holder.houseProfile = (ImageView) convertView.findViewById(R.id.house_profile);
-			holder.interiorLikes = (TextView)convertView.findViewById(R.id.interior_likes_cnt);
-			holder.interiorReplies = (TextView)convertView.findViewById(R.id.interior_reply_cnt);
-			
+					
 			// set
 			holder.houseId.setText(id + " = " + position);
 			holder.interiorContent.setText(content);
@@ -229,8 +233,6 @@ public class InteriorAdapter extends BaseAdapter {
 	}
 
 	public void deleteInterior(long interiorNo){
-		if(mPostTask != null && !(mPostTask.getStatus() == Status.FINISHED))
-			return ;
 //		Log.d("interiorNo", "interiorNo = " + interiorNo);
 		AP0007 ap = new AP0007();
 		ap.setType(CodeType.INTERIOR_TYPE);
@@ -249,26 +251,26 @@ public class InteriorAdapter extends BaseAdapter {
 		ImageView houseProfile;
 		LinearLayout tvContents;
 		RelativeLayout rlContents;
-		TextView houseId, interiorContent, interiorCategory;
+		TextView houseId, created, interiorContent;
 		TextView interiorLikes, interiorReplies;
 		ImageView btnDown, btnEdit, btnDelete;
 		SliderLayout slider;
 	}
 
 	@SuppressWarnings("serial")
-	public void add(long no, String usrId, String content,
-			List<String> imgUrls, int likeCnt, int commentCnt) {
+	public void add(long brdNo, String brdId, String brdProfileImg, String brdCreated, String brdContent, 
+			ArrayList<String> imgUrls, int brdLikeCnt, int brdCommentCnt) {
 		InteriorEntity e = new InteriorEntity();
-		e.no = no;
-		e.badge = 1;
+		e.no = brdNo;
 		// e.category = "new";
-		Log.d("content :", "content : " + content);
-		e.content = content;
-		e.id = usrId;
+		e.id = brdId;
+		e.profileImg = brdProfileImg;
+		e.created = brdCreated;
+		e.content = brdContent;
 		e.imageUrls = imgUrls;
 
-		e.comment = commentCnt;
-		e.like = likeCnt;
+		e.comment = brdCommentCnt;
+		e.like = brdLikeCnt;
 
 		mInteriorItemArrayList.add(e);
 	}
