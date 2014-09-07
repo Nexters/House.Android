@@ -1,5 +1,7 @@
 package com.nexters.house.activity;
 
+import java.util.HashMap;
+
 import org.springframework.http.MediaType;
 
 import android.content.Intent;
@@ -14,9 +16,12 @@ import android.widget.EditText;
 
 import com.nexters.house.R;
 import com.nexters.house.core.SessionManager;
+import com.nexters.house.entity.APICode;
+import com.nexters.house.entity.UserEntity;
 import com.nexters.house.entity.reqcode.CM0001;
-import com.nexters.house.handler.AuthHandler;
+import com.nexters.house.handler.TransHandler;
 import com.nexters.house.thread.PostMessageTask;
+import com.nexters.house.utils.JacksonUtils;
 
 public class SignInActivity extends AbstractAsyncActivity implements View.OnClickListener {
     private EditText mHsEmail;
@@ -88,15 +93,28 @@ public class SignInActivity extends AbstractAsyncActivity implements View.OnClic
     
     private void executeSignIn() {
     	//testLogin();
-    	CM0001 cm = new CM0001();
+
+    	TransHandler.Handler handler = new TransHandler.Handler() {
+			@Override
+			public void handle(APICode resCode) {
+				SessionManager sessionManager = SessionManager.getInstance(getApplicationContext());
+				
+				if(resCode.getTranCd().equals("CM0001")){
+					CM0001 cm = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), CM0001.class);
+					sessionManager.createLoginSession(SessionManager.HOUSE, cm.getCustName(), cm.getUsrId(), cm.getToken(), null, mAutoLogin);
+				}
+				if(sessionManager.isLoggedIn()){
+					finish();
+				} else 
+					showResult("Error");
+			}
+		}; 
+	  	CM0001 cm = new CM0001();
     	cm.setUsrId(mHsEmail.getText().toString());
     	cm.setUsrPw(mHsPassword.getText().toString());
-
-    	AuthHandler<CM0001> authHandler = new AuthHandler<CM0001>(this, "CM0001");
-    	authHandler.setLoginAuto(mAutoLogin);
-    	authHandler.addTranData(cm);
-    	
-    	PostMessageTask signInTask = new PostMessageTask(this, authHandler, AuthHandler.LOGIN_METHOD);
+		
+    	TransHandler<CM0001> authHandler = new TransHandler<CM0001>("CM0001", handler, cm);
+    	PostMessageTask signInTask = new PostMessageTask(this, authHandler);
     	signInTask.execute(MediaType.APPLICATION_JSON); 
     }
 }

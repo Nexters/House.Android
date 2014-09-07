@@ -6,23 +6,19 @@ import java.util.List;
 
 import org.springframework.http.MediaType;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.AsyncTask.Status;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 import android.widget.ViewSwitcher;
-import android.graphics.Bitmap;
 
 import com.jess.ui.TwoWayGridView;
 import com.nexters.house.R;
@@ -30,12 +26,13 @@ import com.nexters.house.adapter.GalleryAdapter;
 import com.nexters.house.adapter.HorzGridViewAdapter;
 import com.nexters.house.adapter.PagerAdapterClass;
 import com.nexters.house.core.SessionManager;
+import com.nexters.house.entity.APICode;
 import com.nexters.house.entity.Action;
 import com.nexters.house.entity.CodeType;
 import com.nexters.house.entity.DataObject;
 import com.nexters.house.entity.reqcode.AP0006;
 import com.nexters.house.entity.reqcode.AP0006.AP0006Img;
-import com.nexters.house.handler.ArticleHandler;
+import com.nexters.house.handler.TransHandler;
 import com.nexters.house.thread.PostMessageTask;
 import com.nexters.house.utils.ImageManagingHelper;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
@@ -75,7 +72,6 @@ public class InteriorWrite2Activity extends AbstractAsyncActivity {
 	private Button previewOk;
 
 	private PostMessageTask mArticleTask;
-	private ArticleHandler<AP0006> mAP0006Handler;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -117,9 +113,6 @@ public class InteriorWrite2Activity extends AbstractAsyncActivity {
 		
 		mInteriorContent.setText(savedContent);
 		mInteriorInfo.setText(savedInfo);
-		
-		// Post Aricle 
-    	mAP0006Handler = new ArticleHandler<AP0006>(this, "AP0006");
 	}
 
 	private void initEvent(){
@@ -137,12 +130,48 @@ public class InteriorWrite2Activity extends AbstractAsyncActivity {
 	}
 	
 	public void completeWrite(View view) {
-		AP0006 ap = ArticleHandler.returnAP0006(this, CodeType.INTERIOR_TYPE, 0, "", mInteriorContent.getText().toString().getBytes(), mInteriorInfo.getText().toString(), generateGridViewObjects());
-		mAP0006Handler.setOneTranData(ap);
-		mArticleTask = new PostMessageTask(this, mAP0006Handler, ArticleHandler.WRITE_INTERIOR);
+		AP0006 ap = new AP0006();
+		ap.setType(CodeType.INTERIOR_TYPE);
+		ap.setBrdId(SessionManager.getInstance(this).getUserDetails().get(SessionManager.KEY_EMAIL));
+		ap.setBrdSubject("");
+		ap.setBrdContents(mInteriorContent.getText().toString().getBytes());
+		ap.setBrdTag(mInteriorInfo.getText().toString());
+		ap.setBrdCateNo(0);
+		
+		ArrayList<AP0006Img> imgs = new ArrayList<AP0006Img>();
+		for(DataObject dataObject : generateGridViewObjects()){
+			AP0006Img img = new AP0006Img();
+			String path = dataObject.getName();
+			String name = path.substring(path.lastIndexOf('/') + 1);
+			String type = path.substring(path.lastIndexOf('.') + 1);
+			File file = new File(path);
+			byte[] contents = ImageManagingHelper.getImageToBytes(file);
+			long size = file.length();
+			
+			img.imgNm = img.imgOriginNm = name;
+			img.imgSize = size; 
+			img.imgType = type;
+			img.imgContent = contents;
+//			Log.d("dataObject", "dataObject : " + contents.length + " - " + size);
+			imgs.add(img);
+		}
+		ap.setBrdImg(imgs);
+		
+		TransHandler.Handler handler = new TransHandler.Handler() {
+			@Override
+			public void handle(APICode resCode) {
+				CustomGalleryActivity.noCancel = 0;
+				setResult(RESULT_OK);
+				finish();
+				showResult("작성한 내용이 업로드됩니다.");
+			}
+		};
+		// Post Aricle 
+    	TransHandler<AP0006> articleHandler = new TransHandler<AP0006>("AP0006", handler, ap);
+		mArticleTask = new PostMessageTask(this, articleHandler);
 		mArticleTask.execute(MediaType.APPLICATION_JSON);
 	}
-
+	
 	public void clickedCancel(View view){
 		onBackPressed();
 	}

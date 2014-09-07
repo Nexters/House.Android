@@ -6,8 +6,7 @@ public class ContentEntity {
 	public String id;
 	public String category;
 	public String content;
-	public List<String> image_urls;
+	public List<String> imageUrls;
 	public int badge;
 	public int reply;
-	
 }

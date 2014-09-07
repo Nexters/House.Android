@@ -1,6 +1,5 @@
 package com.nexters.house.activity;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,11 +10,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -29,15 +23,10 @@ import com.jess.ui.TwoWayGridView;
 import com.nexters.house.R;
 import com.nexters.house.adapter.GalleryAdapter;
 import com.nexters.house.adapter.HorzGridViewAdapter;
-import com.nexters.house.core.SessionManager;
 import com.nexters.house.entity.Action;
-import com.nexters.house.entity.CodeType;
 import com.nexters.house.entity.DataObject;
 import com.nexters.house.entity.reqcode.AP0006;
-import com.nexters.house.entity.reqcode.AP0006.AP0006Img;
-import com.nexters.house.handler.ArticleHandler;
 import com.nexters.house.thread.PostMessageTask;
-import com.nexters.house.utils.ImageManagingHelper;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -67,9 +56,7 @@ public class TalkWriteActivity extends Activity {
 
 	private Button btnGalleryPick;
 
-
 	private PostMessageTask mArticleTask;
-	private ArticleHandler<AP0006> mAP0006Handler;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -112,8 +99,6 @@ public class TalkWriteActivity extends Activity {
 			}
 		});
 	}
-
-
 
 	public void completeTalkWrite(View view) {
 		CustomGalleryActivity.noCancel=0;

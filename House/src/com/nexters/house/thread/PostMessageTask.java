@@ -24,7 +24,7 @@ import com.nexters.house.activity.AbstractAsyncFragmentActivity;
 import com.nexters.house.activity.AsyncActivity;
 import com.nexters.house.core.SessionManager;
 import com.nexters.house.entity.APICode;
-import com.nexters.house.handler.AbstractHandler;
+import com.nexters.house.handler.TransHandler;
 
 // ***************************************
 // Private classes
@@ -35,26 +35,23 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
 	public static final int POST_FAIL = 0;
 	
 	private AsyncActivity mAbstractAsyncActivity;
-    private AbstractHandler mAbstractHandler;
-    private int mHandlerType;
+    private TransHandler mTransHandler;
     private Context mContext;
     private boolean isShowLoadingProgressDialog;
     private static AtomicBoolean isLoading;
     
-    public PostMessageTask(AbstractAsyncFragmentActivity abstractAsyncFragmentActivity, AbstractHandler abstractHandler, int handlerType) {
+    public PostMessageTask(AbstractAsyncFragmentActivity abstractAsyncFragmentActivity, TransHandler transHandler) {
     	mAbstractAsyncActivity = abstractAsyncFragmentActivity;
     	mContext = abstractAsyncFragmentActivity.getApplicationContext();
-    	mAbstractHandler = abstractHandler;
-    	mHandlerType = handlerType;
+    	mTransHandler = transHandler;
     	isShowLoadingProgressDialog = true;
     	isLoading = new AtomicBoolean(false);
     }
     
-    public PostMessageTask(AbstractAsyncActivity abstractAsyncActivity, AbstractHandler abstractHandler, int handlerType) {
+    public PostMessageTask(AbstractAsyncActivity abstractAsyncActivity, TransHandler transHandler) {
     	mAbstractAsyncActivity = abstractAsyncActivity;
     	mContext = abstractAsyncActivity.getApplicationContext();
-    	mAbstractHandler = abstractHandler;
-    	mHandlerType = handlerType;
+    	mTransHandler = transHandler;
     	isShowLoadingProgressDialog = true;
     	isLoading = new AtomicBoolean(false);
     }
@@ -95,7 +92,7 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
 
             // Populate the Message object to serialize and headers in an
             // HttpEntity object to use for the request mAbstractHandler
-            HttpEntity<APICode> requestEntity = new HttpEntity<APICode>(mAbstractHandler.getReqCode(), requestHeaders);
+            HttpEntity<APICode> requestEntity = new HttpEntity<APICode>(mTransHandler.getReqCode(), requestHeaders);
             
             // Create a new RestTemplate instance
             RestTemplate restTemplate = new PostRestTemplate();
@@ -111,10 +108,10 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
             ResponseEntity<APICode> response = null;
 //            Log.d("request : ", "request : " + JacksonUtils.objectToJson(mAbstractHandler.getReqCode() + " token : " + token));
         	response = restTemplate.exchange(url, HttpMethod.POST, requestEntity,
-            		APICode.class, mAbstractHandler.getReqCode().getTranCd(), token);
+            		APICode.class, mTransHandler.getReqCode().getTranCd(), token);
 //            Log.d("response : ", "response : " + JacksonUtils.objectToJson(response.getBody()));
         	Log.d("response : ", "response : " + response.getStatusCode().toString());
-            mAbstractHandler.setResCode(response.getBody());
+            mTransHandler.setResCode(response.getBody());
             // Return the response body to display to the user
             return POST_SUCCESS;
         } catch (Exception e) {
@@ -132,10 +129,10 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
     		mAbstractAsyncActivity.dismissProgressDialog();
         
     	if(POST_SUCCESS == result)
-    		mAbstractHandler.handle(mHandlerType);
-    	else if(POST_FAIL == result)
-    		mAbstractHandler.showError();
-    	else if(POST_IGNORE == result){}
+    		mTransHandler.handle();
+    	else if(POST_FAIL == result){
+    		mAbstractAsyncActivity.showResult("POST_FAIL");
+    	} else if(POST_IGNORE == result){}
     }
     
     public class PostRestTemplate extends RestTemplate {

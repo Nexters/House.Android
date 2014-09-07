@@ -5,31 +5,35 @@ import java.util.ArrayList;
 import com.nexters.house.activity.AbstractAsyncActivity;
 import com.nexters.house.activity.AbstractAsyncFragmentActivity;
 import com.nexters.house.entity.APICode;
+import com.nexters.house.entity.UserEntity;
 
-public abstract class AbstractHandler <T> {
-	protected AbstractAsyncActivity mAbstractAsyncActivity;
-	protected AbstractAsyncFragmentActivity mAbstractAsyncFragmentActivity;
+public class TransHandler <T> {
 	protected APICode<T> reqCode, resCode;
 	private ArrayList<T> tranData;
+	private Handler mHandler;
 	
-	public AbstractHandler(AbstractAsyncFragmentActivity abstractAsyncFragmentActivity, String tranCd) {
-		mAbstractAsyncFragmentActivity = abstractAsyncFragmentActivity;
+	public TransHandler(String tranCd, Handler handler) {
 		tranData = new ArrayList<T>();
 		reqCode = new APICode<T>();
+		tranData = new ArrayList<T>();
 		reqCode.setTranData(tranData);
 		reqCode.setTranCd(tranCd);
+		mHandler = handler;
 	}
 	
-	public AbstractHandler(AbstractAsyncActivity abstractAsyncActivity, String tranCd) {
-		mAbstractAsyncActivity = abstractAsyncActivity;
+	public TransHandler(String tranCd, Handler handler, T obj) {
 		tranData = new ArrayList<T>();
 		reqCode = new APICode<T>();
+		tranData = new ArrayList<T>();
 		reqCode.setTranData(tranData);
 		reqCode.setTranCd(tranCd);
+		mHandler = handler;
+		setOneTranData(obj);
 	}
 	
-	abstract public void handle(int method);
-	abstract public void showError();
+	public void handle(){
+		mHandler.handle(resCode);
+	}
 	
 	public void addTranData(T obj){
 		tranData.add(obj);

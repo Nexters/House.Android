@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.springframework.http.MediaType;
 
 import android.content.Context;
-import android.os.AsyncTask.Status;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +18,7 @@ import com.nexters.house.activity.AbstractAsyncFragmentActivity;
 import com.nexters.house.core.SessionManager;
 import com.nexters.house.entity.ReplyEntity;
 import com.nexters.house.entity.reqcode.AP0009;
-import com.nexters.house.handler.AbstractHandler;
-import com.nexters.house.handler.ArticleHandler;
+import com.nexters.house.handler.TransHandler;
 import com.nexters.house.thread.PostMessageTask;
 
 public class ReplyAdapter extends BaseAdapter{
@@ -32,7 +30,7 @@ public class ReplyAdapter extends BaseAdapter{
 	private int resource;
 	private int refreshCnt;
 	
-	private AbstractHandler mHandler;
+	private TransHandler mHandler;
 	private PostMessageTask mPostTask;
 	
 	private int brdType;
@@ -93,8 +91,7 @@ public class ReplyAdapter extends BaseAdapter{
 		ap.setCommentId(usrId);
 		
 		mHandler.setOneTranData(ap);
-		mPostTask = new PostMessageTask(mAbstractAsyncFragmentActivity, mHandler,
-					ArticleHandler.DELETE_REPLY);
+		mPostTask = new PostMessageTask(mAbstractAsyncFragmentActivity, mHandler);
 		mPostTask.setShowLoadingProgressDialog(true);
 		mPostTask.execute(MediaType.APPLICATION_JSON);
 	}
@@ -129,7 +126,7 @@ public class ReplyAdapter extends BaseAdapter{
 		super.notifyDataSetChanged();
 	}
 
-	public void setHandler(AbstractHandler handler) {
+	public void setHandler(TransHandler handler) {
 		mHandler = handler;
 	}
 }

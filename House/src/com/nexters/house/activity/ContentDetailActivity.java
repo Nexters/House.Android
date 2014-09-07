@@ -7,7 +7,6 @@ import java.util.List;
 import org.springframework.http.MediaType;
 
 import android.annotation.SuppressLint;
-import android.os.AsyncTask.Status;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -34,8 +33,7 @@ import com.nexters.house.entity.reqcode.AP0004;
 import com.nexters.house.entity.reqcode.AP0005;
 import com.nexters.house.entity.reqcode.AP0008;
 import com.nexters.house.entity.reqcode.AP0009;
-import com.nexters.house.handler.AbstractHandler;
-import com.nexters.house.handler.ArticleHandler;
+import com.nexters.house.handler.TransHandler;
 import com.nexters.house.thread.PostMessageTask;
 import com.nexters.house.utils.JacksonUtils;
 
@@ -58,6 +56,7 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 	private TextView mLikeCnt;
 	private TextView mScrapCnt;
 	private TextView mReplyCnt;
+
 	// Replay
 	private EditText mEditReply;
 	private Button mBtnSendReply;
@@ -67,12 +66,6 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 	private ScrollView mScrollView;
 
 	private PostMessageTask mPostTask;
-	private ArticleHandler<AP0003> mAP0003Handler;
-	private ArticleHandler<AP0003> mAP0003CommentHandler;
-	private ArticleHandler<AP0004> mAP0004Handler;
-	private ArticleHandler<AP0005> mAP0005Handler;
-	private ArticleHandler<AP0008> mAP0008Handler;
-	private ArticleHandler<AP0009> mAP0009Handler;
 	
 	// List
 	private ArrayList<String> mImageArrayList;
@@ -105,13 +98,6 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 		brdType = getIntent().getIntExtra("brdType", CodeType.INTERIOR_TYPE);
 		usrId = SessionManager.getInstance(this).getUserDetails().get(SessionManager.KEY_EMAIL);
 		
-		mAP0003Handler = new ArticleHandler<AP0003>(this, "AP0003");
-		mAP0003CommentHandler = new ArticleHandler<AP0003>(this, "AP0003");
-		mAP0004Handler = new ArticleHandler<AP0004>(this, "AP0004");
-		mAP0005Handler = new ArticleHandler<AP0005>(this, "AP0005");
-		mAP0008Handler = new ArticleHandler<AP0008>(this, "AP0008");
-		mAP0009Handler = new ArticleHandler<AP0009>(this, "AP0009");
-		
 		mImageArrayList = new ArrayList<String>();
 		mReplyArrayList = new ArrayList<ReplyEntity>();
 
@@ -141,18 +127,17 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 		mBtnSendReply = (Button) findViewById(R.id.btn_send_reply);
 
 		mReplyAdapter = new ReplyAdapter(this, mReplyArrayList, R.layout.reply, brdType);
-		mReplyAdapter.setHandler(mAP0009Handler);
+		TransHandler.Handler handler = new TransHandler.Handler() {
+			public void handle(APICode resCode) {
+				listComment();
+			}
+		};
+		TransHandler<AP0009> articleHandler = new TransHandler<AP0009>("AP0009", handler);
+		mReplyAdapter.setHandler(articleHandler);
 		mReplyContent.setAdapter(mReplyAdapter);
 
 		mScrollView = (ScrollView) findViewById(R.id.sv_content);
 
-		processAP0003();
-		processAP0003Comment();
-		processAP0004();
-		processAP0005();
-		processAP0008();
-		processAP0009();
-		
 		// init
 		setContents(brdNo);
 	}
@@ -162,9 +147,73 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 		mBtnScrap.setOnClickListener(this);
 		mBtnSendReply.setOnClickListener(this);
 	}
+	
+	public void writeComment(){
+		AP0008 ap = new AP0008();
+		ap.setType(brdType);
+		ap.setReqPoNo(brdNo);
+		ap.setCommentId(usrId);
+		ap.setCommentContents(mEditReply.getText().toString().getBytes());
+		
+		TransHandler.Handler handler = new TransHandler.Handler() {
+			public void handle(APICode resCode) {
+				listComment();
+			}
+		};
+		TransHandler<AP0008> articleHandler = new TransHandler<AP0008>("AP0008", handler, ap);
+		
+		mPostTask = new PostMessageTask(this, articleHandler);
+		mPostTask.setShowLoadingProgressDialog(true);
+		mPostTask.execute(MediaType.APPLICATION_JSON);
+	}
+	
+	public void toggleLikeCnt(){
+		AP0004 ap = new AP0004();
+		ap.setType(brdType);
+		ap.setBrdNo(brdNo);
+		ap.setUsrId(usrId);
 
-	public void processAP0003() {
-		AbstractHandler.Handler handler = new AbstractHandler.Handler() {
+		TransHandler.Handler handler = new TransHandler.Handler() {
+			public void handle(APICode resCode) {
+				AP0004 ap = JacksonUtils.hashMapToObject((HashMap) resCode
+						.getTranData().get(0), AP0004.class);
+				mLikeCnt.setText("" + ap.getLikeCnt());
+			}
+		};
+		TransHandler<AP0004> articleHandler = new TransHandler<AP0004>("AP0004", handler, ap);
+		
+		mPostTask = new PostMessageTask(this, articleHandler);
+		mPostTask.setShowLoadingProgressDialog(true);
+		mPostTask.execute(MediaType.APPLICATION_JSON);
+	}
+	
+	public void toggleScrapCnt(){
+		AP0005 ap = new AP0005();
+		ap.setType(brdType);
+		ap.setBrdNo(brdNo);
+		ap.setUsrId(usrId);
+
+		TransHandler.Handler handler = new TransHandler.Handler() {
+			public void handle(APICode resCode) {
+				AP0005 ap = JacksonUtils.hashMapToObject((HashMap) resCode
+						.getTranData().get(0), AP0005.class);
+				mScrapCnt.setText("" + ap.getScrapCnt());
+			}
+		};
+		TransHandler<AP0005> articleHandler = new TransHandler<AP0005>("AP0005", handler, ap);
+		
+		mPostTask = new PostMessageTask(this, articleHandler);
+		mPostTask.setShowLoadingProgressDialog(true);
+		mPostTask.execute(MediaType.APPLICATION_JSON);
+	}
+	
+	public void setContents(long brdNo) {
+		AP0003 ap = new AP0003();
+		ap.setType(brdType);
+		ap.setReqPoNo(brdNo);
+		ap.setUsrId(usrId);
+		
+		TransHandler.Handler handler = new TransHandler.Handler() {
 			public void handle(APICode resCode) {
 				AP0003 ap = JacksonUtils.hashMapToObject((HashMap) resCode
 						.getTranData().get(0), AP0003.class);
@@ -203,11 +252,20 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 				setListViewHeightBasedOnChildren(mReplyContent);
 			}
 		};
-		mAP0003Handler.setHandler(handler);
+		
+		TransHandler<AP0003> articleHandler = new TransHandler<AP0003>("AP0003", handler, ap);
+		mPostTask = new PostMessageTask(this, articleHandler);
+		mPostTask.setShowLoadingProgressDialog(false);
+		mPostTask.execute(MediaType.APPLICATION_JSON);
 	}
 	
-	public void processAP0003Comment() {
-		AbstractHandler.Handler handler = new AbstractHandler.Handler() {
+	public void listComment(){
+		AP0003 ap = new AP0003();
+		ap.setType(brdType);
+		ap.setReqPoNo(brdNo);
+		ap.setUsrId(usrId);
+		
+		TransHandler.Handler handler = new TransHandler.Handler() {
 			public void handle(APICode resCode) {
 				AP0003 ap = JacksonUtils.hashMapToObject((HashMap) resCode
 						.getTranData().get(0), AP0003.class);
@@ -230,111 +288,9 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 				setListViewHeightBasedOnChildren(mReplyContent);
 			}
 		};
-		mAP0003CommentHandler.setHandler(handler);
-	}
-	
-	public void processAP0004() {
-		AbstractHandler.Handler handler = new AbstractHandler.Handler() {
-			public void handle(APICode resCode) {
-				AP0004 ap = JacksonUtils.hashMapToObject((HashMap) resCode
-						.getTranData().get(0), AP0004.class);
-				mLikeCnt.setText("" + ap.getLikeCnt());
-			}
-		};
-		mAP0004Handler.setHandler(handler);
-	}
+		TransHandler<AP0003> articleHandler = new TransHandler<AP0003>("AP0003", handler, ap);
 
-	public void processAP0005() {
-		AbstractHandler.Handler handler = new AbstractHandler.Handler() {
-			public void handle(APICode resCode) {
-				AP0005 ap = JacksonUtils.hashMapToObject((HashMap) resCode
-						.getTranData().get(0), AP0005.class);
-				mScrapCnt.setText("" + ap.getScrapCnt());
-			}
-		};
-		mAP0005Handler.setHandler(handler);
-	}
-	
-	public void processAP0008() {
-		AbstractHandler.Handler handler = new AbstractHandler.Handler() {
-			public void handle(APICode resCode) {
-				listComment();
-			}
-		};
-		mAP0008Handler.setHandler(handler);
-	}
-
-	public void processAP0009(){
-		AbstractHandler.Handler handler = new AbstractHandler.Handler() {
-			public void handle(APICode resCode) {
-				listComment();
-			}
-		};
-		mAP0009Handler.setHandler(handler);
-	}
-	
-	public void writeComment(){
-		AP0008 ap = new AP0008();
-		ap.setType(brdType);
-		ap.setReqPoNo(brdNo);
-		ap.setCommentId(usrId);
-		ap.setCommentContents(mEditReply.getText().toString().getBytes());
-		
-		mAP0008Handler.setOneTranData(ap);
-		mPostTask = new PostMessageTask(this, mAP0008Handler,
-				ArticleHandler.WRITE_REPLY);
-		mPostTask.setShowLoadingProgressDialog(true);
-		mPostTask.execute(MediaType.APPLICATION_JSON);
-	}
-	
-	public void toggleLikeCnt(){
-		AP0004 ap = new AP0004();
-		ap.setType(brdType);
-		ap.setBrdNo(brdNo);
-		ap.setUsrId(usrId);
-
-		mAP0004Handler.setOneTranData(ap);
-		mPostTask = new PostMessageTask(this, mAP0004Handler,
-				ArticleHandler.LIKE_CNT);
-		mPostTask.setShowLoadingProgressDialog(true);
-		mPostTask.execute(MediaType.APPLICATION_JSON);
-	}
-	
-	public void toggleScrapCnt(){
-		AP0005 ap = new AP0005();
-		ap.setType(brdType);
-		ap.setBrdNo(brdNo);
-		ap.setUsrId(usrId);
-
-		mAP0005Handler.setOneTranData(ap);
-		mPostTask = new PostMessageTask(this, mAP0005Handler,
-				ArticleHandler.SCRAP_CNT);
-		mPostTask.setShowLoadingProgressDialog(true);
-		mPostTask.execute(MediaType.APPLICATION_JSON);
-	}
-	
-	public void setContents(long brdNo) {
-		AP0003 ap = new AP0003();
-		ap.setType(brdType);
-		ap.setReqPoNo(brdNo);
-		ap.setUsrId(usrId);
-		
-		mAP0003Handler.setOneTranData(ap);
-		mPostTask = new PostMessageTask(this, mAP0003Handler,
-				ArticleHandler.LIST_INTERIOR);
-		mPostTask.setShowLoadingProgressDialog(false);
-		mPostTask.execute(MediaType.APPLICATION_JSON);
-	}
-	
-	public void listComment(){
-		AP0003 ap = new AP0003();
-		ap.setType(brdType);
-		ap.setReqPoNo(brdNo);
-		ap.setUsrId(usrId);
-		
-		mAP0003CommentHandler.setOneTranData(ap);
-		mPostTask = new PostMessageTask(this, mAP0003CommentHandler,
-				ArticleHandler.LIST_REPLY);
+		mPostTask = new PostMessageTask(this, articleHandler);
 		mPostTask.setShowLoadingProgressDialog(false);
 		mPostTask.execute(MediaType.APPLICATION_JSON);
 	}

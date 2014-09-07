@@ -9,8 +9,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask.Status;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,8 +31,7 @@ import com.nexters.house.core.SessionManager;
 import com.nexters.house.entity.CodeType;
 import com.nexters.house.entity.InteriorEntity;
 import com.nexters.house.entity.reqcode.AP0007;
-import com.nexters.house.handler.AbstractHandler;
-import com.nexters.house.handler.ArticleHandler;
+import com.nexters.house.handler.TransHandler;
 import com.nexters.house.thread.PostMessageTask;
 import com.nexters.house.utils.CommonUtils;
 
@@ -47,7 +44,7 @@ public class InteriorAdapter extends BaseAdapter {
 	private int resource;
 	private CommonUtils mUtil;
 
-	private AbstractHandler mHandler;
+	private TransHandler mHandler;
 	private PostMessageTask mPostTask;
 	
 	private String usrId;
@@ -67,7 +64,7 @@ public class InteriorAdapter extends BaseAdapter {
 		refreshCnt = 0;
 	}
 
-	public void setHandler(AbstractHandler handler) {
+	public void setHandler(TransHandler handler) {
 		mHandler = handler;
 	}
 
@@ -240,7 +237,7 @@ public class InteriorAdapter extends BaseAdapter {
 		ap.setBrdNo(interiorNo);
 		
 		mHandler.setOneTranData(ap);
-		mPostTask = new PostMessageTask(mMainActivity, mHandler, ArticleHandler.LIST_INTERIOR);
+		mPostTask = new PostMessageTask(mMainActivity, mHandler);
 		mPostTask.setShowLoadingProgressDialog(false);
 		mPostTask.execute(MediaType.APPLICATION_JSON);
 	}

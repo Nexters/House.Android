@@ -25,5 +25,6 @@ public interface AsyncActivity {
 	public void showProgressDialog(CharSequence message);
 
 	public void dismissProgressDialog();
-
+	
+	public void showResult(String result);
 }

@@ -15,6 +15,7 @@ import com.nexters.house.R;
 import com.nexters.house.activity.*;
 import com.nexters.house.adapter.InteriorAdapter.*;
 import com.nexters.house.entity.*;
+import com.nexters.house.handler.TransHandler.Handler;
 import com.nexters.house.thread.DownloadImageTask;
 import com.nexters.house.utils.*;
 
@@ -191,5 +192,9 @@ public class BoardAdapter extends BaseAdapter {
 	@Override
 	public long getItemId(int position) {
 		return 0;
+	}
+
+	public void setHandler(Handler handler) {
+		
 	}
 }
