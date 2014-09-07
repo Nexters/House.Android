@@ -1,8 +1,12 @@
 package com.nexters.house.activity;
 
+import java.util.HashMap;
+
+import org.springframework.http.MediaType;
+
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,8 +30,16 @@ import com.kakao.exception.KakaoException;
 import com.nexters.house.R;
 //import com.nexters.house.core.App;
 import com.nexters.house.core.SessionManager;
+import com.nexters.house.entity.APICode;
+import com.nexters.house.entity.reqcode.CM0001;
+import com.nexters.house.entity.reqcode.CM0003;
+import com.nexters.house.entity.reqcode.CM0003.CM0003Img;
+import com.nexters.house.handler.TransHandler;
+import com.nexters.house.thread.DownloadImageTask;
+import com.nexters.house.thread.PostMessageTask;
+import com.nexters.house.utils.JacksonUtils;
 
-public class StartActivity extends Activity implements View.OnClickListener {
+public class StartActivity extends AbstractAsyncActivity implements View.OnClickListener {
 	public static final int REQUEST_SIGN_IN = 0;
 	public static final int REQUEST_SIGN_UP = 1;
 
@@ -168,6 +180,72 @@ public class StartActivity extends Activity implements View.OnClickListener {
 
 	
 	// -------------------------- 연동 로그인 부분
+	private void register(String userId, String userPw, final String name, final String imgUrl, final int sessionType){
+		TransHandler.Handler handler = new TransHandler.Handler() {
+			@Override
+			public void handle(APICode resCode) {
+				CM0003 cm = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), CM0003.class);
+				
+				if(cm.getResultYn().equals("Y")){
+					SessionManager.getInstance(StartActivity.this)
+					.createLoginSession(sessionType, name, null, com.kakao.Session.getCurrentSession().getAccessToken(), imgUrl, true);
+					finish();
+				} else 
+					showResult("Error");
+			}
+		}; 
+	  	CM0003 cm = new CM0003();
+    	cm.setUsrId(userId);
+    	cm.setUsrPw(userPw);
+		cm.setCustName(name);
+		cm.setTermsYN("Y");
+		cm.setPsPlatform("AND");
+		cm.setPsId("psId");
+		cm.setPsRevokeYN("N");
+		cm.setPsAppVer("1.0");
+		cm.setDeviceNM("kitkat");
+		cm.setUsrSts(1);
+		
+		CM0003Img profileImg = new CM0003Img();
+		
+		ImageView imageView = new ImageView(this);
+		new DownloadImageTask(imageView).execute(imgUrl);
+		Bitmap bitmap = imageView.getDrawingCache();
+		
+		profileImg.imgContent = bitmap.getNinePatchChunk();
+		profileImg.imgNm = profileImg.imgOriginNm = imgUrl.substring(imgUrl.lastIndexOf('/') + 1);
+		profileImg.imgSize = profileImg.imgContent.length;
+		profileImg.imgType = imgUrl.substring(imgUrl.lastIndexOf('.') + 1);
+		
+    	TransHandler<CM0003> authHandler = new TransHandler<CM0003>("CM0003", handler, cm);
+    	PostMessageTask signUpTask = new PostMessageTask(this, authHandler);
+    	signUpTask.execute(MediaType.APPLICATION_JSON); 
+	}
+	
+	private void login(final String userId, final String userPw, final String name, final String imgUrl, final int sessionType){
+	  	TransHandler.Handler handler = new TransHandler.Handler() {
+				@Override
+				public void handle(APICode resCode) {
+					CM0001 cm = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), CM0001.class);
+					SessionManager sessionManager = SessionManager.getInstance(getApplicationContext());
+					
+					if(sessionManager.isLoggedIn()){
+						sessionManager.createLoginSession(sessionType, cm.getCustName(), cm.getUsrId(), cm.getToken(), null, true);
+						finish();
+					} else {
+						register(userId, userPw, name, imgUrl, sessionType);
+					}
+				}
+			}; 
+		  	CM0001 cm = new CM0001();
+	    	cm.setUsrId(userId);
+	    	cm.setUsrPw(userPw);
+			
+	    	TransHandler<CM0001> authHandler = new TransHandler<CM0001>("CM0001", handler, cm);
+	    	PostMessageTask signInTask = new PostMessageTask(this, authHandler);
+	    	signInTask.execute(MediaType.APPLICATION_JSON); 
+	}
+	
 	private Session.StatusCallback facebookCallback = new Session.StatusCallback() {
 		@Override
 		public void call(Session session, SessionState state,
@@ -198,21 +276,9 @@ public class StartActivity extends Activity implements View.OnClickListener {
 													+ user.getFirstName()
 													+ ","
 													+ user.getProperty("gender"));
-									// Log.d("user", "User : " + user.getName()
-									// + " thumbnailpath : " + user.getId() +
 									// "Email : " +
 									// user.asMap().get("email").toString());
-									SessionManager.getInstance(
-											StartActivity.this)
-											.createLoginSession(
-													SessionManager.FACEBOOK,
-													user.getName(),
-													null,
-													com.facebook.Session
-															.getActiveSession()
-															.getAccessToken(),
-													user.getId(), true);
-									finish();
+									login(user.getId(), "", user.getName(), "http://graph.facebook.com/" + user.getId() + "/picture", SessionManager.FACEBOOK);
 								}
 							}
 						});
@@ -232,27 +298,17 @@ public class StartActivity extends Activity implements View.OnClickListener {
 									+ userProfile.getNickname()
 									+ " thumbnailpath : "
 									+ userProfile.getThumbnailImagePath());
-					SessionManager.getInstance(StartActivity.this)
-							.createLoginSession(
-									SessionManager.KAKAO,
-									userProfile.getNickname(),
-									null,
-									com.kakao.Session.getCurrentSession()
-											.getAccessToken(),
-									userProfile.getThumbnailImagePath(), true);
-					finish();
+					login("kakao" + userProfile.getId(), "", userProfile.getNickname(), userProfile.getThumbnailImagePath(), SessionManager.KAKAO);
 				}
 
 				@Override
 				protected void onNotSignedUp() {
-					// 가입 페이지로 이동
 					showShortToast("가입 페이지로 이동");
 				}
 
 				@Override
 				protected void onSessionClosedFailure(
 						final APIErrorResult errorResult) {
-					// 다시 로그인 시도
 					showShortToast("다시 로그인 시도");
 				}
 

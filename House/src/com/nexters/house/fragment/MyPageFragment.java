@@ -71,8 +71,7 @@ public class MyPageFragment extends Fragment{
 		mGridview.setExpanded(true);
 		mBtnSetting = (ImageView) mView.findViewById(R.id.btn_setting);
 
-
-		//		Settings
+		//	Settings
 		SessionManager sessionManager = SessionManager.getInstance(mActivity);
 
 		HashMap<String, String> userDetails = sessionManager.getUserDetails();
@@ -97,7 +96,6 @@ public class MyPageFragment extends Fragment{
 				mActivity.startActivity(intent);
 			}
 		});
-
 		mHouseProfile.setOnClickListener(btnClickListener);
 		mBtnSetting.setOnClickListener(btnClickListener);
 	}

@@ -46,9 +46,13 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 	private TextView mProfileName;
 	private TextView mCreated;
 	private ListView mContentImage;
+	private TextView mSubject;
+	private TextView mCategory;
 	private TextView mContent;
 	private ContentImageAdapter mImageAdapter;
 
+	private TextView mHouseInfo;
+	
 	// Like Scrap
 	private ToggleButton mBtnLike;
 	private ToggleButton mBtnScrap;
@@ -102,12 +106,16 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 		mReplyArrayList = new ArrayList<ReplyEntity>();
 
 		// article
+		mHouseInfo = (TextView) findViewById(R.id.house_info);
+		
 		mProfileImage = (ImageView) findViewById(R.id.iv_user_profile_image);
 		mProfileName = (TextView) findViewById(R.id.tv_user_profile_name);
 		mCreated = (TextView) findViewById(R.id.tv_created);
-		mContentImage = (ListView) findViewById(R.id.lv_interior_image);
+		mCategory = (TextView) findViewById(R.id.tv_category);
+		mSubject = (TextView) findViewById(R.id.tv_subejct);
 		mContent = (TextView) findViewById(R.id.tv_content);
-
+		mContentImage = (ListView) findViewById(R.id.lv_house_image);
+		
 		mImageAdapter = new ContentImageAdapter(this, mImageArrayList,
 				R.layout.image_row);
 		mContentImage.setAdapter(mImageAdapter);
@@ -140,6 +148,11 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 
 		// init
 		setContents(brdNo);
+		if(brdType == CodeType.INTERIOR_TYPE){
+			mHouseInfo.setText("인테리어 정보");
+		} else {
+			mHouseInfo.setText("수다톡 정보");
+		}
 	}
 
 	public void initEvent() {
@@ -221,6 +234,8 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 				// mProfileImage.setImageBitmap(bm);
 				mProfileName.setText(ap.getBrdNm());
 				mCreated.setText(ap.getBrdCreated());
+				mSubject.setText(ap.getBrdSubject());
+				mCategory.setText(ap.getBrdCateNm());
 				mContent.setText(new String(ap.getBrdContents()));
 				
 				List<String> imgs = ap.getBrdImg();

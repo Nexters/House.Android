@@ -31,7 +31,12 @@
                     android:layout_height="50dp"
                     android:gravity="center_vertical"
                     android:text="UserName" />
-
+    			<TextView
+                    android:id="@+id/tv_subejct"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:text="DetailContent" />
                 <TextView
                     android:id="@+id/tv_category"
                     android:layout_width="100dp"
@@ -51,7 +56,7 @@
             </LinearLayout>
 
             <ListView
-                android:id="@+id/lv_interior_image"
+                android:id="@+id/lv_house_image"
                 android:layout_width="match_parent"
                 android:layout_height="700dp" />
 
@@ -62,6 +67,7 @@
                 android:background="#d0d0d0" />
 
             <TextView
+                android:id="@+id/house_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"

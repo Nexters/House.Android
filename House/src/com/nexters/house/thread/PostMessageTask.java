@@ -124,7 +124,6 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
     @Override
     protected void onPostExecute(Integer result) {
     	isLoading.set(false);
-    	
     	if(isShowLoadingProgressDialog)
     		mAbstractAsyncActivity.dismissProgressDialog();
         

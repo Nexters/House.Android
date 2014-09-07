@@ -116,7 +116,6 @@ public class InteriorAdapter extends BaseAdapter {
 			holder.btnEdit = (ImageView) convertView.findViewById(R.id.icon_edit);
 			holder.btnDelete = (ImageView) convertView.findViewById(R.id.icon_delete);
 			
-					
 			// set
 			holder.houseId.setText(id + " = " + position);
 			holder.houseProfile = null;
@@ -125,7 +124,11 @@ public class InteriorAdapter extends BaseAdapter {
 			holder.interiorReplies.setText(Integer.toString(nReply));
 
 			SliderLayout slider = (SliderLayout) convertView.findViewById(R.id.interior_slider);
-
+			
+			slider.setVisibility(View.GONE);
+			if(imageUrls != null && imageUrls.size() > 0)
+				slider.setVisibility(View.VISIBLE);
+			
 			for (String url : imageUrls) {
 				TextSliderView textSliderView = new TextSliderView(
 						convertView.getContext());

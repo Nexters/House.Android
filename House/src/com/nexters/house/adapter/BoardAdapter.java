@@ -103,6 +103,9 @@ public class BoardAdapter extends BaseAdapter {
 			holder.previewImage[1] = (ImageView) convertView.findViewById(R.id.iv_preview_image_2);
 			holder.previewImage[2] = (ImageView) convertView.findViewById(R.id.iv_preview_image_3);
 			
+			for(ImageView iv : holder.previewImage)
+				iv.setVisibility(View.GONE);
+			
 			// set
 			holder.houseId.setText(id);
 			holder.houseProfile = null;
@@ -111,9 +114,10 @@ public class BoardAdapter extends BaseAdapter {
 			holder.boardCategory.setText(category);
 			holder.boardContent.setText(content);
 			
-			for(int i=0; i<previewImage.size() && i<3; i++)
+			for(int i=0; i<previewImage.size() && i<3; i++){
+				holder.previewImage[i].setVisibility(View.VISIBLE);
 				new DownloadImageTask(holder.previewImage[i]).execute(previewImage.get(i));
-			
+			}
 			// 이미지뷰에 url로 불러오는거 정리하기
 			holder.boardLikes.setText(Integer.toString(nLike));
 			holder.boardReplies.setText(Integer.toString(nReply));

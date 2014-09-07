@@ -19,9 +19,9 @@ import com.nexters.house.activity.MainActivity;
  */
 public class SessionManager {
 	public static final int NONE = -1;
-	public static final int FACEBOOK = 1;
-	public static final int KAKAO = 2;
-	public static final int HOUSE = 3;
+	public static final int FACEBOOK = 2;
+	public static final int KAKAO = 1;
+	public static final int HOUSE = 0;
 	
 	private SharedPreferences mPref;
 	private SharedPreferences.Editor mEditor;

@@ -12,6 +12,7 @@ import com.nexters.house.core.SessionManager;
 import com.nexters.house.entity.APICode;
 import com.nexters.house.entity.reqcode.CM0001;
 import com.nexters.house.entity.reqcode.CM0003;
+import com.nexters.house.entity.reqcode.CM0003.CM0003Img;
 import com.nexters.house.handler.TransHandler;
 import com.nexters.house.thread.PostMessageTask;
 import com.nexters.house.utils.JacksonUtils;
@@ -93,15 +94,15 @@ public class SignUpActivity extends AbstractAsyncActivity implements View.OnClic
         switch (view.getId()) {
         case R.id.btn_sign_up:
             if (!isAllFormFilled()) {
-//                showAlert(R.string.error_fill_in_all_forms);
+            	showResult("isAllFormFilled");
             } else if (!isPasswordCheckCorrected()) {
-//                showAlert(R.string.error_not_match_password_check);
+            	showResult("isPasswordCheckCorrected");
             } else if (!isValidUsername()) {
-//                showAlert(R.string.error_invalid_username);
+            	showResult("isValidUsername");
             } else if (!isValidEmail()) {
-//                showAlert(R.string.error_invalid_email);
+            	showResult("isValidEmail");
             } else if (!isValidPassword()) {
-//                showAlert(R.string.error_invalid_password);
+            	showResult("isValidPassword");
             } else {
                 executeSignUp();
             }
@@ -132,10 +133,10 @@ public class SignUpActivity extends AbstractAsyncActivity implements View.OnClic
 		cm.setPsAppVer("1.0");
 		cm.setDeviceNM("kitkat");
 		cm.setUsrSts(1);
-    	
+		
     	TransHandler<CM0003> authHandler = new TransHandler<CM0003>("CM0003", handler, cm);
-    	PostMessageTask signInTask = new PostMessageTask(this, authHandler);
-    	signInTask.execute(MediaType.APPLICATION_JSON); 
+    	PostMessageTask signUpTask = new PostMessageTask(this, authHandler);
+    	signUpTask.execute(MediaType.APPLICATION_JSON); 
     }
 }
 
