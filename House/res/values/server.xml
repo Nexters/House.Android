@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-      <!--<string name="base_uri">http://180.229.34.39:8080/app_server</string> 
-     <string name="base_uri">http://192.168.219.184:8080/app_server</string>  -->
-      <string name="base_uri">http://house.maden.kr</string> 
+    <string name="base_uri">http://192.168.219.173:8080/app_server</string> 
+     <!--  <string name="base_uri">http://180.229.34.39:8080/app_server</string> 
+      <string name="base_uri">http://house.maden.kr</string>   -->
 </resources>

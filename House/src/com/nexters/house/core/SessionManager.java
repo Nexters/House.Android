@@ -23,6 +23,7 @@ public class SessionManager {
 	public static final int KAKAO = 1;
 	public static final int HOUSE = 0;
 	
+	private static SessionManager mSessionManager;
 	private SharedPreferences mPref;
 	private SharedPreferences.Editor mEditor;
 	private Context mContext;
@@ -61,7 +62,9 @@ public class SessionManager {
 	}
 
 	public static SessionManager getInstance(Context context) {
-		return new SessionManager(context);
+		if(mSessionManager == null)
+			mSessionManager = new SessionManager(context);
+		return mSessionManager;
 	}
 
 	/**

@@ -2,11 +2,16 @@ package com.nexters.house.activity;
 
 import java.util.HashMap;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.http.converter.ByteArrayHttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,7 +40,7 @@ import com.nexters.house.entity.reqcode.CM0001;
 import com.nexters.house.entity.reqcode.CM0003;
 import com.nexters.house.entity.reqcode.CM0003.CM0003Img;
 import com.nexters.house.handler.TransHandler;
-import com.nexters.house.thread.DownloadImageTask;
+import com.nexters.house.thread.CommonTask;
 import com.nexters.house.thread.PostMessageTask;
 import com.nexters.house.utils.JacksonUtils;
 
@@ -151,9 +156,7 @@ public class StartActivity extends AbstractAsyncActivity implements View.OnClick
 		super.onResume();
 		uiHelper.onResume();
 
-		if (com.kakao.Session.getCurrentSession().isOpened()
-				|| com.facebook.Session.getActiveSession().isOpened()
-				|| SessionManager.getInstance(this).isLoggedIn()) {
+		if (SessionManager.getInstance(this).isLoggedIn()) {
 			// 2. 세션이 오픈된된 상태이면, 다음 activity로 이동한다.
 			onSessionOpened();
 		}
@@ -180,16 +183,14 @@ public class StartActivity extends AbstractAsyncActivity implements View.OnClick
 
 	
 	// -------------------------- 연동 로그인 부분
-	private void register(String userId, String userPw, final String name, final String imgUrl, final int sessionType){
+	private void register(final String userId, final String userPw, final String name, final String imgUrl, final int sessionType, byte[] imgs){
 		TransHandler.Handler handler = new TransHandler.Handler() {
 			@Override
 			public void handle(APICode resCode) {
 				CM0003 cm = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), CM0003.class);
 				
 				if(cm.getResultYn().equals("Y")){
-					SessionManager.getInstance(StartActivity.this)
-					.createLoginSession(sessionType, name, null, com.kakao.Session.getCurrentSession().getAccessToken(), imgUrl, true);
-					finish();
+					login(userId, userPw, name, imgUrl, sessionType);
 				} else 
 					showResult("Error");
 			}
@@ -207,15 +208,13 @@ public class StartActivity extends AbstractAsyncActivity implements View.OnClick
 		cm.setUsrSts(1);
 		
 		CM0003Img profileImg = new CM0003Img();
+		Log.e("img", "imgs : " + imgUrl);
 		
-		ImageView imageView = new ImageView(this);
-		new DownloadImageTask(imageView).execute(imgUrl);
-		Bitmap bitmap = imageView.getDrawingCache();
-		
-		profileImg.imgContent = bitmap.getNinePatchChunk();
+		profileImg.imgContent = imgs;
 		profileImg.imgNm = profileImg.imgOriginNm = imgUrl.substring(imgUrl.lastIndexOf('/') + 1);
-		profileImg.imgSize = profileImg.imgContent.length;
+		profileImg.imgSize = imgs.length;
 		profileImg.imgType = imgUrl.substring(imgUrl.lastIndexOf('.') + 1);
+		cm.setUsrImg(profileImg);
 		
     	TransHandler<CM0003> authHandler = new TransHandler<CM0003>("CM0003", handler, cm);
     	PostMessageTask signUpTask = new PostMessageTask(this, authHandler);
@@ -223,22 +222,46 @@ public class StartActivity extends AbstractAsyncActivity implements View.OnClick
 	}
 	
 	private void login(final String userId, final String userPw, final String name, final String imgUrl, final int sessionType){
-	  	TransHandler.Handler handler = new TransHandler.Handler() {
+	  		TransHandler.Handler handler = new TransHandler.Handler() {
 				@Override
 				public void handle(APICode resCode) {
-					CM0001 cm = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), CM0001.class);
-					SessionManager sessionManager = SessionManager.getInstance(getApplicationContext());
-					
-					if(sessionManager.isLoggedIn()){
+					if(resCode.getTranData().size() > 0){
+						CM0001 cm = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), CM0001.class);
+						SessionManager sessionManager = SessionManager.getInstance(getApplicationContext());
+						
 						sessionManager.createLoginSession(sessionType, cm.getCustName(), cm.getUsrId(), cm.getToken(), null, true);
 						finish();
 					} else {
-						register(userId, userPw, name, imgUrl, sessionType);
+						final Bundle bundle = new Bundle();
+						
+						CommonTask.Handler handler = new CommonTask.Handler() {
+							@Override
+							public void handle() {
+								HttpHeaders requestHeaders = new HttpHeaders();
+						        HttpEntity requestEntity = new HttpEntity(requestHeaders);
+
+						        // Create a new RestTemplate instance
+						        RestTemplate restTemplate = new RestTemplate();
+						        restTemplate
+						                .setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+						        restTemplate.getMessageConverters().add(new ByteArrayHttpMessageConverter());
+						        ResponseEntity<byte[]> response = null;
+						        response = restTemplate.getForEntity(imgUrl, byte[].class);
+						        bundle.putByteArray("imgs", response.getBody());
+							}
+						};
+						CommonTask.PostHandler postHandler = new CommonTask.PostHandler() {
+							@Override
+							public void handle() {
+								register(userId, userPw, name, imgUrl, sessionType, bundle.getByteArray("imgs"));
+							}
+						};
+						new CommonTask(null, handler, postHandler).execute();
 					}
 				}
 			}; 
 		  	CM0001 cm = new CM0001();
-	    	cm.setUsrId(userId);
+		  	cm.setUsrId(userId);
 	    	cm.setUsrPw(userPw);
 			
 	    	TransHandler<CM0001> authHandler = new TransHandler<CM0001>("CM0001", handler, cm);
@@ -251,7 +274,6 @@ public class StartActivity extends AbstractAsyncActivity implements View.OnClick
 		public void call(Session session, SessionState state,
 				Exception exception) {
 			if (session.isOpened()) {
-
 				// make request to the /me API
 				Request request = Request.newMeRequest(session,
 						new Request.GraphUserCallback() {
@@ -278,7 +300,7 @@ public class StartActivity extends AbstractAsyncActivity implements View.OnClick
 													+ user.getProperty("gender"));
 									// "Email : " +
 									// user.asMap().get("email").toString());
-									login(user.getId(), "", user.getName(), "http://graph.facebook.com/" + user.getId() + "/picture", SessionManager.FACEBOOK);
+									login("facebook" + user.getId(), "facebook" + user.getId(), user.getName(), "http://graph.facebook.com/" + user.getId() + "/picture", SessionManager.FACEBOOK);
 								}
 							}
 						});
@@ -298,7 +320,7 @@ public class StartActivity extends AbstractAsyncActivity implements View.OnClick
 									+ userProfile.getNickname()
 									+ " thumbnailpath : "
 									+ userProfile.getThumbnailImagePath());
-					login("kakao" + userProfile.getId(), "", userProfile.getNickname(), userProfile.getThumbnailImagePath(), SessionManager.KAKAO);
+					login("kakao" + userProfile.getId(), "kakao" + userProfile.getId(), userProfile.getNickname(), userProfile.getThumbnailImagePath(), SessionManager.KAKAO);
 				}
 
 				@Override

@@ -125,7 +125,7 @@ public class InteriorWrite2Activity extends AbstractAsyncActivity {
 	public void completeWrite(View view) {
 		AP0006 ap = new AP0006();
 		ap.setType(CodeType.INTERIOR_TYPE);
-		ap.setBrdId(SessionManager.getInstance(this).getUserDetails().get(SessionManager.KEY_EMAIL));
+		ap.setBrdId(SessionManager.getInstance(this).getUserDetails().get(SessionManager.KEY_NAME));
 		ap.setBrdSubject("");
 		ap.setBrdContents(mInteriorContent.getText().toString().getBytes());
 		ap.setBrdTag(mInteriorInfo.getText().toString());
