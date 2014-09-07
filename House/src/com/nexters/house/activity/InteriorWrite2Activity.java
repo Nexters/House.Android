@@ -48,7 +48,6 @@ public class InteriorWrite2Activity extends AbstractAsyncActivity {
 	public static int[] displayWidth;
 	public static int[] displayHeight;
 
-	
 	public static TwoWayGridView mInteriorGridView2;
 
 	private static String savedContent = "";
@@ -58,18 +57,12 @@ public class InteriorWrite2Activity extends AbstractAsyncActivity {
 	private EditText mInteriorContent;
 	private EditText mInteriorInfo;
 
-	private GalleryAdapter mGalleryAdapter;
 	private HorzGridViewAdapter mHorzGridViewAdapter;
-	private PagerAdapterClass mPagerAdapterClass;
-	private ViewPager mViewPager;
 
 	private ViewSwitcher mViewSwitcher;
 	private ImageLoader mImageLoader;
 
-	private ImageView mImgSinglePick;
 	private Button btnGalleryPick;
-	private Button btnGalleryPickMul;
-	private Button previewOk;
 
 	private PostMessageTask mArticleTask;
 	
@@ -139,21 +132,24 @@ public class InteriorWrite2Activity extends AbstractAsyncActivity {
 		ap.setBrdCateNo(0);
 		
 		ArrayList<AP0006Img> imgs = new ArrayList<AP0006Img>();
-		for(DataObject dataObject : generateGridViewObjects()){
-			AP0006Img img = new AP0006Img();
-			String path = dataObject.getName();
-			String name = path.substring(path.lastIndexOf('/') + 1);
-			String type = path.substring(path.lastIndexOf('.') + 1);
-			File file = new File(path);
-			byte[] contents = ImageManagingHelper.getImageToBytes(file);
-			long size = file.length();
-			
-			img.imgNm = img.imgOriginNm = name;
-			img.imgSize = size; 
-			img.imgType = type;
-			img.imgContent = contents;
-//			Log.d("dataObject", "dataObject : " + contents.length + " - " + size);
-			imgs.add(img);
+		List<DataObject> dataObjects = generateGridViewObjects();
+		if(dataObjects != null){
+			for(DataObject dataObject : dataObjects){
+				AP0006Img img = new AP0006Img();
+				String path = dataObject.getName();
+				String name = path.substring(path.lastIndexOf('/') + 1);
+				String type = path.substring(path.lastIndexOf('.') + 1);
+				File file = new File(path);
+				byte[] contents = ImageManagingHelper.getImageToBytes(file);
+				long size = file.length();
+				
+				img.imgNm = img.imgOriginNm = name;
+				img.imgSize = size; 
+				img.imgType = type;
+				img.imgContent = contents;
+	//			Log.d("dataObject", "dataObject : " + contents.length + " - " + size);
+				imgs.add(img);
+			}
 		}
 		ap.setBrdImg(imgs);
 		

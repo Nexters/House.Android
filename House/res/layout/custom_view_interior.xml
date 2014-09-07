@@ -8,7 +8,7 @@
     android:background="#FFFFFF" >
 
     <RelativeLayout
-        android:id="@+id/rl_test"
+        android:id="@+id/rl_menu"
         android:layout_width="100dp"
         android:layout_height="300dp"
         android:layout_alignParentRight="true"

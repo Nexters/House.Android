@@ -44,12 +44,10 @@ public class BoardFragment extends Fragment {
 
 	private OnScrollListener mScrollListener;
 
-	public BoardFragment(MainActivity mainActivity) {
-		this.mMainActivity = mainActivity;
-	}
 
 	@Override
 	public void onAttach(Activity activity) {
+		this.mMainActivity = (MainActivity) activity;
 		super.onAttach(activity);
 	}
 
@@ -59,7 +57,7 @@ public class BoardFragment extends Fragment {
 
 		View v = inflater.inflate(R.layout.fragment_board, container, false);
 		initResources(v);
-//		initEvents();
+		initEvents();
 		return v;
 	}
 
@@ -82,8 +80,8 @@ public class BoardFragment extends Fragment {
 				addSudatalkList(0);
 			}
 		};
-		mListAdapter.setHandler(handler);
-		
+		TransHandler<AP0007> articleHandler = new TransHandler<AP0007>("AP0007", handler);
+		mListAdapter.setHandler(articleHandler);
 		
 		// footerview를 listview 제일 하단에 붙임
 		mLvMain.addFooterView(footerView);
@@ -97,7 +95,6 @@ public class BoardFragment extends Fragment {
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
 				isState = true;
 			}
-
 			@Override
 			public synchronized void onScroll(AbsListView view,
 					int firstVisibleItem, int visibleItemCount,

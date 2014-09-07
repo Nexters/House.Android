@@ -41,8 +41,6 @@ public class InteriorAdapter extends BaseAdapter {
 
 	private ArrayList<InteriorEntity> mInteriorItemArrayList;
 	private LayoutInflater mLayoutInflater;
-	private int resource;
-	private CommonUtils mUtil;
 
 	private TransHandler mHandler;
 	private PostMessageTask mPostTask;
@@ -51,15 +49,13 @@ public class InteriorAdapter extends BaseAdapter {
 	private int refreshCnt;
 	
 	public InteriorAdapter(Context context,
-			ArrayList<InteriorEntity> mInteriorItemArrayList, int resource,
+			ArrayList<InteriorEntity> mInteriorItemArrayList,
 			MainActivity mainActivity) {
 		mMainActivity = mainActivity;
 		mContext = context;
-		mUtil = new CommonUtils();
 		this.mInteriorItemArrayList = mInteriorItemArrayList;
 		this.mLayoutInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		this.resource = resource;
 		usrId = SessionManager.getInstance(mMainActivity).getUserDetails().get(SessionManager.KEY_EMAIL);
 		refreshCnt = 0;
 	}
@@ -91,7 +87,7 @@ public class InteriorAdapter extends BaseAdapter {
 			holder = (Holder) convertView.getTag();
 		if (convertView == null || holder.position != position || holder.refresh != refreshCnt) {
 			final View createView;
-			createView = convertView = mLayoutInflater.inflate(resource, null);
+			createView = convertView = mLayoutInflater.inflate(R.layout.custom_view_interior, null);
 			holder = new Holder();
 			
 			// get interior
@@ -123,6 +119,7 @@ public class InteriorAdapter extends BaseAdapter {
 					
 			// set
 			holder.houseId.setText(id + " = " + position);
+			holder.houseProfile = null;
 			holder.interiorContent.setText(content);
 			holder.interiorLikes.setText(Integer.toString(nLike));
 			holder.interiorReplies.setText(Integer.toString(nReply));
@@ -164,8 +161,8 @@ public class InteriorAdapter extends BaseAdapter {
 					switch(v.getId()){
 					case R.id.icon_down :
 						//렐러티브레이아웃이 이미지 슬라이더에 가려져서 버튼들이 가려지게됨. 그래서 레이아웃을 맨 위로 올려줌!
-						RelativeLayout test = (RelativeLayout)rootView.findViewById(R.id.rl_test);
-						test.bringToFront();
+						RelativeLayout menuLayout = (RelativeLayout)rootView.findViewById(R.id.rl_menu);
+						menuLayout.bringToFront();
 
 						if(!clicked){
 							clicked = true;
@@ -179,7 +176,6 @@ public class InteriorAdapter extends BaseAdapter {
 						//Log.d("Click Click", "down onClick : " + showDown + " : ");
 						break;
 					case R.id.rl_interior_custom_view :
-						//mMainActivity.changeFragment(MainActivity.FRAGMENT_DETAIL_INTERIOR);
 						intent = new Intent(mContext,ContentDetailActivity.class);
 						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 						intent.putExtra("brdNo", no);
@@ -230,7 +226,6 @@ public class InteriorAdapter extends BaseAdapter {
 	}
 
 	public void deleteInterior(long interiorNo){
-//		Log.d("interiorNo", "interiorNo = " + interiorNo);
 		AP0007 ap = new AP0007();
 		ap.setType(CodeType.INTERIOR_TYPE);
 		ap.setBrdId(usrId);

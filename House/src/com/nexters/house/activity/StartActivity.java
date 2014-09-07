@@ -1,8 +1,5 @@
 package com.nexters.house.activity;
 
-import java.util.Arrays;
-import java.util.Calendar;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -11,8 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.facebook.Request;
 import com.facebook.Response;
@@ -21,9 +18,6 @@ import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
 import com.kakao.APIErrorResult;
-import com.kakao.KakaoStoryProfile;
-import com.kakao.KakaoStoryProfile.BirthdayType;
-import com.kakao.KakaoStoryService;
 import com.kakao.MeResponseCallback;
 import com.kakao.SessionCallback;
 import com.kakao.UserManagement;
@@ -46,7 +40,7 @@ public class StartActivity extends Activity implements View.OnClickListener {
 	private Button mBtnSignUp;
 	private com.facebook.widget.LoginButton mBtnFacebook;
 	private com.kakao.widget.LoginButton mBtnKakao;
-	private VideoView videoViewIntro;
+	private ImageView imageViewIntro;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +55,6 @@ public class StartActivity extends Activity implements View.OnClickListener {
 		// 로그인 관련 초기화 
 		initLogin();
 		initEvents();
-		playVideoIntro();
 	}
 
 	private void initResources() {
@@ -69,7 +62,7 @@ public class StartActivity extends Activity implements View.OnClickListener {
 		mBtnSignUp = (Button) findViewById(R.id.btn_sign_up);
 		mBtnKakao = (com.kakao.widget.LoginButton) findViewById(R.id.btn_kakao_in);
 		mBtnFacebook = (com.facebook.widget.LoginButton) findViewById(R.id.btn_facebook_in);
-		videoViewIntro = (VideoView) findViewById(R.id.vv_house_intro);
+		imageViewIntro = (ImageView) findViewById(R.id.iv_house_intro);
 	}
 
 	private void initLogin(){
@@ -111,13 +104,6 @@ public class StartActivity extends Activity implements View.OnClickListener {
 		}
 	}
 
-	private void playVideoIntro() {
-		Uri videoUri = Uri.parse("android.resource://" + getPackageName()
-				+ "/raw/house");
-		videoViewIntro.setVideoURI(videoUri);
-		// videoViewIntro.start();
-	}
-
 	private void dispatchSignIn() {
 		Intent intent = new Intent(StartActivity.this, SignInActivity.class);
 		startActivityForResult(intent, REQUEST_SIGN_IN);
@@ -146,16 +132,12 @@ public class StartActivity extends Activity implements View.OnClickListener {
 	protected void onPause() {
 		super.onPause();
 		uiHelper.onPause();
-
-		if (videoViewIntro.isPlaying())
-			videoViewIntro.pause();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		uiHelper.onResume();
-		playVideoIntro();
 
 		if (com.kakao.Session.getCurrentSession().isOpened()
 				|| com.facebook.Session.getActiveSession().isOpened()

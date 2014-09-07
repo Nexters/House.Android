@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.http.MediaType;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
@@ -45,8 +46,11 @@ public class InteriorFragment extends Fragment {
 	
 	private OnScrollListener mScrollListener;
 	
-	public InteriorFragment(MainActivity mainActivity) {
-		this.mMainActivity = mainActivity;
+
+	@Override
+	public void onAttach(Activity activity) {
+		this.mMainActivity = (MainActivity) activity;
+		super.onAttach(activity);
 	}
 
 	@Override
@@ -67,7 +71,7 @@ public class InteriorFragment extends Fragment {
 				getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.listfooter, null, false);
 
 		mListAdapter = new InteriorAdapter(getActivity().
-				getApplicationContext(), mInteriorItemArrayList, R.layout.custom_view_interior, mMainActivity);
+				getApplicationContext(), mInteriorItemArrayList, mMainActivity);
 		TransHandler.Handler handler = new TransHandler.Handler() {
 			public void handle(APICode resCode) {
 				AP0007 ap = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), AP0007.class);

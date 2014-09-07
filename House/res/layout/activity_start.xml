@@ -9,8 +9,8 @@
         android:layout_height="match_parent"
         android:visibility="invisible" >
 
-        <VideoView
-            android:id="@+id/vv_house_intro"
+        <ImageView
+            android:id="@+id/iv_house_intro"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
@@ -18,7 +18,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:background="#fff" >
-        </VideoView>
+        </ImageView>
     </RelativeLayout>
 
     <LinearLayout

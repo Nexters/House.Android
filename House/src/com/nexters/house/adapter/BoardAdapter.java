@@ -2,6 +2,8 @@ package com.nexters.house.adapter;
 
 import java.util.*;
 
+import org.springframework.http.MediaType;
+
 import android.content.*;
 import android.util.*;
 import android.view.*;
@@ -14,37 +16,47 @@ import com.nexters.house.*;
 import com.nexters.house.R;
 import com.nexters.house.activity.*;
 import com.nexters.house.adapter.InteriorAdapter.*;
+import com.nexters.house.core.SessionManager;
 import com.nexters.house.entity.*;
+import com.nexters.house.entity.reqcode.AP0007;
+import com.nexters.house.handler.TransHandler;
 import com.nexters.house.handler.TransHandler.Handler;
 import com.nexters.house.thread.DownloadImageTask;
+import com.nexters.house.thread.PostMessageTask;
 import com.nexters.house.utils.*;
 
 public class BoardAdapter extends BaseAdapter {
 	private Context mContext;
 	private MainActivity mMainActivity;
+	
 	private ArrayList<BoardEntity> mBoardItemArrayList;
 	private LayoutInflater mLayoutInflater;
-	private CommonUtils mUtil;
 
+	private TransHandler mHandler;
+	private PostMessageTask mPostTask;
+	
+	private String usrId;
+	private int refreshCnt;
 	
 	public BoardAdapter(Context context,
 			ArrayList<BoardEntity> mBoardItemArrayList,
 			MainActivity mainActivity) {
 		mMainActivity = mainActivity;
 		mContext = context;
-		mUtil = new CommonUtils();
 		this.mBoardItemArrayList = mBoardItemArrayList;
 		this.mLayoutInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		
+		usrId = SessionManager.getInstance(mMainActivity).getUserDetails().get(SessionManager.KEY_EMAIL);
+		refreshCnt = 0;
 	}
 
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
-
 		Holder holder = new Holder();
 		// int minHeight = mUtil.dpToPx(mContext, 360);
 
-		if (convertView == null || holder.position != position) {
+		if (convertView == null || holder.position != position || holder.refresh != refreshCnt) {
 			final View createView;
 
 			if (position % 2 == 0)
@@ -68,6 +80,7 @@ public class BoardAdapter extends BaseAdapter {
 			
 			// find resource
 			holder.position = position;
+			holder.refresh = refreshCnt;
 			holder.houseId = (TextView) convertView
 					.findViewById(R.id.tv_house_id);
 			holder.houseProfile = (ImageView) convertView
@@ -116,6 +129,7 @@ public class BoardAdapter extends BaseAdapter {
 						Intent intent = new Intent(mContext,ContentDetailActivity.class);
 						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 						intent.putExtra("brdNo", no);
+						intent.putExtra("brdType", CodeType.SUDATALK_TYPE);
 						mContext.startActivity(intent);
 						break;
 					}
@@ -127,7 +141,20 @@ public class BoardAdapter extends BaseAdapter {
 		return convertView;
 	}
 
+	public void deleteTalk(long talkNo){
+		AP0007 ap = new AP0007();
+		ap.setType(CodeType.SUDATALK_TYPE);
+		ap.setBrdId(usrId);
+		ap.setBrdNo(talkNo);
+		
+		mHandler.setOneTranData(ap);
+		mPostTask = new PostMessageTask(mMainActivity, mHandler);
+		mPostTask.setShowLoadingProgressDialog(false);
+		mPostTask.execute(MediaType.APPLICATION_JSON);
+	}
+	
 	private class Holder {
+		int refresh;
 		int position;
 		ImageView houseProfile;
 		ImageView[] previewImage;
@@ -135,10 +162,6 @@ public class BoardAdapter extends BaseAdapter {
 				boardTitle;
 		TextView boardLikes, boardReplies;
 		LinearLayout chatBackground;
-	}
-
-	public void clear() {
-		mBoardItemArrayList.clear();
 	}
 
 	public void add(long brdNo, String brdId, String brdProfileImg, String brdCreated, String brdContent, String brdSubject, String brdCategory, 
@@ -157,9 +180,37 @@ public class BoardAdapter extends BaseAdapter {
 		mBoardItemArrayList.add(b);
 	}
 
+	@Override
+	public void notifyDataSetChanged() {
+		refreshCnt += 1;
+		super.notifyDataSetChanged();
+	}
+
+	public void clear() {
+		mBoardItemArrayList.clear();
+	}
+	
+	@Override
+	public int getCount() {
+		return mBoardItemArrayList.size();
+	}
+
+	@Override
+	public Object getItem(int position) {
+		return null;
+	}
+
+	@Override
+	public long getItemId(int position) {
+		return 0;
+	}
+
+	public void setHandler(TransHandler handler) {
+		mHandler = handler;
+	}
+	
 	public void add() {
 		BoardEntity b = new BoardEntity();
-
 		b.id = "newId";
 		b.category = "new Q&A";
 		b.created = "20분전";
@@ -177,24 +228,5 @@ public class BoardAdapter extends BaseAdapter {
 			}
 		};
 		mBoardItemArrayList.add(b);
-	}
-
-	@Override
-	public int getCount() {
-		return mBoardItemArrayList.size();
-	}
-
-	@Override
-	public Object getItem(int position) {
-		return null;
-	}
-
-	@Override
-	public long getItemId(int position) {
-		return 0;
-	}
-
-	public void setHandler(Handler handler) {
-		
 	}
 }

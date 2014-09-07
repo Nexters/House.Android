@@ -1,10 +1,20 @@
 package com.nexters.house.activity;
 
+import java.util.HashMap;
+
 import android.app.Activity;
 
 import org.json.JSONObject;
+import org.springframework.http.MediaType;
 
 import com.nexters.house.R;
+import com.nexters.house.core.SessionManager;
+import com.nexters.house.entity.APICode;
+import com.nexters.house.entity.reqcode.CM0001;
+import com.nexters.house.entity.reqcode.CM0003;
+import com.nexters.house.handler.TransHandler;
+import com.nexters.house.thread.PostMessageTask;
+import com.nexters.house.utils.JacksonUtils;
 
 import android.os.Bundle;
 import android.view.View;
@@ -12,7 +22,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class SignUpActivity extends Activity implements View.OnClickListener {
+public class SignUpActivity extends AbstractAsyncActivity implements View.OnClickListener {
     private EditText mHsUsername;
     private EditText mHsEmail;
     private EditText mHsPassword;
@@ -100,33 +110,32 @@ public class SignUpActivity extends Activity implements View.OnClickListener {
     }
 
     private void executeSignUp() {
-//        String url = URL.SIGN_UP;
-//
-//        RequestParams params = new RequestParams();
-//        params.put(User.EMAIL, getEmail());
-//        params.put(User.PASSWORD, getPassword());
-//        params.put(User.USERNAME, getUsername());
-//
-//        HttpUtil.post(url, null, params, new APIResponseHandler(SignUpActivity.this) {
-//
-//            @Override
-//            public void onStart() {
-//                super.onStart();
-//                showLoading();
-//            }
-//
-//            @Override
-//            public void onFinish() {
-//                super.onFinish();
-//                hideLoading();
-//            }
-//
-//			@Override
-//			public void onSuccess(JSONObject response) {
-//                setResult(Activity.RESULT_OK);
-//                finish();
-//			}
-//        });
+    	TransHandler.Handler handler = new TransHandler.Handler() {
+			@Override
+			public void handle(APICode resCode) {
+				CM0003 cm = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), CM0003.class);
+				
+				if(cm.getResultYn().equals("Y")){
+					finish();
+				} else 
+					showResult("Error");
+			}
+		}; 
+	  	CM0003 cm = new CM0003();
+    	cm.setUsrId(mHsEmail.getText().toString());
+    	cm.setUsrPw(mHsPassword.getText().toString());
+		cm.setCustName(mHsUsername.getText().toString());
+		cm.setTermsYN("Y");
+		cm.setPsPlatform("AND");
+		cm.setPsId("psId");
+		cm.setPsRevokeYN("N");
+		cm.setPsAppVer("1.0");
+		cm.setDeviceNM("kitkat");
+		cm.setUsrSts(1);
+    	
+    	TransHandler<CM0003> authHandler = new TransHandler<CM0003>("CM0003", handler, cm);
+    	PostMessageTask signInTask = new PostMessageTask(this, authHandler);
+    	signInTask.execute(MediaType.APPLICATION_JSON); 
     }
 }
 

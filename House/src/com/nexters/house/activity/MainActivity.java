@@ -108,13 +108,12 @@ public class MainActivity extends AbstractAsyncFragmentActivity implements OnCli
 
 		switch (idx) {
 		case FRAGMENT_INTERIOR:
-			newFragment = new InteriorFragment(this);
+			newFragment = new InteriorFragment();
 			break;
 		case FRAGMENT_BOARD:
-			newFragment = new BoardFragment(this);
+			newFragment = new BoardFragment();
 			break;
 		case FRAGMENT_MYPAGE:
-			
 			newFragment = new MyPageFragment();
 			break;
 		default:

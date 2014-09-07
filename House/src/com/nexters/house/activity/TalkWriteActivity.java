@@ -1,9 +1,11 @@
 package com.nexters.house.activity;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
+import org.springframework.http.MediaType;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,26 +16,31 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.ViewSwitcher;
 
 import com.jess.ui.TwoWayGridView;
 import com.nexters.house.R;
 import com.nexters.house.adapter.GalleryAdapter;
 import com.nexters.house.adapter.HorzGridViewAdapter;
+import com.nexters.house.core.SessionManager;
+import com.nexters.house.entity.APICode;
 import com.nexters.house.entity.Action;
+import com.nexters.house.entity.CodeType;
 import com.nexters.house.entity.DataObject;
 import com.nexters.house.entity.reqcode.AP0006;
+import com.nexters.house.entity.reqcode.AP0006.AP0006Img;
+import com.nexters.house.handler.TransHandler;
 import com.nexters.house.thread.PostMessageTask;
+import com.nexters.house.utils.ImageManagingHelper;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
-public class TalkWriteActivity extends Activity {
+public class TalkWriteActivity extends AbstractAsyncActivity {
 	public final static int COLUMN_PORT = 0;
 	public final static int COLUMN_LAND = 1;
 	public static int column_selected;
@@ -42,15 +49,13 @@ public class TalkWriteActivity extends Activity {
 	public static TwoWayGridView mTalkHorzGridView;
 
 	private Context mContext;
-
-	private String action;
-
+	private EditText mTalkContent;
+	private EditText mTalkSubject;
+	private RadioGroup mTalkCategory;
+	
 	private GalleryAdapter mGalleryAdapter;
 	private HorzGridViewAdapter mHorzGridViewAdapter;
 
-	private GridView mGridGallery;
-	private ImageView mImgSinglePick;
-	
 	private ViewSwitcher mViewSwitcher;
 	private ImageLoader mImageLoader;
 
@@ -71,6 +76,11 @@ public class TalkWriteActivity extends Activity {
 	}
 
 	private void initResource() {
+		
+		mTalkContent = (EditText) findViewById(R.id.talk_content);
+		mTalkSubject = (EditText) findViewById(R.id.talk_subject);
+		mTalkCategory = (RadioGroup) findViewById(R.id.talk_category);
+		
 		mGalleryAdapter = new GalleryAdapter(getApplicationContext(),
 				mImageLoader);
 		mGalleryAdapter.setMultiplePick(false);
@@ -101,9 +111,61 @@ public class TalkWriteActivity extends Activity {
 	}
 
 	public void completeTalkWrite(View view) {
-		CustomGalleryActivity.noCancel=0;
-		finish();
-		Toast.makeText(this, "작성한 내용이 업로드됩니다.", Toast.LENGTH_SHORT).show();
+		AP0006 ap = new AP0006();
+		ap.setType(CodeType.SUDATALK_TYPE);
+		ap.setBrdId(SessionManager.getInstance(this).getUserDetails().get(SessionManager.KEY_EMAIL));
+		ap.setBrdSubject(mTalkSubject.getText().toString());
+		ap.setBrdContents(mTalkContent.getText().toString().getBytes());
+		ap.setBrdTag("");
+		ap.setBrdCateNo(convertCategory(mTalkCategory.getCheckedRadioButtonId()));
+		
+		ArrayList<AP0006Img> imgs = new ArrayList<AP0006Img>();
+		List<DataObject> dataObjects = generateGridViewObjects();
+		if(dataObjects != null){
+			for(DataObject dataObject : dataObjects){
+				AP0006Img img = new AP0006Img();
+				String path = dataObject.getName();
+				String name = path.substring(path.lastIndexOf('/') + 1);
+				String type = path.substring(path.lastIndexOf('.') + 1);
+				File file = new File(path);
+				byte[] contents = ImageManagingHelper.getImageToBytes(file);
+				long size = file.length();
+				
+				img.imgNm = img.imgOriginNm = name;
+				img.imgSize = size; 
+				img.imgType = type;
+				img.imgContent = contents;
+	//			Log.d("dataObject", "dataObject : " + contents.length + " - " + size);
+				imgs.add(img);
+			}
+		}
+		ap.setBrdImg(imgs);
+		
+		TransHandler.Handler handler = new TransHandler.Handler() {
+			@Override
+			public void handle(APICode resCode) {
+				CustomGalleryActivity.noCancel = 0;
+				setResult(RESULT_OK);
+				finish();
+				showResult("작성한 내용이 업로드됩니다.");
+			}
+		};
+		// Post Aricle 
+    	TransHandler<AP0006> articleHandler = new TransHandler<AP0006>("AP0006", handler, ap);
+		mArticleTask = new PostMessageTask(this, articleHandler);
+		mArticleTask.execute(MediaType.APPLICATION_JSON);
+	}
+	
+	public int convertCategory(int btnId){
+		switch (btnId) {
+		case R.id.radio_qa :
+			return 1;
+		case R.id.radio_chat :
+			return 2;
+		case R.id.radio_review :
+			return 3;
+		}
+		return 0;
 	}
 
 	public void clickedCancel_talk(View view){
@@ -131,7 +193,6 @@ public class TalkWriteActivity extends Activity {
 	public void refreshHorzGrid() {
 		// 이미지 하나도 선택 안할 경우 null 아닐 경우 그 밖
 		List<DataObject> horzData = generateGridViewObjects();
-		// Log.d("dataObject: ", "dataObject:" + horzData);
 
 		if (horzData == null) {
 			mViewSwitcher.setDisplayedChild(1);

@@ -93,16 +93,14 @@ public class SignInActivity extends AbstractAsyncActivity implements View.OnClic
     
     private void executeSignIn() {
     	//testLogin();
-
     	TransHandler.Handler handler = new TransHandler.Handler() {
 			@Override
 			public void handle(APICode resCode) {
+				CM0001 cm = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), CM0001.class);
 				SessionManager sessionManager = SessionManager.getInstance(getApplicationContext());
 				
-				if(resCode.getTranCd().equals("CM0001")){
-					CM0001 cm = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), CM0001.class);
-					sessionManager.createLoginSession(SessionManager.HOUSE, cm.getCustName(), cm.getUsrId(), cm.getToken(), null, mAutoLogin);
-				}
+				sessionManager.createLoginSession(SessionManager.HOUSE, cm.getCustName(), cm.getUsrId(), cm.getToken(), null, mAutoLogin);
+				
 				if(sessionManager.isLoggedIn()){
 					finish();
 				} else 
