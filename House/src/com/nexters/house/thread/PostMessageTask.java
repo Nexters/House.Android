@@ -110,8 +110,10 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
         	response = restTemplate.exchange(url, HttpMethod.POST, requestEntity,
             		APICode.class, mTransHandler.getReqCode().getTranCd(), token);
 //            Log.d("response : ", "response : " + JacksonUtils.objectToJson(response.getBody()));
-        	Log.d("response : ", "response : " + response.getStatusCode().toString());
-            mTransHandler.setResCode(response.getBody());
+//        	Log.d("response : ", "response : " + response.getStatusCode().toString());
+        	mTransHandler.setResCode(response.getBody());
+        	if(response.getBody().getErrorCd() != null)
+        		return POST_FAIL;
             // Return the response body to display to the user
             return POST_SUCCESS;
         } catch (Exception e) {
@@ -130,7 +132,10 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
     	if(POST_SUCCESS == result)
     		mTransHandler.handle();
     	else if(POST_FAIL == result){
-    		mAbstractAsyncActivity.showResult("POST_FAIL");
+    		if(mTransHandler.getResCode().getErrorCd() == null)
+    			mAbstractAsyncActivity.showResult("Exception Error");
+    		else
+    			mAbstractAsyncActivity.showResult(mTransHandler.getResCode().getErrorMsg());
     	} else if(POST_IGNORE == result){}
     }
     

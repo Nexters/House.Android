@@ -133,6 +133,7 @@ public class InteriorFragment extends Fragment {
 		ap.setOrderType("new");
 		ap.setReqPo(0);
 		ap.setReqPoCnt(3);
+		ap.setReqPoType(AP0001.NORMAL);
 		ap.setReqPoNo(interiorNo);
 		
 		TransHandler.Handler handler = new TransHandler.Handler() {

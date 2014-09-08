@@ -229,7 +229,11 @@ public class StartActivity extends AbstractAsyncActivity implements View.OnClick
 						CM0001 cm = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), CM0001.class);
 						SessionManager sessionManager = SessionManager.getInstance(getApplicationContext());
 						
-						sessionManager.createLoginSession(sessionType, cm.getCustName(), cm.getUsrId(), cm.getToken(), null, true);
+						String baseUrl = getString(R.string.base_uri);
+						String profileImg = null;
+						if(cm.getProfileImg() != null)
+							profileImg = baseUrl + cm.getProfileImg();
+						sessionManager.createLoginSession(sessionType, cm.getCustName(), cm.getUsrId(), cm.getToken(), profileImg, true);
 						finish();
 					} else {
 						final Bundle bundle = new Bundle();
@@ -336,30 +340,10 @@ public class StartActivity extends AbstractAsyncActivity implements View.OnClick
 
 				@Override
 				protected void onFailure(final APIErrorResult errorResult) {
-					// 실패
 					Toast.makeText(getApplicationContext(),
 							"failed to update profile. msg = " + errorResult,
 							Toast.LENGTH_LONG).show();
 				}
-				// public void readProfile() {
-				// KakaoStoryService.requestProfile(new
-				// MyStoryHttpResponseHandler<KakaoStoryProfile>() {
-				// @Override
-				// protected void onHttpSuccess(final KakaoStoryProfile
-				// storyProfile) {
-				// storyProfile.
-				// final String nickName = storyProfile.getNickName();
-				// final String profileImageURL =
-				// storyProfile.getProfileImageURL();
-				// final String thumbnailURL = storyProfile.getThumbnailURL();
-				// final String backgroundURL = storyProfile.getBgImageURL();
-				// final Calendar birthday = storyProfile.getBirthdayCalendar();
-				// final BirthdayType birthDayType =
-				// storyProfile.getBirthdayType();
-				// // display
-				// }
-				// });
-				// }
 			});
 		}
 

@@ -140,6 +140,7 @@ public class BoardFragment extends Fragment {
 		ap.setOrderType("new");
 		ap.setReqPo(0);
 		ap.setReqPoCnt(3);
+		ap.setReqPoType(AP0001.NORMAL);
 		ap.setReqPoNo(talkNo);
 		
 		TransHandler.Handler handler = new TransHandler.Handler() {

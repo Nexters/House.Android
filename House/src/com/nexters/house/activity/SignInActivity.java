@@ -64,7 +64,6 @@ public class SignInActivity extends AbstractAsyncActivity implements View.OnClic
 //        } else if (!isValidEmail()) {
 //            showAlert(R.string.error_invalid_email);
 //        } else {
-    	
             executeSignIn();
 //        }
     }
@@ -99,6 +98,10 @@ public class SignInActivity extends AbstractAsyncActivity implements View.OnClic
 				CM0001 cm = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), CM0001.class);
 				SessionManager sessionManager = SessionManager.getInstance(getApplicationContext());
 				
+				String baseUrl = getString(R.string.base_uri);
+				String profileImg = null;
+				if(cm.getProfileImg() != null)
+					profileImg = baseUrl + cm.getProfileImg();
 				sessionManager.createLoginSession(SessionManager.HOUSE, cm.getCustName(), cm.getUsrId(), cm.getToken(), null, mAutoLogin);
 				
 				if(sessionManager.isLoggedIn()){

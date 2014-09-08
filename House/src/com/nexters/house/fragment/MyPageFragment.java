@@ -58,14 +58,12 @@ public class MyPageFragment extends Fragment{
 		mIvPhotoWidth = 200;
 		initEvent();		 
 
-
 		return mView;
 	}
 
 
 	public void initResource(){
 		mHouseProfile = (ImageView) mView.findViewById(R.id.house_profile);
-		mFacebookProfile = (ProfilePictureView) mView.findViewById(R.id.facebook_profile);
 
 		mGridview = (ExpandableHeightGridView) mView.findViewById(R.id.gv_mypage);
 		mGridview.setExpanded(true);
@@ -77,10 +75,7 @@ public class MyPageFragment extends Fragment{
 		HashMap<String, String> userDetails = sessionManager.getUserDetails();
 		String imgSrc = userDetails.get(SessionManager.KEY_PROFILE_PATH);
 
-		if(sessionManager.getLoginType() == SessionManager.FACEBOOK){
-			mFacebookProfile.setProfileId(imgSrc);
-			mFacebookProfile.setVisibility(View.VISIBLE);
-		} else if(imgSrc != null){
+		if(imgSrc != null){
 			new DownloadImageTask(mHouseProfile).execute(imgSrc);
 			mHouseProfile.setVisibility(View.VISIBLE);
 		}
@@ -90,7 +85,6 @@ public class MyPageFragment extends Fragment{
 		mGridview.setAdapter(new MyPageAdapter(mActivity.getApplicationContext()));
 		mGridview.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				//Toast.makeText(v.getContext(), "" + position, Toast.LENGTH_SHORT).show();
 				Intent intent=new Intent(mActivity,ContentDetailActivity.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				mActivity.startActivity(intent);

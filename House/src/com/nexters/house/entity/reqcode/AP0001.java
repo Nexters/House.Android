@@ -7,11 +7,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class AP0001 implements Serializable {
+	public static final int NORMAL = 1;
+	public static final int SCRAP = 2;
+	public static final int LIKE = 3;
+	
 	private int type;
 	private String orderType;
 	private int reqPo;
 	private int reqPoCnt;
 	private long reqPoNo;
+	private int reqPoType;
+	private String usrId;
 	
 	private int resCnt;
 	private List<AP0001Res> res;
@@ -38,6 +44,10 @@ public class AP0001 implements Serializable {
 	public long getReqPoNo() {
 		return reqPoNo;
 	}
+	@JsonProperty("_usr_id")
+	public String getUsrId() {
+		return usrId;
+	}
 	@JsonIgnore
 	public int getResCnt() {
 		return resCnt;
@@ -54,7 +64,15 @@ public class AP0001 implements Serializable {
 	public long getResLastNo() {
 		return resLastNo;
 	}
+	@JsonProperty("_req_po_type")
+	public int getReqPoType() {
+		return reqPoType;
+	}
 	
+	@JsonIgnore
+	public void setReqPoType(int reqPoType) {
+		this.reqPoType = reqPoType;
+	}
 	@JsonIgnore
 	public void setType(int type) {
 		this.type = type;
@@ -74,6 +92,10 @@ public class AP0001 implements Serializable {
 	@JsonIgnore
 	public void setReqPoNo(long reqPoNo) {
 		this.reqPoNo = reqPoNo;
+	}
+	@JsonProperty
+	public void setUsrId(String usrId) {
+		this.usrId = usrId;
 	}
 	@JsonProperty("_res_cnt")
 	public void setResCnt(int resCnt) {

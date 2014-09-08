@@ -1,4 +1,5 @@
 package com.nexters.house.entity.reqcode;
+
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

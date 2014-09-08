@@ -32,16 +32,6 @@
                 android:textColor="@color/white"
                 android:textSize="13sp" />
 
-            <com.facebook.widget.ProfilePictureView
-                android:id="@+id/facebook_profile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="10dp"
-                android:gravity="center_horizontal"
-                android:visibility="gone"
-                facebook:preset_size="normal" />
-
             <ImageView
                 android:id="@+id/btn_setting"
                 android:layout_width="26dp"

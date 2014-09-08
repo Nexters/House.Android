@@ -1,4 +1,5 @@
 package com.nexters.house.entity.reqcode;
+
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -6,12 +7,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class AP0004 implements Serializable {
 	private int type;
+	private int cateNo;
 	private String usrId;
 	private long brdNo;
 	
 	private int likeCnt;
 	private String resultYn;
 
+	
+	@JsonProperty("_cate_no")
+	public int getCateNo() {
+		return cateNo;
+	}
+	@JsonIgnore
+	public void setCateNo(int cateNo) {
+		this.cateNo = cateNo;
+	}
 	@JsonProperty("_type")
 	public int getType() {
 		return type;
