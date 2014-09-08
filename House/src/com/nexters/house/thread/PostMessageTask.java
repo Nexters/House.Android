@@ -25,6 +25,7 @@ import com.nexters.house.activity.AsyncActivity;
 import com.nexters.house.core.SessionManager;
 import com.nexters.house.entity.APICode;
 import com.nexters.house.handler.TransHandler;
+import com.nexters.house.utils.JacksonUtils;
 
 // ***************************************
 // Private classes
@@ -69,10 +70,6 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
 
     @Override
     protected Integer doInBackground(MediaType... params) {
-    	if(!isLoading.get())
-    		isLoading.set(true);
-    	else
-    		return POST_IGNORE;
         try {
             if (params.length <= 0) {
                 return null;
@@ -106,10 +103,10 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
             }
             // Make the network request, posting the message, expecting a String in response from the server
             ResponseEntity<APICode> response = null;
-//            Log.d("request : ", "request : " + JacksonUtils.objectToJson(mAbstractHandler.getReqCode() + " token : " + token));
+            Log.d("request : ", "request : " + JacksonUtils.objectToJson(mTransHandler.getReqCode()) + " token : " + token);
         	response = restTemplate.exchange(url, HttpMethod.POST, requestEntity,
             		APICode.class, mTransHandler.getReqCode().getTranCd(), token);
-//            Log.d("response : ", "response : " + JacksonUtils.objectToJson(response.getBody()));
+            Log.d("response : ", "response : " + JacksonUtils.objectToJson(response.getBody()));
 //        	Log.d("response : ", "response : " + response.getStatusCode().toString());
         	mTransHandler.setResCode(response.getBody());
         	if(response.getBody().getErrorCd() != null)
@@ -125,7 +122,6 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
 
     @Override
     protected void onPostExecute(Integer result) {
-    	isLoading.set(false);
     	if(isShowLoadingProgressDialog)
     		mAbstractAsyncActivity.dismissProgressDialog();
         

@@ -45,7 +45,6 @@ public class InteriorFragment extends Fragment {
 	private PostMessageTask mArticleTask;
 	
 	private OnScrollListener mScrollListener;
-	
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -116,10 +115,10 @@ public class InteriorFragment extends Fragment {
 
 	@Override
 	public void onResume() {
-		super.onResume();
 		// init List
 		mListAdapter.clear();
 		addInteriorList(0);
+		super.onResume();
 	}
 
 	private void initEvents(){
@@ -127,6 +126,9 @@ public class InteriorFragment extends Fragment {
 	}
 
 	public void addInteriorList(long interiorNo){
+		if(mArticleTask != null && mArticleTask.getStatus() != mArticleTask.getStatus().FINISHED)
+			return ;
+		
 //		Log.d("interiorNo", "interiorNo = " + interiorNo);
 		AP0001 ap = new AP0001();
 		ap.setType(CodeType.INTERIOR_TYPE);
@@ -148,7 +150,7 @@ public class InteriorFragment extends Fragment {
 					ArrayList<String> imgUrls = new ArrayList<String>();
 					for(int j=0; j<res.brdImg.size(); j++)
 						imgUrls.add(mMainActivity.getString(R.string.base_uri) + res.brdImg.get(j).brdOriginImg);
-					listAdapter.add(res.brdNo, res.brdId, res.brdProfileImg, res.brdCreated, new String(res.brdContents), imgUrls, res.brdLikeCnt, res.brdCommentCnt);
+					listAdapter.add(res.brdNo, res.brdId, res.brdNm, res.brdProfileImg, res.brdCreated, new String(res.brdContents), imgUrls, res.brdLikeCnt, res.brdCommentCnt);
 				}
 //				Log.d("resCnt", "resCnt : " + ap.getResCnt());
 				listAdapter.notifyDataSetChanged();

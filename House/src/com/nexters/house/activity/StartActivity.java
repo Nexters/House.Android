@@ -59,6 +59,9 @@ public class StartActivity extends AbstractAsyncActivity implements View.OnClick
 	private com.kakao.widget.LoginButton mBtnKakao;
 	private ImageView imageViewIntro;
 
+	PostMessageTask mSignUpTask;
+	PostMessageTask mSignInTask;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -183,20 +186,23 @@ public class StartActivity extends AbstractAsyncActivity implements View.OnClick
 
 	
 	// -------------------------- 연동 로그인 부분
-	private void register(final String userId, final String userPw, final String name, final String imgUrl, final int sessionType, byte[] imgs){
+	private void register(final String usrId, final String userPw, final String name, final String imgUrl, final int sessionType, byte[] imgs){
+		if(mSignUpTask != null && mSignUpTask.getStatus() != mSignUpTask.getStatus().FINISHED)
+			return ;
+		
 		TransHandler.Handler handler = new TransHandler.Handler() {
 			@Override
 			public void handle(APICode resCode) {
 				CM0003 cm = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), CM0003.class);
 				
 				if(cm.getResultYn().equals("Y")){
-					login(userId, userPw, name, imgUrl, sessionType);
+					login(usrId, userPw, name, imgUrl, sessionType);
 				} else 
 					showResult("Error");
 			}
 		}; 
 	  	CM0003 cm = new CM0003();
-    	cm.setUsrId(userId);
+    	cm.setUsrId(usrId);
     	cm.setUsrPw(userPw);
 		cm.setCustName(name);
 		cm.setTermsYN("Y");
@@ -217,14 +223,18 @@ public class StartActivity extends AbstractAsyncActivity implements View.OnClick
 		cm.setUsrImg(profileImg);
 		
     	TransHandler<CM0003> authHandler = new TransHandler<CM0003>("CM0003", handler, cm);
-    	PostMessageTask signUpTask = new PostMessageTask(this, authHandler);
-    	signUpTask.execute(MediaType.APPLICATION_JSON); 
+    	mSignUpTask = new PostMessageTask(this, authHandler);
+    	mSignUpTask.execute(MediaType.APPLICATION_JSON); 
 	}
 	
-	private void login(final String userId, final String userPw, final String name, final String imgUrl, final int sessionType){
+	private void login(final String usrId, final String userPw, final String name, final String imgUrl, final int sessionType){
+			if(mSignInTask != null && mSignInTask.getStatus() != mSignInTask.getStatus().FINISHED)
+				return ;
+		
 	  		TransHandler.Handler handler = new TransHandler.Handler() {
 				@Override
 				public void handle(APICode resCode) {
+					Log.d("login", "login 1");
 					if(resCode.getTranData().size() > 0){
 						CM0001 cm = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), CM0001.class);
 						SessionManager sessionManager = SessionManager.getInstance(getApplicationContext());
@@ -234,7 +244,7 @@ public class StartActivity extends AbstractAsyncActivity implements View.OnClick
 						if(cm.getProfileImg() != null)
 							profileImg = baseUrl + cm.getProfileImg();
 						sessionManager.createLoginSession(sessionType, cm.getCustName(), cm.getUsrId(), cm.getToken(), profileImg, true);
-						finish();
+						onSessionOpened();
 					} else {
 						final Bundle bundle = new Bundle();
 						
@@ -257,7 +267,7 @@ public class StartActivity extends AbstractAsyncActivity implements View.OnClick
 						CommonTask.PostHandler postHandler = new CommonTask.PostHandler() {
 							@Override
 							public void handle() {
-								register(userId, userPw, name, imgUrl, sessionType, bundle.getByteArray("imgs"));
+								register(usrId, userPw, name, imgUrl, sessionType, bundle.getByteArray("imgs"));
 							}
 						};
 						new CommonTask(null, handler, postHandler).execute();
@@ -265,12 +275,12 @@ public class StartActivity extends AbstractAsyncActivity implements View.OnClick
 				}
 			}; 
 		  	CM0001 cm = new CM0001();
-		  	cm.setUsrId(userId);
+		  	cm.setUsrId(usrId);
 	    	cm.setUsrPw(userPw);
 			
 	    	TransHandler<CM0001> authHandler = new TransHandler<CM0001>("CM0001", handler, cm);
-	    	PostMessageTask signInTask = new PostMessageTask(this, authHandler);
-	    	signInTask.execute(MediaType.APPLICATION_JSON); 
+	    	mSignInTask = new PostMessageTask(this, authHandler);
+	    	mSignInTask.execute(MediaType.APPLICATION_JSON); 
 	}
 	
 	private Session.StatusCallback facebookCallback = new Session.StatusCallback() {
@@ -281,16 +291,12 @@ public class StartActivity extends AbstractAsyncActivity implements View.OnClick
 				// make request to the /me API
 				Request request = Request.newMeRequest(session,
 						new Request.GraphUserCallback() {
-
-							// callback after Graph API response with user
-							// object
 							@Override
 							public void onCompleted(GraphUser user,
 									Response response) {
 								if (user != null) {
 									// facebook Id 로 - email은 ㄴㄴ
-									Log.d("email",
-											"email : "
+									Log.d("email", 	"email : "
 													+ user.getName()
 													+ ","
 													+ user.getUsername()
@@ -302,9 +308,8 @@ public class StartActivity extends AbstractAsyncActivity implements View.OnClick
 													+ user.getFirstName()
 													+ ","
 													+ user.getProperty("gender"));
-									// "Email : " +
-									// user.asMap().get("email").toString());
-									login("facebook" + user.getId(), "facebook" + user.getId(), user.getName(), "http://graph.facebook.com/" + user.getId() + "/picture", SessionManager.FACEBOOK);
+									if(!SessionManager.getInstance(StartActivity.this).isLoggedIn())
+										login("facebook" + user.getId(), "facebook" + user.getId(), user.getName(), "http://graph.facebook.com/" + user.getId() + "/picture", SessionManager.FACEBOOK);
 								}
 							}
 						});
@@ -324,7 +329,8 @@ public class StartActivity extends AbstractAsyncActivity implements View.OnClick
 									+ userProfile.getNickname()
 									+ " thumbnailpath : "
 									+ userProfile.getThumbnailImagePath());
-					login("kakao" + userProfile.getId(), "kakao" + userProfile.getId(), userProfile.getNickname(), userProfile.getThumbnailImagePath(), SessionManager.KAKAO);
+					if(!SessionManager.getInstance(StartActivity.this).isLoggedIn())
+						login("kakao" + userProfile.getId(), "kakao" + userProfile.getId(), userProfile.getNickname(), userProfile.getThumbnailImagePath(), SessionManager.KAKAO);
 				}
 
 				@Override

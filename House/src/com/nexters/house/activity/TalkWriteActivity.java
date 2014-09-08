@@ -111,9 +111,11 @@ public class TalkWriteActivity extends AbstractAsyncActivity {
 	}
 
 	public void completeTalkWrite(View view) {
+		if(mArticleTask != null && mArticleTask.getStatus() != mArticleTask.getStatus().FINISHED)
+			return ;
 		AP0006 ap = new AP0006();
 		ap.setType(CodeType.SUDATALK_TYPE);
-		ap.setBrdId(SessionManager.getInstance(this).getUserDetails().get(SessionManager.KEY_NAME));
+		ap.setBrdId(SessionManager.getInstance(this).getUserDetails().get(SessionManager.KEY_EMAIL));
 		ap.setBrdSubject(mTalkSubject.getText().toString());
 		ap.setBrdContents(mTalkContent.getText().toString().getBytes());
 		ap.setBrdTag("");

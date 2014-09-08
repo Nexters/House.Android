@@ -53,9 +53,10 @@ public class BoardAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
-		Holder holder = new Holder();
-		// int minHeight = mUtil.dpToPx(mContext, 360);
-
+		Holder holder = null;
+		
+		if(convertView != null)
+			holder = (Holder) convertView.getTag();
 		if (convertView == null || holder.position != position || holder.refresh != refreshCnt) {
 			final View createView;
 
@@ -65,10 +66,11 @@ public class BoardAdapter extends BaseAdapter {
 			else
 				createView = convertView = mLayoutInflater.inflate(
 						R.layout.custom_view_board_right, parent, false);
-
+			holder = new Holder();
+			
 			// 여기에서 게시물의 사용자 아이디/ 카테고리/ 내용/ 이미지를 넣어줄거임.
 			final long no = mBoardItemArrayList.get(position).no;
-			String id = mBoardItemArrayList.get(position).id;
+			String name = mBoardItemArrayList.get(position).name;
 			String profileImg = mBoardItemArrayList.get(position).profileImg;
 			String created = mBoardItemArrayList.get(position).created;
 			String title = mBoardItemArrayList.get(position).subject;
@@ -107,8 +109,9 @@ public class BoardAdapter extends BaseAdapter {
 				iv.setVisibility(View.GONE);
 			
 			// set
-			holder.houseId.setText(id);
-			holder.houseProfile = null;
+			holder.houseId.setText(name + " = " + position);
+			if(profileImg != null)
+				new DownloadImageTask(holder.houseProfile).execute(mMainActivity.getString(R.string.base_uri) + profileImg);
 			holder.created.setText(created);
 			holder.boardTitle.setText(title);
 			holder.boardCategory.setText(category);
@@ -146,6 +149,9 @@ public class BoardAdapter extends BaseAdapter {
 	}
 
 	public void deleteTalk(long talkNo){
+		if(mPostTask != null && mPostTask.getStatus() != mPostTask.getStatus().FINISHED)
+			return ;
+		
 		AP0007 ap = new AP0007();
 		ap.setType(CodeType.SUDATALK_TYPE);
 		ap.setBrdId(usrId);
@@ -168,11 +174,12 @@ public class BoardAdapter extends BaseAdapter {
 		LinearLayout chatBackground;
 	}
 
-	public void add(long brdNo, String brdId, String brdProfileImg, String brdCreated, String brdContent, String brdSubject, String brdCategory, 
+	public void add(long brdNo, String brdId, String brdName, String brdProfileImg, String brdCreated, String brdContent, String brdSubject, String brdCategory, 
 			ArrayList<String> imgUrls, int brdLikeCnt, int brdCommentCnt) {
 		BoardEntity b = new BoardEntity();
 		b.no = brdNo;
 		b.id = brdId;
+		b.name = brdName;
 		b.profileImg = brdProfileImg;
 		b.category = brdCategory;
 		b.created = brdCreated;

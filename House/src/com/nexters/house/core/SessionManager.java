@@ -133,7 +133,7 @@ public class SessionManager {
 		if (isKakao) {
 			UserManagement.requestLogout(new LogoutResponseCallback() {
 				@Override
-				protected void onSuccess(final long userId) {
+				protected void onSuccess(final long usrId) {
 					onSessionClosed();
 				}
 				@Override

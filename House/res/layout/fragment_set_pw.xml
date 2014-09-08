@@ -24,7 +24,7 @@
             android:textSize="@dimen/default_size" />
 
         <EditText
-            android:id="@+id/my_pre_pw"
+            android:id="@+id/house_pre_pw"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="7"
@@ -46,7 +46,7 @@
             android:textSize="@dimen/default_size" />
 
         <EditText
-            android:id="@+id/my_pw"
+            android:id="@+id/house_pw"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="7"
@@ -68,7 +68,7 @@
             android:textSize="@dimen/default_size" />
 
         <EditText
-            android:id="@+id/my_pw_confirm"
+            android:id="@+id/house_pw_confirm"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="7"
@@ -76,5 +76,11 @@
             android:textColorHint="@color/dark_grey"
             android:textSize="@dimen/edit_size" />
     </LinearLayout>
-
+	
+    <Button
+        android:id="@+id/btn_pw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="확인"
+        />
 </LinearLayout>

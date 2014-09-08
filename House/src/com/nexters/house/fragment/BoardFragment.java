@@ -115,9 +115,6 @@ public class BoardFragment extends Fragment {
 				}
 			}
 		};
-		for(int i=0; i<4; i++){
-			mListAdapter.add();
-		}
 	}
 
 	@Override
@@ -134,7 +131,10 @@ public class BoardFragment extends Fragment {
 	}
 
 	public void addSudatalkList(long talkNo){
-//		Log.d("talkNo", "talkNo = " + interiorNo);
+		if(mArticleTask != null && mArticleTask.getStatus() != mArticleTask.getStatus().FINISHED)
+			return ;
+		
+//		Log.d("talkNo", "talkNo = " + talkNo);
 		AP0001 ap = new AP0001();
 		ap.setType(CodeType.SUDATALK_TYPE);
 		ap.setOrderType("new");
@@ -155,7 +155,7 @@ public class BoardFragment extends Fragment {
 					ArrayList<String> imgUrls = new ArrayList<String>();
 					for(int j=0; j<res.brdImg.size(); j++)
 						imgUrls.add(mMainActivity.getString(R.string.base_uri) + res.brdImg.get(j).brdOriginImg);
-					listAdapter.add(res.brdNo, res.brdId, res.brdProfileImg, res.brdCreated, new String(res.brdContents), res.brdSubject, res.brdCateNm, imgUrls, res.brdLikeCnt, res.brdCommentCnt);
+					listAdapter.add(res.brdNo, res.brdId, res.brdNm, res.brdProfileImg, res.brdCreated, new String(res.brdContents), res.brdSubject, res.brdCateNm, imgUrls, res.brdLikeCnt, res.brdCommentCnt);
 				}
 //				Log.d("resCnt", "resCnt : " + ap.getResCnt());
 				listAdapter.notifyDataSetChanged();

@@ -30,6 +30,8 @@ public class SignInActivity extends AbstractAsyncActivity implements View.OnClic
     private CheckBox mCbAutoLogin;
     private boolean mAutoLogin;
     
+    PostMessageTask mSignInTask;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +93,9 @@ public class SignInActivity extends AbstractAsyncActivity implements View.OnClic
     }
     
     private void executeSignIn() {
+		if(mSignInTask != null && mSignInTask.getStatus() != mSignInTask.getStatus().FINISHED)
+			return ;
+		
     	//testLogin();
     	TransHandler.Handler handler = new TransHandler.Handler() {
 			@Override
@@ -115,7 +120,7 @@ public class SignInActivity extends AbstractAsyncActivity implements View.OnClic
     	cm.setUsrPw(mHsPassword.getText().toString());
 		
     	TransHandler<CM0001> authHandler = new TransHandler<CM0001>("CM0001", handler, cm);
-    	PostMessageTask signInTask = new PostMessageTask(this, authHandler);
-    	signInTask.execute(MediaType.APPLICATION_JSON); 
+    	mSignInTask = new PostMessageTask(this, authHandler);
+    	mSignInTask.execute(MediaType.APPLICATION_JSON); 
     }
 }

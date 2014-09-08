@@ -65,21 +65,6 @@ public class InteriorAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public int getCount() {
-		return mInteriorItemArrayList.size();
-	}
-
-	@Override
-	public Object getItem(int arg0) {
-		return null;
-	}
-
-	@Override
-	public long getItemId(int arg0) {
-		return 0;
-	}
-
-	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		Holder holder = null;
 		
@@ -92,7 +77,7 @@ public class InteriorAdapter extends BaseAdapter {
 			
 			// get interior
 			final long no = mInteriorItemArrayList.get(position).no;
-			String id = mInteriorItemArrayList.get(position).id;
+			String name = mInteriorItemArrayList.get(position).name;
 			String profileImg = mInteriorItemArrayList.get(position).profileImg;
 			String created = mInteriorItemArrayList.get(position).created;
 			String content = mInteriorItemArrayList.get(position).content;
@@ -117,7 +102,7 @@ public class InteriorAdapter extends BaseAdapter {
 			holder.btnDelete = (ImageView) convertView.findViewById(R.id.icon_delete);
 			
 			// set
-			holder.houseId.setText(id + " = " + position);
+			holder.houseId.setText(name + " = " + position);
 			holder.houseProfile = null;
 			holder.interiorContent.setText(content);
 			holder.interiorLikes.setText(Integer.toString(nLike));
@@ -140,6 +125,7 @@ public class InteriorAdapter extends BaseAdapter {
 						Intent intent = new Intent(mContext,ContentDetailActivity.class);
 						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 						intent.putExtra("brdNo", no);
+						intent.putExtra("brdType", CodeType.INTERIOR_TYPE);
 						mContext.startActivity(intent);
 					}
 				});
@@ -229,6 +215,9 @@ public class InteriorAdapter extends BaseAdapter {
 	}
 
 	public void deleteInterior(long interiorNo){
+		if(mPostTask != null && mPostTask.getStatus() != mPostTask.getStatus().FINISHED)
+			return ;
+		
 		AP0007 ap = new AP0007();
 		ap.setType(CodeType.INTERIOR_TYPE);
 		ap.setBrdId(usrId);
@@ -253,12 +242,13 @@ public class InteriorAdapter extends BaseAdapter {
 	}
 
 	@SuppressWarnings("serial")
-	public void add(long brdNo, String brdId, String brdProfileImg, String brdCreated, String brdContent, 
+	public void add(long brdNo, String brdId, String brdName, String brdProfileImg, String brdCreated, String brdContent, 
 			ArrayList<String> imgUrls, int brdLikeCnt, int brdCommentCnt) {
 		InteriorEntity e = new InteriorEntity();
 		e.no = brdNo;
 		// e.category = "new";
 		e.id = brdId;
+		e.name = brdName;
 		e.profileImg = brdProfileImg;
 		e.created = brdCreated;
 		e.content = brdContent;
@@ -296,4 +286,19 @@ public class InteriorAdapter extends BaseAdapter {
 		e.like = 2;
 		mInteriorItemArrayList.add(e);
 	}	
+	
+	@Override
+	public int getCount() {
+		return mInteriorItemArrayList.size();
+	}
+
+	@Override
+	public Object getItem(int arg0) {
+		return null;
+	}
+
+	@Override
+	public long getItemId(int arg0) {
+		return 0;
+	}
 }

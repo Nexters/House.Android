@@ -1,76 +1,104 @@
 package com.nexters.house.fragment;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
-import android.app.*;
-import android.content.*;
-import android.graphics.*;
-import android.net.*;
-import android.os.*;
-import android.provider.*;
+import org.springframework.http.MediaType;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.util.*;
-import android.view.*;
-import android.widget.*;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.facebook.widget.*;
-import com.nexters.house.*;
-import com.nexters.house.activity.*;
-import com.nexters.house.adapter.*;
-import com.nexters.house.core.*;
-import com.nexters.house.thread.*;
-import com.nexters.house.utils.*;
-import com.nexters.house.view.*;
+import com.nexters.house.R;
+import com.nexters.house.activity.ContentDetailActivity;
+import com.nexters.house.activity.MainActivity;
+import com.nexters.house.activity.SetActivity;
+import com.nexters.house.adapter.MyPageAdapter;
+import com.nexters.house.core.SessionManager;
+import com.nexters.house.entity.APICode;
+import com.nexters.house.entity.CodeType;
+import com.nexters.house.entity.MyPageEntity;
+import com.nexters.house.entity.reqcode.AP0001;
+import com.nexters.house.entity.reqcode.AP0001.AP0001Res;
+import com.nexters.house.handler.TransHandler;
+import com.nexters.house.thread.DownloadImageTask;
+import com.nexters.house.thread.PostMessageTask;
+import com.nexters.house.utils.ImageManagingHelper;
+import com.nexters.house.utils.JacksonUtils;
+import com.nexters.house.utils.TempFileManager;
+import com.nexters.house.view.ExpandableHeightGridView;
 
 
-public class MyPageFragment extends Fragment{
-
+public class MyPageFragment extends Fragment implements View.OnClickListener {
 	public static final int REQUEST_TAKE_PHOTO = 1;
 	public static final int REQUEST_PICK_FROM_GALLERY = 2;
 	public static final int REQUEST_CODE_CROP_IMAGE = 3;
 
-	private ImageView mHouseProfile;
-	private ProfilePictureView mFacebookProfile;
-
-	private ImageView mBtnSetting; 
+	private ArrayList<MyPageEntity> mMyPageItemArrayList;
 	private ExpandableHeightGridView mGridview;
+	private MyPageAdapter mMyPageAdapter;
+	private MainActivity mMainActivity;
 
-	private Activity mActivity;
-	private View mView;
+	private ImageView mHouseProfile;
+	private ImageView mBtnSetting; 
+	
+	private TextView mBtnScrap;
+	private TextView mBtnUpload;
 
+	private PostMessageTask mMyPageTask;
+	
 	private Bitmap mImageBitmap;
 	private int mIvPhotoWidth;
-
+	
+	private int mCodeType;
+	private int mPoType;
+	
 	@Override
 	public void onAttach(Activity activity) {
+		mMainActivity = (MainActivity) activity;
 		super.onAttach(activity);
-		mActivity = activity;
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		mView = inflater.inflate(R.layout.fragment_mypage, container, false);
+		View v = inflater.inflate(R.layout.fragment_mypage, container, false);
 
-		initResource();
-		//원래 기본사진크기 가져오려고했는데..안됨 우선은 숫자로 넣어둠.
-		mIvPhotoWidth = 200;
+		initResource(v);
 		initEvent();		 
-
-		return mView;
+		return v;
 	}
 
-
-	public void initResource(){
-		mHouseProfile = (ImageView) mView.findViewById(R.id.house_profile);
-
-		mGridview = (ExpandableHeightGridView) mView.findViewById(R.id.gv_mypage);
+	public void initResource(View v){
+		mMyPageItemArrayList = new ArrayList<MyPageEntity>();
+		mCodeType = CodeType.INTERIOR_TYPE;
+		mPoType = AP0001.NORMAL;
+		
+		mGridview = (ExpandableHeightGridView) v.findViewById(R.id.gv_mypage);
 		mGridview.setExpanded(true);
-		mBtnSetting = (ImageView) mView.findViewById(R.id.btn_setting);
-
+		mMyPageAdapter = new MyPageAdapter(mMainActivity, mMyPageItemArrayList);
+		mGridview.setAdapter(mMyPageAdapter);
+		
+		mHouseProfile = (ImageView) v.findViewById(R.id.house_profile);
+		mBtnSetting = (ImageView) v.findViewById(R.id.btn_setting);
+		mBtnScrap = (TextView) v.findViewById(R.id.btn_scrap);
+		mBtnUpload = (TextView) v.findViewById(R.id.btn_upload);
+		
 		//	Settings
-		SessionManager sessionManager = SessionManager.getInstance(mActivity);
+		SessionManager sessionManager = SessionManager.getInstance(mMainActivity);
 
 		HashMap<String, String> userDetails = sessionManager.getUserDetails();
 		String imgSrc = userDetails.get(SessionManager.KEY_PROFILE_PATH);
@@ -79,65 +107,102 @@ public class MyPageFragment extends Fragment{
 			new DownloadImageTask(mHouseProfile).execute(imgSrc);
 			mHouseProfile.setVisibility(View.VISIBLE);
 		}
+		//원래 기본사진크기 가져오려고했는데..안됨 우선은 숫자로 넣어둠.
+		mIvPhotoWidth = 200;
 	}
 
 	public void initEvent(){
-		mGridview.setAdapter(new MyPageAdapter(mActivity.getApplicationContext()));
 		mGridview.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				Intent intent=new Intent(mActivity,ContentDetailActivity.class);
+				Intent intent=new Intent(mMainActivity,ContentDetailActivity.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				mActivity.startActivity(intent);
+				mMainActivity.startActivity(intent);
 			}
 		});
-		mHouseProfile.setOnClickListener(btnClickListener);
-		mBtnSetting.setOnClickListener(btnClickListener);
+		mHouseProfile.setOnClickListener(this);
+		mBtnSetting.setOnClickListener(this);
+		mBtnScrap.setOnClickListener(this);
+		mBtnUpload.setOnClickListener(this);
 	}
 
-
-	private View.OnClickListener btnClickListener = new View.OnClickListener() {
-		@Override
-		public void onClick(View view) {
-			switch (view.getId()) {
-			case R.id.btn_setting:
-				Intent intent = new Intent(mActivity, SetActivity.class);
-				startActivity(intent);
-				break;
-			case R.id.house_profile:
-				dispatchPickFromGalleryIntent();
-				break;
-			}
+	@Override
+	public void onClick(View v) {
+		switch(v.getId()){
+		case R.id.btn_setting:
+			Intent intent = new Intent(mMainActivity, SetActivity.class);
+			startActivity(intent);
+			break;
+		case R.id.house_profile:
+			dispatchPickFromGalleryIntent();
+			break;
+		case R.id.btn_scrap:
+			mCodeType = CodeType.INTERIOR_TYPE;
+			mPoType = AP0001.SCRAP;
+			initMyPage();
+			break;
+		case R.id.btn_upload:
+			mCodeType = CodeType.INTERIOR_TYPE;
+			mPoType = AP0001.NORMAL;
+			initMyPage();
+			break;
 		}
-	};
+	}
+	
+	@Override
+	public void onResume() {
+		initMyPage();
+		super.onResume();
+	}
 
-	//    private void showDialogChoosingPhoto() {
-	//        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-	//        builder.setItems(R.array.menu_choosing_photo_dialog_items, new DialogInterface.OnClickListener() {
-	//                   public void onClick(DialogInterface dialog, int which) {
-	//                       switch (which) {
-	//                           case 0:
-	//                               dispatchTakePictureIntent();
-	//                               break;
-	//                           case 1:
-	//                               dispatchPickFromGalleryIntent();
-	//                               break;
-	//                       }
-	//                   }
-	//               });
-	//        builder.show();
-	//    }
-
+	public void initMyPage(){
+		mMyPageAdapter.clear();
+		addMyPageList(0);
+	}
+	
+	public void addMyPageList(int no){
+		if(mMyPageTask != null && mMyPageTask.getStatus() != mMyPageTask.getStatus().FINISHED)
+			return ;
+		
+		AP0001 ap = new AP0001();
+		ap.setType(mCodeType);
+		ap.setOrderType("new");
+		ap.setReqPo(0);
+		ap.setReqPoCnt(3);
+		ap.setReqPoType(mPoType);
+		ap.setReqPoNo(no);
+		ap.setUsrId(SessionManager.getInstance(mMainActivity).getUserDetails().get(SessionManager.KEY_EMAIL));
+		
+		TransHandler.Handler handler = new TransHandler.Handler() {
+			public void handle(APICode resCode) {
+				MyPageAdapter listAdapter = mMyPageAdapter;
+				List<AP0001> apList = resCode.getTranData();
+				AP0001 ap = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), AP0001.class);
+				
+				for(int i=0; i<ap.getResCnt(); i++){
+					AP0001Res res = ap.getRes().get(i);
+					
+					String imgUrl = null;
+					if(res.brdImg.size() > 0)
+						imgUrl = mMainActivity.getString(R.string.base_uri) + res.brdImg.get(0).brdOriginImg;
+					listAdapter.add(res.brdNo, mCodeType, res.brdId, res.brdNm, res.brdCateNm, imgUrl);
+				}
+//				Log.d("resCnt", "resCnt : " + ap.getResCnt());
+				listAdapter.notifyDataSetChanged();
+			}
+		};
+		
+		TransHandler<AP0001> articleHandler = new TransHandler<AP0001>("AP0001", handler, ap);
+		
+		mMyPageTask = new PostMessageTask(mMainActivity, articleHandler);
+		mMyPageTask.setShowLoadingProgressDialog(false);
+		mMyPageTask.execute(MediaType.APPLICATION_JSON);
+	}
+	
 	private void dispatchPickFromGalleryIntent() {
 		Intent intent = new Intent(Intent.ACTION_PICK);
 		intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
 		startActivityForResult(intent, REQUEST_PICK_FROM_GALLERY);
 	}
-
-	//    private void dispatchTakePictureIntent() {
-	//        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-	//        intent.putExtra(MediaStore.EXTRA_OUTPUT, TempFileManager.getImageFileUri());
-	//        startActivityForResult(intent, REQUEST_TAKE_PHOTO);
-	//    }
 
 	private Intent makeCropIntent(Uri uri) {
 		Intent intent = new Intent("com.android.camera.action.CROP");
@@ -178,10 +243,10 @@ public class MyPageFragment extends Fragment{
 						mHouseProfile.setImageBitmap(ImageManagingHelper.getCroppedBitmap(mImageBitmap, mIvPhotoWidth));
 						TempFileManager.saveBitmapToImageFile(mImageBitmap);
 					} else {
-						Toast.makeText(mActivity, "잘린 이미지가 저장되지 않았습니다.", Toast.LENGTH_SHORT).show();
+						Toast.makeText(mMainActivity, "잘린 이미지가 저장되지 않았습니다.", Toast.LENGTH_SHORT).show();
 					}
 				} else {
-					Toast.makeText(mActivity, "잘린 이미지가 저장되지 않았습니다.", Toast.LENGTH_SHORT).show();
+					Toast.makeText(mMainActivity, "잘린 이미지가 저장되지 않았습니다.", Toast.LENGTH_SHORT).show();
 				}
 			}
 			break;
@@ -194,4 +259,27 @@ public class MyPageFragment extends Fragment{
 		TempFileManager.deleteImageFile();
 	}
 
+
+	//    private void showDialogChoosingPhoto() {
+	//        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+	//        builder.setItems(R.array.menu_choosing_photo_dialog_items, new DialogInterface.OnClickListener() {
+	//                   public void onClick(DialogInterface dialog, int which) {
+	//                       switch (which) {
+	//                           case 0:
+	//                               dispatchTakePictureIntent();
+	//                               break;
+	//                           case 1:
+	//                               dispatchPickFromGalleryIntent();
+	//                               break;
+	//                       }
+	//                   }
+	//               });
+	//        builder.show();
+	//    }
+	
+	//    private void dispatchTakePictureIntent() {
+	//        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+	//        intent.putExtra(MediaStore.EXTRA_OUTPUT, TempFileManager.getImageFileUri());
+	//        startActivityForResult(intent, REQUEST_TAKE_PHOTO);
+	//    }
 }

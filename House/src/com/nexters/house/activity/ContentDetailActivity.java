@@ -162,6 +162,9 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 	}
 	
 	public void writeComment(){
+		if(mPostTask != null && mPostTask.getStatus() != mPostTask.getStatus().FINISHED)
+			return ;
+		
 		AP0008 ap = new AP0008();
 		ap.setType(brdType);
 		ap.setReqPoNo(brdNo);
@@ -181,6 +184,9 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 	}
 	
 	public void toggleLikeCnt(){
+		if(mPostTask != null && mPostTask.getStatus() != mPostTask.getStatus().FINISHED)
+			return ;
+		
 		AP0004 ap = new AP0004();
 		ap.setType(brdType);
 		ap.setBrdNo(brdNo);
@@ -196,11 +202,14 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 		TransHandler<AP0004> articleHandler = new TransHandler<AP0004>("AP0004", handler, ap);
 		
 		mPostTask = new PostMessageTask(this, articleHandler);
-		mPostTask.setShowLoadingProgressDialog(true);
+		mPostTask.setShowLoadingProgressDialog(false);
 		mPostTask.execute(MediaType.APPLICATION_JSON);
 	}
 	
 	public void toggleScrapCnt(){
+		if(mPostTask != null && mPostTask.getStatus() != mPostTask.getStatus().FINISHED)
+			return ;
+		
 		AP0005 ap = new AP0005();
 		ap.setType(brdType);
 		ap.setBrdNo(brdNo);
@@ -216,11 +225,14 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 		TransHandler<AP0005> articleHandler = new TransHandler<AP0005>("AP0005", handler, ap);
 		
 		mPostTask = new PostMessageTask(this, articleHandler);
-		mPostTask.setShowLoadingProgressDialog(true);
+		mPostTask.setShowLoadingProgressDialog(false);
 		mPostTask.execute(MediaType.APPLICATION_JSON);
 	}
 	
 	public void setContents(long brdNo) {
+		if(mPostTask != null && mPostTask.getStatus() != mPostTask.getStatus().FINISHED)
+			return ;
+		
 		AP0003 ap = new AP0003();
 		ap.setType(brdType);
 		ap.setReqPoNo(brdNo);
@@ -275,6 +287,9 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 	}
 	
 	public void listComment(){
+		if(mPostTask != null && mPostTask.getStatus() != mPostTask.getStatus().FINISHED)
+			return ;
+		
 		AP0003 ap = new AP0003();
 		ap.setType(brdType);
 		ap.setReqPoNo(brdNo);

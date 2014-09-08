@@ -29,7 +29,9 @@ public class SignUpActivity extends AbstractAsyncActivity implements View.OnClic
     private EditText mHsPassword;
     private EditText mHsPasswordCheck;
     private Button mBtnSignUp;
-
+    
+    PostMessageTask mSignUpTask;
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -111,6 +113,9 @@ public class SignUpActivity extends AbstractAsyncActivity implements View.OnClic
     }
 
     private void executeSignUp() {
+		if(mSignUpTask != null && mSignUpTask.getStatus() != mSignUpTask.getStatus().FINISHED)
+			return ;
+    	
     	TransHandler.Handler handler = new TransHandler.Handler() {
 			@Override
 			public void handle(APICode resCode) {
@@ -135,8 +140,8 @@ public class SignUpActivity extends AbstractAsyncActivity implements View.OnClic
 		cm.setUsrSts(1);
 		
     	TransHandler<CM0003> authHandler = new TransHandler<CM0003>("CM0003", handler, cm);
-    	PostMessageTask signUpTask = new PostMessageTask(this, authHandler);
-    	signUpTask.execute(MediaType.APPLICATION_JSON); 
+    	mSignUpTask = new PostMessageTask(this, authHandler);
+    	mSignUpTask.execute(MediaType.APPLICATION_JSON); 
     }
 }
 

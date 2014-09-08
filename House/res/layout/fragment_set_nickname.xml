@@ -12,10 +12,17 @@
         android:textSize="@dimen/default_size" />
 
     <EditText
-        android:id="@+id/my_nick_name"
+        android:id="@+id/house_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:textColorHint="@color/dark_grey"
         android:textSize="@dimen/edit_size" />
+    
+    <Button 
+        android:id="@+id/btn_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="확인"
+        />
 </LinearLayout>

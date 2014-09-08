@@ -16,7 +16,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.nexters.house.R;
 import com.nexters.house.adapter.SetFragmentPagerAdapter;
 
-public class SetActivity extends SherlockFragmentActivity  {
+public class SetActivity extends AbstractAsyncFragmentActivity {
 	private SetFragmentPagerAdapter mSetFragmentPagerAdapter = null;
 	private ViewPager mViewPager = null;
 
