@@ -96,7 +96,7 @@ public class BoardFragment extends Fragment {
 				isState = true;
 			}
 			@Override
-			public synchronized void onScroll(AbsListView view,
+			public void onScroll(AbsListView view,
 					int firstVisibleItem, int visibleItemCount,
 					int totalItemCount) {
 				// what is the bottom item that is visible

@@ -41,7 +41,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
-public class InteriorWrite2Activity extends AbstractAsyncActivity {
+public class InteriorWrite2Activity extends AbstractAsyncActivity implements View.OnClickListener {
 	public final static int COLUMN_PORT = 0;
 	public final static int COLUMN_LAND = 1;
 	public static int column_selected;
@@ -122,6 +122,17 @@ public class InteriorWrite2Activity extends AbstractAsyncActivity {
 		});
 	}
 	
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.btn_interior:	
+			completeWrite();
+			break;
+		default:
+			break;
+		}
+	}
+
 	public void completeWrite() {
 		if(mArticleTask != null && mArticleTask.getStatus() != mArticleTask.getStatus().FINISHED)
 			return ;

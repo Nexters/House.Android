@@ -96,7 +96,7 @@ public class InteriorFragment extends Fragment {
 				isState = true;
 			}
 			@Override
-			public synchronized void onScroll(AbsListView view, int firstVisibleItem,
+			public void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
 				//what is the bottom item that is visible
 				int lastInScreen = firstVisibleItem + visibleItemCount;				
