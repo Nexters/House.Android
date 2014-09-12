@@ -7,15 +7,20 @@ import java.util.List;
 import org.springframework.http.MediaType;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask.Status;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
@@ -60,6 +65,8 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
 
 	private PostMessageTask mMyPageTask;
 	
+	private OnScrollListener mScrollListener;
+	
 	private Bitmap mImageBitmap;
 	private int mIvPhotoWidth;
 	
@@ -87,6 +94,9 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
 		mCodeType = CodeType.INTERIOR_TYPE;
 		mPoType = AP0001.NORMAL;
 		
+		View footerView = ((LayoutInflater)getActivity().
+				getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.listfooter, null, false);
+
 		mGridview = (ExpandableHeightGridView) v.findViewById(R.id.gv_mypage);
 		mGridview.setExpanded(true);
 		mMyPageAdapter = new MyPageAdapter(mMainActivity, mMyPageItemArrayList);
@@ -155,21 +165,21 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
 	}
 
 	public void initMyPage(){
+		if(mMyPageTask != null && mMyPageTask.getStatus() != mMyPageTask.getStatus().FINISHED)
+			return ;
 		mMyPageAdapter.clear();
+		mGridview.setSelection(0);
 		addMyPageList(0);
 	}
 	
-	public void addMyPageList(int no){
-		if(mMyPageTask != null && mMyPageTask.getStatus() != mMyPageTask.getStatus().FINISHED)
-			return ;
-		
+	public void addMyPageList(long no){
 		AP0001 ap = new AP0001();
 		ap.setType(mCodeType);
 		ap.setOrderType("new");
 		ap.setReqPo(0);
 		ap.setReqPoCnt(3);
-		ap.setReqPoType(mPoType);
 		ap.setReqPoNo(no);
+		ap.setReqPoType(mPoType);
 		ap.setUsrId(SessionManager.getInstance(mMainActivity).getUserDetails().get(SessionManager.KEY_EMAIL));
 		
 		TransHandler.Handler handler = new TransHandler.Handler() {
@@ -177,17 +187,22 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
 				MyPageAdapter listAdapter = mMyPageAdapter;
 				List<AP0001> apList = resCode.getTranData();
 				AP0001 ap = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), AP0001.class);
+				long lastNo = 0;
 				
 				for(int i=0; i<ap.getResCnt(); i++){
 					AP0001Res res = ap.getRes().get(i);
-					
 					String imgUrl = null;
 					if(res.brdImg.size() > 0)
 						imgUrl = mMainActivity.getString(R.string.base_uri) + res.brdImg.get(0).brdOriginImg;
+					
+					lastNo = res.brdNo;
 					listAdapter.add(res.brdNo, mCodeType, res.brdId, res.brdNm, res.brdCateNm, imgUrl);
 				}
 //				Log.d("resCnt", "resCnt : " + ap.getResCnt());
-				listAdapter.notifyDataSetChanged();
+				if(ap.getResCnt() == 0)
+					listAdapter.notifyDataSetChanged();
+				else 
+					addMyPageList(lastNo);
 			}
 		};
 		

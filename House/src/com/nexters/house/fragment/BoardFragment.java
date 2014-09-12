@@ -34,6 +34,8 @@ import com.nexters.house.thread.PostMessageTask;
 import com.nexters.house.utils.JacksonUtils;
 
 public class BoardFragment extends Fragment {
+	private final static int DEFAULT_SIZE = 3;
+	
 	private ArrayList<BoardEntity> mBoardItemArrayList;
 	private ListView mLvMain;
 	private BoardAdapter mListAdapter;
@@ -75,9 +77,7 @@ public class BoardFragment extends Fragment {
 		TransHandler.Handler handler = new TransHandler.Handler() {
 			public void handle(APICode resCode) {
 				AP0007 ap = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), AP0007.class);
-				
-				mListAdapter.clear();
-				addSudatalkList(0);
+				initSudatalkList();
 			}
 		};
 		TransHandler<AP0007> articleHandler = new TransHandler<AP0007>("AP0007", handler);
@@ -108,9 +108,9 @@ public class BoardFragment extends Fragment {
 						&& (mArticleTask.getStatus() == Status.FINISHED)) {
 					if (mBoardItemArrayList.size() > 0)
 						addSudatalkList(mBoardItemArrayList
-								.get(mBoardItemArrayList.size() - 1).no);
+								.get(mBoardItemArrayList.size() - 1).no, DEFAULT_SIZE);
 					else
-						addSudatalkList(0);
+						addSudatalkList(0, DEFAULT_SIZE);
 					isState = false;
 				}
 			}
@@ -119,18 +119,21 @@ public class BoardFragment extends Fragment {
 
 	@Override
 	public void onResume() {
+		initSudatalkList();
 		super.onResume();
-		// init List
-		mListAdapter.clear();
-		addSudatalkList(0);
 	}
 	
+	public void initSudatalkList(){
+		mListAdapter.clear();
+		mLvMain.setSelection(0);
+		addSudatalkList(0, DEFAULT_SIZE);
+	}
 	
 	private void initEvent() {
 		mLvMain.setOnScrollListener(mScrollListener);
 	}
 
-	public void addSudatalkList(long talkNo){
+	public void addSudatalkList(long talkNo, int cnt){
 		if(mArticleTask != null && mArticleTask.getStatus() != mArticleTask.getStatus().FINISHED)
 			return ;
 		
@@ -139,7 +142,7 @@ public class BoardFragment extends Fragment {
 		ap.setType(CodeType.SUDATALK_TYPE);
 		ap.setOrderType("new");
 		ap.setReqPo(0);
-		ap.setReqPoCnt(3);
+		ap.setReqPoCnt(cnt);
 		ap.setReqPoType(AP0001.NORMAL);
 		ap.setReqPoNo(talkNo);
 		

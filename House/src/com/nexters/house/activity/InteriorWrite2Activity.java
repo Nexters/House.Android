@@ -99,7 +99,7 @@ public class InteriorWrite2Activity extends AbstractAsyncActivity implements Vie
 		mViewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher_interior2);
 		mInteriorGridView2 = (TwoWayGridView) findViewById(R.id.interior_gridview_2);
 		btnGalleryPick = (Button) findViewById(R.id.btn_gallery);
-		mBtnComplete = (Button) findViewById(R.id.Interior_button);
+		mBtnComplete = (Button) findViewById(R.id.btn_interior);
 		
 		mContext = getApplicationContext();
 		List<DataObject> horzData = new ArrayList<DataObject>();
@@ -131,15 +131,12 @@ public class InteriorWrite2Activity extends AbstractAsyncActivity implements Vie
 		case R.id.btn_interior:	
 			completeWrite();
 			break;
-		default:
-			break;
 		}
 	}
 
 	public void completeWrite() {
 		if(mArticleTask != null && mArticleTask.getStatus() != mArticleTask.getStatus().FINISHED)
 			return ;
-		
 		AP0006 ap = new AP0006();
 		ap.setType(CodeType.INTERIOR_TYPE);
 		ap.setBrdId(SessionManager.getInstance(this).getUserDetails().get(SessionManager.KEY_EMAIL));

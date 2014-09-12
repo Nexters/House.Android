@@ -35,6 +35,8 @@ import com.nexters.house.thread.PostMessageTask;
 import com.nexters.house.utils.JacksonUtils;
 
 public class InteriorFragment extends Fragment {
+	private final static int DEFAULT_SIZE = 3;
+	
 	private ArrayList<InteriorEntity> mInteriorItemArrayList;
 	private ListView mLvMain;
 	private InteriorAdapter mListAdapter;
@@ -74,10 +76,7 @@ public class InteriorFragment extends Fragment {
 		TransHandler.Handler handler = new TransHandler.Handler() {
 			public void handle(APICode resCode) {
 				AP0007 ap = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), AP0007.class);
-				if(mLvMain.getSelectedItemPosition() > 0)
-					mLvMain.setSelection(mLvMain.getSelectedItemPosition() - 1);
-				mListAdapter.clear();
-				addInteriorList(0);
+				initInteriorList();
 			}
 		};
 		TransHandler<AP0007> articleHandler = new TransHandler<AP0007>("AP0007", handler);
@@ -104,9 +103,9 @@ public class InteriorFragment extends Fragment {
 				//is the bottom item visible & not loading more already ? Load more !
 				if(isState && (lastInScreen == totalItemCount) && (mArticleTask.getStatus() == Status.FINISHED)){
 					if(mInteriorItemArrayList.size() > 0)
-						addInteriorList(mInteriorItemArrayList.get(mInteriorItemArrayList.size() - 1).no);
+						addInteriorList(mInteriorItemArrayList.get(mInteriorItemArrayList.size() - 1).no, DEFAULT_SIZE);
 					else 
-						addInteriorList(0);
+						addInteriorList(0, DEFAULT_SIZE);
 					isState = false;
 				}
 			}
@@ -115,17 +114,21 @@ public class InteriorFragment extends Fragment {
 
 	@Override
 	public void onResume() {
-		// init List
-		mListAdapter.clear();
-		addInteriorList(0);
+		initInteriorList();
 		super.onResume();
 	}
 
+	public void initInteriorList(){
+		mListAdapter.clear();
+		mLvMain.setSelection(0);
+		addInteriorList(0, DEFAULT_SIZE);
+	}
+	
 	private void initEvent(){
 		mLvMain.setOnScrollListener(mScrollListener);
 	}
 
-	public void addInteriorList(long interiorNo){
+	public void addInteriorList(long interiorNo, int cnt){
 		if(mArticleTask != null && mArticleTask.getStatus() != mArticleTask.getStatus().FINISHED)
 			return ;
 		
@@ -134,7 +137,7 @@ public class InteriorFragment extends Fragment {
 		ap.setType(CodeType.INTERIOR_TYPE);
 		ap.setOrderType("new");
 		ap.setReqPo(0);
-		ap.setReqPoCnt(3);
+		ap.setReqPoCnt(cnt);
 		ap.setReqPoType(AP0001.NORMAL);
 		ap.setReqPoNo(interiorNo);
 		
