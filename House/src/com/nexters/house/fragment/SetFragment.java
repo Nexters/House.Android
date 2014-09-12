@@ -55,13 +55,13 @@ public class SetFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         mView = (View) inflater.inflate(R.layout.fragment_set, container, false);
         
-        initResources();
-        initEvents();
+        initResource();
+        initEvent();
 //        initActionBar();
         return mView;
     }
 
-    private void initResources() {
+    private void initResource() {
         mBtnLogout = (LinearLayout) mView.findViewById(R.id.btn_logout);
         mBtnSend = (LinearLayout) mView.findViewById(R.id.btn_send);
         mBtnNickName = (LinearLayout) mView.findViewById(R.id.btn_nickname);
@@ -74,7 +74,7 @@ public class SetFragment extends Fragment implements View.OnClickListener {
         setFragmentPagerListener = new SetFragmentPagerAdapter.MyFragmentPagerListener(myFragmentPagerAdapter, viewPager);
     }
 
-    private void initEvents() {
+    private void initEvent() {
         // 현재창에서 해결
         mBtnLogout.setOnClickListener(this);
         mBtnWithdraw.setOnClickListener(this);

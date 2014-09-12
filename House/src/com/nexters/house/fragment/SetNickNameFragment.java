@@ -48,15 +48,17 @@ public class SetNickNameFragment extends Fragment implements View.OnClickListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
     	View v = inflater.inflate(R.layout.fragment_set_nickname, container, false);
+    	initResource(v);
+    	
     	return v;
     }
 
-    public void initResources(View v){
+    public void initResource(View v){
     	mHouseName = (EditText) v.findViewById(R.id.house_name);
     	mBtnName = (Button) v.findViewById(R.id.btn_name);
     }
     
-    public void initEvents(){
+    public void initEvent(){
     	mBtnName.setOnClickListener(this);
     }
     

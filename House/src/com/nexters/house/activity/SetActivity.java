@@ -24,12 +24,12 @@ public class SetActivity extends AbstractAsyncFragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_set);
-		initResources();
+		initResource();
 		// Log.d("action", "action : " + getActionBar());
 		initActionBar();
 	}
 
-	private void initResources() {
+	private void initResource() {
 		// Create
 		this.mViewPager = (ViewPager) findViewById(R.id.set_view_pager);
 		this.mSetFragmentPagerAdapter = new SetFragmentPagerAdapter(

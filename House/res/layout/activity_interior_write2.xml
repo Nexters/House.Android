@@ -34,11 +34,10 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/btnOk_interior"
+            android:id="@+id/btn_interior"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:background="@color/house_main_mint_color"
-            android:onClick="completeWrite"
             android:text="완료"
             android:textColor="#FFFFFF"
             android:textSize="15sp" />

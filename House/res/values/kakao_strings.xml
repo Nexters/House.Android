@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="kakao_app_key">7805d152fb50d7257df22fabb256681a</string>
-    <string name="kakao_scheme">kakao7805d152fb50d7257df22fabb256681a</string>
+   
+    <string name="kakao_app_key">cae08c6ac908ebb8510ec27092e133ed</string>
+    <string name="kakao_scheme">kakaocae08c6ac908ebb8510ec27092e133ed</string>
     <string name="kakaostory_host">kakaostory</string>
+   <!--   
+        <string name="kakao_app_key">0a0e05c7073ff55e402b1468d65d429b</string>
+    <string name="kakao_scheme">kakao0a0e05c7073ff55e402b1468d65d429b</string>
+    <string name="kakaostory_host">kakaostory</string> -->
 </resources>

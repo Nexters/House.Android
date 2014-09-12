@@ -110,7 +110,6 @@ public class InteriorWriteActivity extends Activity {
 	}
 
 	public void refreshPager() {
-	
 		mPagerAdapterClass = new PagerAdapterClass(getApplicationContext(),
 				mPager, this,mImageLoder_pager);
 		mPager.setAdapter(mPagerAdapterClass);

@@ -34,13 +34,17 @@ import com.nexters.house.entity.reqcode.AP0005;
 import com.nexters.house.entity.reqcode.AP0008;
 import com.nexters.house.entity.reqcode.AP0009;
 import com.nexters.house.handler.TransHandler;
+import com.nexters.house.thread.DownloadImageTask;
 import com.nexters.house.thread.PostMessageTask;
 import com.nexters.house.utils.JacksonUtils;
 
 public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 		implements View.OnClickListener {
 	private final String TAG = "ContentDetailActivity";
-
+	private static final String SCRAP_STR_CNT =  "스크랩 : ";
+	private static final String LIKE_STR_CNT =  "좋아요 : ";
+	private static final String REPLY_STR_CNT =  "댓글 : ";
+	
 	// Article
 	private ImageView mProfileImage;
 	private TextView mProfileName;
@@ -86,7 +90,7 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 		setContentView(R.layout.content_detail_page);
 
 		initActionBar();
-		initResources();
+		initResource();
 
 		initEvent();
 		
@@ -97,7 +101,7 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 	}
 
 	@SuppressLint("InflateParams")
-	private void initResources() {
+	private void initResource() {
 		brdNo = getIntent().getLongExtra("brdNo", 0);
 		brdType = getIntent().getIntExtra("brdType", CodeType.INTERIOR_TYPE);
 		usrId = SessionManager.getInstance(this).getUserDetails().get(SessionManager.KEY_EMAIL);
@@ -120,7 +124,7 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 				R.layout.image_row);
 		mContentImage.setAdapter(mImageAdapter);
 
-		// like reply
+		// like reply scrap
 		mLikeCnt = (TextView) findViewById(R.id.tv_cnt_likes);
 		mScrapCnt = (TextView) findViewById(R.id.tv_cnt_scrap);
 		mReplyCnt = (TextView) findViewById(R.id.tv_cnt_reply);
@@ -148,10 +152,16 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 
 		// init
 		setContents(brdNo);
-		if(brdType == CodeType.INTERIOR_TYPE){
+		if(brdType == CodeType.INTERIOR_TYPE)
 			mHouseInfo.setText("인테리어 정보");
-		} else {
+		else
 			mHouseInfo.setText("수다톡 정보");
+		
+		
+		// hide
+		if(CodeType.SUDATALK_TYPE == brdType){
+			mScrapCnt.setVisibility(View.GONE);
+			mBtnScrap.setVisibility(View.GONE);
 		}
 	}
 
@@ -196,7 +206,7 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 			public void handle(APICode resCode) {
 				AP0004 ap = JacksonUtils.hashMapToObject((HashMap) resCode
 						.getTranData().get(0), AP0004.class);
-				mLikeCnt.setText("" + ap.getLikeCnt());
+				mLikeCnt.setText("" + LIKE_STR_CNT + ap.getLikeCnt());
 			}
 		};
 		TransHandler<AP0004> articleHandler = new TransHandler<AP0004>("AP0004", handler, ap);
@@ -219,7 +229,7 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 			public void handle(APICode resCode) {
 				AP0005 ap = JacksonUtils.hashMapToObject((HashMap) resCode
 						.getTranData().get(0), AP0005.class);
-				mScrapCnt.setText("" + ap.getScrapCnt());
+				mScrapCnt.setText("" + SCRAP_STR_CNT + ap.getScrapCnt());
 			}
 		};
 		TransHandler<AP0005> articleHandler = new TransHandler<AP0005>("AP0005", handler, ap);
@@ -243,7 +253,8 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 				AP0003 ap = JacksonUtils.hashMapToObject((HashMap) resCode
 						.getTranData().get(0), AP0003.class);
 
-				// mProfileImage.setImageBitmap(bm);
+				if(ap.getBrdProfileImg() != null)
+					new DownloadImageTask(mProfileImage).execute(getApplicationContext().getString(R.string.base_uri) + ap.getBrdProfileImg());
 				mProfileName.setText(ap.getBrdNm());
 				mCreated.setText(ap.getBrdCreated());
 				mSubject.setText(ap.getBrdSubject());
@@ -265,9 +276,9 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 					reply.created = comments.get(i).brdCommentCreated;
 					mReplyArrayList.add(reply);
 				}
-				mLikeCnt.setText("" + ap.getBrdLikeCnt());
-				mScrapCnt.setText("" + ap.getBrdScrapCnt());
-				mReplyCnt.setText("" + ap.getBrdCommentCnt());
+				mLikeCnt.setText("" + LIKE_STR_CNT + ap.getBrdLikeCnt());
+				mScrapCnt.setText("" + SCRAP_STR_CNT + ap.getBrdScrapCnt());
+				mReplyCnt.setText("" + REPLY_STR_CNT + ap.getBrdCommentCnt());
 				Log.d("ap.getBrdScrapState()", "ap.getBrdScrapState() : " + ap.getBrdScrapState());
 				
 				mBtnLike.setChecked((ap.getBrdLikeState() == 1)? true : false);
@@ -312,7 +323,7 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 					reply.created = comments.get(i).brdCommentCreated;
 					mReplyArrayList.add(reply);
 				}
-				mReplyCnt.setText("" + ap.getBrdCommentCnt());
+				mReplyCnt.setText("" + REPLY_STR_CNT + ap.getBrdCommentCnt());
 				mEditReply.setText("");
 				mReplyAdapter.notifyDataSetChanged();
 				setListViewHeightBasedOnChildren(mReplyContent);

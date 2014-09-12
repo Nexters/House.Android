@@ -38,18 +38,18 @@ public class SignInActivity extends AbstractAsyncActivity implements View.OnClic
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_signin);
 
-        initResources();
-        initEvents();
+        initResource();
+        initEvent();
     }
 
-    private void initResources() {
+    private void initResource() {
         mHsEmail = (EditText) findViewById(R.id.hs_sign_in_email);
         mHsPassword = (EditText) findViewById(R.id.hs_sign_in_password);
         mBtnSignIn = (Button) findViewById(R.id.btn_sign_in);
         mCbAutoLogin = (CheckBox) findViewById(R.id.cb_auto_login);
     }
 
-    private void initEvents() {
+    private void initEvent() {
         mBtnSignIn.setOnClickListener(this);
         mCbAutoLogin.setOnCheckedChangeListener(new OnCheckedChangeListener(){
 			@Override

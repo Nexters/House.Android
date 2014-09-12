@@ -71,13 +71,13 @@ public class StartActivity extends AbstractAsyncActivity implements View.OnClick
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_start);
 
-		initResources();
+		initResource();
 		// 로그인 관련 초기화 
 		initLogin();
-		initEvents();
+		initEvent();
 	}
 
-	private void initResources() {
+	private void initResource() {
 		mBtnSignIn = (Button) findViewById(R.id.btn_sign_in);
 		mBtnSignUp = (Button) findViewById(R.id.btn_sign_up);
 		mBtnKakao = (com.kakao.widget.LoginButton) findViewById(R.id.btn_kakao_in);
@@ -100,7 +100,7 @@ public class StartActivity extends AbstractAsyncActivity implements View.OnClick
 		}
 	}
 	
-	private void initEvents() {
+	private void initEvent() {
 		mBtnSignIn.setOnClickListener(this);
 		mBtnSignUp.setOnClickListener(this);
 		mBtnKakao.setLoginSessionCallback(kakaoCallback);
@@ -183,7 +183,6 @@ public class StartActivity extends AbstractAsyncActivity implements View.OnClick
 	public void showShortToast(String msg) {
 		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
 	}
-
 	
 	// -------------------------- 연동 로그인 부분
 	private void register(final String usrId, final String userPw, final String name, final String imgUrl, final int sessionType, byte[] imgs){
@@ -320,7 +319,7 @@ public class StartActivity extends AbstractAsyncActivity implements View.OnClick
 	private final SessionCallback kakaoCallback = new SessionCallback() {
 		@Override
 		public void onSessionOpened() {
-			// showShortToast("Session Opened");
+//			showShortToast("Session Opened");
 			UserManagement.requestMe(new MeResponseCallback() {
 				@Override
 				protected void onSuccess(final UserProfile userProfile) {
@@ -357,7 +356,7 @@ public class StartActivity extends AbstractAsyncActivity implements View.OnClick
 		public void onSessionClosed(KakaoException exception) {
 			exception.printStackTrace();
 			// 프로그레스바를 보이고 있었다면 중지하고 세션 오픈을 못했으니 다시 로그인 버튼 노출.
-			// showShortToast("Session onSessionClosed");
+//			showShortToast("Session onSessionClosed");
 			mBtnKakao.setVisibility(View.VISIBLE);
 		}
 	};

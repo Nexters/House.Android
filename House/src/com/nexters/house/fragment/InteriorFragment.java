@@ -56,13 +56,13 @@ public class InteriorFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_interior, container, false);
-		initResources(v);
-		initEvents();
+		initResource(v);
+		initEvent();
 		return v;
 	}
 
 	@SuppressLint("InflateParams")
-	private void initResources(View v){
+	private void initResource(View v){
 		mLvMain = (ListView) v.findViewById(R.id.lv_interior_view);
 		mInteriorItemArrayList = new ArrayList<InteriorEntity>();
 		
@@ -121,7 +121,7 @@ public class InteriorFragment extends Fragment {
 		super.onResume();
 	}
 
-	private void initEvents(){
+	private void initEvent(){
 		mLvMain.setOnScrollListener(mScrollListener);
 	}
 

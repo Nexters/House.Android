@@ -56,13 +56,13 @@ public class BoardFragment extends Fragment {
 			Bundle savedInstanceState) {
 
 		View v = inflater.inflate(R.layout.fragment_board, container, false);
-		initResources(v);
-		initEvents();
+		initResource(v);
+		initEvent();
 		return v;
 	}
 
 	@SuppressLint("InflateParams")
-	private void initResources(View v) {
+	private void initResource(View v) {
 		mLvMain = (ListView) v.findViewById(R.id.lv_board_view);
 		mBoardItemArrayList = new ArrayList<BoardEntity>();
 		
@@ -126,7 +126,7 @@ public class BoardFragment extends Fragment {
 	}
 	
 	
-	private void initEvents() {
+	private void initEvent() {
 		mLvMain.setOnScrollListener(mScrollListener);
 	}
 

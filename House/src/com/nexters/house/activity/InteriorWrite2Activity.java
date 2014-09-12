@@ -122,7 +122,7 @@ public class InteriorWrite2Activity extends AbstractAsyncActivity {
 		});
 	}
 	
-	public void completeWrite(View view) {
+	public void completeWrite() {
 		if(mArticleTask != null && mArticleTask.getStatus() != mArticleTask.getStatus().FINISHED)
 			return ;
 		

@@ -32,6 +32,7 @@ import com.nexters.house.entity.CodeType;
 import com.nexters.house.entity.InteriorEntity;
 import com.nexters.house.entity.reqcode.AP0007;
 import com.nexters.house.handler.TransHandler;
+import com.nexters.house.thread.DownloadImageTask;
 import com.nexters.house.thread.PostMessageTask;
 import com.nexters.house.utils.CommonUtils;
 
@@ -78,6 +79,7 @@ public class InteriorAdapter extends BaseAdapter {
 			// get interior
 			final long no = mInteriorItemArrayList.get(position).no;
 			String name = mInteriorItemArrayList.get(position).name;
+			String id = mInteriorItemArrayList.get(position).id;
 			String profileImg = mInteriorItemArrayList.get(position).profileImg;
 			String created = mInteriorItemArrayList.get(position).created;
 			String content = mInteriorItemArrayList.get(position).content;
@@ -95,15 +97,20 @@ public class InteriorAdapter extends BaseAdapter {
 			holder.interiorLikes = (TextView)convertView.findViewById(R.id.interior_likes_cnt);
 			holder.interiorReplies = (TextView)convertView.findViewById(R.id.interior_reply_cnt);
 			
-			holder.rlContents = (RelativeLayout) convertView.findViewById(R.id.rl_interior_custom_view);
 			holder.slider = (SliderLayout) convertView.findViewById(R.id.interior_slider);
+			
+			holder.rlMenu = (RelativeLayout) convertView.findViewById(R.id.rl_menu);
+			holder.rlContents = (RelativeLayout) convertView.findViewById(R.id.rl_interior_custom_view);
 			holder.btnDown = (ImageView) convertView.findViewById(R.id.icon_down);
 			holder.btnEdit = (ImageView) convertView.findViewById(R.id.icon_edit);
 			holder.btnDelete = (ImageView) convertView.findViewById(R.id.icon_delete);
 			
 			// set
+			if(!id.equals(usrId))
+				holder.rlMenu.setVisibility(View.GONE);
 			holder.houseId.setText(name + " = " + position);
-			holder.houseProfile = null;
+			if(profileImg != null)
+				new DownloadImageTask(holder.houseProfile).execute(mMainActivity.getString(R.string.base_uri) + profileImg);
 			holder.interiorContent.setText(content);
 			holder.interiorLikes.setText(Integer.toString(nLike));
 			holder.interiorReplies.setText(Integer.toString(nReply));
@@ -173,6 +180,7 @@ public class InteriorAdapter extends BaseAdapter {
 					case R.id.icon_edit:
 						intent = new Intent(mContext,EditActivity.class);
 						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						intent.putExtra("brdNo", no);
 						mContext.startActivity(intent);
 						break;
 					case R.id.icon_delete:	
@@ -234,7 +242,7 @@ public class InteriorAdapter extends BaseAdapter {
 		int position;
 		ImageView houseProfile;
 		LinearLayout tvContents;
-		RelativeLayout rlContents;
+		RelativeLayout rlContents, rlMenu;
 		TextView houseId, created, interiorContent;
 		TextView interiorLikes, interiorReplies;
 		ImageView btnDown, btnEdit, btnDelete;

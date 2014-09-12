@@ -50,13 +50,13 @@ public class MainActivity extends AbstractAsyncFragmentActivity implements OnCli
 			return;
 		}
 		initActionBar();
-		initResources();
+		initResource();
 		initEvent();
 
 		changeFragment(FRAGMENT_INTERIOR);
 	}
 
-	private void initResources(){
+	private void initResource(){
 		mBtnInterior = (Button) findViewById(R.id.btn_interior);
 		mBtnBoard = (Button) findViewById(R.id.btn_board);
 		mBtnMypage = (Button) findViewById(R.id.btn_mypage);

@@ -128,7 +128,9 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
     	if(POST_SUCCESS == result)
     		mTransHandler.handle();
     	else if(POST_FAIL == result){
-    		if(mTransHandler.getResCode().getErrorCd() == null)
+    		if(mTransHandler.getResCode() == null){
+    			SessionManager.getInstance(mContext).logoutUser();
+    		} else if(mTransHandler.getResCode().getErrorCd() == null)
     			mAbstractAsyncActivity.showResult("Exception Error");
     		else
     			mAbstractAsyncActivity.showResult(mTransHandler.getResCode().getErrorMsg());

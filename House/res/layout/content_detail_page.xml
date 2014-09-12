@@ -131,25 +131,11 @@
                 android:paddingRight="20dp" >
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="2dp"
-                    android:text="좋아요"
-                    android:textColor="#d0d0d0" />
-
-                <TextView
                     android:id="@+id/tv_cnt_likes"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginRight="1dp"
                     android:text="1000"
-                    android:textColor="#d0d0d0" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="2dp"
-                    android:text="개  스크랩"
                     android:textColor="#d0d0d0" />
 
                 <TextView
@@ -161,23 +147,11 @@
                     android:textColor="#d0d0d0" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="개 댓글 "
-                    android:textColor="#d0d0d0" />
-
-                <TextView
                     android:id="@+id/tv_cnt_reply"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginRight="1dp"
                     android:text="800"
-                    android:textColor="#d0d0d0" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="개 댓글 "
                     android:textColor="#d0d0d0" />
             </LinearLayout>
 

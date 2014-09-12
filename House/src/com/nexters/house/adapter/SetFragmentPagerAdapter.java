@@ -33,10 +33,10 @@ public class SetFragmentPagerAdapter extends FragmentStatePagerAdapter {
         // init
         this.mViewPager = viewPager;
         this.mActionBar = actionBar;
-        initResources();
+        initResource();
     }
 
-    private void initResources() {
+    private void initResource() {
         mSetFragment = SetFragment.newInstance();
         mTargetFragments = new Fragment[2];
         mTargetFragments[0] = SetFragment.newInstance();

@@ -38,11 +38,11 @@ public class SignUpActivity extends AbstractAsyncActivity implements View.OnClic
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_signup);
 
-        initResources();
-        initEvents();
+        initResource();
+        initEvent();
    }
 	
-    private void initResources() {
+    private void initResource() {
         mHsUsername = (EditText) findViewById(R.id.hs_sign_up_username);
         mHsEmail = (EditText) findViewById(R.id.hs_sign_up_email);
         mHsPassword = (EditText) findViewById(R.id.hs_sign_up_password);
@@ -50,7 +50,7 @@ public class SignUpActivity extends AbstractAsyncActivity implements View.OnClic
         mBtnSignUp = (Button) findViewById(R.id.btn_sign_up);
     }
 
-    private void initEvents() {
+    private void initEvent() {
         mBtnSignUp.setOnClickListener(this);
     }
 

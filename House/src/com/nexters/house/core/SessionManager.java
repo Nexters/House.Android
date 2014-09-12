@@ -121,16 +121,16 @@ public class SessionManager {
 	}
 
 	public void logoutUser() {
-		// Clearing all data from Shared Preferences
-		boolean isKakao = com.kakao.Session.getCurrentSession().isOpened();
-		boolean isFacebook = com.facebook.Session.getActiveSession().isOpened();
-		boolean isUser = isLoggedIn();
-
-		Log.d("isUser", "isUser : " + isUser);
+		int isType = mPref.getInt(KEY_LOGIN_TYPE, NONE);
+		
+//		boolean isKakao = com.kakao.Session.getCurrentSession().isOpened();
+//		boolean isFacebook = com.facebook.Session.getActiveSession().isOpened();
+//		boolean isUser = isLoggedIn();
+//		Log.d("isUser", "isUser : " + isUser);
 		
 		mEditor.clear();
 		mEditor.commit();
-		if (isKakao) {
+		if (isType == KAKAO) {
 			UserManagement.requestLogout(new LogoutResponseCallback() {
 				@Override
 				protected void onSuccess(final long usrId) {
@@ -140,13 +140,13 @@ public class SessionManager {
 				protected void onFailure(final APIErrorResult apiErrorResult) {
 				}
 			});
-		} else if (isFacebook) {
+		} else if (isType == FACEBOOK) {
 			Session session = Session.getActiveSession();
 			if (session != null && !session.isClosed()) {
 				session.closeAndClearTokenInformation();
 			}
 			onSessionClosed();
-		} else if (isUser) {
+		} else if (isType == HOUSE) {
 			onSessionClosed();
 		}
 	}
