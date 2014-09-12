@@ -63,7 +63,8 @@ public class InteriorWrite2Activity extends AbstractAsyncActivity implements Vie
 	private ImageLoader mImageLoader;
 
 	private Button btnGalleryPick;
-
+	private Button mBtnComplete;
+	
 	private PostMessageTask mArticleTask;
 	
 	@Override
@@ -98,6 +99,7 @@ public class InteriorWrite2Activity extends AbstractAsyncActivity implements Vie
 		mViewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher_interior2);
 		mInteriorGridView2 = (TwoWayGridView) findViewById(R.id.interior_gridview_2);
 		btnGalleryPick = (Button) findViewById(R.id.btn_gallery);
+		mBtnComplete = (Button) findViewById(R.id.Interior_button);
 		
 		mContext = getApplicationContext();
 		List<DataObject> horzData = new ArrayList<DataObject>();
@@ -109,6 +111,7 @@ public class InteriorWrite2Activity extends AbstractAsyncActivity implements Vie
 	}
 
 	private void initEvent(){
+		mBtnComplete.setOnClickListener(this);
 		btnGalleryPick.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
