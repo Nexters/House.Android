@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class AP0003 implements Serializable {
 	private int type;
 	private long reqPoNo;
+	private long reqCommentNo;
+	private int reqCommentCnt;
 	private String usrId;
 	
 	private long brdNo;
@@ -29,10 +31,21 @@ public class AP0003 implements Serializable {
 	private List<String> brdImg;
 	
 	private int brdCommentCnt;
+	private long brdCommentLastNo;
 	private List<AP0003Comment> brdComment;
 
-	
-
+	@JsonProperty("_req_comment_no")
+	public long getReqCommentNo() {
+		return reqCommentNo;
+	}
+	@JsonProperty("_req_comment_cnt")
+	public int getReqCommentCnt() {
+		return reqCommentCnt;
+	}
+	@JsonIgnore
+	public long getBrdCommentLastNo() {
+		return brdCommentLastNo;
+	}
 	@JsonProperty("_type")
 	public int getType() {
 		return type;
@@ -41,7 +54,6 @@ public class AP0003 implements Serializable {
 	public long getReqPoNo() {
 		return reqPoNo;
 	}
-
 	@JsonIgnore
 	public void setBrdNo(long brdNo) {
 		this.brdNo = brdNo;
@@ -120,6 +132,18 @@ public class AP0003 implements Serializable {
 	}
 	
 	
+	@JsonIgnore
+	public void setReqCommentNo(long reqCommentNo) {
+		this.reqCommentNo = reqCommentNo;
+	}
+	@JsonIgnore
+	public void setReqCommentCnt(int reqCommentCnt) {
+		this.reqCommentCnt = reqCommentCnt;
+	}
+	@JsonProperty("_brd_comment_last_no")
+	public void setBrdCommentLastNo(long brdCommentLastNo) {
+		this.brdCommentLastNo = brdCommentLastNo;
+	}
 	@JsonIgnore
 	public void setType(int type) {
 		this.type = type;

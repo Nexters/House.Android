@@ -66,6 +66,7 @@ public class ReplyAdapter extends BaseAdapter{
 			holder.name = (TextView) convertView.findViewById(R.id.tv_user_profile_name);
 			holder.content = (TextView) convertView.findViewById(R.id.tv_content);
 			holder.created = (TextView) convertView.findViewById(R.id.tv_created);
+			holder.btnDelete = (Button) convertView.findViewById(R.id.btn_delete);
 			holder.refresh = refreshCnt;
 			
 			final long no = mReplyItemList.get(position).no;
@@ -73,7 +74,10 @@ public class ReplyAdapter extends BaseAdapter{
 			holder.name.setText(mReplyItemList.get(position).name);
 			holder.content.setText(mReplyItemList.get(position).content);
 			holder.created.setText(mReplyItemList.get(position).created);
-			((Button) convertView.findViewById(R.id.btn_delete)).setOnClickListener(new View.OnClickListener() {
+
+			if(!usrId.equals(mReplyItemList.get(position).id))
+					holder.btnDelete.setVisibility(View.GONE);
+			holder.btnDelete.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					deleteReply(no);
@@ -106,6 +110,7 @@ public class ReplyAdapter extends BaseAdapter{
 		TextView name;
 		TextView content;
 		TextView created;
+		Button btnDelete;
 	}
 
 	@Override

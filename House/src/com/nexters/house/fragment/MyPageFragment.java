@@ -274,7 +274,6 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
 		TempFileManager.deleteImageFile();
 	}
 
-
 	//    private void showDialogChoosingPhoto() {
 	//        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
 	//        builder.setItems(R.array.menu_choosing_photo_dialog_items, new DialogInterface.OnClickListener() {

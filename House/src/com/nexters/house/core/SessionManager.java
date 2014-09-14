@@ -146,7 +146,7 @@ public class SessionManager {
 				session.closeAndClearTokenInformation();
 			}
 			onSessionClosed();
-		} else if (isType == HOUSE) {
+		} else {
 			onSessionClosed();
 		}
 	}

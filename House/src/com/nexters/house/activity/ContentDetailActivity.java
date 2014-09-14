@@ -44,6 +44,8 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 	private static final String SCRAP_STR_CNT =  "스크랩 : ";
 	private static final String LIKE_STR_CNT =  "좋아요 : ";
 	private static final String REPLY_STR_CNT =  "댓글 : ";
+	private static final int REPLY_DEFAULT_SIZE = 100;
+	
 	
 	// Article
 	private ImageView mProfileImage;
@@ -141,7 +143,10 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 		mReplyAdapter = new ReplyAdapter(this, mReplyArrayList, R.layout.reply, brdType);
 		TransHandler.Handler handler = new TransHandler.Handler() {
 			public void handle(APICode resCode) {
-				listComment();
+				if(mReplyArrayList.size() > 0)
+					addComments(mReplyArrayList.get(mReplyArrayList.size()-1).no, true);
+				else
+					addComments(0, true);
 			}
 		};
 		TransHandler<AP0009> articleHandler = new TransHandler<AP0009>("AP0009", handler);
@@ -183,7 +188,10 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 		
 		TransHandler.Handler handler = new TransHandler.Handler() {
 			public void handle(APICode resCode) {
-				listComment();
+				if(mReplyArrayList.size() > 0)
+					addComments(mReplyArrayList.get(mReplyArrayList.size()-1).no, true);
+				else
+					addComments(0, true);
 			}
 		};
 		TransHandler<AP0008> articleHandler = new TransHandler<AP0008>("AP0008", handler, ap);
@@ -247,6 +255,8 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 		ap.setType(brdType);
 		ap.setReqPoNo(brdNo);
 		ap.setUsrId(usrId);
+		ap.setReqCommentNo(0);
+		ap.setReqCommentCnt(REPLY_DEFAULT_SIZE);
 		
 		TransHandler.Handler handler = new TransHandler.Handler() {
 			public void handle(APICode resCode) {
@@ -279,13 +289,14 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 				mLikeCnt.setText("" + LIKE_STR_CNT + ap.getBrdLikeCnt());
 				mScrapCnt.setText("" + SCRAP_STR_CNT + ap.getBrdScrapCnt());
 				mReplyCnt.setText("" + REPLY_STR_CNT + ap.getBrdCommentCnt());
-				Log.d("ap.getBrdScrapState()", "ap.getBrdScrapState() : " + ap.getBrdScrapState());
+//				Log.d("ap.getBrdScrapState()", "ap.getBrdScrapState() : " + ap.getBrdScrapState());
 				
 				mBtnLike.setChecked((ap.getBrdLikeState() == 1)? true : false);
 				mBtnScrap.setChecked((ap.getBrdScrapState() == 1)? true : false);
 				
-				mReplyAdapter.notifyDataSetChanged();
 				mImageAdapter.notifyDataSetChanged();
+				mReplyAdapter.notifyDataSetChanged();
+				
 				setListViewHeightBasedOnChildren(mContentImage);
 				setListViewHeightBasedOnChildren(mReplyContent);
 			}
@@ -297,14 +308,16 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 		mPostTask.execute(MediaType.APPLICATION_JSON);
 	}
 	
-	public void listComment(){
-		if(mPostTask != null && mPostTask.getStatus() != mPostTask.getStatus().FINISHED)
+	public void addComments(long commentNo, boolean status){
+		if(!status && (mPostTask != null && mPostTask.getStatus() != mPostTask.getStatus().FINISHED))
 			return ;
 		
 		AP0003 ap = new AP0003();
 		ap.setType(brdType);
 		ap.setReqPoNo(brdNo);
 		ap.setUsrId(usrId);
+		ap.setReqCommentNo(commentNo);
+		ap.setReqCommentCnt(REPLY_DEFAULT_SIZE);
 		
 		TransHandler.Handler handler = new TransHandler.Handler() {
 			public void handle(APICode resCode) {
@@ -312,7 +325,7 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 						.getTranData().get(0), AP0003.class);
 //				Log.d("AP0003Comment", "AP0003Comment : ");
 				List<AP0003Comment> comments = ap.getBrdComment();
-				mReplyArrayList.clear();
+//				mReplyArrayList.clear();
 				for (int i = 0; i < comments.size(); i++){
 					ReplyEntity reply = new ReplyEntity();
 					reply.no = comments.get(i).brdCommentNo;
@@ -325,8 +338,12 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 				}
 				mReplyCnt.setText("" + REPLY_STR_CNT + ap.getBrdCommentCnt());
 				mEditReply.setText("");
-				mReplyAdapter.notifyDataSetChanged();
-				setListViewHeightBasedOnChildren(mReplyContent);
+				
+				if(ap.getBrdCommentLastNo() == 0){
+					mReplyAdapter.notifyDataSetChanged();
+					setListViewHeightBasedOnChildren(mReplyContent);
+				} else 
+					addComments(ap.getBrdCommentLastNo(), true);
 			}
 		};
 		TransHandler<AP0003> articleHandler = new TransHandler<AP0003>("AP0003", handler, ap);

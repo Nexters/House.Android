@@ -46,7 +46,10 @@ public class BoardFragment extends Fragment {
 
 	private OnScrollListener mScrollListener;
 
-
+	// current
+	long curTalkNo;
+	int selectedIdx;
+	
 	@Override
 	public void onAttach(Activity activity) {
 		this.mMainActivity = (MainActivity) activity;
@@ -108,32 +111,39 @@ public class BoardFragment extends Fragment {
 						&& (mArticleTask.getStatus() == Status.FINISHED)) {
 					if (mBoardItemArrayList.size() > 0)
 						addSudatalkList(mBoardItemArrayList
-								.get(mBoardItemArrayList.size() - 1).no, DEFAULT_SIZE);
+								.get(mBoardItemArrayList.size() - 1).no, DEFAULT_SIZE, false);
 					else
-						addSudatalkList(0, DEFAULT_SIZE);
+						addSudatalkList(0, DEFAULT_SIZE, false);
 					isState = false;
 				}
 			}
 		};
+		// settings
+		initSudatalkList();
 	}
 
 	@Override
 	public void onResume() {
-		initSudatalkList();
 		super.onResume();
 	}
 	
 	public void initSudatalkList(){
+		selectedIdx = mLvMain.getSelectedItemPosition();
+		if(mBoardItemArrayList.size() > 0)
+			curTalkNo = mBoardItemArrayList.get(mBoardItemArrayList.size() - 1).no;
+		else
+			curTalkNo = 0;
+		
 		mListAdapter.clear();
 		mLvMain.setSelection(0);
-		addSudatalkList(0, DEFAULT_SIZE);
+		addSudatalkList(0, DEFAULT_SIZE, true);
 	}
 	
 	private void initEvent() {
 		mLvMain.setOnScrollListener(mScrollListener);
 	}
 
-	public void addSudatalkList(long talkNo, int cnt){
+	public void addSudatalkList(long talkNo, int count, boolean status){
 		if(mArticleTask != null && mArticleTask.getStatus() != mArticleTask.getStatus().FINISHED)
 			return ;
 		
@@ -142,7 +152,7 @@ public class BoardFragment extends Fragment {
 		ap.setType(CodeType.SUDATALK_TYPE);
 		ap.setOrderType("new");
 		ap.setReqPo(0);
-		ap.setReqPoCnt(cnt);
+		ap.setReqPoCnt(count);
 		ap.setReqPoType(AP0001.NORMAL);
 		ap.setReqPoNo(talkNo);
 		
@@ -161,7 +171,11 @@ public class BoardFragment extends Fragment {
 					listAdapter.add(res.brdNo, res.brdId, res.brdNm, res.brdProfileImg, res.brdCreated, new String(res.brdContents), res.brdSubject, res.brdCateNm, imgUrls, res.brdLikeCnt, res.brdCommentCnt);
 				}
 //				Log.d("resCnt", "resCnt : " + ap.getResCnt());
-				listAdapter.notifyDataSetChanged();
+				if(curTalkNo == 0 || curTalkNo <= ap.getResLastNo()){
+					mLvMain.setSelection(selectedIdx);
+					listAdapter.notifyDataSetChanged();
+				} else
+					addSudatalkList(ap.getResLastNo(), DEFAULT_SIZE, true);
 			}
 		};
 		

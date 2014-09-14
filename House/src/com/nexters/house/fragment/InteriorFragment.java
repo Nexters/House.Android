@@ -48,6 +48,10 @@ public class InteriorFragment extends Fragment {
 	
 	private OnScrollListener mScrollListener;
 
+	// current
+	long curInteriorNo;
+	int selectedIdx;
+	
 	@Override
 	public void onAttach(Activity activity) {
 		this.mMainActivity = (MainActivity) activity;
@@ -103,33 +107,41 @@ public class InteriorFragment extends Fragment {
 				//is the bottom item visible & not loading more already ? Load more !
 				if(isState && (lastInScreen == totalItemCount) && (mArticleTask.getStatus() == Status.FINISHED)){
 					if(mInteriorItemArrayList.size() > 0)
-						addInteriorList(mInteriorItemArrayList.get(mInteriorItemArrayList.size() - 1).no, DEFAULT_SIZE);
+						addInteriorList(mInteriorItemArrayList.get(mInteriorItemArrayList.size() - 1).no, DEFAULT_SIZE, false);
 					else 
-						addInteriorList(0, DEFAULT_SIZE);
+						addInteriorList(0, DEFAULT_SIZE, false);
 					isState = false;
 				}
 			}
 		};
+		
+		// settings
+		initInteriorList();
 	}
 
 	@Override
 	public void onResume() {
-		initInteriorList();
 		super.onResume();
 	}
 
 	public void initInteriorList(){
+		selectedIdx = mLvMain.getSelectedItemPosition();
+		if(mInteriorItemArrayList.size() > 0)
+			curInteriorNo = mInteriorItemArrayList.get(mInteriorItemArrayList.size() - 1).no;
+		else
+			curInteriorNo = 0;
+		
 		mListAdapter.clear();
 		mLvMain.setSelection(0);
-		addInteriorList(0, DEFAULT_SIZE);
+		addInteriorList(0, DEFAULT_SIZE, false);
 	}
 	
 	private void initEvent(){
 		mLvMain.setOnScrollListener(mScrollListener);
 	}
 
-	public void addInteriorList(long interiorNo, int cnt){
-		if(mArticleTask != null && mArticleTask.getStatus() != mArticleTask.getStatus().FINISHED)
+	public void addInteriorList(long interiorNo, int count, boolean status){
+		if(!status && mArticleTask != null && mArticleTask.getStatus() != mArticleTask.getStatus().FINISHED)
 			return ;
 		
 //		Log.d("interiorNo", "interiorNo = " + interiorNo);
@@ -137,7 +149,7 @@ public class InteriorFragment extends Fragment {
 		ap.setType(CodeType.INTERIOR_TYPE);
 		ap.setOrderType("new");
 		ap.setReqPo(0);
-		ap.setReqPoCnt(cnt);
+		ap.setReqPoCnt(count);
 		ap.setReqPoType(AP0001.NORMAL);
 		ap.setReqPoNo(interiorNo);
 		
@@ -156,7 +168,11 @@ public class InteriorFragment extends Fragment {
 					listAdapter.add(res.brdNo, res.brdId, res.brdNm, res.brdProfileImg, res.brdCreated, new String(res.brdContents), imgUrls, res.brdLikeCnt, res.brdCommentCnt);
 				}
 //				Log.d("resCnt", "resCnt : " + ap.getResCnt());
-				listAdapter.notifyDataSetChanged();
+				if(curInteriorNo == 0 || curInteriorNo <= ap.getResLastNo()){
+					mLvMain.setSelection(selectedIdx);
+					listAdapter.notifyDataSetChanged();
+				} else
+					addInteriorList(ap.getResLastNo(), DEFAULT_SIZE, true);
 			}
 		};
 		
