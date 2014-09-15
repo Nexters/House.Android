@@ -12,6 +12,7 @@ import android.content.Context;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +49,6 @@ public class BoardFragment extends Fragment {
 
 	// current
 	long curTalkNo;
-	int selectedIdx;
 	
 	@Override
 	public void onAttach(Activity activity) {
@@ -76,15 +76,7 @@ public class BoardFragment extends Fragment {
 				null, false);
 
 		mListAdapter = new BoardAdapter(mMainActivity,
-				mBoardItemArrayList, mMainActivity);
-		TransHandler.Handler handler = new TransHandler.Handler() {
-			public void handle(APICode resCode) {
-				AP0007 ap = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), AP0007.class);
-				initSudatalkList();
-			}
-		};
-		TransHandler<AP0007> articleHandler = new TransHandler<AP0007>("AP0007", handler);
-		mListAdapter.setHandler(articleHandler);
+				mBoardItemArrayList, mMainActivity, mLvMain);
 		
 		// footerview를 listview 제일 하단에 붙임
 		mLvMain.addFooterView(footerView);
@@ -106,12 +98,10 @@ public class BoardFragment extends Fragment {
 				int lastInScreen = firstVisibleItem + visibleItemCount;
 
 				// is the bottom item visible & not loading more already ? Load
-				// more !
 				if (isState && (lastInScreen == totalItemCount)
 						&& (mArticleTask.getStatus() == Status.FINISHED)) {
 					if (mBoardItemArrayList.size() > 0)
-						addSudatalkList(mBoardItemArrayList
-								.get(mBoardItemArrayList.size() - 1).no, DEFAULT_SIZE, false);
+						addSudatalkList(curTalkNo, DEFAULT_SIZE, false);
 					else
 						addSudatalkList(0, DEFAULT_SIZE, false);
 					isState = false;
@@ -124,17 +114,20 @@ public class BoardFragment extends Fragment {
 
 	@Override
 	public void onResume() {
+		Log.d("RESULT ", "RESULT_OK " + mMainActivity.RESULT_STATUS + " - " + mMainActivity.RESULT_WRITE);
+		
+		if(mMainActivity.RESULT_STATUS == mMainActivity.RESULT_WRITE){
+			initSudatalkList();
+			mMainActivity.RESULT_STATUS = mMainActivity.RESULT_NONE;
+		}
 		super.onResume();
 	}
 	
 	public void initSudatalkList(){
-		selectedIdx = mLvMain.getSelectedItemPosition();
-		if(mBoardItemArrayList.size() > 0)
-			curTalkNo = mBoardItemArrayList.get(mBoardItemArrayList.size() - 1).no;
-		else
-			curTalkNo = 0;
+		Log.d("initSudatalkList", "initSudatalkList = ");
 		
 		mListAdapter.clear();
+		curTalkNo = 0;
 		mLvMain.setSelection(0);
 		addSudatalkList(0, DEFAULT_SIZE, true);
 	}
@@ -170,12 +163,9 @@ public class BoardFragment extends Fragment {
 						imgUrls.add(mMainActivity.getString(R.string.base_uri) + res.brdImg.get(j).brdOriginImg);
 					listAdapter.add(res.brdNo, res.brdId, res.brdNm, res.brdProfileImg, res.brdCreated, new String(res.brdContents), res.brdSubject, res.brdCateNm, imgUrls, res.brdLikeCnt, res.brdCommentCnt);
 				}
-//				Log.d("resCnt", "resCnt : " + ap.getResCnt());
-				if(curTalkNo == 0 || curTalkNo <= ap.getResLastNo()){
-					mLvMain.setSelection(selectedIdx);
-					listAdapter.notifyDataSetChanged();
-				} else
-					addSudatalkList(ap.getResLastNo(), DEFAULT_SIZE, true);
+				if(ap.getResLastNo() != 0)
+					curTalkNo = ap.getResLastNo();
+				listAdapter.notifyDataSetChanged();
 			}
 		};
 		

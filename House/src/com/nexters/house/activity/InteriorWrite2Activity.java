@@ -12,19 +12,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ViewSwitcher;
 
 import com.jess.ui.TwoWayGridView;
 import com.nexters.house.R;
 import com.nexters.house.adapter.GalleryAdapter;
 import com.nexters.house.adapter.HorzGridViewAdapter;
-import com.nexters.house.adapter.PagerAdapterClass;
 import com.nexters.house.core.SessionManager;
 import com.nexters.house.entity.APICode;
 import com.nexters.house.entity.Action;
@@ -171,9 +169,11 @@ public class InteriorWrite2Activity extends AbstractAsyncActivity implements Vie
 			@Override
 			public void handle(APICode resCode) {
 				CustomGalleryActivity.noCancel = 0;
-				setResult(RESULT_OK);
-				finish();
+				
+			    setResult(RESULT_OK);
 				showResult("작성한 내용이 업로드됩니다.");
+				finish();
+				
 			}
 		};
 		// Post Aricle 

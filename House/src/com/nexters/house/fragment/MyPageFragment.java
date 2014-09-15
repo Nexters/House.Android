@@ -112,10 +112,10 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
 
 		HashMap<String, String> userDetails = sessionManager.getUserDetails();
 		String imgSrc = userDetails.get(SessionManager.KEY_PROFILE_PATH);
-
 		if(imgSrc != null){
 			new DownloadImageTask(mHouseProfile).execute(imgSrc);
 			mHouseProfile.setVisibility(View.VISIBLE);
+			Log.d("mypageurl", "mypageurl" + imgSrc);
 		}
 		//원래 기본사진크기 가져오려고했는데..안됨 우선은 숫자로 넣어둠.
 		mIvPhotoWidth = 200;

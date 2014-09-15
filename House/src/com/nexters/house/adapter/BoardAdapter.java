@@ -28,11 +28,11 @@ import com.nexters.house.utils.*;
 public class BoardAdapter extends BaseAdapter {
 	private Context mContext;
 	private MainActivity mMainActivity;
+	private ListView mListView;
 	
 	private ArrayList<BoardEntity> mBoardItemArrayList;
 	private LayoutInflater mLayoutInflater;
 
-	private TransHandler mHandler;
 	private PostMessageTask mPostTask;
 	
 	private String usrId;
@@ -40,7 +40,7 @@ public class BoardAdapter extends BaseAdapter {
 	
 	public BoardAdapter(Context context,
 			ArrayList<BoardEntity> mBoardItemArrayList,
-			MainActivity mainActivity) {
+			MainActivity mainActivity, ListView listView) {
 		mMainActivity = mainActivity;
 		mContext = context;
 		this.mBoardItemArrayList = mBoardItemArrayList;
@@ -148,7 +148,7 @@ public class BoardAdapter extends BaseAdapter {
 		return convertView;
 	}
 
-	public void deleteTalk(long talkNo){
+	public void deleteTalk(long talkNo, final int position){
 		if(mPostTask != null && mPostTask.getStatus() != mPostTask.getStatus().FINISHED)
 			return ;
 		
@@ -157,8 +157,19 @@ public class BoardAdapter extends BaseAdapter {
 		ap.setBrdId(usrId);
 		ap.setBrdNo(talkNo);
 		
-		mHandler.setOneTranData(ap);
-		mPostTask = new PostMessageTask(mMainActivity, mHandler);
+		TransHandler.Handler handler = new TransHandler.Handler() {
+			public void handle(APICode resCode) {
+				AP0007 ap = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), AP0007.class);
+				Log.d("position ", "position : " + position);
+				mBoardItemArrayList.remove(position);
+				if(position > 0)
+					mListView.setSelection(position - 1);
+				notifyDataSetChanged();
+			}
+		};
+		TransHandler<AP0007> articleHandler = new TransHandler<AP0007>("AP0007", handler, ap);
+		
+		mPostTask = new PostMessageTask(mMainActivity, articleHandler);
 		mPostTask.setShowLoadingProgressDialog(false);
 		mPostTask.execute(MediaType.APPLICATION_JSON);
 	}
@@ -216,10 +227,6 @@ public class BoardAdapter extends BaseAdapter {
 		return 0;
 	}
 
-	public void setHandler(TransHandler handler) {
-		mHandler = handler;
-	}
-	
 	public void add() {
 		BoardEntity b = new BoardEntity();
 		b.id = "newId";

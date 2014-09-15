@@ -48,6 +48,7 @@ public class SetPwFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
     	View v = inflater.inflate(R.layout.fragment_set_nickname, container, false);
     	initResource(v);
+    	initEvent();
     	return v;
     }
 

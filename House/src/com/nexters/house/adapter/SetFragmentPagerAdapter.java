@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.nexters.house.R;
+import com.nexters.house.core.SessionManager;
 import com.nexters.house.fragment.SetFragment;
 import com.nexters.house.fragment.SetNickNameFragment;
 import com.nexters.house.fragment.SetPwFragment;
@@ -115,7 +116,7 @@ public class SetFragmentPagerAdapter extends FragmentStatePagerAdapter {
             int index = 0;
             switch (v.getId()) {
                 case R.id.btn_nickname:
-                    index = 1;
+                	index = 1;
                     mSetFragmentPagerAdapter.setFragment(R.layout.fragment_set_nickname);
                     break;
                 case R.id.btn_version:

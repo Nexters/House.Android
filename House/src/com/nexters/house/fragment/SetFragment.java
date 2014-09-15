@@ -1,5 +1,7 @@
 package com.nexters.house.fragment;
 
+import org.springframework.http.MediaType;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -14,8 +16,13 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.nexters.house.R;
+import com.nexters.house.activity.SetActivity;
 import com.nexters.house.adapter.SetFragmentPagerAdapter;
 import com.nexters.house.core.SessionManager;
+import com.nexters.house.entity.APICode;
+import com.nexters.house.entity.reqcode.CM0004;
+import com.nexters.house.handler.TransHandler;
+import com.nexters.house.thread.PostMessageTask;
 
 public class SetFragment extends Fragment implements View.OnClickListener {
     private LinearLayout mBtnLogout;
@@ -24,11 +31,13 @@ public class SetFragment extends Fragment implements View.OnClickListener {
     private LinearLayout mBtnVersion;
     private LinearLayout mBtnWithdraw;
     private LinearLayout mBtnModifypw;
-    private Activity mActivity;
+    private SetActivity mSetActivity;
     private View mView;
 
     private SetFragmentPagerAdapter.MyFragmentPagerListener setFragmentPagerListener;
 
+    private PostMessageTask mAuthTask;
+    
     public static SetFragment newInstance() {
         SetFragment fragment = new SetFragment();
 //        Bundle args = new Bundle();
@@ -41,7 +50,7 @@ public class SetFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onAttach(Activity activity) {
-        mActivity = activity;
+        mSetActivity = (SetActivity) activity;
         super.onAttach(activity);
     }
     
@@ -69,6 +78,8 @@ public class SetFragment extends Fragment implements View.OnClickListener {
         mBtnWithdraw = (LinearLayout) mView.findViewById(R.id.btn_withdraw);
         mBtnModifypw = (LinearLayout) mView.findViewById(R.id.btn_modifypw);
         
+        if(SessionManager.getInstance(mSetActivity).getUserDetails().get(SessionManager.HOUSE) == null)
+        	mBtnNickName.setVisibility(View.GONE);
         ViewPager viewPager = (ViewPager)getActivity().findViewById(R.id.set_view_pager);
         SetFragmentPagerAdapter myFragmentPagerAdapter = (SetFragmentPagerAdapter) viewPager.getTag();
         setFragmentPagerListener = new SetFragmentPagerAdapter.MyFragmentPagerListener(myFragmentPagerAdapter, viewPager);
@@ -102,12 +113,12 @@ public class SetFragment extends Fragment implements View.OnClickListener {
     }
 
     private void dispatchLogout() {
-        AlertDialog.Builder confirmDialog = new AlertDialog.Builder(mActivity);
+        AlertDialog.Builder confirmDialog = new AlertDialog.Builder(mSetActivity);
         confirmDialog.setTitle("로그아웃 하시겠습니까?");
         confirmDialog.setPositiveButton("예", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-            	SessionManager.getInstance(mActivity).logoutUser();
+            	SessionManager.getInstance(mSetActivity).logoutUser();
             }
         });
         confirmDialog.setNegativeButton("아니오", null);
@@ -122,7 +133,26 @@ public class SetFragment extends Fragment implements View.OnClickListener {
     }
 
     private void dispatchWithdraw() {
-    	
+    	if(mAuthTask != null && mAuthTask.getStatus() != mAuthTask.getStatus().FINISHED)
+			return ;
+		
+		String usrId = SessionManager.getInstance(mSetActivity).getUserDetails().get(SessionManager.KEY_EMAIL);
+		
+		CM0004 cm = new CM0004();
+		cm.setUsrId(usrId);
+//		cm.setCustName(name);
+		
+		TransHandler.Handler handler = new TransHandler.Handler() {
+			@Override
+			public void handle(APICode resCode) {
+				SessionManager.getInstance(mSetActivity).logoutUser();
+				mSetActivity.showResult("회원탈퇴 되었습니다.");
+			}
+		};
+		// Post Aricle 
+    	TransHandler<CM0004> authHandler = new TransHandler<CM0004>("CM0004", handler, cm);
+    	mAuthTask = new PostMessageTask(mSetActivity, authHandler);
+    	mAuthTask.execute(MediaType.APPLICATION_JSON);
     }
 
     @Override

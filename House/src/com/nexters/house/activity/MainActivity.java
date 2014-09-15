@@ -37,6 +37,11 @@ public class MainActivity extends AbstractAsyncFragmentActivity implements OnCli
 	private View mLineBoard;
 	private View mLineMypage;
 
+	public final static int RESULT_NONE = 0;
+	public final static int RESULT_WRITE = 1;
+	public final static int RESULT_VIEW = 2;
+	public int RESULT_STATUS = 0;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -103,6 +108,15 @@ public class MainActivity extends AbstractAsyncFragmentActivity implements OnCli
 		fragmentTransaction.commit();
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Log.d("RESULT ", "RESULT_OK 1 " + RESULT_OK + " - " + resultCode);
+		
+		if(resultCode == RESULT_OK)
+			RESULT_STATUS = RESULT_WRITE;
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+		
 	private Fragment getFragment(int idx) {
 		Fragment newFragment = null;
 
@@ -131,7 +145,6 @@ public class MainActivity extends AbstractAsyncFragmentActivity implements OnCli
 				isVisible = false;
 				mBtnWrite.setAnimation(hide);
 				mBtnWrite.setClickable(false);
-
 			}
 		}else{
 			if(!isVisible){
@@ -162,10 +175,10 @@ public class MainActivity extends AbstractAsyncFragmentActivity implements OnCli
 		case R.id.btn_write:
 			if(this.mCurrentFragmentIndex == FRAGMENT_INTERIOR){
 				Intent intent=new Intent(this,InteriorWriteActivity.class);
-				startActivity(intent);
-			}else if(this.mCurrentFragmentIndex == FRAGMENT_BOARD){
+				startActivityForResult(intent, 0);
+			} else if(this.mCurrentFragmentIndex == FRAGMENT_BOARD){
 				Intent intent=new Intent(this,TalkWriteActivity.class);
-				startActivity(intent);
+				startActivityForResult(intent, 0);
 			}
 			break;
 		}

@@ -9,9 +9,11 @@ import org.springframework.http.MediaType;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,10 +49,10 @@ public class InteriorFragment extends Fragment {
 	private PostMessageTask mArticleTask;
 	
 	private OnScrollListener mScrollListener;
-
+	private TextView mFootTextView;
+	
 	// current
 	long curInteriorNo;
-	int selectedIdx;
 	
 	@Override
 	public void onAttach(Activity activity) {
@@ -74,18 +76,10 @@ public class InteriorFragment extends Fragment {
 		
 		View footerView = ((LayoutInflater)getActivity().
 				getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.listfooter, null, false);
-
-		mListAdapter = new InteriorAdapter(getActivity().
-				getApplicationContext(), mInteriorItemArrayList, mMainActivity);
-		TransHandler.Handler handler = new TransHandler.Handler() {
-			public void handle(APICode resCode) {
-				AP0007 ap = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), AP0007.class);
-				initInteriorList();
-			}
-		};
-		TransHandler<AP0007> articleHandler = new TransHandler<AP0007>("AP0007", handler);
-		mListAdapter.setHandler(articleHandler);
+		mFootTextView = (TextView) footerView.findViewById(R.id.foot_content);
 		
+		mListAdapter = new InteriorAdapter(getActivity().
+				getApplicationContext(), mInteriorItemArrayList, mMainActivity, mLvMain);
 		//footerview를  listview 제일 하단에 붙임 
 		mLvMain.addFooterView(footerView);
 		mLvMain.setAdapter(mListAdapter);
@@ -106,32 +100,34 @@ public class InteriorFragment extends Fragment {
 
 				//is the bottom item visible & not loading more already ? Load more !
 				if(isState && (lastInScreen == totalItemCount) && (mArticleTask.getStatus() == Status.FINISHED)){
+					mFootTextView.setText("Loading ...");
 					if(mInteriorItemArrayList.size() > 0)
-						addInteriorList(mInteriorItemArrayList.get(mInteriorItemArrayList.size() - 1).no, DEFAULT_SIZE, false);
+						addInteriorList(curInteriorNo, DEFAULT_SIZE, false);
 					else 
 						addInteriorList(0, DEFAULT_SIZE, false);
 					isState = false;
 				}
 			}
 		};
-		
-		// settings
 		initInteriorList();
 	}
 
 	@Override
 	public void onResume() {
+		Log.d("RESULT ", "RESULT_OK " + mMainActivity.RESULT_STATUS + " - " + mMainActivity.RESULT_WRITE);
+		
+		if(mMainActivity.RESULT_STATUS == mMainActivity.RESULT_WRITE){
+			initInteriorList();
+			mMainActivity.RESULT_STATUS = mMainActivity.RESULT_NONE;
+		}
 		super.onResume();
 	}
 
 	public void initInteriorList(){
-		selectedIdx = mLvMain.getSelectedItemPosition();
-		if(mInteriorItemArrayList.size() > 0)
-			curInteriorNo = mInteriorItemArrayList.get(mInteriorItemArrayList.size() - 1).no;
-		else
-			curInteriorNo = 0;
+		Log.d("initInteriorList", "initInteriorList = ");
 		
 		mListAdapter.clear();
+		curInteriorNo = 0;
 		mLvMain.setSelection(0);
 		addInteriorList(0, DEFAULT_SIZE, false);
 	}
@@ -143,8 +139,6 @@ public class InteriorFragment extends Fragment {
 	public void addInteriorList(long interiorNo, int count, boolean status){
 		if(!status && mArticleTask != null && mArticleTask.getStatus() != mArticleTask.getStatus().FINISHED)
 			return ;
-		
-//		Log.d("interiorNo", "interiorNo = " + interiorNo);
 		AP0001 ap = new AP0001();
 		ap.setType(CodeType.INTERIOR_TYPE);
 		ap.setOrderType("new");
@@ -167,12 +161,10 @@ public class InteriorFragment extends Fragment {
 						imgUrls.add(mMainActivity.getString(R.string.base_uri) + res.brdImg.get(j).brdOriginImg);
 					listAdapter.add(res.brdNo, res.brdId, res.brdNm, res.brdProfileImg, res.brdCreated, new String(res.brdContents), imgUrls, res.brdLikeCnt, res.brdCommentCnt);
 				}
-//				Log.d("resCnt", "resCnt : " + ap.getResCnt());
-				if(curInteriorNo == 0 || curInteriorNo <= ap.getResLastNo()){
-					mLvMain.setSelection(selectedIdx);
-					listAdapter.notifyDataSetChanged();
-				} else
-					addInteriorList(ap.getResLastNo(), DEFAULT_SIZE, true);
+				if(ap.getResLastNo() != 0)
+					curInteriorNo = ap.getResLastNo();
+				listAdapter.notifyDataSetChanged();
+				mFootTextView.setText("스크롤 해주세요");
 			}
 		};
 		

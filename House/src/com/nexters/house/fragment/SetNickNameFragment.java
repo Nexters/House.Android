@@ -49,7 +49,7 @@ public class SetNickNameFragment extends Fragment implements View.OnClickListene
                              Bundle savedInstanceState) {
     	View v = inflater.inflate(R.layout.fragment_set_nickname, container, false);
     	initResource(v);
-    	
+    	initEvent();
     	return v;
     }
 
@@ -90,7 +90,7 @@ public class SetNickNameFragment extends Fragment implements View.OnClickListene
 		TransHandler.Handler handler = new TransHandler.Handler() {
 			@Override
 			public void handle(APICode resCode) {
-				mSetActivity.finish();
+			
 				mSetActivity.showResult("닉네임 수정 완료 !");
 			}
 		};

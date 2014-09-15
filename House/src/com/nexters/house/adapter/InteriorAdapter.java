@@ -1,6 +1,7 @@
 package com.nexters.house.adapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.http.MediaType;
@@ -9,6 +10,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -28,22 +31,23 @@ import com.nexters.house.activity.ContentDetailActivity;
 import com.nexters.house.activity.EditActivity;
 import com.nexters.house.activity.MainActivity;
 import com.nexters.house.core.SessionManager;
+import com.nexters.house.entity.APICode;
 import com.nexters.house.entity.CodeType;
 import com.nexters.house.entity.InteriorEntity;
 import com.nexters.house.entity.reqcode.AP0007;
 import com.nexters.house.handler.TransHandler;
 import com.nexters.house.thread.DownloadImageTask;
 import com.nexters.house.thread.PostMessageTask;
-import com.nexters.house.utils.CommonUtils;
+import com.nexters.house.utils.JacksonUtils;
 
 public class InteriorAdapter extends BaseAdapter {
 	private Context mContext;
 	private MainActivity mMainActivity;
-
+	private ListView mListView;
+	
 	private ArrayList<InteriorEntity> mInteriorItemArrayList;
 	private LayoutInflater mLayoutInflater;
 
-	private TransHandler mHandler;
 	private PostMessageTask mPostTask;
 	
 	private String usrId;
@@ -51,7 +55,8 @@ public class InteriorAdapter extends BaseAdapter {
 	
 	public InteriorAdapter(Context context,
 			ArrayList<InteriorEntity> mInteriorItemArrayList,
-			MainActivity mainActivity) {
+			MainActivity mainActivity, ListView listView) {
+		mListView = listView;
 		mMainActivity = mainActivity;
 		mContext = context;
 		this.mInteriorItemArrayList = mInteriorItemArrayList;
@@ -59,10 +64,6 @@ public class InteriorAdapter extends BaseAdapter {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		usrId = SessionManager.getInstance(mMainActivity).getUserDetails().get(SessionManager.KEY_EMAIL);
 		refreshCnt = 0;
-	}
-
-	public void setHandler(TransHandler handler) {
-		mHandler = handler;
 	}
 
 	@Override
@@ -194,7 +195,7 @@ public class InteriorAdapter extends BaseAdapter {
 							.setCancelable(false)
 							.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,int id) {
-									deleteInterior(no);
+									deleteInterior(no, position);
 								}
 							  })
 							.setNegativeButton("No",new DialogInterface.OnClickListener() {
@@ -222,7 +223,7 @@ public class InteriorAdapter extends BaseAdapter {
 		return convertView;
 	}
 
-	public void deleteInterior(long interiorNo){
+	public void deleteInterior(long interiorNo, final int position){
 		if(mPostTask != null && mPostTask.getStatus() != mPostTask.getStatus().FINISHED)
 			return ;
 		
@@ -231,8 +232,19 @@ public class InteriorAdapter extends BaseAdapter {
 		ap.setBrdId(usrId);
 		ap.setBrdNo(interiorNo);
 		
-		mHandler.setOneTranData(ap);
-		mPostTask = new PostMessageTask(mMainActivity, mHandler);
+		TransHandler.Handler handler = new TransHandler.Handler() {
+			public void handle(APICode resCode) {
+				AP0007 ap = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), AP0007.class);
+				Log.d("position ", "position : " + position);
+				mInteriorItemArrayList.remove(position);
+				if(position > 0)
+					mListView.setSelection(position - 1);
+				notifyDataSetChanged();
+			}
+		};
+		TransHandler<AP0007> articleHandler = new TransHandler<AP0007>("AP0007", handler, ap);
+		
+		mPostTask = new PostMessageTask(mMainActivity, articleHandler);
 		mPostTask.setShowLoadingProgressDialog(false);
 		mPostTask.execute(MediaType.APPLICATION_JSON);
 	}

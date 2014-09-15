@@ -64,8 +64,6 @@ public class InteriorWriteActivity extends Activity {
 		startActivityForResult(multiplePickIntent, 200);
 	}
 
-
-
 	private void initImageLoader() {
 		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
 				.cacheOnDisc().imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
@@ -106,6 +104,7 @@ public class InteriorWriteActivity extends Activity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		setResult(resultCode);
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
@@ -164,18 +163,14 @@ public class InteriorWriteActivity extends Activity {
 	}
 
 	public void removePageMark() {
-		// iv.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
-		// LayoutParams.WRAP_CONTENT));
 		int checkedSize = GalleryAdapter.customGalleriesChecked.size();
 
-		Log.d("removePage", "removePage : " + mPager.getCurrentItem() + " , "
-				+ checkedSize + ", " + mPageMark.getChildCount());
+//		Log.d("removePage", "removePage : " + mPager.getCurrentItem() + " , "
+//				+ checkedSize + ", " + mPageMark.getChildCount());
 		mPageMark.removeView(mPageMark.getChildAt(checkedSize - 1));
 	}
 
 	public void openNext(View view) {
-		finish();
-		faIn=null;
 		Intent intent = new Intent(this, InteriorWrite2Activity.class);
 		/*
 		 * pageradapter.notifyDataSetChanged(); String allInfo = ""; for(int
@@ -185,14 +180,15 @@ public class InteriorWriteActivity extends Activity {
 		 * }
 		 */
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		intent.setFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
 		startActivity(intent);
+		finish();
+		faIn=null;
 	}
 
 	public void moreSelect(View view) {
-	
 		Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
 		startActivityForResult(i, 200);
-		
 	}
 	
 	@Override
@@ -220,8 +216,5 @@ public class InteriorWriteActivity extends Activity {
 		// Icon for AlertDialog
 		// alert.setIcon(R.drawable.icon);
 		alert.show();
-
 	}
-
-
 }
