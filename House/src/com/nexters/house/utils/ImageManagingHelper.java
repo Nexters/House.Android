@@ -1,5 +1,6 @@
 package com.nexters.house.utils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -14,6 +15,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.graphics.Bitmap.CompressFormat;
 import android.view.View;
 import android.view.animation.Animation;
 import android.widget.ImageView;
@@ -90,5 +92,18 @@ public class ImageManagingHelper {
 		} finally {
 		}
     	return data;
+    }
+    
+    public static byte[] getBitmapToBytes(Bitmap bitmap, String type){
+    	ByteArrayOutputStream stream = new ByteArrayOutputStream();
+    	
+    	if(type.toLowerCase().equals("jpeg") || type.toLowerCase().equals("jpg"))
+    		bitmap.compress(CompressFormat.JPEG, 100, stream);
+    	else if(type.toLowerCase().equals("png"))
+    		bitmap.compress(CompressFormat.PNG, 100, stream);
+//    	else if(type.toLowerCase().equals("gif"))
+//    		bitmap.compress(CompressFormat., quality, stream)
+    	byte[] byteArray = stream.toByteArray();
+    	return byteArray;
     }
 }

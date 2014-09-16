@@ -13,7 +13,6 @@ public class AP0006 implements Serializable {
 	private int brdCateNo;
 	private String brdTag;
 	private byte[] brdContents;
-	private List<AP0006Img> brdImg;
 	private long brdNo;
 	
 	private String resultYn;
@@ -41,10 +40,6 @@ public class AP0006 implements Serializable {
 	@JsonProperty("_brd_contents")
 	public byte[] getBrdContents() {
 		return brdContents;
-	}
-	@JsonProperty("_brd_img")
-	public List<AP0006Img> getBrdImg() {
-		return brdImg;
 	}
 	@JsonProperty("_brd_no")
 	public long getBrdNo() {
@@ -79,29 +74,12 @@ public class AP0006 implements Serializable {
 	public void setBrdContents(byte[] brdContents) {
 		this.brdContents = brdContents;
 	}
-	@JsonIgnore
-	public void setBrdImg(List<AP0006Img> brdImg) {
-		this.brdImg = brdImg;
-	}
-	@JsonIgnore
+	@JsonProperty("_brd_no")
 	public void setBrdNo(long articleId) {
 		this.brdNo = articleId;
 	}
 	@JsonProperty("_rslt_yn")
 	public void setResultYn(String resultYn) {
 		this.resultYn = resultYn;
-	}
-	
-	public static class AP0006Img {
-		@JsonProperty("_img_nm")
-		public String imgNm;
-		@JsonProperty("_img_origin_nm")
-		public String imgOriginNm;
-		@JsonProperty("_img_content")
-		public byte[] imgContent;
-		@JsonProperty("_img_type")
-		public String imgType;
-		@JsonProperty("_img_size")
-		public long imgSize;
 	}
 }

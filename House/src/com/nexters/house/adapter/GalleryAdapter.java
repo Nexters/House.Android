@@ -126,9 +126,6 @@ public class GalleryAdapter extends BaseAdapter {
 		
 			
 		/*	int deleteIndex=selectviewHolder.indexOf((ViewHolder) v.getTag()); //지울 인덱스
-		
-	
-			
 			((ViewHolder) v.getTag()).txtNumSelected.setVisibility(View.GONE); //안보이게
 			selectviewHolder.remove(deleteIndex); //리스트에서 지워
 			for(int i=0;i<selectviewHolder.size();i++){

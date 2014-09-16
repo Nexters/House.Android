@@ -49,7 +49,7 @@ public class InteriorWriteActivity extends Activity {
 
 	private Button btnGalleryPick;
 	private Button btnGalleryPickMul;
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -171,6 +171,8 @@ public class InteriorWriteActivity extends Activity {
 	}
 
 	public void openNext(View view) {
+		
+		
 		Intent intent = new Intent(this, InteriorWrite2Activity.class);
 		/*
 		 * pageradapter.notifyDataSetChanged(); String allInfo = ""; for(int

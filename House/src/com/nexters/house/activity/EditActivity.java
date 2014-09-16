@@ -19,7 +19,6 @@ import com.nexters.house.entity.ReplyEntity;
 import com.nexters.house.entity.reqcode.AP0003;
 import com.nexters.house.entity.reqcode.AP0006;
 import com.nexters.house.entity.reqcode.AP0003.AP0003Comment;
-import com.nexters.house.entity.reqcode.AP0006.AP0006Img;
 import com.nexters.house.handler.TransHandler;
 import com.nexters.house.thread.DownloadImageTask;
 import com.nexters.house.thread.PostMessageTask;

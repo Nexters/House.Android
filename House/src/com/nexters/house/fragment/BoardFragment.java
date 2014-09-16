@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.nexters.house.R;
 import com.nexters.house.activity.MainActivity;
@@ -27,9 +28,7 @@ import com.nexters.house.entity.APICode;
 import com.nexters.house.entity.BoardEntity;
 import com.nexters.house.entity.CodeType;
 import com.nexters.house.entity.reqcode.AP0001;
-import com.nexters.house.entity.reqcode.AP0003;
 import com.nexters.house.entity.reqcode.AP0001.AP0001Res;
-import com.nexters.house.entity.reqcode.AP0007;
 import com.nexters.house.handler.TransHandler;
 import com.nexters.house.thread.PostMessageTask;
 import com.nexters.house.utils.JacksonUtils;
@@ -46,7 +45,8 @@ public class BoardFragment extends Fragment {
 	private PostMessageTask mArticleTask;
 
 	private OnScrollListener mScrollListener;
-
+	private TextView mFootTextView;
+	
 	// current
 	long curTalkNo;
 	
@@ -74,7 +74,8 @@ public class BoardFragment extends Fragment {
 		View footerView = ((LayoutInflater) getActivity().getSystemService(
 				Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.listfooter,
 				null, false);
-
+		mFootTextView = (TextView) footerView.findViewById(R.id.foot_content);
+		
 		mListAdapter = new BoardAdapter(mMainActivity,
 				mBoardItemArrayList, mMainActivity, mLvMain);
 		
@@ -100,11 +101,13 @@ public class BoardFragment extends Fragment {
 				// is the bottom item visible & not loading more already ? Load
 				if (isState && (lastInScreen == totalItemCount)
 						&& (mArticleTask.getStatus() == Status.FINISHED)) {
+					mFootTextView.setText("Loading ...");
 					if (mBoardItemArrayList.size() > 0)
 						addSudatalkList(curTalkNo, DEFAULT_SIZE, false);
 					else
 						addSudatalkList(0, DEFAULT_SIZE, false);
 					isState = false;
+					
 				}
 			}
 		};
@@ -166,6 +169,7 @@ public class BoardFragment extends Fragment {
 				if(ap.getResLastNo() != 0)
 					curTalkNo = ap.getResLastNo();
 				listAdapter.notifyDataSetChanged();
+				mFootTextView.setText("스크롤 해주세요");
 			}
 		};
 		

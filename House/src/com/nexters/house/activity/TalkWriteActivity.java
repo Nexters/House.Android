@@ -2,6 +2,7 @@ package com.nexters.house.activity;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.http.MediaType;
@@ -29,11 +30,11 @@ import com.nexters.house.entity.APICode;
 import com.nexters.house.entity.Action;
 import com.nexters.house.entity.CodeType;
 import com.nexters.house.entity.DataObject;
-import com.nexters.house.entity.reqcode.AP0006;
-import com.nexters.house.entity.reqcode.AP0006.AP0006Img;
+import com.nexters.house.entity.reqcode.*;
 import com.nexters.house.handler.TransHandler;
 import com.nexters.house.thread.PostMessageTask;
 import com.nexters.house.utils.ImageManagingHelper;
+import com.nexters.house.utils.JacksonUtils;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -62,6 +63,8 @@ public class TalkWriteActivity extends AbstractAsyncActivity {
 	private Button btnGalleryPick;
 
 	private PostMessageTask mArticleTask;
+	
+	List<DataObject> imgDatas;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -121,39 +124,61 @@ public class TalkWriteActivity extends AbstractAsyncActivity {
 		ap.setBrdTag("");
 		ap.setBrdCateNo(convertCategory(mTalkCategory.getCheckedRadioButtonId()));
 		
-		ArrayList<AP0006Img> imgs = new ArrayList<AP0006Img>();
-		List<DataObject> dataObjects = generateGridViewObjects();
-		if(dataObjects != null){
-			for(DataObject dataObject : dataObjects){
-				AP0006Img img = new AP0006Img();
-				String path = dataObject.getName();
-				String name = path.substring(path.lastIndexOf('/') + 1);
-				String type = path.substring(path.lastIndexOf('.') + 1);
-				File file = new File(path);
-				byte[] contents = ImageManagingHelper.getImageToBytes(file);
-				long size = file.length();
-				
-				img.imgNm = img.imgOriginNm = name;
-				img.imgSize = size; 
-				img.imgType = type;
-				img.imgContent = contents;
-	//			Log.d("dataObject", "dataObject : " + contents.length + " - " + size);
-				imgs.add(img);
-			}
-		}
-		ap.setBrdImg(imgs);
-		
 		TransHandler.Handler handler = new TransHandler.Handler() {
 			@Override
 			public void handle(APICode resCode) {
-				CustomGalleryActivity.noCancel = 0;
-				setResult(RESULT_OK);
-				finish();
-				showResult("작성한 내용이 업로드됩니다.");
+				AP0006 ap = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), AP0006.class);
+				
+				if(ap.getResultYn().equals("Y")){
+					imgDatas = generateGridViewObjects();
+					long brdNo = ap.getBrdNo();
+					uploadImage(brdNo, 0);
+				}
 			}
 		};
 		// Post Aricle 
     	TransHandler<AP0006> articleHandler = new TransHandler<AP0006>("AP0006", handler, ap);
+		mArticleTask = new PostMessageTask(this, articleHandler);
+		mArticleTask.execute(MediaType.APPLICATION_JSON);
+	}
+	
+	
+	public void uploadImage(final long brdNo, final int index){
+		AP0010 ap = new AP0010();
+		ap.setType(CodeType.SUDATALK_TYPE);
+		ap.setBrdId(SessionManager.getInstance(this).getUserDetails().get(SessionManager.KEY_EMAIL));
+		ap.setBrdNo(brdNo);
+		
+		String path = imgDatas.get(index).getName();
+		String name = path.substring(path.lastIndexOf('/') + 1);
+		String type = path.substring(path.lastIndexOf('.') + 1);
+		File file = new File(path);
+		byte[] contents = ImageManagingHelper.getImageToBytes(file);
+		long size = file.length();
+		
+		ap.setImgNm(name);
+		ap.setImgOriginNm(name);
+		ap.setImgType(type);
+		ap.setImgContent(contents);
+		ap.setImgSize(size);
+		
+		TransHandler.Handler handler = new TransHandler.Handler() {
+			@Override
+			public void handle(APICode resCode) {
+				AP0010 ap = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), AP0010.class);
+				
+				if(imgDatas.size() == index){
+					CustomGalleryActivity.noCancel = 0;
+				    setResult(RESULT_OK);
+					showResult("작성한 내용이 업로드됩니다.");
+					finish();
+				} else {
+					uploadImage(brdNo, index + 1);
+				}
+			}
+		};
+		// Post Aricle 
+    	TransHandler<AP0010> articleHandler = new TransHandler<AP0010>("AP0010", handler, ap);
 		mArticleTask = new PostMessageTask(this, articleHandler);
 		mArticleTask.execute(MediaType.APPLICATION_JSON);
 	}
