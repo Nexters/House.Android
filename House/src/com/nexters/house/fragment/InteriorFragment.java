@@ -109,6 +109,7 @@ public class InteriorFragment extends Fragment {
 		super.onResume();
 	}
 
+	
 	public void initInteriorList(long interiorNo){
 		mListAdapter.clear();
 		addInteriorList(interiorNo, UP, ASYNC);
