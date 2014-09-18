@@ -207,9 +207,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
 		};
 		
 		TransHandler<AP0001> articleHandler = new TransHandler<AP0001>("AP0001", handler, ap);
-		
 		mMyPageTask = new PostMessageTask(mMainActivity, articleHandler);
-		mMyPageTask.setShowLoadingProgressDialog(false);
 		mMyPageTask.execute(MediaType.APPLICATION_JSON);
 	}
 	

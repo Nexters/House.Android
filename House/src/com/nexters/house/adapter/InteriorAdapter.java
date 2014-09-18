@@ -52,6 +52,7 @@ public class InteriorAdapter extends BaseAdapter {
 	
 	private String usrId;
 	private int refreshCnt;
+	private int selectedPosition;
 	
 	public InteriorAdapter(Context context,
 			ArrayList<InteriorEntity> mInteriorItemArrayList,
@@ -109,7 +110,7 @@ public class InteriorAdapter extends BaseAdapter {
 			// set
 			if(!id.equals(usrId))
 				holder.rlMenu.setVisibility(View.GONE);
-			holder.houseId.setText(name + " = " + position);
+			holder.houseId.setText(name + " = " + no);
 			if(profileImg != null)
 				new DownloadImageTask(holder.houseProfile).execute(mMainActivity.getString(R.string.base_uri) + profileImg);
 			holder.interiorContent.setText(content);
@@ -130,6 +131,8 @@ public class InteriorAdapter extends BaseAdapter {
 				textSliderView.setOnSliderClickListener(new BaseSliderView.OnSliderClickListener(){
 					@Override
 					public void onSliderClick(BaseSliderView slider) {
+						selectedPosition = position;
+//						Log.d("curPosition", "curPosition : " + curPosition);
 						Intent intent = new Intent(mContext,ContentDetailActivity.class);
 						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 						intent.putExtra("brdNo", no);
@@ -226,7 +229,6 @@ public class InteriorAdapter extends BaseAdapter {
 	public void deleteInterior(long interiorNo, final int position){
 		if(mPostTask != null && mPostTask.getStatus() != mPostTask.getStatus().FINISHED)
 			return ;
-		
 		AP0007 ap = new AP0007();
 		ap.setType(CodeType.INTERIOR_TYPE);
 		ap.setBrdId(usrId);
@@ -235,7 +237,6 @@ public class InteriorAdapter extends BaseAdapter {
 		TransHandler.Handler handler = new TransHandler.Handler() {
 			public void handle(APICode resCode) {
 				AP0007 ap = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), AP0007.class);
-				Log.d("position ", "position : " + position);
 				mInteriorItemArrayList.remove(position);
 				if(position > 0)
 					mListView.setSelection(position - 1);
@@ -245,8 +246,11 @@ public class InteriorAdapter extends BaseAdapter {
 		TransHandler<AP0007> articleHandler = new TransHandler<AP0007>("AP0007", handler, ap);
 		
 		mPostTask = new PostMessageTask(mMainActivity, articleHandler);
-		mPostTask.setShowLoadingProgressDialog(false);
 		mPostTask.execute(MediaType.APPLICATION_JSON);
+	}
+	
+	public int getSelectedPosition(){
+		return selectedPosition;
 	}
 	
 	private class Holder {
@@ -262,21 +266,11 @@ public class InteriorAdapter extends BaseAdapter {
 	}
 
 	@SuppressWarnings("serial")
-	public void add(long brdNo, String brdId, String brdName, String brdProfileImg, String brdCreated, String brdContent, 
-			ArrayList<String> imgUrls, int brdLikeCnt, int brdCommentCnt) {
-		InteriorEntity e = new InteriorEntity();
-		e.no = brdNo;
-		// e.category = "new";
-		e.id = brdId;
-		e.name = brdName;
-		e.profileImg = brdProfileImg;
-		e.created = brdCreated;
-		e.content = brdContent;
-		e.imageUrls = imgUrls;
-
-		e.comment = brdCommentCnt;
-		e.like = brdLikeCnt;
-
+	public void add(int index, InteriorEntity e) {
+		mInteriorItemArrayList.add(index, e);
+	}
+	
+	public void add(InteriorEntity e) {
 		mInteriorItemArrayList.add(e);
 	}
 	

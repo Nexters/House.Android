@@ -170,7 +170,6 @@ public class BoardAdapter extends BaseAdapter {
 		TransHandler<AP0007> articleHandler = new TransHandler<AP0007>("AP0007", handler, ap);
 		
 		mPostTask = new PostMessageTask(mMainActivity, articleHandler);
-		mPostTask.setShowLoadingProgressDialog(false);
 		mPostTask.execute(MediaType.APPLICATION_JSON);
 	}
 	

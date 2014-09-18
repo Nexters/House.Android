@@ -151,6 +151,8 @@ public class EditActivity extends AbstractAsyncActivity implements View.OnClickL
 	public void setContents(long brdNo) {
 		if(mPostTask != null && mPostTask.getStatus() != mPostTask.getStatus().FINISHED)
 			return ;
+		showLoadingProgressDialog();
+		
 		AP0003 ap = new AP0003();
 		ap.setType(brdType);
 		ap.setReqPoNo(brdNo);
@@ -162,11 +164,11 @@ public class EditActivity extends AbstractAsyncActivity implements View.OnClickL
 						.getTranData().get(0), AP0003.class);
 				mContent.setText(new String(ap.getBrdContents()));
 				mHouseInfo.setText(ap.getBrdTag());
+				dismissProgressDialog();
 			}
 		};
 		TransHandler<AP0003> articleHandler = new TransHandler<AP0003>("AP0003", handler, ap);
 		mPostTask = new PostMessageTask(this, articleHandler);
-		mPostTask.setShowLoadingProgressDialog(false);
 		mPostTask.execute(MediaType.APPLICATION_JSON);
 	}
 }

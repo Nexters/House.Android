@@ -19,6 +19,7 @@ import com.nexters.house.core.SessionManager;
 import com.nexters.house.entity.ReplyEntity;
 import com.nexters.house.entity.reqcode.AP0009;
 import com.nexters.house.handler.TransHandler;
+import com.nexters.house.thread.DownloadImageTask;
 import com.nexters.house.thread.PostMessageTask;
 
 public class ReplyAdapter extends BaseAdapter{
@@ -62,7 +63,7 @@ public class ReplyAdapter extends BaseAdapter{
 			
 			// find resource
 			holder.position = position;
-			holder.profileImg = (ImageView) convertView.findViewById(R.id.iv_user_profile_image);
+			holder.houseProfile = (ImageView) convertView.findViewById(R.id.iv_user_profile_image);
 			holder.name = (TextView) convertView.findViewById(R.id.tv_user_profile_name);
 			holder.content = (TextView) convertView.findViewById(R.id.tv_content);
 			holder.created = (TextView) convertView.findViewById(R.id.tv_created);
@@ -70,7 +71,13 @@ public class ReplyAdapter extends BaseAdapter{
 			holder.refresh = refreshCnt;
 			
 			final long no = mReplyItemList.get(position).no;
-			holder.profileImg.setImageResource(R.drawable.user_profile_image);
+			String profileImg = mReplyItemList.get(position).profileImg;
+			
+			if(profileImg != null)
+				new DownloadImageTask(holder.houseProfile).execute(mContext.getString(R.string.base_uri) + profileImg);
+			else
+				holder.houseProfile.setImageResource(R.drawable.user_profile_image);
+			
 			holder.name.setText(mReplyItemList.get(position).name);
 			holder.content.setText(mReplyItemList.get(position).content);
 			holder.created.setText(mReplyItemList.get(position).created);
@@ -99,14 +106,13 @@ public class ReplyAdapter extends BaseAdapter{
 		
 		mHandler.setOneTranData(ap);
 		mPostTask = new PostMessageTask(mAbstractAsyncFragmentActivity, mHandler);
-		mPostTask.setShowLoadingProgressDialog(true);
 		mPostTask.execute(MediaType.APPLICATION_JSON);
 	}
 	
 	private class Holder {
 		int refresh;
 		int position;
-		ImageView profileImg;
+		ImageView houseProfile;
 		TextView name;
 		TextView content;
 		TextView created;

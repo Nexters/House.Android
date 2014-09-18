@@ -38,14 +38,12 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
 	private AsyncActivity mAbstractAsyncActivity;
     private TransHandler mTransHandler;
     private Context mContext;
-    private boolean isShowLoadingProgressDialog;
     private static AtomicBoolean isLoading;
     
     public PostMessageTask(AbstractAsyncFragmentActivity abstractAsyncFragmentActivity, TransHandler transHandler) {
     	mAbstractAsyncActivity = abstractAsyncFragmentActivity;
     	mContext = abstractAsyncFragmentActivity.getApplicationContext();
     	mTransHandler = transHandler;
-    	isShowLoadingProgressDialog = true;
     	isLoading = new AtomicBoolean(false);
     }
     
@@ -53,18 +51,11 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
     	mAbstractAsyncActivity = abstractAsyncActivity;
     	mContext = abstractAsyncActivity.getApplicationContext();
     	mTransHandler = transHandler;
-    	isShowLoadingProgressDialog = true;
     	isLoading = new AtomicBoolean(false);
-    }
-    
-    public void setShowLoadingProgressDialog(boolean isShow){
-    	isShowLoadingProgressDialog = isShow;
     }
     
     @Override
     protected void onPreExecute() {
-    	if(isShowLoadingProgressDialog)
-    		mAbstractAsyncActivity.showLoadingProgressDialog();
 //    	Log.d("PostMessageTask", "PostMessageTask : " + JacksonUtils.objectToJson(mAbstractHandler.getReqCode()));
     }
 
@@ -122,9 +113,6 @@ public class PostMessageTask extends AsyncTask<MediaType, Void, Integer> {
 
     @Override
     protected void onPostExecute(Integer result) {
-    	if(isShowLoadingProgressDialog)
-    		mAbstractAsyncActivity.dismissProgressDialog();
-        
     	if(POST_SUCCESS == result)
     		mTransHandler.handle();
     	else if(POST_FAIL == result){

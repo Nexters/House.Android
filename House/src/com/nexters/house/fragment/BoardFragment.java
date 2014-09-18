@@ -175,7 +175,6 @@ public class BoardFragment extends Fragment {
 		
 		TransHandler<AP0001> articleHandler = new TransHandler<AP0001>("AP0001", handler, ap);
 		mArticleTask = new PostMessageTask(mMainActivity, articleHandler);
-		mArticleTask.setShowLoadingProgressDialog(false);
 		mArticleTask.execute(MediaType.APPLICATION_JSON);
 	}
 }

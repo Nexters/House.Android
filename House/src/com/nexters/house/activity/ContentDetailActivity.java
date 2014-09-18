@@ -179,6 +179,7 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 	public void writeComment(){
 		if(mPostTask != null && mPostTask.getStatus() != mPostTask.getStatus().FINISHED)
 			return ;
+		showLoadingProgressDialog();
 		
 		AP0008 ap = new AP0008();
 		ap.setType(brdType);
@@ -192,12 +193,12 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 					addComments(mReplyArrayList.get(mReplyArrayList.size()-1).no, true);
 				else
 					addComments(0, true);
+				dismissProgressDialog();
 			}
 		};
 		TransHandler<AP0008> articleHandler = new TransHandler<AP0008>("AP0008", handler, ap);
 		
 		mPostTask = new PostMessageTask(this, articleHandler);
-		mPostTask.setShowLoadingProgressDialog(true);
 		mPostTask.execute(MediaType.APPLICATION_JSON);
 	}
 	
@@ -220,7 +221,6 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 		TransHandler<AP0004> articleHandler = new TransHandler<AP0004>("AP0004", handler, ap);
 		
 		mPostTask = new PostMessageTask(this, articleHandler);
-		mPostTask.setShowLoadingProgressDialog(false);
 		mPostTask.execute(MediaType.APPLICATION_JSON);
 	}
 	
@@ -243,7 +243,6 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 		TransHandler<AP0005> articleHandler = new TransHandler<AP0005>("AP0005", handler, ap);
 		
 		mPostTask = new PostMessageTask(this, articleHandler);
-		mPostTask.setShowLoadingProgressDialog(false);
 		mPostTask.execute(MediaType.APPLICATION_JSON);
 	}
 	
@@ -304,7 +303,6 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 		
 		TransHandler<AP0003> articleHandler = new TransHandler<AP0003>("AP0003", handler, ap);
 		mPostTask = new PostMessageTask(this, articleHandler);
-		mPostTask.setShowLoadingProgressDialog(false);
 		mPostTask.execute(MediaType.APPLICATION_JSON);
 	}
 	
@@ -336,7 +334,7 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 					reply.created = comments.get(i).brdCommentCreated;
 					mReplyArrayList.add(reply);
 				}
-				mReplyCnt.setText("" + REPLY_STR_CNT + ap.getBrdCommentCnt());
+				mReplyCnt.setText("" + REPLY_STR_CNT + mReplyArrayList.size());
 				mEditReply.setText("");
 				
 				if(ap.getBrdCommentLastNo() == 0){
@@ -349,7 +347,6 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 		TransHandler<AP0003> articleHandler = new TransHandler<AP0003>("AP0003", handler, ap);
 
 		mPostTask = new PostMessageTask(this, articleHandler);
-		mPostTask.setShowLoadingProgressDialog(false);
 		mPostTask.execute(MediaType.APPLICATION_JSON);
 	}
 	
