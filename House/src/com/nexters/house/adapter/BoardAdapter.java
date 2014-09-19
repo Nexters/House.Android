@@ -37,6 +37,7 @@ public class BoardAdapter extends BaseAdapter {
 	
 	private String usrId;
 	private int refreshCnt;
+	private int selectedPosition;
 	
 	public BoardAdapter(Context context,
 			ArrayList<BoardEntity> mBoardItemArrayList,
@@ -135,6 +136,7 @@ public class BoardAdapter extends BaseAdapter {
 					case R.id.chat_background:
 						Intent intent = new Intent(mContext,ContentDetailActivity.class);
 						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						selectedPosition = position;
 						intent.putExtra("brdNo", no);
 						intent.putExtra("brdType", CodeType.SUDATALK_TYPE);
 						mContext.startActivity(intent);
@@ -184,23 +186,18 @@ public class BoardAdapter extends BaseAdapter {
 		LinearLayout chatBackground;
 	}
 
-	public void add(long brdNo, String brdId, String brdName, String brdProfileImg, String brdCreated, String brdContent, String brdSubject, String brdCategory, 
-			ArrayList<String> imgUrls, int brdLikeCnt, int brdCommentCnt) {
-		BoardEntity b = new BoardEntity();
-		b.no = brdNo;
-		b.id = brdId;
-		b.name = brdName;
-		b.profileImg = brdProfileImg;
-		b.category = brdCategory;
-		b.created = brdCreated;
-		b.subject = brdSubject;
-		b.content = brdContent;
-		b.like = brdLikeCnt;
-		b.comment = brdCommentCnt;
-		b.imageUrls = imgUrls;
-		mBoardItemArrayList.add(b);
+	public void add(int index, BoardEntity e) {
+		mBoardItemArrayList.add(index, e);
+	}
+	
+	public void add(BoardEntity e) {
+		mBoardItemArrayList.add(e);
 	}
 
+	public int getSelectedPosition(){
+		return selectedPosition;
+	}
+	
 	@Override
 	public void notifyDataSetChanged() {
 		refreshCnt += 1;

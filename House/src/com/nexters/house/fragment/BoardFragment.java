@@ -21,12 +21,17 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.nexters.house.R;
 import com.nexters.house.activity.MainActivity;
 import com.nexters.house.adapter.BoardAdapter;
+import com.nexters.house.adapter.InteriorAdapter;
 import com.nexters.house.entity.APICode;
 import com.nexters.house.entity.BoardEntity;
 import com.nexters.house.entity.CodeType;
+import com.nexters.house.entity.InteriorEntity;
 import com.nexters.house.entity.reqcode.AP0001;
 import com.nexters.house.entity.reqcode.AP0001.AP0001Res;
 import com.nexters.house.handler.TransHandler;
@@ -34,22 +39,19 @@ import com.nexters.house.thread.PostMessageTask;
 import com.nexters.house.utils.JacksonUtils;
 
 public class BoardFragment extends Fragment {
+	private final static boolean UP = true;
+	private final static boolean DOWN = false;
+	private final static boolean ASYNC = true;
+	private final static boolean SYNC = false;
 	private final static int DEFAULT_SIZE = 3;
 	
 	private ArrayList<BoardEntity> mBoardItemArrayList;
-	private ListView mLvMain;
+	private PullToRefreshListView mPullRefreshListView;
 	private BoardAdapter mListAdapter;
 
 	private MainActivity mMainActivity;
-
 	private PostMessageTask mArticleTask;
 
-	private OnScrollListener mScrollListener;
-	private TextView mFootTextView;
-	
-	// current
-	long curTalkNo;
-	
 	@Override
 	public void onAttach(Activity activity) {
 		this.mMainActivity = (MainActivity) activity;
@@ -68,51 +70,30 @@ public class BoardFragment extends Fragment {
 
 	@SuppressLint("InflateParams")
 	private void initResource(View v) {
-		mLvMain = (ListView) v.findViewById(R.id.lv_board_view);
+		mPullRefreshListView = (PullToRefreshListView) v.findViewById(R.id.lv_board_view);
 		mBoardItemArrayList = new ArrayList<BoardEntity>();
 		
-		View footerView = ((LayoutInflater) getActivity().getSystemService(
-				Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.listfooter,
-				null, false);
-		mFootTextView = (TextView) footerView.findViewById(R.id.foot_content);
-		
+		mPullRefreshListView.setOnRefreshListener(new OnRefreshListener2<ListView>() {
+			@Override
+			public void onPullDownToRefresh(
+					PullToRefreshBase<ListView> refreshView) {
+				long no = 0;
+				if(mBoardItemArrayList.size() > 0)
+					no = mBoardItemArrayList.get(0).no;
+				addSudatalkList(no, DOWN, SYNC);
+			}
+			@Override
+			public void onPullUpToRefresh(
+					PullToRefreshBase<ListView> refreshView) {
+				long no = 0;
+				if(mBoardItemArrayList.size() > 0)
+					no = mBoardItemArrayList.get(mBoardItemArrayList.size() - 1).no;
+				addSudatalkList(no, UP, SYNC);
+			}
+		});
 		mListAdapter = new BoardAdapter(mMainActivity,
-				mBoardItemArrayList, mMainActivity, mLvMain);
-		
-		// footerview를 listview 제일 하단에 붙임
-		mLvMain.addFooterView(footerView);
-		mLvMain.setAdapter(mListAdapter);
-
-		// Scroll
-		mScrollListener = new OnScrollListener() {
-			boolean isState;
-
-			@Override
-			public void onScrollStateChanged(AbsListView view, int scrollState) {
-				isState = true;
-			}
-			@Override
-			public void onScroll(AbsListView view,
-					int firstVisibleItem, int visibleItemCount,
-					int totalItemCount) {
-				// what is the bottom item that is visible
-				int lastInScreen = firstVisibleItem + visibleItemCount;
-
-				// is the bottom item visible & not loading more already ? Load
-				if (isState && (lastInScreen == totalItemCount)
-						&& (mArticleTask.getStatus() == Status.FINISHED)) {
-					mFootTextView.setText("Loading ...");
-					if (mBoardItemArrayList.size() > 0)
-						addSudatalkList(curTalkNo, DEFAULT_SIZE, false);
-					else
-						addSudatalkList(0, DEFAULT_SIZE, false);
-					isState = false;
-					
-				}
-			}
-		};
-		// settings
-		initSudatalkList();
+				mBoardItemArrayList, mMainActivity, mPullRefreshListView.getRefreshableView());
+		mPullRefreshListView.setAdapter(mListAdapter);
 	}
 
 	@Override
@@ -120,41 +101,42 @@ public class BoardFragment extends Fragment {
 		Log.d("RESULT ", "RESULT_OK " + mMainActivity.RESULT_STATUS + " - " + mMainActivity.RESULT_WRITE);
 		
 		if(mMainActivity.RESULT_STATUS == mMainActivity.RESULT_WRITE){
-			initSudatalkList();
+			initSudatalkList(0);
 			mMainActivity.RESULT_STATUS = mMainActivity.RESULT_NONE;
+		} else {
+			if(mBoardItemArrayList.size() > 0)
+				initSudatalkList(mBoardItemArrayList.get(mListAdapter.getSelectedPosition()).no + 1);
+			else
+				initSudatalkList(0);
 		}
 		super.onResume();
 	}
 	
-	public void initSudatalkList(){
+	public void initSudatalkList(long talkNo){
 		Log.d("initSudatalkList", "initSudatalkList = ");
 		
 		mListAdapter.clear();
-		curTalkNo = 0;
-		mLvMain.setSelection(0);
-		addSudatalkList(0, DEFAULT_SIZE, true);
+		addSudatalkList(talkNo, UP, ASYNC);
 	}
 	
-	private void initEvent() {
-		mLvMain.setOnScrollListener(mScrollListener);
-	}
+	private void initEvent() { }
 
-	public void addSudatalkList(long talkNo, int count, boolean status){
-		if(mArticleTask != null && mArticleTask.getStatus() != mArticleTask.getStatus().FINISHED)
+	public void addSudatalkList(long talkNo, final boolean upAndDown, boolean status){
+		if(!status && mArticleTask != null && mArticleTask.getStatus() != mArticleTask.getStatus().FINISHED)
 			return ;
-		
-//		Log.d("talkNo", "talkNo = " + talkNo);
 		AP0001 ap = new AP0001();
 		ap.setType(CodeType.SUDATALK_TYPE);
 		ap.setOrderType("new");
 		ap.setReqPo(0);
-		ap.setReqPoCnt(count);
+		if(upAndDown)
+			ap.setReqPoCnt(DEFAULT_SIZE);
+		else
+			ap.setReqPoCnt(-DEFAULT_SIZE);
 		ap.setReqPoType(AP0001.NORMAL);
 		ap.setReqPoNo(talkNo);
 		
 		TransHandler.Handler handler = new TransHandler.Handler() {
 			public void handle(APICode resCode) {
-				BoardAdapter listAdapter = mListAdapter;
 				List<AP0001> apList = resCode.getTranData();
 				AP0001 ap = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), AP0001.class);
 				
@@ -164,15 +146,30 @@ public class BoardFragment extends Fragment {
 					ArrayList<String> imgUrls = new ArrayList<String>();
 					for(int j=0; j<res.brdImg.size(); j++)
 						imgUrls.add(mMainActivity.getString(R.string.base_uri) + res.brdImg.get(j).brdOriginImg);
-					listAdapter.add(res.brdNo, res.brdId, res.brdNm, res.brdProfileImg, res.brdCreated, new String(res.brdContents), res.brdSubject, res.brdCateNm, imgUrls, res.brdLikeCnt, res.brdCommentCnt);
+					BoardEntity e = new BoardEntity();
+					e.no = res.brdNo;
+					e.id = res.brdId;
+					e.name = res.brdNm;
+					e.profileImg = res.brdProfileImg;
+					e.created = res.brdCreated;
+					e.subject = res.brdSubject;
+					e.content = new String(res.brdContents);
+					e.category = res.brdCateNm;
+					e.imageUrls = imgUrls;
+					e.comment = res.brdCommentCnt;
+					e.like = res.brdLikeCnt;
+					
+					if(upAndDown)
+						mListAdapter.add(e);
+					else
+						mListAdapter.add(0, e);
 				}
-				if(ap.getResLastNo() != 0)
-					curTalkNo = ap.getResLastNo();
-				listAdapter.notifyDataSetChanged();
-				mFootTextView.setText("스크롤 해주세요");
+				if(!upAndDown)
+					mPullRefreshListView.getRefreshableView().setSelection(DEFAULT_SIZE);
+				mListAdapter.notifyDataSetChanged();
+				mPullRefreshListView.onRefreshComplete();
 			}
 		};
-		
 		TransHandler<AP0001> articleHandler = new TransHandler<AP0001>("AP0001", handler, ap);
 		mArticleTask = new PostMessageTask(mMainActivity, articleHandler);
 		mArticleTask.execute(MediaType.APPLICATION_JSON);

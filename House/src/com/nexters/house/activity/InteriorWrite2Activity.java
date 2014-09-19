@@ -168,6 +168,14 @@ public class InteriorWrite2Activity extends AbstractAsyncActivity implements Vie
 	}
 	
 	public void uploadImage(final long brdNo, final int index){
+		if(imgDatas == null || imgDatas.size() <= 0){
+			CustomGalleryActivity.noCancel = 0;
+		    setResult(RESULT_OK);
+			showResult("작성한 내용이 업로드됩니다.");
+			finish();
+			return ;
+		}
+		
 		final AP0010 ap = new AP0010();
 		ap.setType(CodeType.INTERIOR_TYPE);
 		ap.setBrdId(SessionManager.getInstance(this).getUserDetails().get(SessionManager.KEY_EMAIL));
@@ -178,7 +186,6 @@ public class InteriorWrite2Activity extends AbstractAsyncActivity implements Vie
 		final String type = path.substring(path.lastIndexOf('.') + 1);
 		final File file = new File(path);
 		byte[] contents = null;
-		
 		long size = file.length();
 		
 		ap.setImgNm(name);

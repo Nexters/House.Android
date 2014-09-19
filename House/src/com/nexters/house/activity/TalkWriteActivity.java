@@ -13,6 +13,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -30,7 +31,8 @@ import com.nexters.house.entity.APICode;
 import com.nexters.house.entity.Action;
 import com.nexters.house.entity.CodeType;
 import com.nexters.house.entity.DataObject;
-import com.nexters.house.entity.reqcode.*;
+import com.nexters.house.entity.reqcode.AP0006;
+import com.nexters.house.entity.reqcode.AP0010;
 import com.nexters.house.handler.TransHandler;
 import com.nexters.house.thread.PostMessageTask;
 import com.nexters.house.utils.ImageManagingHelper;
@@ -144,6 +146,14 @@ public class TalkWriteActivity extends AbstractAsyncActivity {
 	
 	
 	public void uploadImage(final long brdNo, final int index){
+		if(imgDatas == null || imgDatas.size() <= 0){
+			CustomGalleryActivity.noCancel = 0;
+		    setResult(RESULT_OK);
+			showResult("작성한 내용이 업로드됩니다.");
+			finish();
+			return ;
+		}
+		
 		AP0010 ap = new AP0010();
 		ap.setType(CodeType.SUDATALK_TYPE);
 		ap.setBrdId(SessionManager.getInstance(this).getUserDetails().get(SessionManager.KEY_EMAIL));
