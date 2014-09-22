@@ -96,6 +96,27 @@ public class SessionManager {
 		mEditor.commit();
 	}
 
+	public void putString(String key, String value){
+		// Storing name in pref
+		mEditor.putString(key, value);
+		// commit changes
+		mEditor.commit();
+	}
+	
+	public void putBoolean(String key, boolean value){
+		// Storing name in pref
+		mEditor.putBoolean(key, value);
+		// commit changes
+		mEditor.commit();
+	}
+	
+	public void putInt(String key, int value){
+		// Storing name in pref
+		mEditor.putInt(key, value);
+		// commit changes
+		mEditor.commit();
+	}
+	
 	public void checkLogin() {
 		// Check login status
 		if (!this.isLoggedIn()) {

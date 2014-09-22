@@ -111,8 +111,9 @@ public class InteriorAdapter extends BaseAdapter {
 			if(!id.equals(usrId))
 				holder.rlMenu.setVisibility(View.GONE);
 			holder.houseId.setText(name + " = " + no);
-			if(profileImg != null)
-				new DownloadImageTask(holder.houseProfile).execute(mMainActivity.getString(R.string.base_uri) + profileImg);
+			if(profileImg != null){
+				new DownloadImageTask(holder.houseProfile).setCrop(true).execute(mMainActivity.getString(R.string.base_uri) + profileImg);
+			}
 			holder.interiorContent.setText(content);
 			holder.interiorLikes.setText(Integer.toString(nLike));
 			holder.interiorReplies.setText(Integer.toString(nReply));
@@ -162,8 +163,9 @@ public class InteriorAdapter extends BaseAdapter {
 					case R.id.icon_down :
 						//렐러티브레이아웃이 이미지 슬라이더에 가려져서 버튼들이 가려지게됨. 그래서 레이아웃을 맨 위로 올려줌!
 						RelativeLayout menuLayout = (RelativeLayout)rootView.findViewById(R.id.rl_menu);
-						menuLayout.bringToFront();
-
+						LinearLayout bodyLayout = (LinearLayout)rootView.findViewById(R.id.interior_body);
+						menuLayout.bringChildToFront(bodyLayout);
+						
 						if(!clicked){
 							clicked = true;
 							btnEdit.startAnimation(showDown);

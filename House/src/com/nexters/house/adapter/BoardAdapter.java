@@ -112,7 +112,7 @@ public class BoardAdapter extends BaseAdapter {
 			// set
 			holder.houseId.setText(name + " = " + position);
 			if(profileImg != null)
-				new DownloadImageTask(holder.houseProfile).execute(mMainActivity.getString(R.string.base_uri) + profileImg);
+				new DownloadImageTask(holder.houseProfile).setCrop(true).execute(mMainActivity.getString(R.string.base_uri) + profileImg);
 			holder.created.setText(created);
 			holder.boardTitle.setText(title);
 			holder.boardCategory.setText(category);

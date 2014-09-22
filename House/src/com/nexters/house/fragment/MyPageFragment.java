@@ -1,5 +1,6 @@
 package com.nexters.house.fragment;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,11 +8,9 @@ import java.util.List;
 import org.springframework.http.MediaType;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.AsyncTask.Status;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
@@ -19,8 +18,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
@@ -38,6 +35,9 @@ import com.nexters.house.entity.CodeType;
 import com.nexters.house.entity.MyPageEntity;
 import com.nexters.house.entity.reqcode.AP0001;
 import com.nexters.house.entity.reqcode.AP0001.AP0001Res;
+import com.nexters.house.entity.reqcode.CM0005;
+import com.nexters.house.entity.reqcode.CM0006;
+import com.nexters.house.entity.reqcode.CM0006.CM0006Img;
 import com.nexters.house.handler.TransHandler;
 import com.nexters.house.thread.DownloadImageTask;
 import com.nexters.house.thread.PostMessageTask;
@@ -64,11 +64,8 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
 	private TextView mBtnUpload;
 
 	private PostMessageTask mMyPageTask;
-	
-	private OnScrollListener mScrollListener;
-	
+	private PostMessageTask mUserTask;
 	private Bitmap mImageBitmap;
-	private int mIvPhotoWidth;
 	
 	private int mCodeType;
 	private int mPoType;
@@ -94,9 +91,6 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
 		mCodeType = CodeType.INTERIOR_TYPE;
 		mPoType = AP0001.NORMAL;
 		
-		View footerView = ((LayoutInflater)getActivity().
-				getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.listfooter, null, false);
-
 		mGridview = (ExpandableHeightGridView) v.findViewById(R.id.gv_mypage);
 		mGridview.setExpanded(true);
 		mMyPageAdapter = new MyPageAdapter(mMainActivity, mMyPageItemArrayList);
@@ -113,12 +107,14 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
 		HashMap<String, String> userDetails = sessionManager.getUserDetails();
 		String imgSrc = userDetails.get(SessionManager.KEY_PROFILE_PATH);
 		if(imgSrc != null){
-			new DownloadImageTask(mHouseProfile).execute(imgSrc);
+			new DownloadImageTask(mHouseProfile).setCrop(true).execute(imgSrc);
+//			ImageManagingHelper.getCroppedBitmap(mImageBitmap, mIvPhotoWidth);
+			
 			mHouseProfile.setVisibility(View.VISIBLE);
 			Log.d("mypageurl", "mypageurl" + imgSrc);
 		}
 		//원래 기본사진크기 가져오려고했는데..안됨 우선은 숫자로 넣어둠.
-		mIvPhotoWidth = 200;
+//		mIvPhotoWidth = 200;
 	}
 
 	public void initEvent(){
@@ -184,7 +180,6 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
 		
 		TransHandler.Handler handler = new TransHandler.Handler() {
 			public void handle(APICode resCode) {
-				MyPageAdapter listAdapter = mMyPageAdapter;
 				List<AP0001> apList = resCode.getTranData();
 				AP0001 ap = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), AP0001.class);
 				long lastNo = 0;
@@ -194,18 +189,16 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
 					String imgUrl = null;
 					if(res.brdImg.size() > 0)
 						imgUrl = mMainActivity.getString(R.string.base_uri) + res.brdImg.get(0).brdOriginImg;
-					
 					lastNo = res.brdNo;
-					listAdapter.add(res.brdNo, mCodeType, res.brdId, res.brdNm, res.brdCateNm, imgUrl);
+					mMyPageAdapter.add(res.brdNo, mCodeType, res.brdId, res.brdNm, res.brdCateNm, imgUrl);
 				}
 //				Log.d("resCnt", "resCnt : " + ap.getResCnt());
 				if(ap.getResCnt() == 0)
-					listAdapter.notifyDataSetChanged();
+					mMyPageAdapter.notifyDataSetChanged();
 				else 
 					addMyPageList(lastNo);
 			}
 		};
-		
 		TransHandler<AP0001> articleHandler = new TransHandler<AP0001>("AP0001", handler, ap);
 		mMyPageTask = new PostMessageTask(mMainActivity, articleHandler);
 		mMyPageTask.execute(MediaType.APPLICATION_JSON);
@@ -244,6 +237,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
 			if (resultCode == Activity.RESULT_OK) {
 				Uri uri = data.getData();
 				Intent intent = makeCropIntent(uri);
+//				Log.d("REQUEST_PICK_FROM_GALLERY", "REQUEST_PICK_FROM_GALLERY : " + TempFileManager.getImageFileUri());
 				startActivityForResult(intent, REQUEST_CODE_CROP_IMAGE);
 			}
 			break;
@@ -253,8 +247,10 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
 				if (extras != null) {
 					mImageBitmap = extras.getParcelable("data");
 					if (mImageBitmap != null) {
-						mHouseProfile.setImageBitmap(ImageManagingHelper.getCroppedBitmap(mImageBitmap, mIvPhotoWidth));
-						TempFileManager.saveBitmapToImageFile(mImageBitmap);
+//						mHouseProfile.setImageBitmap(ImageManagingHelper.getCroppedBitmap(mImageBitmap, mIvPhotoWidth));
+						File file = TempFileManager.saveBitmapToImageFile(mImageBitmap);
+//						Log.d("File : ", "File : " + file.getAbsolutePath());
+						saveProfile(file, mImageBitmap);
 					} else {
 						Toast.makeText(mMainActivity, "잘린 이미지가 저장되지 않았습니다.", Toast.LENGTH_SHORT).show();
 					}
@@ -266,6 +262,64 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
 		}
 	}
 
+	public void refreshUser(){
+		TransHandler.Handler handler = new TransHandler.Handler() {
+			@Override
+			public void handle(APICode resCode) {
+				CM0005 cm = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), CM0005.class);
+				String profileImg = cm.getProfileImg();
+				SessionManager.getInstance(mMainActivity).putString(SessionManager.KEY_PROFILE_PATH, mMainActivity.getString(R.string.base_uri) + profileImg);
+				String imgSrc = SessionManager.getInstance(mMainActivity).getUserDetails().get(SessionManager.KEY_PROFILE_PATH);
+				if(imgSrc != null){
+					new DownloadImageTask(mHouseProfile).setCrop(true).execute(imgSrc);
+					mHouseProfile.setVisibility(View.VISIBLE);
+				}
+				Log.d("SessionManager ", "SessionManager : " + profileImg);
+			}
+		}; 
+	  	CM0005 cm = new CM0005();
+		cm.setUsrId(SessionManager.getInstance(mMainActivity).getUserDetails().get(SessionManager.KEY_EMAIL));
+		
+    	TransHandler<CM0005> authHandler = new TransHandler<CM0005>("CM0005", handler, cm);
+    	mUserTask = new PostMessageTask(mMainActivity, authHandler);
+    	mUserTask.execute(MediaType.APPLICATION_JSON); 
+	}
+	
+	public void saveProfile(File file, Bitmap bitmap){
+		if(mUserTask != null && mUserTask.getStatus() != mUserTask.getStatus().FINISHED)
+			return ;
+		// 크롭을 하기 위해 file 이미지 불러오기 !!
+		TransHandler.Handler handler = new TransHandler.Handler() {
+			@Override
+			public void handle(APICode resCode) {
+				CM0006 cm = JacksonUtils.hashMapToObject((HashMap)resCode.getTranData().get(0), CM0006.class);
+				
+				if(cm.getResultYn().equals("Y")){
+					refreshUser();
+				}
+			}
+		}; 
+	  	CM0006 cm = new CM0006();
+		CM0006Img profileImg = new CM0006Img();
+//		Log.e("img", "imgs : " + imgUrl);
+		String path = file.getAbsolutePath();
+		String name = path.substring(path.lastIndexOf('/') + 1);
+		final String type = path.substring(path.lastIndexOf('.') + 1);
+		byte[] contents = ImageManagingHelper.getBitmapToBytes(bitmap, type);
+		long size = file.length();
+		
+		profileImg.imgContent = contents;
+		profileImg.imgNm = profileImg.imgOriginNm = name;
+		profileImg.imgSize = size;
+		profileImg.imgType = type;
+		cm.setUsrImg(profileImg);
+		cm.setUsrId(SessionManager.getInstance(mMainActivity).getUserDetails().get(SessionManager.KEY_EMAIL));
+		
+    	TransHandler<CM0006> authHandler = new TransHandler<CM0006>("CM0006", handler, cm);
+    	mUserTask = new PostMessageTask(mMainActivity, authHandler);
+    	mUserTask.execute(MediaType.APPLICATION_JSON); 
+	}
+	
 	@Override
 	public void onDestroy(){
 		super.onDestroy();

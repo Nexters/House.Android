@@ -1,5 +1,7 @@
 package com.nexters.house.fragment;
 
+import java.util.HashMap;
+
 import org.springframework.http.MediaType;
 
 import android.app.Activity;
@@ -12,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.nexters.house.R;
-import com.nexters.house.activity.CustomGalleryActivity;
 import com.nexters.house.activity.SetActivity;
 import com.nexters.house.core.SessionManager;
 import com.nexters.house.entity.APICode;
@@ -79,9 +80,8 @@ public class SetNickNameFragment extends Fragment implements View.OnClickListene
 	public void saveNickName(){
 		if(mAuthTask != null && mAuthTask.getStatus() != mAuthTask.getStatus().FINISHED)
 			return ;
-		
 		String usrId = SessionManager.getInstance(mSetActivity).getUserDetails().get(SessionManager.KEY_EMAIL);
-		String name = mHouseName.getText().toString();
+		final String name = mHouseName.getText().toString();
 		
 		CM0006 cm = new CM0006();
 		cm.setUsrId(usrId);
@@ -90,7 +90,7 @@ public class SetNickNameFragment extends Fragment implements View.OnClickListene
 		TransHandler.Handler handler = new TransHandler.Handler() {
 			@Override
 			public void handle(APICode resCode) {
-			
+				SessionManager.getInstance(mSetActivity).putString(SessionManager.KEY_NAME, name);
 				mSetActivity.showResult("닉네임 수정 완료 !");
 			}
 		};

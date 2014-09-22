@@ -74,7 +74,7 @@ public class ReplyAdapter extends BaseAdapter{
 			String profileImg = mReplyItemList.get(position).profileImg;
 			
 			if(profileImg != null)
-				new DownloadImageTask(holder.houseProfile).execute(mContext.getString(R.string.base_uri) + profileImg);
+				new DownloadImageTask(holder.houseProfile).setCrop(true).execute(mContext.getString(R.string.base_uri) + profileImg);
 			else
 				holder.houseProfile.setImageResource(R.drawable.user_profile_image);
 			

@@ -143,10 +143,8 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 		mReplyAdapter = new ReplyAdapter(this, mReplyArrayList, R.layout.reply, brdType);
 		TransHandler.Handler handler = new TransHandler.Handler() {
 			public void handle(APICode resCode) {
-				if(mReplyArrayList.size() > 0)
-					addComments(mReplyArrayList.get(mReplyArrayList.size()-1).no, true);
-				else
-					addComments(0, true);
+				mReplyArrayList.clear();
+				addComments(0, true);
 			}
 		};
 		TransHandler<AP0009> articleHandler = new TransHandler<AP0009>("AP0009", handler);
@@ -263,7 +261,7 @@ public class ContentDetailActivity extends AbstractAsyncFragmentActivity
 						.getTranData().get(0), AP0003.class);
 
 				if(ap.getBrdProfileImg() != null)
-					new DownloadImageTask(mProfileImage).execute(getApplicationContext().getString(R.string.base_uri) + ap.getBrdProfileImg());
+					new DownloadImageTask(mProfileImage).setCrop(true).execute(getApplicationContext().getString(R.string.base_uri) + ap.getBrdProfileImg());
 				mProfileName.setText(ap.getBrdNm());
 				mCreated.setText(ap.getBrdCreated());
 				mSubject.setText(ap.getBrdSubject());
